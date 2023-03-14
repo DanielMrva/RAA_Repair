@@ -6,35 +6,36 @@ const mongoose = require('mongoose');
 
 const resolvers = {
     Query: {
-        me: async (parent, { _id }) => {
-            const params = _id ? { _id } : {};
-            return User.find(params);
-        },
+        // me: async (parent, { _id }) => {
+        //     const params = _id ? { _id } : {};
+        //     return User.find(params);
+        // },
         user: async (parent, { userId }) => {
             return User.findOne({_id: userId});
         },
         users: async () => {
             return User.find();
         },
-        allradios: async () => {
+        allRadios: async () => {
             return Radio.find().populate(["serviceRecord"]);
         },
-        allrepairs: async () => {
+        allRepairs: async () => {
             return Repair.find();
         },
-        orgradios: async (parent, {orgName}) => {
+        orgRadios: async (parent, {orgName}) => {
             return Organization.find({orgName: orgName}).populate(["radios"]);
         },
-        orguser: async (parent, {orgName}) => {
+        orgUsers: async (parent, {orgName}) => {
             return User.find({orgName: orgName});
         }
     },
     Mutation: {
         addUser: 
             async (parent, {
-                username, email, password
+                username, email, password, orgName
             }) =>  {
-            const user = await User.create({ username, email, password});
+            
+            const user = await User.create({ username, email, password, orgName});
             const token = signToken(user);
         
             return { token, user}
@@ -60,6 +61,16 @@ const resolvers = {
             // console.log(`Token: ${token}, User: ${user}`);
 
             return { token, user}
+        },
+        validateAccess: async (parent, {username, accessLevel}) => {
+            const user = await User.findOneAndUpdate({username: username}, { $set: { accessLevel: accessLevel}});
+
+            if (!user) {
+                console.log('bad user', {username, accessLevel} );
+                return {username, accessLevel}
+            }
+
+            return user;
         }
     }
 };

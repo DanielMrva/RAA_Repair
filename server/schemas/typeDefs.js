@@ -12,6 +12,7 @@ const typeDefs = `#graphql
 
     type Repair {
         _id: ID!
+        radioSerial: String
         dateReceived: String
         endUserPO: String
         raaPO: String
@@ -67,13 +68,12 @@ const typeDefs = `#graphql
     }
 
     type Query {
-        me(_id: String!): User
         users: [User]
         user(userId: ID!): User
-        allradios: [Radio]
-        allrepairs: [Repair]
-        orgradios(orgName: String!): [Radio]
-        orguser(orgName: String!): [User]
+        allRadios: [Radio]
+        allRepairs: [Repair]
+        orgRadios(orgName: String!): [Radio]
+        orgUsers(orgName: String!): [User]
     }
 
     type Mutation {
@@ -83,7 +83,13 @@ const typeDefs = `#graphql
         password: String!
         orgName: String!
         ): Auth
-        login(email: String!, password: String!): Auth
+        login(
+            email: String!
+            password: String!): Auth
+        validateAccess(
+            username: String!
+            accessLevel: String!
+        ): User
     }
 
 `;

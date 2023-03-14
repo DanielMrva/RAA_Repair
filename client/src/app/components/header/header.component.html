@@ -1,0 +1,17 @@
+<div class="header">
+    <div>
+        <div class="text">
+            Radios Across America - Repairs
+        </div>
+        <a [routerLink]="['/']">Home</a>
+        <div *ngIf="logged"> 
+            <div> | </div>
+
+            <a [routerLink]="['/submit']">Submit</a>
+        </div>
+    </div>
+    <div>
+        <div *ngIf="logged" class="" (click)="logout()">logout</div>
+        <a *ngIf="!logged" [routerLink]="['/login']" class="">login</a>
+    </div>
+</div>
