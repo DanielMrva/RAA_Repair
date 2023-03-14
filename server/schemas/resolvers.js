@@ -1,7 +1,7 @@
-const {User, Organization, Radio, Repair} = require('../models');
-const {AuthenticationError} = require('@apollo/server');
-const {signToken} = require('../utils/auth');
-const {sign}=require('jsonwebtoken');
+const { User, Organization, Radio, Repair } = require('../models');
+const { unwrapResolverError } = require('@apollo/server/errors');
+const { signToken } = require('../utils/auth');
+const { sign }=require('jsonwebtoken');
 const mongoose = require('mongoose');
 
 const resolvers = {
@@ -41,20 +41,46 @@ const resolvers = {
             return { token, user}
         },
         login: async (parent, { email, password }) => {
+
+            // try {   
+            //     const user = await User.findOne({ email });
+
+            //     const badAttempt = "Email or password has failed, please try again!";
+    
+            //     if (!user) {
+            //         console.log('bad user', email);
+            //         throw new Error(badAttempt);
+            //     }
+    
+            //     const correctPassword = await user.isCorrectPassword(password);
+    
+            //     if (!correctPassword) {
+            //         console.log('bad password', user);
+            //         throw new Error(badAttempt);
+            //     }
+
+            //     const token = signToken(user);
+            //     // console.log(`Token: ${token}, User: ${user}`);
+    
+            //     return { token, user}
+            // } catch (error) {
+            //     console.log(error);
+            //     return
+            // }
             const user = await User.findOne({ email });
 
             const badAttempt = "Email or password has failed, please try again!";
 
             if (!user) {
-                console.log('bad user', user);
-                throw new AuthenticationError(badAttempt);
+                console.log('bad user', email);
+                throw unwrapResolverError(badAttempt);
             }
 
             const correctPassword = await user.isCorrectPassword(password);
 
             if (!correctPassword) {
                 console.log('bad password', user);
-                throw new AuthenticationError(badAttempt);
+                throw new unwrapResolverError(badAttempt);
             }
 
             const token = signToken(user);
