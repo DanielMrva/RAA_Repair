@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit{
           email: this.email,
           password: this.password
         }
-      }) .subscribe((result) => {
+      }) .subscribe({next: (result) => {
         const id = result.data.login.user._id;
         const org = result.data.login.user.orgName
         const accessLevel = result.data.login.user.accessLevel
@@ -45,9 +45,9 @@ export class LoginComponent implements OnInit{
         this.saveUserData(id, org, accessLevel, token);
 
         this.router.navigate(['/']);
-      }, (error) => {
+      }, error: (error) => {
         alert(error)
-      });
+      }});
     } else {
       this.apollo.mutate<any> ({
         mutation: ADD_USER,
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit{
           email: this.email,
           orgName: this.orgName,
         }
-      }) .subscribe((result) => {
+      }) .subscribe({next: (result) => {
         const id = result.data.addUser.user._id;
         const org = result.data.login.user.orgName
         const accessLevel = result.data.login.user.accessLevel
@@ -66,9 +66,9 @@ export class LoginComponent implements OnInit{
         this.saveUserData(id, org, accessLevel, token);
 
         this.router.navigate(['/']);
-      }, (error) => {
+      }, error: (error) => {
         alert(error)
-      });
+      }});
     }
 
   }

@@ -23,7 +23,7 @@
     "@popperjs/core": "^2.10.2",
     "apollo-angular": "^4.2.1",
     "bootstrap": "^5.2.3",
-    "bootstrap-icons": "^1.10.2",
+    "bootstrap-icons": "^1.10.4",
     "graphql": "^16.6.0",
     "json-server": "^0.17.1",
     "jsonwebtoken": "^9.0.0",
