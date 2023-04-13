@@ -18,11 +18,11 @@ export class LoginComponent implements OnInit{
   username: string = '';
   orgName: string = '';
 
-  constructor(private authService: AuthService,
+  constructor(
+              private authService: AuthService,
               private router: Router,
-              private apollo: Apollo) {
-
-  }
+              private apollo: Apollo
+              ) { }
 
   ngOnInit(): void {
       

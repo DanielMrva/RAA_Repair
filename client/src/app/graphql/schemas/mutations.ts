@@ -1,4 +1,5 @@
 import { gql } from 'apollo-angular';
+import { LoginResults, LoginVariables } from './typeInterfaces';
 
 export const ADD_USER = gql`
     mutation addUser(
@@ -24,7 +25,7 @@ export const ADD_USER = gql`
     }
 `
 
-export const LOGIN_USER = gql`
+export const LOGIN_USER = gql<LoginResults, LoginVariables>`
     mutation login($email: String!, $password: String!) {
         login(email: $email, password: $password) {
             token
@@ -37,6 +38,8 @@ export const LOGIN_USER = gql`
         }
     }
 `
+
+
 
 export const VALIDATE_ACCESS = gql`
     mutation validateAccess($username: String!, $accessLevel: String!) {

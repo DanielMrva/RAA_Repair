@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { GraphQLModule } from './graphql/graphql.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Services and Modules
 import { AuthService } from './services/auth.service';
@@ -16,12 +16,14 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { SubmitServiceComponent } from './components/submit-service/submit-service.component';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
     LoginComponent,
     HeaderComponent,
-    HomeComponent,
     SubmitServiceComponent
   ],
   imports: [
@@ -30,9 +32,22 @@ import { SubmitServiceComponent } from './components/submit-service/submit-servi
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     GraphQLModule
   ],
-  providers: [ AuthService],
-  bootstrap: [AppComponent]
+  providers: [ AuthService ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }
+
+
+
+// // Components 
+// import { AppComponent } from './app.component';
+// import { HomeComponent } from './component/home';
+// import { LoginComponent } from './component/login';
+// import { HeaderComponent } from './component/header';
+
+// // Modules and Services
+// import { Authenication } from './_services';
+// import { AppRoutingModule } from './app-routing.module';
