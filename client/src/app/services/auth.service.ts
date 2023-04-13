@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { RR_AUTH_TOKEN, RR_USER_ID, RR_USER_AL, RR_USER_ORG } from '../constants';
-// import { decode } from 'jsonwebtoken';
+import { User } from '@app/graphql/schemas';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,22 +10,37 @@ import { RR_AUTH_TOKEN, RR_USER_ID, RR_USER_AL, RR_USER_ORG } from '../constants
 export class AuthService {
 
   private userId: string = '';
+  private localUser: string | null = localStorage.getItem('user')
+  private userSubject: BehaviorSubject<User | null>;
   private _isAuthenticated = new BehaviorSubject(false);
+  public user: Observable<User | null>;
 
-  constructor() { 
+
+  constructor()
+  { 
+    // if(this.localUser) {
+    //   this.userSubject = new BehaviorSubject(JSON.parse(this.localUser));
+    //   this.user = this.userSubject.asObservable();
+    // } else {
+    // }
+    this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')!));
+    this.user = this.userSubject.asObservable();
 
   }
 
-  get isAuthenticated(): Observable<boolean> {
+  public get userValue() {
+    return this.userSubject.value;
+  }
+
+  public get isAuthenticated(): Observable<boolean> {
     return this._isAuthenticated.asObservable();
   }
 
-  saveUserData(id: string, org: string, accessLevel: string, token: string) {
-    localStorage.setItem(RR_USER_ID, id);
-    localStorage.setItem(RR_USER_ORG, org);
-    localStorage.setItem(RR_USER_AL, accessLevel);
-    localStorage.setItem(RR_AUTH_TOKEN, token);
-    this.setUserId(id);
+  saveUserData(user: User) {
+    console.log(user)
+    const userString = JSON.stringify(user)
+    localStorage.setItem('user', userString)
+    // this.setUserId(user._id);
   }
 
   setUserId(id: string) {
@@ -33,24 +49,17 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem(RR_USER_ID);
-    localStorage.removeItem(RR_AUTH_TOKEN);
-    localStorage.removeItem(RR_USER_ORG);
-    localStorage.removeItem(RR_USER_AL);
+    localStorage.removeItem('user');
     this.userId = '';
-
     this._isAuthenticated.next(false);
   }
 
-  autoLogin() {
-    const id = localStorage.getItem(RR_USER_ID);
+  // autoLogin() {
+  //   const id = localStorage.getItem(RR_USER_ID);
 
-    if (id && id.length > 0) {
-      this.setUserId(id);
-    }
-  }
+  //   if (id && id.length > 0) {
+  //     this.setUserId(id);
+  //   }
+  // }
 
-  authDecode() {
-
-  }
 }
