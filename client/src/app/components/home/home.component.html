@@ -1,4 +1,9 @@
 <div>
     <p>home works!</p>
-    <p>{{user.username}}</p>
+
+    <div *ngIf="user;else elseBlock">
+        <p>{{user.username}}</p>
+        <p>{{user.accessLevel}}</p>
+    </div>
+    <ng-template #elseBlock>No User.</ng-template>
 </div>

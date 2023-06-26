@@ -1,1 +1,20 @@
 <p>submit-service works!</p>
+
+<ng-container *ngIf="{loggedUser: loggedUser$ | async} as data">
+    <div *ngIf="
+        data.loggedUser !== null &&
+        data.loggedUser !== undefined
+        "
+    >
+        <div *ngIf="data.loggedUser.accessLevel === 'admin' ">
+
+            <app-admin-submit/>
+            
+        </div>
+
+    </div>
+
+
+</ng-container>
+
+

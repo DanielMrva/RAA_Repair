@@ -71,7 +71,9 @@ const typeDefs = `#graphql
         users: [User]
         user(userId: ID!): User
         allRadios: [Radio]
+        radio(_id: ID!): Radio 
         allRepairs: [Repair]
+        repair(_id: ID!): Repair
         orgRadios(orgName: String!): [Radio]
         orgUsers(orgName: String!): [User]
     }
@@ -90,6 +92,31 @@ const typeDefs = `#graphql
             username: String!
             accessLevel: String!
         ): User
+        addRepair(
+            radioSerial: String!
+            dateReceived: String!
+            endUserPO: String
+            raaPO: String
+            repairTag: String
+            dateSentTech: String
+            dateSentEU: String
+            techInvNum: String
+            raaInvNum: String
+            symptoms: String
+            testFreq: String
+            incRxSens: String
+            incFreqErr: String
+            incMod: String
+            incPowerOut: String
+            outFreqErr: String
+            outMod: String
+            outPowerOut: String
+            accessories: [String]
+            workPerformed: [String]
+            repHours: Float
+            partsUsed: [String]
+            remarks: String
+        ): Repair
     }
 
 `;

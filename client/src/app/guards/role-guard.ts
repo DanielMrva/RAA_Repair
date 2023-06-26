@@ -1,25 +1,32 @@
 import { inject } from "@angular/core";
 import { Router, ActivatedRouteSnapshot } from '@angular/router';
+import { filter, map } from 'rxjs';
 import { AuthService } from "@app/services/auth.service";
 import decode from 'jwt-decode';
 
-export const roleGuard = () => {
-    const authService = inject(AuthService);
+export const RoleGuard = () => {
     const router = inject(Router);
-    const activatedRouteSnapshot = inject(ActivatedRouteSnapshot);
+    const route = inject(ActivatedRouteSnapshot);
+    const authService = inject(AuthService);
 
-    const expectedRole = activatedRouteSnapshot.data.expectedRole;
 
-    const token = localStorage.getItem('token');
+    const expectedRole: Array<string> = route.data['role'];
 
-    if(!token) {
-        router.navigate(['login']);
-        return false;
-    }
+    const localUser = localStorage.getItem('user');
 
-    const tokenPayload = decode(token);
+    // const token = localStorage.getItem('token')!;
 
-    if (
-        !authService.isAuthenticated || tokenPayload.
+    // const tokenPayload = decode(token);
+
+    return authService.loggedUser$.pipe(
+        filter((loggedUser) => loggedUser !== undefined), 
+        map((loggedUser) => {
+            if (!loggedUser || !expectedRole.includes(loggedUser.accessLevel)) {
+                router.navigateByUrl('/');
+                return false;
+            }
+            return true
+        })
     )
+    
 }

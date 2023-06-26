@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Services and Modules
 import { AuthService } from './services/auth.service';
+// import { RoleGuard } from './guards/role-guard';
 import { AppRoutingModule } from './app-routing.module';
 
 // Components
@@ -15,6 +16,7 @@ import { LoginComponent } from './components/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { SubmitServiceComponent } from './components/submit-service/submit-service.component';
+import { AdminSubmitComponent } from './components/submit-service/admin-submit/admin-submit.component';
 
 
 
@@ -24,7 +26,8 @@ import { SubmitServiceComponent } from './components/submit-service/submit-servi
     HomeComponent,
     LoginComponent,
     HeaderComponent,
-    SubmitServiceComponent
+    SubmitServiceComponent,
+    AdminSubmitComponent
   ],
   imports: [
     BrowserModule,

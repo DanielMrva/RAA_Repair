@@ -70,9 +70,89 @@ export const ALL_RADIOS = gql`
     }
 `
 
+export const QUERY_SINGLERADIO = gql`
+    query radio($_id: String) {
+        radio(_id: $_id) {
+           _id
+           orgName
+           location
+           dateSold
+           dateEntered
+           inventoryNumber
+           make
+           model
+           progChannels
+           notes
+           serialNumber
+           serviceRecord {
+                _id
+                radioSerial
+                dateReceived
+                endUserPO
+                raaPO
+                repairTag
+                dateSentTech
+                dateRecTech
+                dateSentEU
+                techInvNum
+                raaInvNum
+                symptoms
+                testFreq
+                incRxSens
+                incFreqErr
+                incMod
+                incPowerOut
+                outRxSens
+                outFreqErr
+                outMod
+                outPowerOut
+                accessories
+                workPerformed
+                repHours
+                partsUsed
+                remarks
+           }
+           warranty 
+        }
+    }
+`
+
 export const ALL_REPAIRS = gql`
     query allRepairs {
         allRepairs {
+            _id
+            radioSerial
+            dateReceived
+            endUserPO
+            raaPO
+            repairTag
+            dateSentTech
+            dateRecTech
+            dateSentEU
+            techInvNum
+            raaInvNum
+            symptoms
+            testFreq
+            incRxSens
+            incFreqErr
+            incMod
+            incPowerOut
+            outRxSens
+            outFreqErr
+            outMod
+            outPowerOut
+            accessories
+            workPerformed
+            repHours
+            partsUsed
+            remarks
+        }
+    }
+`
+
+export const QUERY_SINGLEREPAIR = gql`
+    query repair($_id: String) {
+        repair(_id: $_id) {
             _id
             radioSerial
             dateReceived
@@ -161,3 +241,4 @@ export const ORG_USERS = gql`
         }
     }
 `
+

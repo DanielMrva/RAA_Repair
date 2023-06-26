@@ -19,8 +19,11 @@
     "target": "es2020",
     "module": "es2020",
     "lib": [
-      "es2020",
-      "dom"
+      "dom",
+      "es7",
+      "es2016",
+      "es2017",
+      "es2020"
     ],
     "paths": {
       "@app/*": ["src/app/*"],

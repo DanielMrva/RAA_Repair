@@ -1,17 +1,52 @@
-<div class="header">
-    <div>
-        <div class="text">
-            Radios Across America - Repairs
-        </div>
-        <a [routerLink]="['/']">Home</a>
-        <div *ngIf="logged"> 
-            <div> | </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
 
-            <a [routerLink]="['/submit']">Submit</a>
-        </div>
+    <a class="navbar-brand" href="#">Radios Across America</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+      <span class="navbar-toggler-icon"></span>
+
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <!-- <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li> -->
+        <li class="nav-item">
+            <a [routerLink]="['/']" class="nav-link">Home</a>
+        </li>
+        <ng-container *ngIf="{loggedUser: loggedUser$ | async} as data">
+            <ng-container *ngIf="
+                    data.loggedUser !== null &&
+                    data.loggedUser !== undefined
+                    else elseBlock
+                "
+            >
+                <li class="nav-item">
+                    <a [routerLink]="['/submit']" class="nav-link">Submit</a>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" (click)="logout()">Logout</div>
+                </li>
+            </ng-container>
+        </ng-container>
+
+        <ng-template #elseBlock>
+            <li class="nav-item">
+                <a [routerLink]="['/login']" class="nav-link">Login</a> 
+            </li>
+        </ng-template> 
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="#">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li> -->
+      </ul>
     </div>
-    <div>
-        <div *ngIf="logged" class="" (click)="logout()">logout</div>
-        <a *ngIf="!logged" [routerLink]="['/login']" class="">login</a>
-    </div>
-</div>
+  </nav>

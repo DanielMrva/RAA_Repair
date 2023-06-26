@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '@app/graphql/schemas';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -8,14 +9,14 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class HeaderComponent implements OnInit{
 
-  logged: boolean = false;
+  loggedUser$ = this.authService.loggedUser$
 
   constructor (private authService: AuthService) {
 
   }
 
   ngOnInit(): void {
-    this.logged = this.authService.isAuthenticated;    
+  
   }
 
   logout() {

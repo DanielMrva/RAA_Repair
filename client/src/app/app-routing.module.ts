@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+// import { RoleGuard } from '@app/guards/role-guard';
+
 
 // component imports
-import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
-import { SubmitServiceComponent } from './components/submit-service/submit-service.component';
+import { HomeComponent } from '@app/components/home/home.component';
+import { LoginComponent } from '@app/components/login/login.component';
+import { SubmitServiceComponent } from '@app/components/submit-service/submit-service.component';
 
 const routes: Routes = [
   {
@@ -15,7 +17,11 @@ const routes: Routes = [
   {
     path: 'submit',
     component: SubmitServiceComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
+    // canActivate: [RoleGuard],
+    data: {
+      role: ['admin', 'user']
+    }
   },
   {
     path: 'login',
