@@ -1,71 +1,66 @@
 <h4>{{login ? 'Login' : 'Sign Up'}}</h4>
 
-<!-- TODO: Get this styled -->
 <!-- TODO: Add in Bootstrap validation classes, need to find out if I can use some sort of server-side validation in combination with client side -->
 
-<form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<form class="form needs-validation row g-3" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
 
-    <div class="mb-3" *ngIf="!login">
-        <label for="username" class="form-label">User Name</label>
-        <input  
-                formControlName="username"
-                type="text"
-                placeholder="Your User Name"
-                class="form-control" 
-                id="username" 
-                aria-describedby="userNameHelp">
+    <div class="mb-3 col-md-4" *ngIf="!login">
+        <label for="username" class="form-label">Username</label>
+        <div class="input-group has-validation">
+            <input
+                    formControlName="username"
+                    type="text"
+                    placeholder="Your User Name"
+                    class="form-control"
+                    id="username"
+                    aria-describedby="userNameHelp"
+                    required>
+            <div class="invalid-feedback">
+                Please enter your Username
+            </div>
+        </div>
 
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3 col-md-4">
         <label for="email" class="form-label">Email</label>
-        <input  
-                formControlName="email"
-                type="text" 
-                class="form-control" 
-                id="email" 
-                placeholder="Your Email">
+        <div class="input-group">
+            <input
+                    formControlName="email"
+                    type="text"
+                    class="form-control"
+                    id="email"
+                    placeholder="Your Email">
+        </div>
 
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3 col-md-4">
         <label for="password" class="form-label">Password</label>
-        <input  
-                formControlName="password"
-                type="password" 
-                class="form-control" 
-                id="password" 
-                placeholder="Your Password">
-    </div>
+        <div class="input-group has-validation">
+            <input
+                    formControlName="password"
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    placeholder="Your Password"
+                    required>
+                </div>
+                <div class="invalid-feedback">
+            Please enter a valid Password
+                </div>
+        </div>
 
-
-    <button  
-        class="btn btn-primary" 
-        (click)="onSubmit()">
-            {{login? 'login' : 'create account'}}
-    </button>
-
-    <!-- TODO: this currently submits a login attempt when toggling login to t/f.  would like to figure this out, but is not required -->
-
-    <!-- <button
-        class="btn btn-outline-secondary"
-        (click)="login =!login">
-        {{login? 'need to create an account?' : 'already have an account?'}}
-    </button> -->
 </form>
 
+<button  
+    class="btn btn-primary" 
+    (click)="onSubmit()">
+    {{login? 'login' : 'create account'}}
+</button>
 
-<!-- <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
-  </div>
-  <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button> -->
+<button
+    class="btn btn-outline-secondary"
+    (click)="login =!login">
+    {{login? 'need to create an account?' : 'already have an account?'}}
+</button>

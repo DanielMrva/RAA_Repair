@@ -19,10 +19,7 @@ export class LoginComponent implements OnInit{
     orgName: ''
   })
   login: boolean = true;
-  // email: string = '';
-  // password: string = '';
-  // username: string = '';
-  // orgName: string = '';
+
 
   constructor(
               private formBuilder: FormBuilder,
@@ -64,10 +61,7 @@ export class LoginComponent implements OnInit{
           password: this.loginForm.value.password
         }
       }) .subscribe({next: (result) => {
-        // const id = result.data.addUser.user._id;
-        // const org = result.data.login.user.orgName
-        // const accessLevel = result.data.login.user.accessLevel
-;
+
         this.authService.saveUserData(result.data.login.user);
         this.authService.saveUserToken(result.data.login.token);
 

@@ -13,6 +13,10 @@ export class AuthService {
     User | null | undefined
   >(undefined);
 
+  autoLogin() {
+    
+  }
+
 
   saveUserData(user: User) {
     localStorage.setItem('user', JSON.stringify(user));
