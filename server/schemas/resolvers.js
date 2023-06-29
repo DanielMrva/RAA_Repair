@@ -8,7 +8,7 @@ const resolvers = {
     Query: {
 
         user: async (parent, { userId }) => {
-            return User.findOne({_id: userId});
+            return User.findById({_id: userId});
         },
         users: async () => {
             return User.find();
@@ -16,8 +16,14 @@ const resolvers = {
         allRadios: async () => {
             return Radio.find().populate(["serviceRecord"]);
         },
+        radio: async ( parent, { radioId }) => {
+            return Radio.findById({id: radioId});
+        },
         allRepairs: async () => {
             return Repair.find();
+        },
+        repair: async ( parent, { repairId }) => {
+            return Radio.findById({id: repairId});
         },
         orgRadios: async (parent, {orgName}) => {
             return Organization.find({orgName: orgName}).populate(["radios"]);
@@ -94,6 +100,54 @@ const resolvers = {
             }
 
             return user;
+        },
+        addRepair: async (parent, { 
+            radioSerial,
+            dateReceived,
+            endUserPO,
+            raaPO,
+            repairTag,
+            dateSentTech,
+            dateSentEU,
+            techInvNum,
+            raaInvNum,
+            symptoms,
+            testFreq,
+            incRxSens,
+            incFreqErr,
+            incMod,
+            incPowerOut,
+            accessories,
+            workPerformed,
+            repHours,
+            partsUsed,
+            remarks
+        }) => {
+            const repair = await Repair.create({
+                radioSerial,
+                dateReceived,
+                endUserPO,
+                raaPO,
+                repairTag,
+                dateSentTech,
+                dateSentEU,
+                techInvNum,
+                raaInvNum,
+                symptoms,
+                testFreq,
+                incRxSens,
+                incFreqErr,
+                incMod,
+                incPowerOut,
+                accessories,
+                workPerformed,
+                repHours,
+                partsUsed,
+                remarks
+            });
+
+            return repair;
+
         }
     }
 };
