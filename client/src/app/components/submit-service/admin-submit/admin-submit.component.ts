@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { ADD_REPAIR } from '@app/graphql/schemas';
 import { Apollo } from 'apollo-angular';
 import { Repair } from '@app/graphql/schemas/typeInterfaces';
@@ -13,40 +13,81 @@ import { ToastService } from '@app/services/toast.service';
 })
 
 export class AdminSubmitComponent implements OnInit{
+  adminRepairForm: FormGroup;
 
-  adminRepairForm = this.formBuilder.group({
-    radioSerial: '',
-    dateReceived: '',
-    endUserPO: '',
-    raaPO: '',
-    repairTag: '',
-    dateSentTech: '',
-    dateSentEU: '',
-    techInvNum: '',
-    raaInvNum: '',
-    symptoms: '',
-    testFreq: '',
-    incRxSens: '',
-    incFreqErr: '',
-    incMod: '',
-    incPowerOut: '',
-    outFreqErr: '',
-    outMod: '',
-    outPowerOut: '',
-    accessories: [''],
-    workPerformed: [''],
-    repHours: '',
-    partsUsed: [''],
-    remarks: ''
-    
-  })
+  get accessoriesArray(): FormArray {
+    return this.adminRepairForm.get('accessories') as FormArray;
+  }
+
+  get workPerformedArray(): FormArray {
+    return this.adminRepairForm.get('workPerformed') as FormArray;
+  }
+
+  get partsUsedArray(): FormArray {
+    return this.adminRepairForm.get('partsUsed') as FormArray;
+  }
+
+
   constructor(
     private formBuilder: FormBuilder,
     private apollo: Apollo,
     private router: Router,
     private toastService: ToastService
-  ) {}
+  ) {
 
+    this.adminRepairForm = this.formBuilder.group({
+      radioSerial: '',
+      dateReceived: '',
+      endUserPO: '',
+      raaPO: '',
+      repairTag: '',
+      dateSentTech: '',
+      dateSentEU: '',
+      techInvNum: '',
+      raaInvNum: '',
+      symptoms: '',
+      testFreq: '',
+      incRxSens: '',
+      incFreqErr: '',
+      incMod: '',
+      incPowerOut: '',
+      outRxSens: '',
+      outFreqErr: '',
+      outMod: '',
+      outPowerOut: '',
+      accessories: this.formBuilder.array(['']),
+      workPerformed: this.formBuilder.array(['']),
+      repHours: '',
+      partsUsed: this.formBuilder.array(['']),
+      remarks: ''
+      
+    })
+
+  }
+
+  addAccessory() {
+    this.accessoriesArray.push(this.formBuilder.control(''));
+  }
+
+  removeAccessory(index: number) {
+    this.accessoriesArray.removeAt(index);
+  }
+
+  addWorkPerformed() {
+    this.workPerformedArray.push(this.formBuilder.control(''));
+  }
+
+  removeWorkPerformed(index: number) {
+    this.workPerformedArray.removeAt(index);
+  }
+
+  addPartsUsed() {
+    this.partsUsedArray.push(this.formBuilder.control(''));
+  }
+
+  removePartsUsed(index: number) {
+    this.partsUsedArray.removeAt(index);
+  }
 
   ngOnInit(): void {
       
@@ -74,6 +115,7 @@ export class AdminSubmitComponent implements OnInit{
         incFreqErr: this.adminRepairForm.value.incFreqErr,
         incMod: this.adminRepairForm.value.incMod,
         incPowerOut: this.adminRepairForm.value.incPowerOut,
+        outRxSens: this.adminRepairForm.value.outRxSens,
         outFreqErr: this.adminRepairForm.value.outFreqErr,
         outMod: this.adminRepairForm.value.outMod,
         outPowerOut: this.adminRepairForm.value.outPowerOut,
@@ -85,13 +127,13 @@ export class AdminSubmitComponent implements OnInit{
       }
     }) .subscribe({ next: (result) => {
 
-      const newRepair = result.data?.addRepair
+      const newRepair = result.data?.addRepair ?? null;
       console.log(newRepair);
 
 
       if(newRepair) {
         this.toastService.show('Repair added sucessfully!', {
-          classname: 'bg-sucess text-light',
+          classname: 'bg-success text-light',
           delay: 3000
         })
         this.router.navigate(['/one-repair', newRepair._id]);

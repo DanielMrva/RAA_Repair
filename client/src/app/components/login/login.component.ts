@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit{
         this.authService.saveUserToken(result.data.login.token)
 
         this.toastService.show(`Welcome ${result.data.login.user.username} !`, {
-          classname: 'bg-sucess text-light',
+          classname: 'bg-success text-light',
           delay: 3000
         });
 
@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit{
         this.authService.saveUserToken(result.data.login.token);
 
         this.toastService.show(`Welcome ${result.data.login.user.username} !`, {
-          classname: 'bg-sucess text-light',
+          classname: 'bg-success text-light',
           delay: 3000
         });
 
