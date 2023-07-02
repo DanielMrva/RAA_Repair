@@ -17,6 +17,9 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { SubmitServiceComponent } from './components/submit-service/submit-service.component';
 import { AdminSubmitComponent } from './components/submit-service/admin-submit/admin-submit.component';
+import { OneRepairComponent } from './components/one-repair/one-repair.component';
+import { ToastComponent } from './components/toast/toast.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -27,7 +30,8 @@ import { AdminSubmitComponent } from './components/submit-service/admin-submit/a
     LoginComponent,
     HeaderComponent,
     SubmitServiceComponent,
-    AdminSubmitComponent
+    AdminSubmitComponent,
+    OneRepairComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,9 @@ import { AdminSubmitComponent } from './components/submit-service/admin-submit/a
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    GraphQLModule
+    GraphQLModule,
+    NgbModule,
+    ToastComponent
   ],
   providers: [ AuthService ],
   bootstrap: [ AppComponent ]

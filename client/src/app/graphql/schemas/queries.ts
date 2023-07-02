@@ -117,6 +117,54 @@ export const QUERY_SINGLERADIO = gql`
     }
 `
 
+export const QUERY_SERIALRADIO = gql`
+    query radio($radioSerial: String) {
+        radio(serialNumber: $radioSerial) {
+           _id
+           orgName
+           location
+           dateSold
+           dateEntered
+           inventoryNumber
+           make
+           model
+           progChannels
+           notes
+           serialNumber
+           serviceRecord {
+                _id
+                radioSerial
+                dateReceived
+                endUserPO
+                raaPO
+                repairTag
+                dateSentTech
+                dateRecTech
+                dateSentEU
+                techInvNum
+                raaInvNum
+                symptoms
+                testFreq
+                incRxSens
+                incFreqErr
+                incMod
+                incPowerOut
+                outRxSens
+                outFreqErr
+                outMod
+                outPowerOut
+                accessories
+                workPerformed
+                repHours
+                partsUsed
+                remarks
+           }
+           warranty 
+        }
+    }
+`
+
+
 export const ALL_REPAIRS = gql`
     query allRepairs {
         allRepairs {

@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from '@app/components/home/home.component';
 import { LoginComponent } from '@app/components/login/login.component';
 import { SubmitServiceComponent } from '@app/components/submit-service/submit-service.component';
+import { OneRepairComponent } from './components/one-repair/one-repair.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     pathMatch: 'full'
+  },
+  {
+    path: 'one-repair/:id',
+    component: OneRepairComponent
   },
   {
     path: '**',

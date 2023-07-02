@@ -1,0 +1,16 @@
+<p>one-repair works!</p>
+
+<div *ngIf="repair">
+    <h2>Repair Details</h2>
+    <div>
+      <strong>Repair ID:</strong> {{ repair._id }}
+    </div>
+    <div>
+      <strong>Date Received:</strong> {{ repair.dateReceived }}
+    </div>
+    <h3><strong>Add more divs for other repair fields</strong></h3>
+</div>
+
+<div *ngIf="!repair">
+    <h2>Loading...</h2>
+</div>
