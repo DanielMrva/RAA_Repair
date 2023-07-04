@@ -12,8 +12,8 @@ const typeDefs = `#graphql
 
     type Repair {
         _id: ID!
-        radioSerial: String
-        dateReceived: String
+        radioSerial: String!
+        dateReceived: String!
         endUserPO: String
         raaPO: String
         repairTag: String
@@ -53,6 +53,8 @@ const typeDefs = `#graphql
         serialNumber: String
         serviceRecord: [Repair]
         warranty: String
+        refurb: Boolean
+        radioType: String
     }
 
     type Organization {
@@ -71,28 +73,31 @@ const typeDefs = `#graphql
         users: [User]
         user(userId: ID!): User
         allRadios: [Radio]
-        radio(_id: ID!): Radio
+        radio(radioId: ID!): Radio
         serialRadio(serialNumber: String!): Radio 
         allRepairs: [Repair]
-        repair(_id: ID!): Repair
+        repair(repairId: String!): Repair
         orgRadios(orgName: String!): [Radio]
         orgUsers(orgName: String!): [User]
     }
 
     type Mutation {
         addUser(
-        username: String!
-        email: String!
-        password: String!
-        orgName: String!
+            username: String!
+            email: String!
+            password: String!
+            orgName: String!
         ): Auth
+
         login(
             email: String!
             password: String!): Auth
+
         validateAccess(
             username: String!
             accessLevel: String!
         ): User
+
         addRepair(
             radioSerial: String!
             dateReceived: String!
@@ -100,15 +105,17 @@ const typeDefs = `#graphql
             raaPO: String
             repairTag: String
             dateSentTech: String
+            dateRecTech: String
             dateSentEU: String
             techInvNum: String
             raaInvNum: String
-            symptoms: String
+            symptoms: [String]
             testFreq: String
             incRxSens: String
             incFreqErr: String
             incMod: String
             incPowerOut: String
+            outRxSens: String
             outFreqErr: String
             outMod: String
             outPowerOut: String

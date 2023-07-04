@@ -13,7 +13,45 @@ import { ToastService } from '@app/services/toast.service';
 })
 
 export class AdminSubmitComponent implements OnInit{
-  adminRepairForm: FormGroup;
+
+
+
+  // adminRepairForm: FormGroup;
+
+  adminRepairForm = this.formBuilder.group({
+    
+    radioSerial: '',
+    dateReceived: '',
+    endUserPO: '',
+    raaPO: '',
+    repairTag: '',
+    dateSentTech: '',
+    dateRecTech: '',
+    dateSentEU: '',
+    techInvNum: '',
+    raaInvNum: '',
+    symptoms: this.formBuilder.array(['']),
+    testFreq: '',
+    incRxSens: '',
+    incFreqErr: '',
+    incMod: '',
+    incPowerOut: '',
+    outRxSens: '',
+    outFreqErr: '',
+    outMod: '',
+    outPowerOut: '',
+    accessories: this.formBuilder.array(['']),
+    workPerformed: this.formBuilder.array(['']),
+    repHours: 0,
+    partsUsed: this.formBuilder.array(['']),
+    remarks: ''
+    
+  
+  })
+
+  get symptomsArray(): FormArray {
+    return this.adminRepairForm.get('symptoms') as FormArray;
+  }
 
   get accessoriesArray(): FormArray {
     return this.adminRepairForm.get('accessories') as FormArray;
@@ -33,36 +71,14 @@ export class AdminSubmitComponent implements OnInit{
     private apollo: Apollo,
     private router: Router,
     private toastService: ToastService
-  ) {
+  ) {  }
 
-    this.adminRepairForm = this.formBuilder.group({
-      radioSerial: '',
-      dateReceived: '',
-      endUserPO: '',
-      raaPO: '',
-      repairTag: '',
-      dateSentTech: '',
-      dateSentEU: '',
-      techInvNum: '',
-      raaInvNum: '',
-      symptoms: '',
-      testFreq: '',
-      incRxSens: '',
-      incFreqErr: '',
-      incMod: '',
-      incPowerOut: '',
-      outRxSens: '',
-      outFreqErr: '',
-      outMod: '',
-      outPowerOut: '',
-      accessories: this.formBuilder.array(['']),
-      workPerformed: this.formBuilder.array(['']),
-      repHours: '',
-      partsUsed: this.formBuilder.array(['']),
-      remarks: ''
-      
-    })
+  addSymptom() {
+    this.symptomsArray.push(this.formBuilder.control(''));
+  }
 
+  removeSymptom(index: number) {
+    this.symptomsArray.removeAt(index);
   }
 
   addAccessory() {
@@ -95,9 +111,11 @@ export class AdminSubmitComponent implements OnInit{
 
   onSubmit() {
 
+    // console.log(this.adminRepairForm.value);
 
 
-    this.apollo.mutate<{ addRepair: Repair}>({
+
+    this.apollo.mutate<any>({
       mutation: ADD_REPAIR,
       variables: {
         radioSerial: this.adminRepairForm.value.radioSerial,
@@ -106,6 +124,7 @@ export class AdminSubmitComponent implements OnInit{
         raaPO: this.adminRepairForm.value.raaPO,
         repairTag: this.adminRepairForm.value.repairTag,
         dateSentTech: this.adminRepairForm.value.dateSentTech,
+        dateRecTech: this.adminRepairForm.value.dateRecTech,
         dateSentEU: this.adminRepairForm.value.dateSentEU,
         techInvNum: this.adminRepairForm.value.techInvNum,
         raaInvNum: this.adminRepairForm.value.raaInvNum,
@@ -128,7 +147,7 @@ export class AdminSubmitComponent implements OnInit{
     }) .subscribe({ next: (result) => {
 
       const newRepair = result.data?.addRepair ?? null;
-      console.log(newRepair);
+      // console.log(newRepair);
 
 
       if(newRepair) {

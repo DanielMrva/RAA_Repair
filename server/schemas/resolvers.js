@@ -18,16 +18,16 @@ const resolvers = {
             return Radio.find().populate(["serviceRecord"]);
         },
         radio: async ( parent, { radioId }) => {
-            return Radio.findById({id: radioId});
+            return Radio.findById({_id: radioId});
         },
-        serialRadio: async ( parent, { radioSerial }) => {
-            return Radio.findOne({ serialNumber: radioSerial});
+        serialRadio: async ( parent, { serialNumber } ) => {
+            return Radio.findOne({ serialNumber: serialNumber});
         },
         allRepairs: async () => {
             return Repair.find();
         },
         repair: async ( parent, { repairId }) => {
-            return Radio.findById({id: repairId});
+            return Repair.findById({_id: repairId});
         },
         orgRadios: async (parent, {orgName}) => {
             return Organization.find({orgName: orgName}).populate(["radios"]);
@@ -80,31 +80,40 @@ const resolvers = {
 
             return user;
         },
-        addRepair: async (parent, { 
-            radioSerial,
-            dateReceived,
-            endUserPO,
-            raaPO,
-            repairTag,
-            dateSentTech,
-            dateSentEU,
-            techInvNum,
-            raaInvNum,
-            symptoms,
-            testFreq,
-            incRxSens,
-            incFreqErr,
-            incMod,
-            incPowerOut,
-            accessories,
-            workPerformed,
-            repHours,
-            partsUsed,
-            remarks
-        }) => {
+        addRepair: async (
+            parent, 
+                { 
+                    radioSerial,
+                    dateReceived,
+                    endUserPO,
+                    raaPO,
+                    repairTag,
+                    dateSentTech,
+                    dateRecTech,
+                    dateSentEU,
+                    techInvNum,
+                    raaInvNum,
+                    symptoms,
+                    testFreq,
+                    incRxSens,
+                    incFreqErr,
+                    incMod,
+                    incPowerOut,
+                    outRxSens,
+                    outFreqErr,
+                    outMod,
+                    outPowerOut,
+                    accessories,
+                    workPerformed,
+                    repHours,
+                    partsUsed,
+                    remarks
+                }
+            ) => {
 
             try {
                 const radio = await Radio.findOne({ serialNumber: radioSerial});
+
 
                 if (!radio) {
                     throw new GraphQLError('Radio not found', {
@@ -115,13 +124,15 @@ const resolvers = {
                     });
                 }
 
-                const repair = new Repair({
+
+                const repair = await Repair.create({
                     radioSerial,
                     dateReceived,
                     endUserPO,
                     raaPO,
                     repairTag,
                     dateSentTech,
+                    dateRecTech,
                     dateSentEU,
                     techInvNum,
                     raaInvNum,
@@ -131,6 +142,10 @@ const resolvers = {
                     incFreqErr,
                     incMod,
                     incPowerOut,
+                    outRxSens,
+                    outFreqErr,
+                    outMod,
+                    outPowerOut,
                     accessories,
                     workPerformed,
                     repHours,
@@ -138,13 +153,17 @@ const resolvers = {
                     remarks
                 });
 
-                radio.serviceRecord.push(repair);
 
-                await Promise.all([radio.save(), repair.save()]);
+                await Radio.findOneAndUpdate(
+                    {serialNumber: repair.radioSerial},
+                    {$addToSet: {serviceRecord: repair._id}}
+                )
+
 
                 return repair;
                 
             } catch (error) {
+
                 throw new GraphQLError('Failed to submit repair', {
                     extensions: {
                         code: 'SUBMIT_REPAIR_ERROR'

@@ -54,89 +54,179 @@ export const VALIDATE_ACCESS = gql`
     }
 `
 
-export const ADD_REPAIR = gql`
-    mutation addRepair(
-            $radioSerial: String,
-            $dateReceived: String,
-            $endUserPO: String,
-            $raaPO: String,
-            $repairTag: String,
-            $dateSentTech: String,
-            $dateSentEU: String,
-            $techInvNum: String,
-            $raaInvNum: String,
-            $symptoms: [String],
-            $testFreq: String,
-            $incRxSens: String,
-            $incFreqErr: String,
-            $incMod: String,
-            $incPowerOut: String,
-            $outRxSens: String,
-            $outFreqErr: String,
-            $outMod: String,
-            $outPowerOut: String,
-            $accessories: [String],
-            $workPerformed: [String],
-            $repHours: Float,
-            $partsUsed: [String],
-            $remarks: String
+// export const ADD_REPAIR = gql`
+//     mutation addRepair(
+//             $radioSerial: String!,
+//             $dateReceived: String!,
+//             $endUserPO: String,
+//             $raaPO: String,
+//             $repairTag: String,
+//             $dateSentTech: String,
+//             $dateRecTech: String,
+//             $dateSentEU: String,
+//             $techInvNum: String,
+//             $raaInvNum: String,
+//             $symptoms: [String],
+//             $testFreq: String,
+//             $incRxSens: String,
+//             $incFreqErr: String,
+//             $incMod: String,
+//             $incPowerOut: String,
+//             $outRxSens: String,
+//             $outFreqErr: String,
+//             $outMod: String,
+//             $outPowerOut: String,
+//             $accessories: [String],
+//             $workPerformed: [String],
+//             $repHours: Float,
+//             $partsUsed: [String],
+//             $remarks: String
         
+//         ) {
+//             addRepair (
+//                 radioSerial: $radioSerial,
+//                 dateReceived: $dateReceived,
+//                 endUserPO: $endUserPO,
+//                 raaPO: $raaPO,
+//                 repairTag: $repairTag,
+//                 dateSentTech: $dateSentTech,
+//                 dateRecTech: $dateRecTech,
+//                 dateSentEU: $dateSentEU,
+//                 techInvNum: $techInvNum,
+//                 raaInvNum: $raaInvNum,
+//                 symptoms: $symptoms,
+//                 testFreq: $testFreq,
+//                 incRxSens: $incRxSens,
+//                 incFreqErr: $incFreqErr,
+//                 incMod: $incMod,
+//                 incPowerOut: $incPowerOut,
+//                 outRxSens: $outRxSens,
+//                 outFreqErr: $outFreqErr,
+//                 outMod: $outMod,
+//                 outPowerOut: $outPowerOut,
+//                 accessories: $accessories,
+//                 workPerformed: $workPerformed,
+//                 repHours: $repHours,
+//                 partsUsed: $partsUsed,
+//                 remarks: $remarks 
+//                 ) { 
+//                     repair {
+//                         _id
+//                         radioSerial
+//                         dateReceived
+//                         endUserPO
+//                         raaPO
+//                         repairTag
+//                         dateSentTech
+//                         dateRecTech
+//                         dateSentEU
+//                         techInvNum
+//                         raaInvNum
+//                         symptoms
+//                         testFreq
+//                         incRxSens
+//                         incFreqErr
+//                         incMod
+//                         incPowerOut
+//                         outRxSens
+//                         outFreqErr
+//                         outMod
+//                         outPowerOut
+//                         accessories
+//                         workPerformed
+//                         repHours
+//                         partsUsed
+//                         remarks
+//                     }
+//                 }
+//         }
+// `
+
+export const ADD_REPAIR = gql `
+    mutation addRepair(
+        $radioSerial: String!
+        $dateReceived: String!
+        $endUserPO: String
+        $raaPO: String
+        $repairTag: String
+        $dateSentTech: String
+        $dateRecTech: String
+        $dateSentEU: String
+        $techInvNum: String
+        $raaInvNum: String
+        $symptoms: [String]
+        $testFreq: String
+        $incRxSens: String
+        $incFreqErr: String
+        $incMod: String
+        $incPowerOut: String
+        $outRxSens: String
+        $outFreqErr: String
+        $outMod: String
+        $outPowerOut: String
+        $accessories: [String]
+        $workPerformed: [String]
+        $repHours: Float
+        $partsUsed: [String]
+        $remarks: String
+    ) {
+        addRepair(
+            radioSerial: $radioSerial,
+            dateReceived: $dateReceived,
+            endUserPO: $endUserPO,
+            raaPO: $raaPO,
+            repairTag: $repairTag,
+            dateSentTech: $dateSentTech,
+            dateRecTech: $dateRecTech,
+            dateSentEU: $dateSentEU,
+            techInvNum: $techInvNum,
+            raaInvNum: $raaInvNum,
+            symptoms: $symptoms,
+            testFreq: $testFreq,
+            incRxSens: $incRxSens,
+            incFreqErr: $incFreqErr,
+            incMod: $incMod,
+            incPowerOut: $incPowerOut,
+            outRxSens: $outRxSens,
+            outFreqErr: $outFreqErr,
+            outMod: $outMod,
+            outPowerOut: $outPowerOut,
+            accessories: $accessories,
+            workPerformed: $workPerformed,
+            repHours: $repHours,
+            partsUsed: $partsUsed,
+            remarks: $remarks
         ) {
-            addRepair(
-                radioSerial: $radioSerial,
-                dateReceived: $dateReceived,
-                endUserPO: $endUserPO,
-                raaPO: $raaPO,
-                repairTag: $repairTag,
-                dateSentTech: $dateSentTech,
-                dateSentEU: $dateSentEU,
-                techInvNum: $techInvNum,
-                raaInvNum: $raaInvNum,
-                symptoms: $symptoms,
-                testFreq: $testFreq,
-                incRxSens: $incRxSens,
-                incFreqErr: $incFreqErr,
-                incMod: $incMod,
-                incPowerOut: $incPowerOut,
-                outRxSens: $outRxSens,
-                outFreqErr: $outFreqErr,
-                outMod: $outMod,
-                outPowerOut: $outPowerOut,
-                accessories: $accessories,
-                workPerformed: $workPerformed,
-                repHours: $repHours,
-                partsUsed: $partsUsed,
-                remarks: $remarks 
-                ) {
-                    repair {
-                        _id
-                        radioSerial
-                        dateReceived
-                        endUserPO
-                        raaPO
-                        repairTag
-                        dateSentTech
-                        dateRecTech
-                        dateSentEU
-                        techInvNum
-                        raaInvNum
-                        symptoms
-                        testFreq
-                        incRxSens
-                        incFreqErr
-                        incMod
-                        incPowerOut
-                        outRxSens
-                        outFreqErr
-                        outMod
-                        outPowerOut
-                        accessories
-                        workPerformed
-                        repHours
-                        partsUsed
-                        remarks
-                    }
-                }
+            
+                _id
+                radioSerial
+                dateReceived
+                endUserPO
+                raaPO
+                repairTag
+                dateSentTech
+                dateRecTech
+                dateSentEU
+                techInvNum
+                raaInvNum
+                symptoms
+                testFreq
+                incRxSens
+                incFreqErr
+                incMod
+                incPowerOut
+                outRxSens
+                outFreqErr
+                outMod
+                outPowerOut
+                accessories
+                workPerformed
+                repHours
+                partsUsed
+                remarks
+            
         }
+    }
+
 `
 

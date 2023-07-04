@@ -65,14 +65,16 @@ export const ALL_RADIOS = gql`
                 partsUsed
                 remarks
            }
-           warranty 
+           warranty
+           refurb
+           radioType
         }
     }
 `
 
 export const QUERY_SINGLERADIO = gql`
-    query radio($_id: String) {
-        radio(_id: $_id) {
+    query radio($radioId: String) {
+        radio(_id: $radioId) {
            _id
            orgName
            location
@@ -112,14 +114,16 @@ export const QUERY_SINGLERADIO = gql`
                 partsUsed
                 remarks
            }
-           warranty 
+           warranty
+           refurb
+           radioType
         }
     }
 `
 
 export const QUERY_SERIALRADIO = gql`
-    query radio($radioSerial: String) {
-        radio(serialNumber: $radioSerial) {
+    query radio($serialNumber: String) {
+        radio(serialNumber: $serialNumber) {
            _id
            orgName
            location
@@ -159,7 +163,9 @@ export const QUERY_SERIALRADIO = gql`
                 partsUsed
                 remarks
            }
-           warranty 
+           warranty
+           refurb
+           radioType
         }
     }
 `
@@ -199,8 +205,8 @@ export const ALL_REPAIRS = gql`
 `
 
 export const QUERY_SINGLEREPAIR = gql`
-    query repair($_id: String) {
-        repair(_id: $_id) {
+    query repair($repairId: String!) {
+        repair(repairId: $repairId) {
             _id
             radioSerial
             dateReceived
@@ -273,7 +279,9 @@ export const ORG_RADIOS = gql`
                 partsUsed
                 remarks
            }
-           warranty 
+           warranty
+           refurb
+           radioType
         }
     }
 `

@@ -1,5 +1,3 @@
-<p>admin-submit works!</p>
-
 <form [formGroup]="adminRepairForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
         <label for="radioSerial">Radio Serial:</label>
@@ -62,6 +60,16 @@
     </div>
 
     <div class="form-group">
+        <label for="dateRecTech">Date Received by Tech:</label>
+        <input 
+            type="text" 
+            id="dateRecTech" 
+            formControlName="dateRecTech"
+            class="form-control"
+        >
+    </div>
+
+    <div class="form-group">
         <label for="dateSentEU">Date Sent to End User:</label>
         <input 
             type="text" 
@@ -82,13 +90,19 @@
     </div>
 
     <div class="form-group">
-        <label for="symptoms">Symptoms:</label>
-        <input 
-            type="text" 
-            id="symptoms" 
-            formControlName="symptoms"
-            class="form-control"
-        >
+        <label for="accessories">Symptoms:</label>
+        <div formArrayName="symptoms">
+            <div *ngFor="let symptoms of symptomsArray.controls; let i = index"
+            class="input-group mb-2">
+                <input type="text" [formControlName]="i" class="form-control">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-secondary" (click)="removeSymptom(i)">
+                        Remove
+                    </button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="addSymptom()">Add Symptom</button>
+        </div>
     </div>
 
     <div class="form-group">
@@ -216,7 +230,7 @@
     <div class="form-group">
         <label for="repHours">Repair Hours:</label>
         <input 
-            type="text" 
+            type="number" 
             id="repHours" 
             formControlName="repHours"
             class="form-control"

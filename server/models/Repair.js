@@ -2,6 +2,10 @@ const { Schema, model } = require("mongoose");
 const dateFormat = require("../utils/dateFormat");
 
 const repairSchema = new Schema({
+    radioSerial: {
+        type: String,
+        required: true
+    },
     dateReceived: {
         type: Date,
         default: Date.now,

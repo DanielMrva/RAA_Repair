@@ -19,7 +19,7 @@ const radioSchema = new Schema({
         default: Date.now,
         get: (timestamp) => dateFormat(timestamp),
     },
-    invoiceNumber: {
+    inventoryNumber: {
         type: String,
         required: true,
     },
