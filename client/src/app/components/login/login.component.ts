@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ADD_USER, LOGIN_USER } from 'src/app/graphql/schemas';
 import { Apollo } from 'apollo-angular';
 import { AuthService } from '@app/services/auth.service';
@@ -45,9 +45,8 @@ export class LoginComponent implements OnInit{
         }
       }) .subscribe({next: (result) => {
 
-        // console.log(result);
-        this.authService.saveUserData(result.data.login.user)
-        this.authService.saveUserToken(result.data.login.token)
+        this.authService.saveUserData(result.data.login.user);
+        this.authService.saveUserToken(result.data.login.token);
 
         this.toastService.show(`Welcome ${result.data.login.user.username} !`, {
           classname: 'bg-success text-light',

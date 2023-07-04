@@ -13,13 +13,17 @@ export class AuthService {
     User | null | undefined
   >(undefined);
 
-  autoLogin() {
-    
-  }
+  // autoLogin() {
+  //   if (localStorage.getItem('token')) {
+  //     this.loggedUser$.next({})
+  //   }
+  // }
 
 
   saveUserData(user: User) {
     localStorage.setItem('user', JSON.stringify(user));
+    const localUser = localStorage.getItem('user');
+    console.log(localUser)
     this.loggedUser$.next(user);
   }
 
