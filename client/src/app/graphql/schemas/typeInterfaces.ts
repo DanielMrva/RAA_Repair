@@ -52,6 +52,13 @@ export type User = {
     orgName: string,
 };
 
+export type StoredUser = {
+    _id: string,
+    username: string,
+    accessLevel: string,
+    orgName: string,
+}
+
 export type Organization = {
     _id: string,
     orgName: string,

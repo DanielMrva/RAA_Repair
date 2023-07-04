@@ -2,7 +2,6 @@ import { inject } from "@angular/core";
 import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { AuthService } from "@app/services/auth.service";
-import decode from 'jwt-decode';
 
 export const RoleGuard = () => {
     const router = inject(Router);
@@ -12,11 +11,7 @@ export const RoleGuard = () => {
 
     const expectedRole: Array<string> = route.data['role'];
 
-    const localUser = localStorage.getItem('user');
 
-    // const token = localStorage.getItem('token')!;
-
-    // const tokenPayload = decode(token);
 
     return authService.loggedUser$.pipe(
         filter((loggedUser) => loggedUser !== undefined), 

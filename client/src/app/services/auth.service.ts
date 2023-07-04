@@ -3,27 +3,37 @@ import { BehaviorSubject } from 'rxjs';
 import { User} from '@app/graphql/schemas';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+
+
   loggedUser$ = new BehaviorSubject <
     User | null | undefined
   >(undefined);
 
-  // autoLogin() {
-  //   if (localStorage.getItem('token')) {
-  //     this.loggedUser$.next({})
-  //   }
-  // }
+  autoLogin() {
+    if (localStorage.getItem('user')) {
+      const localUser = JSON.parse(localStorage.getItem('user') ?? '');
+      this.loggedUser$.next(
+          {
+            _id: localUser._id, 
+            username: localUser.username,
+            email: localUser.email,
+            password: localUser.password,
+            accessLevel: localUser.accessLevel,
+            orgName: localUser.orgName
+            
+          }
+        )
+    }
+  }
 
 
   saveUserData(user: User) {
     localStorage.setItem('user', JSON.stringify(user));
-    const localUser = localStorage.getItem('user');
-    console.log(localUser)
     this.loggedUser$.next(user);
   }
 
