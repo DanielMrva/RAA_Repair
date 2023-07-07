@@ -125,6 +125,22 @@ const typeDefs = `#graphql
             partsUsed: [String]
             remarks: String
         ): Repair
+
+        addRadio(
+            orgName: String!
+            location: String
+            dateSold: String
+            dateEntered: String
+            inventoryNumber: String!
+            make: String!
+            model: String
+            progChannels: String
+            notes: [String]
+            serialNumber: String
+            warranty: String
+            refurb: Boolean,
+            radioType: String
+        ): Radio
     }
 
 `;

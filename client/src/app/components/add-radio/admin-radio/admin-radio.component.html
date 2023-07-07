@@ -1,0 +1,177 @@
+<form [formGroup]="adminRadioForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+        <label for="orgName">Organization Name:</label>
+        <input 
+            type="text" 
+            id="orgName" 
+            formControlName="orgName"
+            class="form-control"
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="location">Location:</label>
+        <input 
+            type="text" 
+            id="location" 
+            formControlName="location"
+            class="form-control"
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="dateSold">Date Sold:</label>
+        <input 
+            type="text" 
+            id="dateSold" 
+            formControlName="dateSold"
+            class="form-control"
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="dateEntered">Date Entered:</label>
+        <input 
+            type="text" 
+            id="dateEntered" 
+            formControlName="dateEntered"
+            class="form-control"
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="inventoryNumber">Inventory Number:</label>
+        <input 
+            type="text" 
+            id="inventoryNumber" 
+            formControlName="inventoryNumber"
+            class="form-control"
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="make">Make:</label>
+        <input 
+            type="text" 
+            id="make" 
+            formControlName="make"
+            class="form-control"
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="model">Model:</label>
+        <input 
+            type="text" 
+            id="model" 
+            formControlName="model"
+            class="form-control"
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="progChannels">Programmed Channels:</label>
+        <input 
+            type="text" 
+            id="progChannels" 
+            formControlName="progChannels"
+            class="form-control"
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="notes">Notes:</label>
+        <div formArrayName="notes">
+            <div *ngFor="let note of notesArray.controls; let i = index"
+            class="input-group mb-2">
+                <input type="text" [formControlName]="i" class="form-control">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-secondary" (click)="removeNotes(i)">
+                        Remove
+                    </button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="addNotes()">Add Note</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="serialNumber">Serial Number:</label>
+        <input 
+            type="text" 
+            id="serialNumber" 
+            formControlName="serialNumber"
+            class="form-control"
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="warranty">Warranty:</label>
+        <input 
+            type="text" 
+            id="warranty" 
+            formControlName="warranty"
+            class="form-control"
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="refurb">
+            <input 
+                type="radio" 
+                id="refurb"
+                formControlName="refurb"
+                [value]="true"
+                class="form-control"
+            > <span>Refurb</span>
+        </label>
+
+        <label for="notRefurb">
+            <input 
+                type="radio" 
+                id="notRefurb"
+                formControlName="refurb"
+                [value]="false"
+                class="form-control"
+            > <span>New</span>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="mobile">
+            <input 
+                type="radio" 
+                id="mobile"
+                formControlName="radioType"
+                value="mobile"
+                class="form-control"
+            > <span>Mobile</span>
+        </label>
+
+        <label for="static">
+            <input 
+                type="radio" 
+                id="static"
+                formControlName="radioType"
+                value="static"
+                class="form-control"
+            > <span>Static</span>
+        </label>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</form>

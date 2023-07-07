@@ -20,6 +20,8 @@ import { AdminSubmitComponent } from './components/submit-service/admin-submit/a
 import { OneRepairComponent } from './components/one-repair/one-repair.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AddRadioComponent } from './components/add-radio/add-radio.component';
+import { AdminRadioComponent } from './components/add-radio/admin-radio/admin-radio.component';
 
 
 
@@ -32,6 +34,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SubmitServiceComponent,
     AdminSubmitComponent,
     OneRepairComponent,
+    AddRadioComponent,
+    AdminRadioComponent,
   ],
   imports: [
     BrowserModule,

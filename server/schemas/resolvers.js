@@ -18,7 +18,7 @@ const resolvers = {
             return Radio.find().populate(["serviceRecord"]);
         },
         radio: async ( parent, { radioId }) => {
-            return Radio.findById({_id: radioId});
+            return Radio.findById({_id: radioId}).populate(["serviceRecord"]);
         },
         serialRadio: async ( parent, { serialNumber } ) => {
             return Radio.findOne({ serialNumber: serialNumber});
@@ -171,7 +171,76 @@ const resolvers = {
                 })
             }
 
+        },
+        addRadio: async (
+            parent, {
+                orgName,
+                location,
+                dateSold,
+                dateEntered,
+                inventoryNumber,
+                make,
+                model,
+                progChannels,
+                notes,
+                serialNumber,
+                serviceRecord,
+                warranty,
+                refurb,
+                radioType
+            }
+        ) => {
+            try { 
+
+                const existingRadio = await Radio.findOne(
+                    {
+                        model: model,
+                        serialNumber: serialNumber
+                    }
+                );
+
+                if(existingRadio) {
+                    throw new GraphQLError('Radio already exists', {
+                        extensions: {
+                            code: 'RADIO_EXISTS',
+                            argumentName: 'model, serialNumber'
+                        }
+                    });
+                }
+
+                const newRadio = await Radio.create({
+                    orgName,
+                    location,
+                    dateSold,
+                    dateEntered,
+                    inventoryNumber,
+                    make,
+                    model,
+                    progChannels,
+                    notes,
+                    serialNumber,
+                    serviceRecord,
+                    warranty,
+                    refurb,
+                    radioType
+                });
+
+                await Organization.findOneAndUpdate(
+                    {orgName: orgName},
+                    {$addToSet: {radios: newRadio._id}}
+                );
+
+                return newRadio;
+                
+            } catch (error) {
+                throw new GraphQLError('Failed to submit radio', {
+                    extensions: {
+                        code: 'SUBMIT_RADIO_ERROR'
+                    }
+                });
+            }
         }
+        
     }
 };
 

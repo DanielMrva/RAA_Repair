@@ -25,7 +25,6 @@ export class AuthService {
             password: localUser.password,
             accessLevel: localUser.accessLevel,
             orgName: localUser.orgName
-            
           }
         )
     }

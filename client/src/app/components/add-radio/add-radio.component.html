@@ -1,0 +1,16 @@
+<ng-container *ngIf="{loggedUser: loggedUser$ | async} as data">
+
+    <div *ngIf="
+        data.loggedUser !== null &&
+        data.loggedUser !== undefined
+        "
+    >
+        <div *ngIf="data.loggedUser.accessLevel === 'admin' ">
+
+            <app-admin-radio/>
+
+        </div>
+
+    </div>
+
+</ng-container>
