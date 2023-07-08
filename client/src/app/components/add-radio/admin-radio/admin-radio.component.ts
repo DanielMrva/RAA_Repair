@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ADD_RADIO } from '@app/graphql/schemas';
 import { Apollo } from 'apollo-angular';
 import { Radio } from '@app/graphql/schemas/typeInterfaces';
@@ -14,20 +14,24 @@ import { ToastService } from '@app/services/toast.service';
 export class AdminRadioComponent implements OnInit {
 
   adminRadioForm = this.formBuilder.group({
-    orgName: '',
+    orgName: ['', [Validators.required]],
     location: '',
     dateSold: '',
     dateEntered: '',
-    inventoryNumber: '',
-    make: '',
-    model: '',
+    inventoryNumber: ['', [Validators.required]],
+    make: ['', [Validators.required]],
+    model: ['', [Validators.required]],
     progChannels: '',
     notes: this.formBuilder.array(['']),
-    serialNumber: '',
+    serialNumber: ['', [Validators.required]],
     warranty: '',
-    refurb: this.formBuilder.control('refurb'),
+    refurb: this.formBuilder.control('refurb'), 
+    // refurb is a radio button on the HTML
     radioType: this.formBuilder.control('radioType'),
+    // radioType is a radio button on the HTML
   })
+
+  isSubmitted = false;
 
   get notesArray(): FormArray {
     return this.adminRadioForm.get('notes') as FormArray;
@@ -48,6 +52,18 @@ export class AdminRadioComponent implements OnInit {
     this.notesArray.removeAt(index);
   }
 
+  fieldValidCheck(field: string) {
+    if (
+      this.adminRadioForm.get(`${field}`)?.invalid &&
+      this.adminRadioForm.get(`${field}`)?.dirty ||
+      this.adminRadioForm.get(`${field}`)?.touched ||
+      this.isSubmitted) {
+        return true
+      } else {
+        return false
+      }
+  }
+
 
   ngOnInit(): void {
       
@@ -55,7 +71,7 @@ export class AdminRadioComponent implements OnInit {
 
   onSubmit() {
     
-    console.log(this.adminRadioForm.value);
+    console.log(this.adminRadioForm.value)
 
     this.apollo.mutate<any>({
       mutation: ADD_RADIO,
@@ -77,17 +93,19 @@ export class AdminRadioComponent implements OnInit {
 
       const newRadio = result.data?.addRadio ?? null;
 
-      console.log(newRadio);
-
       if(newRadio) {
         this.toastService.show('Radio added sucessfully!', {
           delay: 3000
         })
-        // this.router.navigate(['one-radio', newRadio._id]);
-        this.router.navigate(['/'])
+        this.router.navigate(['/one-radio', newRadio._id]);
+
+        this.isSubmitted = true
 
       } else {
         this.router.navigate(['/'])
+
+        this.isSubmitted = true
+
       }
 
     }, error: (error) => {

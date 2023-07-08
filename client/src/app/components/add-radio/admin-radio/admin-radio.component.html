@@ -7,6 +7,7 @@
             id="orgName" 
             formControlName="orgName"
             class="form-control"
+            [class.invalid]="fieldValidCheck('orgName')"
         >
     </div>
 
@@ -47,6 +48,8 @@
             id="inventoryNumber" 
             formControlName="inventoryNumber"
             class="form-control"
+            [class.invalid]="fieldValidCheck('inventoryNumber')"
+
         >
     </div>
 
@@ -57,6 +60,8 @@
             id="make" 
             formControlName="make"
             class="form-control"
+            [class.invalid]="fieldValidCheck('make')"
+
         >
     </div>
 
@@ -67,6 +72,8 @@
             id="model" 
             formControlName="model"
             class="form-control"
+            [class.invalid]="fieldValidCheck('model')"
+
         >
     </div>
 
@@ -103,6 +110,8 @@
             id="serialNumber" 
             formControlName="serialNumber"
             class="form-control"
+            [class.invalid]="fieldValidCheck('serialNumber')"
+
         >
     </div>
 
@@ -160,17 +169,7 @@
         </label>
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
+    <button type="submit">Submit</button>
 
 
 

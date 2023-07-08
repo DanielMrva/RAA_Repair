@@ -73,7 +73,7 @@ const typeDefs = `#graphql
         users: [User]
         user(userId: ID!): User
         allRadios: [Radio]
-        radio(radioId: ID!): Radio
+        radio(radioId: String!): Radio
         serialRadio(serialNumber: String!): Radio 
         allRepairs: [Repair]
         repair(repairId: String!): Repair

@@ -183,7 +183,9 @@ export const ADD_RADIO = gql`
             progChannels
             notes
             serialNumber
-            serviceRecord
+            serviceRecord {
+                _id
+            }
             warranty
             refurb
             radioType

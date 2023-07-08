@@ -9,6 +9,7 @@ import { LoginComponent } from '@app/components/login/login.component';
 import { SubmitServiceComponent } from '@app/components/submit-service/submit-service.component';
 import { OneRepairComponent } from './components/one-repair/one-repair.component';
 import { AddRadioComponent } from './components/add-radio/add-radio.component';
+import { OneRadioComponent } from './components/one-radio/one-radio.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,10 @@ const routes: Routes = [
   {
     path: 'one-repair/:id',
     component: OneRepairComponent
+  },
+  {
+    path: 'one-radio/:id',
+    component: OneRadioComponent
   },
   {
     path: '**',

@@ -73,8 +73,8 @@ export const ALL_RADIOS = gql`
 `
 
 export const QUERY_SINGLERADIO = gql`
-    query radio($radioId: String) {
-        radio(_id: $radioId) {
+    query radio($radioId: String!) {
+        radio(radioId: $radioId) {
            _id
            orgName
            location

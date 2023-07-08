@@ -1,0 +1,16 @@
+<p>one-radio works!</p>
+
+<div *ngIf="radio">
+    <h2>Radio Details</h2>
+    <div>
+      <strong>Radio ID:</strong> {{ radio._id }}
+    </div>
+    <div>
+      <strong>Serial Number:</strong> {{ radio.serialNumber }}
+    </div>
+    <h3><strong>Add more divs for other Radio fields</strong></h3>
+</div>
+
+<div *ngIf="!radio">
+    <h2>Loading...</h2>
+</div>

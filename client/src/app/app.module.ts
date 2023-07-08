@@ -22,6 +22,7 @@ import { ToastComponent } from './components/toast/toast.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddRadioComponent } from './components/add-radio/add-radio.component';
 import { AdminRadioComponent } from './components/add-radio/admin-radio/admin-radio.component';
+import { OneRadioComponent } from './components/one-radio/one-radio.component';
 
 
 
@@ -36,6 +37,7 @@ import { AdminRadioComponent } from './components/add-radio/admin-radio/admin-ra
     OneRepairComponent,
     AddRadioComponent,
     AdminRadioComponent,
+    OneRadioComponent,
   ],
   imports: [
     BrowserModule,
