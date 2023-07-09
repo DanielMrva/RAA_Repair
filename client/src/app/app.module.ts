@@ -23,6 +23,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddRadioComponent } from './components/add-radio/add-radio.component';
 import { AdminRadioComponent } from './components/add-radio/admin-radio/admin-radio.component';
 import { OneRadioComponent } from './components/one-radio/one-radio.component';
+import { DataTableComponent } from './components/data-table/data-table.component';
+import { AdminRadioReportsComponent } from './components/admin-radio-reports/admin-radio-reports.component';
 
 
 
@@ -38,6 +40,8 @@ import { OneRadioComponent } from './components/one-radio/one-radio.component';
     AddRadioComponent,
     AdminRadioComponent,
     OneRadioComponent,
+    DataTableComponent,
+    AdminRadioReportsComponent,
   ],
   imports: [
     BrowserModule,

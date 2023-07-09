@@ -1,0 +1,14 @@
+<p>admin-radio-reports works!</p>
+
+<div *ngIf="queryResults">
+    <div *ngFor="let result of queryResults">
+        <p> {{ result._id }}</p>
+
+    </div>
+
+</div>
+
+<div *ngIf="!queryResults">
+    <h2>Loading...</h2>
+</div>
+

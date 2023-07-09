@@ -10,6 +10,8 @@ import { SubmitServiceComponent } from '@app/components/submit-service/submit-se
 import { OneRepairComponent } from './components/one-repair/one-repair.component';
 import { AddRadioComponent } from './components/add-radio/add-radio.component';
 import { OneRadioComponent } from './components/one-radio/one-radio.component';
+import { AdminRadioComponent } from './components/add-radio/admin-radio/admin-radio.component';
+import { AdminRadioReportsComponent } from './components/admin-radio-reports/admin-radio-reports.component';
 
 const routes: Routes = [
   {
@@ -45,6 +47,10 @@ const routes: Routes = [
   {
     path: 'one-radio/:id',
     component: OneRadioComponent
+  },
+  {
+    path: 'org-radio/:orgName',
+    component: AdminRadioReportsComponent
   },
   {
     path: '**',

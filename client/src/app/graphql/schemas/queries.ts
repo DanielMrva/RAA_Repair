@@ -238,7 +238,7 @@ export const QUERY_SINGLEREPAIR = gql`
 `
 
 export const ORG_RADIOS = gql`
-    query orgRadios($orgName: String) {
+    query orgRadios($orgName: String!) {
         orgRadios(orgName: $orgName) {
            _id
            orgName

@@ -32,6 +32,7 @@ const radioSchema = new Schema({
     },
     progChannels: {
         type: String,
+        // How many channels is this radio programed for? Number between 1 - 16
     },
     notes: [{
         type: String,
@@ -56,6 +57,7 @@ const radioSchema = new Schema({
     },
     radioType: {
         type: String,
+        // Mobile, Base Station, Hand-Held
         // TODO: Research Union types or Enums type?...
     }
 });

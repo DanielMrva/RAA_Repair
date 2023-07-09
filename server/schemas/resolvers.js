@@ -30,7 +30,7 @@ const resolvers = {
             return Repair.findById({_id: repairId});
         },
         orgRadios: async (parent, {orgName}) => {
-            return Organization.find({orgName: orgName}).populate(["radios"]);
+            return Radio.find({orgName: orgName}).populate(["serviceRecord"]);
         },
         orgUsers: async (parent, {orgName}) => {
             return User.find({orgName: orgName});

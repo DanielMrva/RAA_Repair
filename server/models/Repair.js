@@ -127,10 +127,15 @@ const repairSchema = new Schema({
     remarks: {
         type: String,
         // Tech / Admin
-    }
+    },
+    // pointOfContact: {
+    //     type: String
+    // }
+    // TODO: Add in a field for who reported the issue POINT OF CONTACT
     // PO Text: Radio Repair: Make, Model #, Serial, With: Accessories, RepairTag, Organization, Location
     // Sales Order Text: Service Labor to Repair: Make, Model #, Serial, RepairTag
     // TODO: Make a Virtual to generate lines 190 and 191?
+    // TODO: Default repair tag: find highest repair tag number, and set default to that +1
 });
 
 
