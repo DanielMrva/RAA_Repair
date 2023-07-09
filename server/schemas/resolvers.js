@@ -124,13 +124,18 @@ const resolvers = {
                     });
                 }
 
+                const highestRepair = await Repair.findOne().sort({ repairTag: -1 }).limit(1);
+                const highestRepairTag = parseInt(highestRepair.repairTag);
+                const newRepairTag = (highestRepairTag + 1).toString();
+
+
 
                 const repair = await Repair.create({
                     radioSerial,
                     dateReceived,
                     endUserPO,
                     raaPO,
-                    repairTag,
+                    repairTag: newRepairTag,
                     dateSentTech,
                     dateRecTech,
                     dateSentEU,
@@ -159,10 +164,13 @@ const resolvers = {
                     {$addToSet: {serviceRecord: repair._id}}
                 )
 
-
                 return repair;
                 
             } catch (error) {
+
+                
+                console.error('Error submitting repair:', error)
+
 
                 throw new GraphQLError('Failed to submit repair', {
                     extensions: {
@@ -233,6 +241,8 @@ const resolvers = {
                 return newRadio;
                 
             } catch (error) {
+
+
                 throw new GraphQLError('Failed to submit radio', {
                     extensions: {
                         code: 'SUBMIT_RADIO_ERROR'
