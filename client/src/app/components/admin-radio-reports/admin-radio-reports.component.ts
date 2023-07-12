@@ -23,7 +23,7 @@ export class AdminRadioReportsComponent implements OnInit {
   ngOnInit(): void {
       this.route.params.subscribe((params) => {
         const orgName = params['orgName'];
-        this.loadOrgRadios('orgName')
+        this.loadOrgRadios(orgName)
       });
   }
 

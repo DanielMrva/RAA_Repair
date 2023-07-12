@@ -1,10 +1,12 @@
 <p>admin-radio-reports works!</p>
 
 <div *ngIf="queryResults">
-    <div *ngFor="let result of queryResults">
+    <!-- <div *ngFor="let result of queryResults">
         <p> {{ result._id }}</p>
 
-    </div>
+    </div> -->
+
+    <app-data-table [data]="queryResults" [filterTerms]="['__typename', '_id','orgName','serviceRecord']"></app-data-table>
 
 </div>
 

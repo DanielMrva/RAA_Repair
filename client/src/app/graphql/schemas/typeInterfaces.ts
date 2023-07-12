@@ -41,6 +41,8 @@ export type Radio = {
     serialNumber: string,
     serviceRecord: Repair[],
     warranty: string,
+    refurb: boolean,
+    radioType: string
 };
 
 export type User = {
@@ -80,3 +82,27 @@ export type LoginVariables = {
     username: string,
     password: string
 };
+
+export type LimitedRecord = {
+    _id: string,
+    dateReceived: string,
+
+}
+
+export type AdminRadioFields = {
+    _id: string,
+    orgName: string,
+    location: string,
+    dateSold: string,
+    dateEntered: string,
+    inventoryNumber: string,
+    make: string,
+    model: string,
+    progChanels: string,
+    notes: string [],
+    serialNumber: string,
+    serviceRecord: LimitedRecord[],
+    warranty: string,
+    refurb: string,
+    radioType: string
+}
