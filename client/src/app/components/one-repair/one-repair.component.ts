@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Apollo } from 'apollo-angular';
-import { QUERY_SINGLEREPAIR } from '@app/graphql/schemas';
+import { RerpairService } from '@app/services/rerpair.service';
 import { Repair } from '@app/graphql/schemas/typeInterfaces';
 
 @Component({
@@ -14,7 +13,7 @@ export class OneRepairComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private apollo: Apollo
+    private repairService: RerpairService
   ) {}
 
   ngOnInit(): void {
@@ -25,12 +24,7 @@ export class OneRepairComponent implements OnInit {
   }
 
   loadRepair(repairId: string): void {
-    this.apollo.query<{ repair: Repair }>({
-      query: QUERY_SINGLEREPAIR,
-      variables: {
-        repairId
-      }
-    })
+    this.repairService.querySingleRepair(repairId)
     .subscribe(({ data }) => {
       this.repair = data.repair;
     });

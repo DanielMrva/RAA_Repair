@@ -6,7 +6,22 @@
 
     </div> -->
 
-    <app-data-table [data]="queryResults" [filterTerms]="['__typename', '_id','orgName','serviceRecord']"></app-data-table>
+    <!-- [templates]="customTemplates" -->
+
+    <app-data-table 
+        [data]="queryResults" 
+        [filterTerms]="['__typename', '_id','orgName','serviceRecord']"
+        
+    >
+    </app-data-table>
+
+    <!-- <ng-template #notes>
+        <app-notes-template [notes]="['note']"></app-notes-template>
+    </ng-template>
+
+    <ng-template #serviceRecord>
+        <app-service-record-template [serviceRecords]="[]"></app-service-record-template>
+    </ng-template> -->
 
 </div>
 

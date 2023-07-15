@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { ADD_REPAIR } from '@app/graphql/schemas';
-import { Apollo } from 'apollo-angular';
+import { RerpairService } from '@app/services/rerpair.service';
 import { Repair } from '@app/graphql/schemas/typeInterfaces';
 import { ToastService } from '@app/services/toast.service';
 
@@ -14,17 +13,12 @@ import { ToastService } from '@app/services/toast.service';
 
 export class AdminSubmitComponent implements OnInit{
 
-
-
-  // adminRepairForm: FormGroup;
-
   adminRepairForm = this.formBuilder.group({
     
     radioSerial: '',
     dateReceived: '',
     endUserPO: '',
     raaPO: '',
-    // repairTag: '',
     dateSentTech: '',
     dateRecTech: '',
     dateSentEU: '',
@@ -68,7 +62,7 @@ export class AdminSubmitComponent implements OnInit{
 
   constructor(
     private formBuilder: FormBuilder,
-    private apollo: Apollo,
+    private repairService: RerpairService,
     private router: Router,
     private toastService: ToastService
   ) {  }
@@ -114,37 +108,59 @@ export class AdminSubmitComponent implements OnInit{
     // console.log(this.adminRepairForm.value);
 
 
+    const radioSerial = this.adminRepairForm.value.radioSerial ?? '';
+    const  dateReceived = this.adminRepairForm.value.dateReceived ?? '';
+    const endUserPO = this.adminRepairForm.value.endUserPO  ?? '';
+    const raaPO = this.adminRepairForm.value.raaPO  ?? '';
+    const dateSentTech = this.adminRepairForm.value.dateSentTech ?? '';
+    const dateRecTech = this.adminRepairForm.value.dateRecTech ?? '';
+    const dateSentEU = this.adminRepairForm.value.dateSentEU ?? '';
+    const techInvNum = this.adminRepairForm.value.techInvNum ?? '';
+    const raaInvNum = this.adminRepairForm.value.raaInvNum ?? '';
+    const symptoms = Array.isArray(this.adminRepairForm.value.symptoms) ? this.adminRepairForm.value.symptoms : ['']; 
+    const testFreq = this.adminRepairForm.value.testFreq ?? '';
+    const incRxSens = this.adminRepairForm.value.incRxSens ?? '';
+    const incFreqErr = this.adminRepairForm.value.incFreqErr ?? '';
+    const incMod = this.adminRepairForm.value.incMod ?? '';
+    const incPowerOut = this.adminRepairForm.value.incPowerOut ?? '';
+    const outRxSens = this.adminRepairForm.value.outRxSens ?? '';
+    const outFreqErr = this.adminRepairForm.value.outFreqErr ?? '';
+    const outMod = this.adminRepairForm.value.outMod  ?? '';
+    const outPowerOut = this.adminRepairForm.value.outPowerOut ?? '';
+    const accessories = this.adminRepairForm.value.accessories
+    const workPerformed = Array.isArray(this.adminRepairForm.value.workPerformed) ? this.adminRepairForm.value.workPerformed : ['']; 
+    const repHours = this.adminRepairForm.value.repHours  ?? 0;
+    const partsUsed = Array.isArray(this.adminRepairForm.value.partsUsed) ? this.adminRepairForm.value.partsUsed : [''];
+    const remarks = this.adminRepairForm.value.remarks ?? '';
 
-    this.apollo.mutate<any>({
-      mutation: ADD_REPAIR,
-      variables: {
-        radioSerial: this.adminRepairForm.value.radioSerial,
-        dateReceived: this.adminRepairForm.value.dateReceived,
-        endUserPO: this.adminRepairForm.value.endUserPO,
-        raaPO: this.adminRepairForm.value.raaPO,
-        // repairTag: this.adminRepairForm.value.repairTag,
-        dateSentTech: this.adminRepairForm.value.dateSentTech,
-        dateRecTech: this.adminRepairForm.value.dateRecTech,
-        dateSentEU: this.adminRepairForm.value.dateSentEU,
-        techInvNum: this.adminRepairForm.value.techInvNum,
-        raaInvNum: this.adminRepairForm.value.raaInvNum,
-        symptoms: this.adminRepairForm.value.symptoms,
-        testFreq: this.adminRepairForm.value.testFreq,
-        incRxSens: this.adminRepairForm.value.incRxSens,
-        incFreqErr: this.adminRepairForm.value.incFreqErr,
-        incMod: this.adminRepairForm.value.incMod,
-        incPowerOut: this.adminRepairForm.value.incPowerOut,
-        outRxSens: this.adminRepairForm.value.outRxSens,
-        outFreqErr: this.adminRepairForm.value.outFreqErr,
-        outMod: this.adminRepairForm.value.outMod,
-        outPowerOut: this.adminRepairForm.value.outPowerOut,
-        accessories: this.adminRepairForm.value.accessories,
-        workPerformed: this.adminRepairForm.value.workPerformed,
-        repHours: this.adminRepairForm.value.repHours,
-        partsUsed: this.adminRepairForm.value.partsUsed,
-        remarks: this.adminRepairForm.value.remarks
-      }
-    }) .subscribe({ next: (result) => {
+    this.repairService.addRepair(
+      radioSerial,
+      dateReceived,
+      endUserPO,
+      raaPO,
+      dateSentTech,
+      dateRecTech,
+      dateSentEU,
+      techInvNum,
+      raaInvNum,
+      symptoms as string[],
+      testFreq,
+      incRxSens,
+      incFreqErr,
+      incMod,
+      incPowerOut,
+      outRxSens,
+      outFreqErr,
+      outMod,
+      outPowerOut,
+      accessories as string[],
+      workPerformed as string[],
+      repHours,
+      partsUsed as string[],
+      remarks
+    ) 
+    
+    .subscribe({ next: (result) => {
 
       const newRepair = result.data?.addRepair ?? null;
       // console.log(newRepair);

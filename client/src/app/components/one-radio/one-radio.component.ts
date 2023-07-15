@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Apollo } from 'apollo-angular';
-import { QUERY_SINGLERADIO } from '@app/graphql/schemas';
+import { RadioService } from '@app/services/radio.service'
 import { Radio } from '@app/graphql/schemas/typeInterfaces';
 
 
@@ -16,7 +15,8 @@ export class OneRadioComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private apollo: Apollo
+    // private apollo: Apollo,
+    private radioService: RadioService
   ) {}
 
   ngOnInit(): void {
@@ -27,12 +27,7 @@ export class OneRadioComponent implements OnInit {
   }
 
   loadRadio(radioId: string): void {
-    this.apollo.query<{ radio: Radio }>({
-      query: QUERY_SINGLERADIO,
-      variables: {
-        radioId
-      }
-    })
+    this.radioService.querySingleRadio(radioId)
     .subscribe(({ data }) => {
       this.radio = data.radio;
     });

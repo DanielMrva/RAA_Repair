@@ -1,0 +1,5 @@
+<ul>
+    <li *ngFor="let service of serviceRecords">
+        <a [routerLink]="['/one-repair/{{service._id}}']">{{service.dateReceived}}</a>
+    </li>
+</ul>

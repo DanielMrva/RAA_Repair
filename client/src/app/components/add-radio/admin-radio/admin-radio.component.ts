@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { ADD_RADIO } from '@app/graphql/schemas';
-import { Apollo } from 'apollo-angular';
-import { Radio } from '@app/graphql/schemas/typeInterfaces';
+import { RadioService } from '@app/services/radio.service';
 import { ToastService } from '@app/services/toast.service';
 
 @Component({
@@ -39,7 +37,7 @@ export class AdminRadioComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private apollo: Apollo,
+    private radioService: RadioService,
     private router: Router,
     private toastService: ToastService
   ) { }
@@ -73,50 +71,65 @@ export class AdminRadioComponent implements OnInit {
     
     console.log(this.adminRadioForm.value)
 
-    this.apollo.mutate<any>({
-      mutation: ADD_RADIO,
-      variables: {
-        orgName: this.adminRadioForm.value.orgName,
-        dateSold: this.adminRadioForm.value.dateSold,
-        dateEntered: this.adminRadioForm.value.dateEntered,
-        inventoryNumber: this.adminRadioForm.value.inventoryNumber,
-        make: this.adminRadioForm.value.make,
-        model: this.adminRadioForm.value.model,
-        progChannels: this.adminRadioForm.value.progChannels,
-        notes: this.adminRadioForm.value.notes,
-        serialNumber: this.adminRadioForm.value.serialNumber,
-        warranty: this.adminRadioForm.value.warranty,
-        refurb: this.adminRadioForm.value.refurb,
-        radioType: this.adminRadioForm.value.radioType
-      }
-    }) .subscribe({ next: (result) => {
+    const orgName = this.adminRadioForm.value.orgName ?? '';
+    const location = this.adminRadioForm.value.location ?? '';
+    const dateSold = this.adminRadioForm.value.dateSold ?? '';
+    const dateEntered = this.adminRadioForm.value.dateEntered ?? '';
+    const inventoryNumber = this.adminRadioForm.value.inventoryNumber ?? '';
+    const make = this.adminRadioForm.value.make ?? '';
+    const model = this.adminRadioForm.value.model ?? '';
+    const progChannels = this.adminRadioForm.value.progChannels ?? '';
+    const notes = Array.isArray(this.adminRadioForm.value.notes) ? this.adminRadioForm.value.notes : [''];    
+    const serialNumber = this.adminRadioForm.value.serialNumber ?? '';
+    const warranty = this.adminRadioForm.value.warranty ?? '';
+    const refurb = this.adminRadioForm.value.refurb ?? false;
+    const radioType = this.adminRadioForm.value.radioType ?? '';
 
-      const newRadio = result.data?.addRadio ?? null;
+    this.radioService.addRadio(
+      orgName,
+      location,
+      dateSold,
+      dateEntered,
+      inventoryNumber,
+      make,
+      model,
+      progChannels,
+      notes as string[],
+      serialNumber,
+      warranty,
+      refurb as boolean,
+      radioType
 
-      if(newRadio) {
-        this.toastService.show('Radio added sucessfully!', {
+    )
+      .subscribe({ next: (result) => {
+        const newRadio = result.data?.addRadio ?? null;
+
+        if(newRadio) {
+          this.toastService.show('Radio added sucessfully!', {
+            delay: 3000
+          })
+          this.router.navigate(['/one-radio', newRadio._id]);
+  
+          this.isSubmitted = true
+  
+        } else {
+          this.router.navigate(['/'])
+  
+          this.isSubmitted = true
+  
+        }
+  
+      }, error: (error) => {
+        console.error(error);
+  
+        this.toastService.show('Failed to submit radio. Please try again', {
+          classname: 'bg-danger light-text',
           delay: 3000
         })
-        this.router.navigate(['/one-radio', newRadio._id]);
+  
+ 
+      }})
 
-        this.isSubmitted = true
-
-      } else {
-        this.router.navigate(['/'])
-
-        this.isSubmitted = true
-
-      }
-
-    }, error: (error) => {
-      console.error(error);
-
-      this.toastService.show('Failed to submit radio. Please try again', {
-        classname: 'bg-danger light-text',
-        delay: 3000
-      })
-
-    }});
 
   }
 }

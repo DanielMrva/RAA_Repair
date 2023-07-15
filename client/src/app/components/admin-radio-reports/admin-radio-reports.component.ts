@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Apollo } from 'apollo-angular';
-import { ORG_RADIOS } from '@app/graphql/schemas';
+import { RadioService } from '@app/services/radio.service';
 import { Radio } from '@app/graphql/schemas/typeInterfaces';
+import { NotesTemplateComponent } from '@app/components/data-table/data-table-templates/notes-template/notes-template.component';
+import { ServiceRecordTemplateComponent } from '@app/components/data-table/data-table-templates/service-record-template/service-record-template.component';
 
 
 @Component({
@@ -14,9 +15,14 @@ export class AdminRadioReportsComponent implements OnInit {
 
   queryResults: Radio[] | undefined
 
+  customTemplates = {
+    notes: NotesTemplateComponent,
+    serviceRecord: ServiceRecordTemplateComponent
+  }
+
   constructor(
     private route: ActivatedRoute,
-    private apollo: Apollo
+    private radioService: RadioService
   ) {}
 
 
@@ -28,12 +34,7 @@ export class AdminRadioReportsComponent implements OnInit {
   }
 
   loadOrgRadios(orgName: string): void {
-    this.apollo.query<{ orgRadios: Radio[] }>({
-      query: ORG_RADIOS,
-      variables: {
-        orgName
-      }
-    })
+    this.radioService.orgRadios(orgName)
     .subscribe(( { data } ) => {
       console.log(data)
       this.queryResults = data.orgRadios;

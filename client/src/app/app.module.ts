@@ -25,6 +25,8 @@ import { AdminRadioComponent } from './components/add-radio/admin-radio/admin-ra
 import { OneRadioComponent } from './components/one-radio/one-radio.component';
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { AdminRadioReportsComponent } from './components/admin-radio-reports/admin-radio-reports.component';
+import { NotesTemplateComponent } from './components/data-table/data-table-templates/notes-template/notes-template.component';
+import { ServiceRecordTemplateComponent } from './components/data-table/data-table-templates/service-record-template/service-record-template.component';
 
 
 
@@ -42,6 +44,8 @@ import { AdminRadioReportsComponent } from './components/admin-radio-reports/adm
     OneRadioComponent,
     DataTableComponent,
     AdminRadioReportsComponent,
+    NotesTemplateComponent,
+    ServiceRecordTemplateComponent,
   ],
   imports: [
     BrowserModule,
