@@ -1,4 +1,4 @@
-<table>
+<!-- <table>
     <thead>
         <tr>
             <th *ngFor="let key of filteredDataKeys">
@@ -11,15 +11,73 @@
             <ng-container *ngFor="let key of filteredDataKeys">
 
                 <td *ngIf="!isTemplateKey(key)">
-                    {{ item[key] }}
+                    {{ getItemValue(item, key)[key] }}
                 </td>
 
                 <td *ngIf="isTemplateKey(key)">
-                    <ng-container *ngTemplateOutlet="templates[key] context: { $implicit: item[key]}"></ng-container>
-                </td>
+                    <ng-container *ngTemplateOutlet="templates[key]; context: { $implicit: getItemValue(item, key) }"></ng-container>
+
             </ng-container>
         </tr>
 
     </tbody>
 
-</table>
+</table> -->
+<!-- 
+<table>
+    <thead>
+
+        <tr>
+            <th *ngFor="let key of filteredDataKeys">{{ key }}</th>
+        </tr>
+
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let item of data">
+            <ng-container *ngFor="let key of filteredDataKeys">
+                <td *ngIf="!isTemplateKey(key)">
+                    {{ item[key] }}
+                </td>
+                <td *ngIf="isTemplateKey(key)">
+                    <ng-container *ngIf="key === 'notes'">
+                        <app-notes-template [notes]="item[key]"></app-notes-template>
+                    </ng-container>
+                    <ng-container *ngIf="key !== 'notes'">
+                        {{ item[key] }}
+                    </ng-container>
+                </td>
+            </ng-container>
+        </tr>
+        
+    </tbody>
+</table> -->
+
+
+<table>
+    <thead>
+      <tr>
+        <th *ngFor="let key of filteredDataKeys">{{ key }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data">
+        <ng-container *ngFor="let key of filteredDataKeys">
+          <td *ngIf="!isTemplateKey(key)">
+            {{ item[key] }}
+          </td>
+          <td *ngIf="isTemplateKey(key)">
+            <ng-container *ngIf="templates[key]">
+              <ng-container
+                *ngTemplateOutlet="templates[key]; context: { $implicit: item[key] }"
+              ></ng-container>
+            </ng-container>
+            <ng-container *ngIf="!templates[key]">
+              {{ item[key] }}
+            </ng-container>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+  

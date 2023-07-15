@@ -1,27 +1,23 @@
 <p>admin-radio-reports works!</p>
 
 <div *ngIf="queryResults">
-    <!-- <div *ngFor="let result of queryResults">
-        <p> {{ result._id }}</p>
 
-    </div> -->
 
-    <!-- [templates]="customTemplates" -->
 
     <app-data-table 
         [data]="queryResults" 
         [filterTerms]="['__typename', '_id','orgName','serviceRecord']"
-        
+        [templates]="customTemplates"
     >
+
+        <ng-template #notesTemplate let-notes>
+            <app-notes-template [notes]="notes"></app-notes-template>
+        </ng-template>
+
     </app-data-table>
 
-    <!-- <ng-template #notes>
-        <app-notes-template [notes]="['note']"></app-notes-template>
-    </ng-template>
 
-    <ng-template #serviceRecord>
-        <app-service-record-template [serviceRecords]="[]"></app-service-record-template>
-    </ng-template> -->
+
 
 </div>
 

@@ -10,11 +10,8 @@ export class DataTableComponent {
   @Input() data: any[] = [];
   @Input() filterTerms: string[] =[]
   @Input() templates: { [key: string]: any } = {}
-  // dataKeys: string[] = [];
   filteredDataKeys: string[] = [];
-  // customTemplates = {
-  //   serviceRecord: 
-  // }
+
 
   ngOnChanges() {
 
@@ -29,6 +26,14 @@ export class DataTableComponent {
 
   isTemplateKey(key: string): boolean {
     return key in this.templates;
+  }
+
+  getItemValue(item: any, key: string): any {
+    if (this.isTemplateKey(key)) {
+      return item[key];
+    } else {
+      return item;
+    }
   }
 
 }
