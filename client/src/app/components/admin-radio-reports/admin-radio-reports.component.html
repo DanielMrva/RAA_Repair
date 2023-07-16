@@ -4,7 +4,7 @@
 
 
 
-    <app-data-table 
+    <!-- <app-data-table 
         [data]="queryResults" 
         [filterTerms]="['__typename', '_id','orgName','serviceRecord']"
         [templates]="customTemplates"
@@ -13,6 +13,14 @@
         <ng-template #notesTemplate let-notes>
             <app-notes-template [notes]="notes"></app-notes-template>
         </ng-template>
+
+    </app-data-table> -->
+
+    <app-data-table 
+        [data]="queryResults"
+        [headerArray]="headerArray"
+        [templates]="customTemplates" 
+    >
 
     </app-data-table>
 

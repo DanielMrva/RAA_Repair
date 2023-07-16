@@ -15,6 +15,23 @@ export class AdminRadioReportsComponent implements OnInit {
 
   queryResults: Radio[] | undefined
 
+  headerArray = [
+    {'header': "Location", "fieldName": "location", "dataType": "string"},
+    {'header': "Date Sold", "fieldName": "dateSold", "dataType": "string"},
+    {'header': "Date Entered", "fieldName": "dateEntered", "dataType": "string"},
+    {'header': "Inventory #", "fieldName": "inventoryNumber", "dataType": "string"},
+    {'header': "Make", "fieldName": "make", "dataType": "string"},
+    {'header': "Model", "fieldName": "model", "dataType": "string"},
+    {'header': "Channels", "fieldName": "progChannels", "dataType": "string"},
+    {'header': "Serial", "fieldName": "serialNumber", "dataType": "string"},
+    {'header': "Notes", "fieldName": "notes", "dataType": "array"},
+    {'header': "Service Record", "fieldName": "serviceRecord", "dataType": "object"},
+    {'header': "Warranty Date", "fieldName": "warranty", "dataType": "string"},
+    {'header': "Refurbish", "fieldName": "refurb", "dataType": "string"},
+    {'header': "Radio Type", "fieldName": "radioType", "dataType": "string"},
+
+  ]
+
   customTemplates = {
     notes: NotesTemplateComponent,
     serviceRecord: ServiceRecordTemplateComponent
