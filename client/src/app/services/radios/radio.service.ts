@@ -29,7 +29,7 @@ export class RadioService {
   }
 
   allRadios() {
-    return this.apollo.query({
+    return this.apollo.query<{radios: Radio[]}>({
       query: ALL_RADIOS
     });
   }

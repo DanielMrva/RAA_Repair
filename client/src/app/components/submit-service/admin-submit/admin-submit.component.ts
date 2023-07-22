@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { RerpairService } from '@app/services/rerpair.service';
+import { RepairService } from '@app/services/repairs/repair.service';
 import { Repair } from '@app/graphql/schemas/typeInterfaces';
-import { ToastService } from '@app/services/toast.service';
+import { ToastService } from '@app/services/toast/toast.service';
 
 @Component({
   selector: 'app-admin-submit',
@@ -62,7 +62,7 @@ export class AdminSubmitComponent implements OnInit{
 
   constructor(
     private formBuilder: FormBuilder,
-    private repairService: RerpairService,
+    private repairService: RepairService,
     private router: Router,
     private toastService: ToastService
   ) {  }

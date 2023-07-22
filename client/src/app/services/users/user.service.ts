@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo, QueryRef, MutationResult } from 'apollo-angular';
-import { ADD_USER, LOGIN_USER } from '../graphql/schemas/mutations';
+import { ADD_USER, LOGIN_USER } from '@app/graphql/schemas/mutations';
 
 @Injectable({
   providedIn: 'root'

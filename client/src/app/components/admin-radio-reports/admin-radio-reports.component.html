@@ -5,10 +5,13 @@
 
 
     <app-data-table 
-        [data]="queryResults" 
+        [data]="queryResults"
         [filterTerms]="['__typename', '_id','orgName','serviceRecord']"
-        [templates]="customTemplates"
+
     >
+
+        <ng-template>
+        </ng-template>
 
         <ng-template #notesTemplate let-notes>
             <app-notes-template [notes]="notes"></app-notes-template>
@@ -24,4 +27,6 @@
 <div *ngIf="!queryResults">
     <h2>Loading...</h2>
 </div>
-
+<!-- 
+[filterTerms]="['__typename', '_id','orgName','serviceRecord']"
+[templates]="customTemplates" -->

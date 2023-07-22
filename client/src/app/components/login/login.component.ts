@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ADD_USER, LOGIN_USER } from 'src/app/graphql/schemas';
 import { Apollo } from 'apollo-angular';
-import { AuthService } from '@app/services/auth.service';
+import { AuthService } from '@app/services/auth/auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ToastService } from '@app/services/toast.service';
+import { ToastService } from '@app/services/toast/toast.service';
 
 @Component({
   selector: 'app-login',

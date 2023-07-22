@@ -6,7 +6,7 @@ import { Repair } from '@app/graphql/schemas/typeInterfaces';
 @Injectable({
   providedIn: 'root'
 })
-export class RerpairService {
+export class RepairService {
 
   constructor(private apollo: Apollo) { }
 

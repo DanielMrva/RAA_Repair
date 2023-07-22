@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { RadioService } from '@app/services/radio.service';
-import { ToastService } from '@app/services/toast.service';
+import { RadioService } from '@app/services/radios/radio.service';
+import { ToastService } from '@app/services/toast/toast.service';
 
 @Component({
   selector: 'app-admin-radio',

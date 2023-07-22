@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RadioService } from '@app/services/radio.service'
+import { RadioService } from '@app/services/radios/radio.service'
 import { Radio } from '@app/graphql/schemas/typeInterfaces';
 
 

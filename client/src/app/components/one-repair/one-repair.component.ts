@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RerpairService } from '@app/services/rerpair.service';
+import { RepairService } from '@app/services/repairs/repair.service';
 import { Repair } from '@app/graphql/schemas/typeInterfaces';
 
 @Component({
@@ -13,7 +13,7 @@ export class OneRepairComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private repairService: RerpairService
+    private repairService: RepairService
   ) {}
 
   ngOnInit(): void {
