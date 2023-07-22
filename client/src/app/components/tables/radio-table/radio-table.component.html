@@ -1,1 +1,178 @@
-<p>radio-table works!</p>
+<div *ngIf="dataSource.isLoading$ | async">Loading...</div>
+<table
+    mat-table
+    [dataSource]="dataSource"
+>
+    <ng-container matColumnDef="location">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Location
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.location }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateSold">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Date Sold
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.dateSold }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateEntered">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Date Entered
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.dateEntered}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="inventoryNumber">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Inventory #
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.inventoryNumber}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="make">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Make
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.make}}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="model">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Model
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.Model }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="progChannels">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            # of Channels
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.progChannels }}
+        </td>
+    </ng-container>
+
+    
+    <ng-container matColumnDef="notes">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Notes
+        </th>
+        <td mat-cell *matCellDef="let element">
+            <ul>
+                <li *ngFor="let note of element.notes">
+                    {{ note }}
+                </li>
+            </ul>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="serialNumber">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Serial
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.serialNumber }}
+        </td>
+    </ng-container>
+
+    
+    <ng-container matColumnDef="serviceRecord">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Repairs
+        </th>
+        <td mat-cell *matCellDef="let element">
+            <ul>
+                <li *ngFor="let service of element.serviceRecord">
+                    <a [routerLink]="['/one-repair/', service._id]" >{{service.dateReceived}}</a>
+                </li>
+            </ul>
+        </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="warranty">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Warranty
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.warranty }}
+        </td>
+    </ng-container>
+
+    
+    <ng-container matColumnDef="refurb">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Refurb
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.refurb }}
+        </td>
+    </ng-container>
+
+    
+    <ng-container matColumnDef="radioType">
+        <th
+            mat-header-cell
+            *matHeaderCellDef
+        >
+            Radio Type
+        </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.radioType}}
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+</table>

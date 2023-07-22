@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { UserTableComponent } from '@app/components/tables/user-table/user-table.component';
 import { OrgTableComponent } from '@app/components/tables/org-table/org-table.component';
 import { RadioTableComponent } from '@app/components/tables/radio-table/radio-table.component';
@@ -17,7 +18,7 @@ import { RepairDataSource } from '@app/services/repairs/repair.dataSource';
 
 @NgModule({
   declarations: [ UserTableComponent, OrgTableComponent, RadioTableComponent, RepairTableComponent],
-  imports: [ CommonModule, MatTableModule, MatSortModule ],
+  imports: [ CommonModule, MatTableModule, MatSortModule, RouterModule ],
   exports: [ UserTableComponent, OrgTableComponent, RadioTableComponent, RepairTableComponent],
   providers: [ UserService, UserDataSource, OrganizationService, OrganizationDataSource, RadioService, RadioDataSource, RepairService, RepairDataSource]
 })

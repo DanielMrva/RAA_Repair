@@ -9,6 +9,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 // import { RoleGuard } from './guards/role-guard';
 import { AppRoutingModule } from '@app/app-routing.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TableModule } from './modules/tableModule/table/table.module';
+
+
 
 // Components
 import { AppComponent } from '@app/app.component';
@@ -19,7 +23,6 @@ import { SubmitServiceComponent } from '@app/components/submit-service/submit-se
 import { AdminSubmitComponent } from '@app/components/submit-service/admin-submit/admin-submit.component';
 import { OneRepairComponent } from '@app/components/one-repair/one-repair.component';
 import { ToastComponent } from '@app/components/toast/toast.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddRadioComponent } from '@app/components/add-radio/add-radio.component';
 import { AdminRadioComponent } from '@app/components/add-radio/admin-radio/admin-radio.component';
 import { OneRadioComponent } from '@app/components/one-radio/one-radio.component';
@@ -64,21 +67,10 @@ import { RepairTableComponent } from '@app/components/tables/repair-table/repair
     ReactiveFormsModule,
     GraphQLModule,
     NgbModule,
-    ToastComponent
+    ToastComponent, 
+    TableModule
   ],
   providers: [ AuthService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
-
-
-
-// // Components 
-// import { AppComponent } from './app.component';
-// import { HomeComponent } from './component/home';
-// import { LoginComponent } from './component/login';
-// import { HeaderComponent } from './component/header';
-
-// // Modules and Services
-// import { Authenication } from './_services';
-// import { AppRoutingModule } from './app-routing.module';

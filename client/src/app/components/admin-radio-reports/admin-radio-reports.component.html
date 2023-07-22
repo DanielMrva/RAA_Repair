@@ -1,6 +1,8 @@
 <p>admin-radio-reports works!</p>
 
-<div *ngIf="queryResults">
+<app-radio-table [searchParams]="orgName"></app-radio-table>
+
+<!-- <div *ngIf="queryResults">
 
 
 
@@ -26,7 +28,7 @@
 
 <div *ngIf="!queryResults">
     <h2>Loading...</h2>
-</div>
+</div> -->
 <!-- 
 [filterTerms]="['__typename', '_id','orgName','serviceRecord']"
 [templates]="customTemplates" -->

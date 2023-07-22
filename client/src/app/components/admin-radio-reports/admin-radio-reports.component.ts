@@ -13,6 +13,8 @@ import { ServiceRecordTemplateComponent } from '@app/components/data-table/data-
 })
 export class AdminRadioReportsComponent implements OnInit {
 
+  orgName: string = ''
+
   queryResults: Radio[] | undefined
 
   customTemplates = {
@@ -28,8 +30,8 @@ export class AdminRadioReportsComponent implements OnInit {
 
   ngOnInit(): void {
       this.route.params.subscribe((params) => {
-        const orgName = params['orgName'];
-        this.loadOrgRadios(orgName)
+        this.orgName = params['orgName'];
+        // this.loadOrgRadios(orgName)
       });
   }
 
