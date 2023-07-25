@@ -106,3 +106,8 @@ export type AdminRadioFields = {
     refurb: string,
     radioType: string
 }
+
+export type RadioSearchParams = {
+    queryType: string,
+    queryParams: string,
+  }

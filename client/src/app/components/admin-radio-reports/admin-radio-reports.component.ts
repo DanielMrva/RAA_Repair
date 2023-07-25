@@ -4,7 +4,7 @@ import { RadioService } from '@app/services/radios/radio.service';
 import { Radio } from '@app/graphql/schemas/typeInterfaces';
 import { NotesTemplateComponent } from '@app/components/data-table/data-table-templates/notes-template/notes-template.component';
 import { ServiceRecordTemplateComponent } from '@app/components/data-table/data-table-templates/service-record-template/service-record-template.component';
-
+import { RadioSearchParams } from '@app/graphql/schemas/typeInterfaces';
 
 @Component({
   selector: 'app-admin-radio-reports',
@@ -14,6 +14,11 @@ import { ServiceRecordTemplateComponent } from '@app/components/data-table/data-
 export class AdminRadioReportsComponent implements OnInit {
 
   orgName: string = ''
+
+  queryParams: RadioSearchParams = {
+    queryType: '',
+    queryParams: '',
+  }
 
   queryResults: Radio[] | undefined
 
@@ -30,7 +35,8 @@ export class AdminRadioReportsComponent implements OnInit {
 
   ngOnInit(): void {
       this.route.params.subscribe((params) => {
-        this.orgName = params['orgName'];
+        this.queryParams.queryType = 'orgRadios'
+        this.queryParams.queryParams = params['orgName'];
         // this.loadOrgRadios(orgName)
       });
   }

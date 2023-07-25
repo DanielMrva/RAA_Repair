@@ -2,6 +2,9 @@ import { Component, Input, OnInit} from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { RadioDataSource } from '@app/services/radios/radio.dataSource';
 import { RadioService } from '@app/services/radios/radio.service';
+import { RadioSearchParams } from '@app/graphql/schemas';
+
+
 
 @Component({
   selector: 'app-radio-table',
@@ -10,7 +13,12 @@ import { RadioService } from '@app/services/radios/radio.service';
 })
 export class RadioTableComponent implements OnInit{
 
-  @Input() searchParams: string = ''
+
+
+  @Input() searchParams: RadioSearchParams = {
+    queryType: '',
+    queryParams: ''
+  }
 
   // TODO: Later this will have to be some sort of serchable table; so it will want some sort of Params property, with a switch on ngOnInit to run through possible params types to determine which query to run, and what that param is (obviously defaulting to allRadios)
 
@@ -35,6 +43,11 @@ export class RadioTableComponent implements OnInit{
   constructor(private radioService: RadioService) {}
 
   ngOnInit(): void {
-      this.dataSource.loadOrgRadios(this.searchParams)
+    switch (this.searchParams.queryType) {
+      case 'orgRadios': this.dataSource.loadOrgRadios(this.searchParams.queryParams);
+        break;
+      default: this.dataSource.loadAllRadios();
+    }
+
   }
 }

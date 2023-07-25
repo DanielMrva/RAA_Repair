@@ -1,34 +1,4 @@
 <p>admin-radio-reports works!</p>
 
-<app-radio-table [searchParams]="orgName"></app-radio-table>
+<app-radio-table [searchParams]="queryParams"></app-radio-table>
 
-<!-- <div *ngIf="queryResults">
-
-
-
-    <app-data-table 
-        [data]="queryResults"
-        [filterTerms]="['__typename', '_id','orgName','serviceRecord']"
-
-    >
-
-        <ng-template>
-        </ng-template>
-
-        <ng-template #notesTemplate let-notes>
-            <app-notes-template [notes]="notes"></app-notes-template>
-        </ng-template>
-
-    </app-data-table>
-
-
-
-
-</div>
-
-<div *ngIf="!queryResults">
-    <h2>Loading...</h2>
-</div> -->
-<!-- 
-[filterTerms]="['__typename', '_id','orgName','serviceRecord']"
-[templates]="customTemplates" -->

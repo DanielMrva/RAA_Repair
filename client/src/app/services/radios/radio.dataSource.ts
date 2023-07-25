@@ -29,4 +29,14 @@ export class RadioDataSource extends DataSource<Radio> {
             this.isLoading$.next(false);
         });
     }
+
+    loadAllRadios(): void {
+        this.isLoading$.next(true);
+        this.radioService.allRadios().subscribe(( {data} ) => {
+            this.radios$.next(data.radios)
+            this.isLoading$.next(false);
+        });
+    }
+
+    
 }
