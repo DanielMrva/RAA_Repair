@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { RoleGuard } from '@app/guards/role-guard';
 
 
 // component imports
@@ -42,15 +41,24 @@ const routes: Routes = [
   },
   {
     path: 'one-repair/:id',
-    component: OneRepairComponent
+    component: OneRepairComponent,
+    data: {
+      role: ['admin', 'user']
+    }
   },
   {
     path: 'one-radio/:id',
-    component: OneRadioComponent
+    component: OneRadioComponent,
+    data: {
+      role: ['admin', 'user']
+    }
   },
   {
     path: 'org-radio/:orgName',
-    component: AdminRadioReportsComponent
+    component: AdminRadioReportsComponent,
+    data: {
+      role: ['admin']
+    }
   },
   {
     path: '**',

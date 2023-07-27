@@ -13,7 +13,7 @@ import { RadioSearchParams } from '@app/graphql/schemas/typeInterfaces';
 })
 export class AdminRadioReportsComponent implements OnInit {
 
-  orgName: string = ''
+  // orgName: string = ''
 
   queryParams: RadioSearchParams = {
     queryType: '',

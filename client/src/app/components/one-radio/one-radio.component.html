@@ -1,14 +1,78 @@
-<p>one-radio works!</p>
+<div *ngIf="radio" class="container">
 
-<div *ngIf="radio">
-    <h2>Radio Details</h2>
-    <div>
-      <strong>Radio ID:</strong> {{ radio._id }}
+    <div class="row">
+      <h2 class="col-12 text-center">Radio Details</h2>
+      <div class="row">
+        <p class="col"><strong>Organization:</strong> {{radio.orgName}}</p>
+        <p class="col"><strong>Location:</strong> {{radio.location}}</p>
+      </div>
+      
+      <div class="row">
+        <div class="col">
+          <h6 class="row">Make: </h6>
+          <p class="row">{{radio.make}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Model: </h6>
+          <p class="row">{{radio.model}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Serial Number: </h6>
+          <p class="row">{{radio.serialNumber}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Radio Type: </h6>
+          <p class="row">{{radio.radioType}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6 class="row">Intentory: </h6>
+          <p class="row">{{radio.inventoryNumber}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Date Sold: </h6>
+          <p class="row">{{radio.dateSold}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Date Entered: </h6>
+          <p class="row">{{radio.dateEntered}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Warranty: </h6>
+          <p class="row">{{radio.warranty}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Refurb: </h6>
+          <ng-container *ngIf="radio.refurb">
+          </ng-container>
+          <ng-container *ngIf="!radio.refurb">
+            <p class="row"> X </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6 class="row">
+            Notes:
+          </h6>
+          <ul class="row">
+            <li *ngFor="let note of radio.notes">
+              {{ note }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6 class="row">
+            Service Record
+          </h6>
+        </div>
+      </div>
+
+      
     </div>
-    <div>
-      <strong>Serial Number:</strong> {{ radio.serialNumber }}
-    </div>
-    <h3><strong>Add more divs for other Radio fields</strong></h3>
 </div>
 
 <div *ngIf="!radio">
