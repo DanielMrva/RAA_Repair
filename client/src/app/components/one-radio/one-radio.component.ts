@@ -7,7 +7,7 @@ import { Radio } from '@app/graphql/schemas/typeInterfaces';
 @Component({
   selector: 'app-one-radio',
   templateUrl: './one-radio.component.html',
-  styleUrls: ['./one-radio.component.css']
+  styleUrls: ['./one-radio.component.css'],
 })
 export class OneRadioComponent implements OnInit {
 
@@ -15,7 +15,6 @@ export class OneRadioComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    // private apollo: Apollo,
     private radioService: RadioService
   ) {}
 

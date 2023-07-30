@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Services and Modules
 import { AuthService } from '@app/services/auth/auth.service';
-// import { RoleGuard } from './guards/role-guard';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TableModule } from './modules/tableModule/table/table.module';
@@ -26,14 +25,8 @@ import { ToastComponent } from '@app/components/toast/toast.component';
 import { AddRadioComponent } from '@app/components/add-radio/add-radio.component';
 import { AdminRadioComponent } from '@app/components/add-radio/admin-radio/admin-radio.component';
 import { OneRadioComponent } from '@app/components/one-radio/one-radio.component';
-// import { DataTableComponent } from '@app/components/data-table/data-table.component';
 import { AdminRadioReportsComponent } from '@app/components/admin-radio-reports/admin-radio-reports.component';
-import { NotesTemplateComponent } from '@app/components/data-table/data-table-templates/notes-template/notes-template.component';
-import { ServiceRecordTemplateComponent } from '@app/components/data-table/data-table-templates/service-record-template/service-record-template.component';
-import { UserTableComponent } from '@app/components/tables/user-table/user-table.component';
-import { OrgTableComponent } from '@app/components/tables/org-table/org-table.component';
-import { RadioTableComponent } from '@app/components/tables/radio-table/radio-table.component';
-import { RepairTableComponent } from '@app/components/tables/repair-table/repair-table.component';
+
 
 
 
@@ -49,14 +42,7 @@ import { RepairTableComponent } from '@app/components/tables/repair-table/repair
     AddRadioComponent,
     AdminRadioComponent,
     OneRadioComponent,
-    // DataTableComponent,
     AdminRadioReportsComponent,
-    NotesTemplateComponent,
-    ServiceRecordTemplateComponent,
-    // UserTableComponent,
-    // OrgTableComponent,
-    // RadioTableComponent,
-    // RepairTableComponent,
   ],
   imports: [
     BrowserModule,

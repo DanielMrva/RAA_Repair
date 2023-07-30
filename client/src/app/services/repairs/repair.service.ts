@@ -20,7 +20,7 @@ export class RepairService {
   }
 
   allRepairs() {
-    return this.apollo.query({
+    return this.apollo.query<{allRepairs: Repair[]}>({
       query: ALL_REPAIRS
     });
   }

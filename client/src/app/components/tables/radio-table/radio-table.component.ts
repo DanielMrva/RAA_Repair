@@ -2,7 +2,7 @@ import { Component, Input, OnInit} from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { RadioDataSource } from '@app/services/radios/radio.dataSource';
 import { RadioService } from '@app/services/radios/radio.service';
-import { RadioSearchParams } from '@app/graphql/schemas';
+import { TableSearchParams } from '@app/graphql/schemas';
 
 
 
@@ -15,7 +15,7 @@ export class RadioTableComponent implements OnInit{
 
 
 
-  @Input() searchParams: RadioSearchParams = {
+  @Input() searchParams: TableSearchParams = {
     queryType: '',
     queryParams: ''
   }
@@ -38,7 +38,7 @@ export class RadioTableComponent implements OnInit{
     'radioType'
   ];
 
-  dataSource = new RadioDataSource(this.radioService)
+  dataSource = new RadioDataSource(this.radioService);
 
   constructor(private radioService: RadioService) {}
 

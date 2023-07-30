@@ -5,6 +5,7 @@ import { UserTableComponent } from '@app/components/tables/user-table/user-table
 import { OrgTableComponent } from '@app/components/tables/org-table/org-table.component';
 import { RadioTableComponent } from '@app/components/tables/radio-table/radio-table.component';
 import { RepairTableComponent } from '@app/components/tables/repair-table/repair-table.component';
+import { DataTableComponent } from '@app/components/tables/data-table/data-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { UserService } from '@app/services/users/user.service';
@@ -17,9 +18,9 @@ import { RadioDataSource } from '@app/services/radios/radio.dataSource';
 import { RepairDataSource } from '@app/services/repairs/repair.dataSource';
 
 @NgModule({
-  declarations: [ UserTableComponent, OrgTableComponent, RadioTableComponent, RepairTableComponent],
+  declarations: [ UserTableComponent, OrgTableComponent, RadioTableComponent, RepairTableComponent, DataTableComponent],
   imports: [ CommonModule, MatTableModule, MatSortModule, RouterModule ],
-  exports: [ UserTableComponent, OrgTableComponent, RadioTableComponent, RepairTableComponent],
+  exports: [ UserTableComponent, OrgTableComponent, RadioTableComponent, RepairTableComponent, DataTableComponent],
   providers: [ UserService, UserDataSource, OrganizationService, OrganizationDataSource, RadioService, RadioDataSource, RepairService, RepairDataSource]
 })
 export class TableModule { }

@@ -22,7 +22,11 @@ export class RepairDataSource extends DataSource<Repair> {
         this.repairs$.complete();
     }
 
-    loadRepairss(): void {
+    loadAllRepairss(): void {
         this.isLoading$.next(true);
+        this.repairService.allRepairs().subscribe(( { data }) => {
+            this.repairs$.next(data.allRepairs);
+            this.isLoading$.next(false);
+        })
     }
 }

@@ -107,7 +107,7 @@ export type AdminRadioFields = {
     radioType: string
 }
 
-export type RadioSearchParams = {
+export type TableSearchParams = {
     queryType: string,
     queryParams: string,
-  }
+}
