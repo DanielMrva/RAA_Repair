@@ -79,49 +79,48 @@
 
           <ng-container *ngIf="radio.serviceRecord.length > 0; else noService">
 
-            <table class="row">
-              <tr>
-                <th>
-                  Date Received
-                </th>
-
-                <th>
-                  RAA Inventory #
-                </th>
-
-                <th>
-                  RAA PO #
-                </th>
-
-                <th>
-                  End User PO #
-                </th>
-
-              </tr>
-
-              <ng-container *ngFor="let record of radio.serviceRecord">
-
-                <tr>
-                  <td>
-                    <a [routerLink]="['/one-repair/', record._id]" >{{record.dateReceived}}</a>
-                  </td>
-
-                  <td>
-                    {{record.raaInvNum}}
-                  </td>
-
-                  <td>
-                    {{record.raaPO}}
-                  </td>
-
-                  <td>
-                    {{record.endUserPO}}
-                  </td>
-                </tr>
-
-              </ng-container>
-
-            </table>
+            <div class="row">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      
+                    </th>
+                    <th scope="col">
+                      Date Received
+                    </th>
+                    <th scope="col">
+                      RAA Inventory #
+                    </th>
+                    <th scope="col">
+                      RAA PO #
+                    </th>
+                    <th scope="col">
+                      End User PO #
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let record of radio.serviceRecord; index as i">
+                    <tr>
+                      <th scope="row">{{i + 1}}</th>
+                      <td>
+                        <a [routerLink]="['/one-repair/', record._id]" >{{record.dateReceived}}</a>
+                      </td>
+                      <td>
+                        {{record.raaInvNum}}
+                      </td>
+                      <td>
+                        {{record.raaPO}}
+                      </td>
+                      <td>
+                        {{record.endUserPO}}
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
 
 
 

@@ -1,7 +1,11 @@
 <div *ngIf="repair" class="container">
 
   <div class="row">
+    <!-- TODO: I'd like a button to go to the associated radio, probably the best way to do that would be a one-radio [routerLink] with a query param of radioSerial?... -->
+    <!-- <a class="col-2" [routerLink]="['one-radio', ]"><i class="bi bi-arrow-90deg-left"></i></a> -->
     <h2 class="col-12 text-center">Repair {{repair.repairTag}} Details</h2>
+
+    
 
 
     <div class="row">
@@ -25,6 +29,7 @@
         <p class="row">{{repair.dateSentEU}}</p>
       </div>
     </div>
+
 
 
     <div class="row">
@@ -52,7 +57,13 @@
         <p class="row">{{repair.endUserPO}}</p>
       </div>
 
+
+
+    </div>
+
+    <div class="row">
       <div class="col">
+        
         <h6 class="row">Accessories: </h6>
         <ul class="row">
           <ng-container *ngFor="let acc of repair.accessories">
@@ -60,112 +71,101 @@
           </ng-container>
         </ul>
       </div>
-
     </div>
 
     <div class="row">
       <h5 class="col-12 text-center">Symptoms and Diagnositcs</h5>
     </div>
     <div class="row">
-      <div class="col">
+      <div class="col-4">
         <h6 class="row">Symptoms: </h6>
-        <ul>
+        <ul class="row">
           <ng-container *ngFor="let sym of repair.symptoms">
             <li>{{sym}}</li>
           </ng-container>
         </ul>
       </div>
 
-      <div class="col">
+      <div class="col-8">
         <h6 class="row">Diagnostics: </h6>
-        <p class="row"><strong>Test Frequency:</strong> {{repair.testFreq}}</p>
-        <table class="row">
-
-          <tr>
-            <th>
-              Attrbute
-            </th>
-
-            <th>
-              In
-            </th>
-
-            <th>
-              out
-            </th>
-          </tr>
-
-          <tr>
-            <td>
-              Freq Err
-            </td>
-
-            <td>
-              {{repair.incFreqErr}}
-            </td>
-
-            <td>
-              {{repair.outFreqErr}}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              Freq Err
-            </td>
-
-            <td>
-              {{repair.incFreqErr}}
-            </td>
-
-            <td>
-              {{repair.outFreqErr}}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              Modulation
-            </td>
-
-            <td>
-              {{repair.incMod}}
-            </td>
-
-            <td>
-              {{repair.outMod}}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              Power Output
-            </td>
-
-            <td>
-              {{repair.incPowerOut}}
-            </td>
-
-            <td>
-              {{repair.outPowerOut}}
-            </td>
-          </tr>
-
-          <tr>
-            <td>
-              RX Sens
-            </td>
-
-            <td>
-              {{repair.incRxSens}}
-            </td>
-
-            <td>
-              {{repair.outRxSens}}
-            </td>
-          </tr>
-
-        </table>
+        <div class="col">
+          <h6 class="row">Test Frequency</h6>
+          <p class="row">{{repair.testFreq}}</p>
+        </div>
+        <div class="row">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">
+                  Attribute
+                </th>
+                <th scope="col">
+                  In
+                </th>
+                <th scope="col">
+                  out
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Freq Err
+                </td>
+                <td>
+                  {{repair.incFreqErr}}
+                </td>
+                <td>
+                  {{repair.outFreqErr}}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Freq Err
+                </td>
+                <td>
+                  {{repair.incFreqErr}}
+                </td>
+                <td>
+                  {{repair.outFreqErr}}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Modulation
+                </td>
+                <td>
+                  {{repair.incMod}}
+                </td>
+                <td>
+                  {{repair.outMod}}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Power Output
+                </td>
+                <td>
+                  {{repair.incPowerOut}}
+                </td>
+                <td>
+                  {{repair.outPowerOut}}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  RX Sens
+                </td>
+                <td>
+                  {{repair.incRxSens}}
+                </td>
+                <td>
+                  {{repair.outRxSens}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
     </div>    
