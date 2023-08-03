@@ -52,10 +52,10 @@
         <div class="col">
           <h6 class="row">Refurb: </h6>
           <ng-container *ngIf="radio.refurb">
-            <p class="row"> + </p>
+            <p class="row"> <i class="bi bi-check"></i> </p>
           </ng-container>
           <ng-container *ngIf="!radio.refurb">
-            <p class="row"> X </p>
+            <p class="row"> <i class="bi bi-x-lg"></i> </p>
           </ng-container>
         </div>
       </div>
@@ -133,7 +133,7 @@
           </ng-template>
 
           <div class="row">
-            <a [routerLink]="['/submit']">Add A Repair Ticket</a>
+            <a [routerLink]="['/submit', {serialNumber: radio.serialNumber}]">Add A Repair Ticket</a>
           </div>
 
         </div>

@@ -1,8 +1,10 @@
 <div *ngIf="dataSource.isLoading$ | async">Loading...</div>
 <table
+    class="table"
     mat-table
     [dataSource]="dataSource"
 >
+<!-- class full-table can be added to above to limit width, but it is not ideal... -->
     <ng-container matColumnDef="location">
         <th
             mat-header-cell
@@ -71,7 +73,7 @@
             Model
         </th>
         <td mat-cell *matCellDef="let element">
-            {{ element.Model }}
+            {{ element.model }}
         </td>
     </ng-container>
 
@@ -112,7 +114,7 @@
             Serial
         </th>
         <td mat-cell *matCellDef="let element">
-            {{ element.serialNumber }}
+            <a [routerLink]="['/one-radio', element._id]">{{ element.serialNumber }}</a>
         </td>
     </ng-container>
 
@@ -129,6 +131,7 @@
                 <li *ngFor="let service of element.serviceRecord">
                     <a [routerLink]="['/one-repair/', service._id]" >{{service.dateReceived}}</a>
                 </li>
+                <li><a [routerLink]="['/submit', { serialNumber: element.serialNumber}]">Add Repair</a></li>
             </ul>
         </td>
     </ng-container>

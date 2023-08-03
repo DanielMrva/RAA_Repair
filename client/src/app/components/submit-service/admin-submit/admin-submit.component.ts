@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { RepairService } from '@app/services/repairs/repair.service';
 import { Repair } from '@app/graphql/schemas/typeInterfaces';
@@ -64,6 +64,7 @@ export class AdminSubmitComponent implements OnInit{
     private formBuilder: FormBuilder,
     private repairService: RepairService,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private toastService: ToastService
   ) {  }
 
@@ -100,7 +101,13 @@ export class AdminSubmitComponent implements OnInit{
   }
 
   ngOnInit(): void {
-      
+
+    this.activatedRoute.paramMap.subscribe(params => {
+      const serialNumber = params.get('serialNumber');
+      if (serialNumber) {
+        this.adminRepairForm.patchValue({ radioSerial: serialNumber })
+      }
+    })
   }
 
   onSubmit() {
@@ -109,7 +116,7 @@ export class AdminSubmitComponent implements OnInit{
 
 
     const radioSerial = this.adminRepairForm.value.radioSerial ?? '';
-    const  dateReceived = this.adminRepairForm.value.dateReceived ?? '';
+    const dateReceived = this.adminRepairForm.value.dateReceived ?? '';
     const endUserPO = this.adminRepairForm.value.endUserPO  ?? '';
     const raaPO = this.adminRepairForm.value.raaPO  ?? '';
     const dateSentTech = this.adminRepairForm.value.dateSentTech ?? '';

@@ -37,18 +37,15 @@
     </div>
     <div class="row">
 
-      <div class="col">
-        <h6 class="row">Radio Serial: </h6>
-        <p class="row">{{repair.radioSerial}}</p>
-      </div>
+
 
       <div class="col">
-        <h6 class="row">RAA Inventory #: </h6>
+        <h6 class="row">RAA Invoice: </h6>
         <p class="row">{{repair.raaInvNum}}</p>
       </div>
 
       <div class="col">
-        <h6 class="row">RAA PO #: </h6>
+        <h6 class="row">RAA PO: </h6>
         <p class="row">{{repair.raaPO}}</p>
       </div>
 
@@ -62,8 +59,13 @@
     </div>
 
     <div class="row">
+
       <div class="col">
-        
+        <h6 class="row">Radio Serial: </h6>
+        <p class="row">{{repair.radioSerial}}</p>
+      </div>
+
+      <div class="col">
         <h6 class="row">Accessories: </h6>
         <ul class="row">
           <ng-container *ngFor="let acc of repair.accessories">
@@ -103,7 +105,7 @@
                   In
                 </th>
                 <th scope="col">
-                  out
+                  Out
                 </th>
               </tr>
             </thead>

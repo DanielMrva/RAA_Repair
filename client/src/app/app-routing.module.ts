@@ -27,6 +27,14 @@ const routes: Routes = [
     }
   },
   {
+    path: 'submit/:serialNumber?',
+    component: SubmitServiceComponent,
+    pathMatch: 'full',
+    data: {
+      role: ['admin', 'user']
+    }
+  },
+  {
     path: 'add-radio',
     component: AddRadioComponent,
     pathMatch: 'full',
