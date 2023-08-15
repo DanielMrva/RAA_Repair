@@ -26,6 +26,10 @@ import { AddRadioComponent } from '@app/components/add-radio/add-radio.component
 import { AdminRadioComponent } from '@app/components/add-radio/admin-radio/admin-radio.component';
 import { OneRadioComponent } from '@app/components/one-radio/one-radio.component';
 import { AdminRadioReportsComponent } from '@app/components/admin-radio-reports/admin-radio-reports.component';
+import { EditRepairComponent } from './components/edits/edit-repair/edit-repair.component';
+import { EditUserComponent } from './components/edits/edit-user/edit-user.component';
+import { EditRadioComponent } from './components/edits/edit-radio/edit-radio.component';
+import { EditOrganizationComponent } from './components/edits/edit-organization/edit-organization.component';
 
 
 
@@ -43,6 +47,10 @@ import { AdminRadioReportsComponent } from '@app/components/admin-radio-reports/
     AdminRadioComponent,
     OneRadioComponent,
     AdminRadioReportsComponent,
+    EditRepairComponent,
+    EditUserComponent,
+    EditRadioComponent,
+    EditOrganizationComponent,
   ],
   imports: [
     BrowserModule,

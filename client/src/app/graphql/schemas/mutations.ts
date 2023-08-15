@@ -193,3 +193,36 @@ export const ADD_RADIO = gql`
     }
 `
 
+export const Edit_Repair = gql`
+    mutation editRepair($id: ID!, $updates: UpdateRepairInput) {
+        editRepair(_id: $id, updates: $updates) {
+            _id
+            radioSerial
+            dateReceived
+            endUserPO
+            raaPO
+            repairTag
+            dateSentTech
+            dateRecTech
+            dateSentEU
+            techInvNum
+            raaInvNum
+            symptoms
+            testFreq
+            incRxSens
+            incFreqErr
+            incMod
+            incPowerOut
+            outRxSens
+            outFreqErr
+            outMod
+            outPowerOut
+            accessories
+            workPerformed
+            repHours
+            partsUsed
+            remarks
+        }
+    }
+`
+

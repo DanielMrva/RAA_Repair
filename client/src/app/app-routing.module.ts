@@ -11,6 +11,8 @@ import { AddRadioComponent } from './components/add-radio/add-radio.component';
 import { OneRadioComponent } from './components/one-radio/one-radio.component';
 import { AdminRadioComponent } from './components/add-radio/admin-radio/admin-radio.component';
 import { AdminRadioReportsComponent } from './components/admin-radio-reports/admin-radio-reports.component';
+import { EditRadioComponent } from './components/edits/edit-radio/edit-radio.component';
+import { EditRepairComponent } from './components/edits/edit-repair/edit-repair.component';
 
 const routes: Routes = [
   {
@@ -64,6 +66,14 @@ const routes: Routes = [
   {
     path: 'org-radio/:orgName',
     component: AdminRadioReportsComponent,
+    data: {
+      role: ['admin']
+    }
+  },
+  {
+    path: 'edit-repair/:id',
+    component: EditRepairComponent,
+    pathMatch: 'full',
     data: {
       role: ['admin']
     }

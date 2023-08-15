@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { QUERY_SINGLEREPAIR, ALL_REPAIRS, ADD_REPAIR } from '@app/graphql/schemas';
+import { QUERY_SINGLEREPAIR, ALL_REPAIRS, ADD_REPAIR, Edit_Repair } from '@app/graphql/schemas';
 import { Repair } from '@app/graphql/schemas/typeInterfaces';
 
 @Injectable({
@@ -82,4 +82,13 @@ export class RepairService {
     })
   }
 
+  editRepair(id: string, updates: any) {
+    return this.apollo.mutate<{editRepair: Repair}> ({
+      mutation: Edit_Repair,
+      variables: {id, updates}
+    })
+
+    }
 }
+
+

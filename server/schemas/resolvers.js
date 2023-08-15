@@ -47,6 +47,8 @@ const resolvers = {
         
             return { token, user}
         },
+        // End Add User
+
         login: async (parent, { email, password }) => {
 
             const user = await User.findOne({ email });
@@ -70,6 +72,8 @@ const resolvers = {
 
             return { token, user}
         },
+        // End Login
+
         validateAccess: async (parent, {username, accessLevel}) => {
             const user = await User.findOneAndUpdate({username: username}, { $set: { accessLevel: accessLevel}});
 
@@ -80,6 +84,8 @@ const resolvers = {
 
             return user;
         },
+        // End Validate Access
+
         addRepair: async (
             parent, 
                 { 
@@ -180,6 +186,8 @@ const resolvers = {
             }
 
         },
+        // End Add Repair
+
         addRadio: async (
             parent, {
                 orgName,
@@ -248,6 +256,25 @@ const resolvers = {
                         code: 'SUBMIT_RADIO_ERROR'
                     }
                 });
+            }
+        },
+        // End Add Radio
+
+        editRepair: async( parent, { _id, updates }) => {
+            try {
+                const repair = await Repair.findOneAndUpdate({ _id }, { $set: updates}, { new: true});
+
+                if (!repair) {
+                    throw new GraphQLError('Repair Not Found', {
+                        extensions: {
+                            code: 'Edit_Repair_Error'
+                        }
+                    })
+                }
+
+                return repair;
+            } catch (error) {
+                throw new GraphQLError('Failed to edit repair')
             }
         }
         

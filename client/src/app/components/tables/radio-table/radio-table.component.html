@@ -129,7 +129,7 @@
         <td mat-cell *matCellDef="let element">
             <ul>
                 <li *ngFor="let service of element.serviceRecord">
-                    <a [routerLink]="['/one-repair/', service._id]" >{{service.dateReceived}}</a>
+                    <a [routerLink]="['/one-repair/', service._id]" >{{service.repairTag}} on {{service.dateReceived}}</a>
                 </li>
                 <li><a [routerLink]="['/submit', { serialNumber: element.serialNumber}]">Add Repair</a></li>
             </ul>
