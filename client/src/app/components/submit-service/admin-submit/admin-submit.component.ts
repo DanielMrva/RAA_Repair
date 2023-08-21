@@ -134,7 +134,7 @@ export class AdminSubmitComponent implements OnInit{
     const outFreqErr = this.adminRepairForm.value.outFreqErr ?? '';
     const outMod = this.adminRepairForm.value.outMod  ?? '';
     const outPowerOut = this.adminRepairForm.value.outPowerOut ?? '';
-    const accessories = this.adminRepairForm.value.accessories
+    const accessories = Array.isArray(this.adminRepairForm.value.accessories) ? this.adminRepairForm.value.accessories : [''];
     const workPerformed = Array.isArray(this.adminRepairForm.value.workPerformed) ? this.adminRepairForm.value.workPerformed : ['']; 
     const repHours = this.adminRepairForm.value.repHours  ?? 0;
     const partsUsed = Array.isArray(this.adminRepairForm.value.partsUsed) ? this.adminRepairForm.value.partsUsed : [''];

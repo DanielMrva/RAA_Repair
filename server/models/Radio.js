@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const dateFormat = require("../utils/dateFormat")
+// const dateFormat = require("../utils/dateFormat")
 
 const radioSchema = new Schema({
     orgName: {
@@ -12,12 +12,12 @@ const radioSchema = new Schema({
     dateSold: {
         type: Date,
         default: Date.now,
-        get: (timestamp) => dateFormat(timestamp),
+        // get: (timestamp) => dateFormat(timestamp),
     },
     dateEntered: {
         type: Date,
         default: Date.now,
-        get: (timestamp) => dateFormat(timestamp),
+        // get: (timestamp) => dateFormat(timestamp),
     },
     inventoryNumber: {
         type: String,
@@ -48,7 +48,7 @@ const radioSchema = new Schema({
     warranty: {
         type: Date,
         default: Date.now,
-        get: (timestamp) => dateFormat(timestamp),
+        // get: (timestamp) => dateFormat(timestamp),
         //TODO: Change to warranty term, warranty exp date?
     },
     refurb: {

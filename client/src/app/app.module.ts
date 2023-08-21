@@ -10,6 +10,10 @@ import { AuthService } from '@app/services/auth/auth.service';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TableModule } from './modules/tableModule/table/table.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
 
 
 
@@ -62,7 +66,11 @@ import { EditOrganizationComponent } from './components/edits/edit-organization/
     GraphQLModule,
     NgbModule,
     ToastComponent, 
-    TableModule
+    TableModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+    BrowserAnimationsModule
   ],
   providers: [ AuthService ],
   bootstrap: [ AppComponent ]

@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const dateFormat = require("../utils/dateFormat");
+// const dateFormat = require("../utils/dateFormat");
 
 
 
@@ -11,7 +11,7 @@ const repairSchema = new Schema({
     dateReceived: {
         type: Date,
         default: Date.now,
-        get: (timestamp) => dateFormat(timestamp),
+        // get: (timestamp) => dateFormat(timestamp),
         // Admin
     }, 
     endUserPO: {
@@ -29,19 +29,19 @@ const repairSchema = new Schema({
     dateSentTech: {
         type: Date,
         default: Date.now,
-        get: (timestamp) => dateFormat(timestamp),
+        // get: (timestamp) => dateFormat(timestamp),
         // Admin
     },
     dateRecTech: {
         type: Date,
         default: Date.now,
-        get: (timestamp) => dateFormat(timestamp),
+        // get: (timestamp) => dateFormat(timestamp),
         // Tech
     },
     dateSentEU: {
         type: Date,
         default: Date.now,
-        get: (timestamp) => dateFormat(timestamp),
+        // get: (timestamp) => dateFormat(timestamp),
         // Admin
     },
     techInvNum: {

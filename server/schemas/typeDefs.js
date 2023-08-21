@@ -82,6 +82,7 @@ const typeDefs = `#graphql
     }
 
     input UpdateRepairInput {
+            radioSerial: String
             dateReceived: String
             endUserPO: String
             raaPO: String

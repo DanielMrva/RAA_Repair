@@ -14,19 +14,19 @@
     <div class="row">
       <div class="col">
         <h6 class="row">Date Received: </h6>
-        <p class="row">{{repair.dateReceived}}</p>
+        <p class="row">{{repair.dateReceived | date: 'MMM d, y'}}</p>
       </div>
       <div class="col">
         <h6 class="row">Date Sent Tech: </h6>
-        <p class="row">{{repair.dateSentTech}}</p>
+        <p class="row">{{repair.dateSentTech | date: 'MMM d, y'}}</p>
       </div>
       <div class="col">
         <h6 class="row">Date Tech Received: </h6>
-        <p class="row">{{repair.dateRecTech}}</p>
+        <p class="row">{{repair.dateRecTech | date: 'MMM d, y'}}</p>
       </div>
       <div class="col">
         <h6 class="row">Date Sent End User: </h6>
-        <p class="row">{{repair.dateSentEU}}</p>
+        <p class="row">{{repair.dateSentEU | date: 'MMM d, y'}}</p>
       </div>
     </div>
 

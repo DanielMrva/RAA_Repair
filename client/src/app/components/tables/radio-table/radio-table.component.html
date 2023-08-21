@@ -25,7 +25,7 @@
             Date Sold
         </th>
         <td mat-cell *matCellDef="let element">
-            {{ element.dateSold }}
+            {{ element.dateSold | date: 'MMM d, y'}}
         </td>
     </ng-container>
 
@@ -37,7 +37,7 @@
             Date Entered
         </th>
         <td mat-cell *matCellDef="let element">
-            {{ element.dateEntered}}
+            {{ element.dateEntered | date: 'MMM d, y' }}
         </td>
     </ng-container>
 
@@ -129,7 +129,7 @@
         <td mat-cell *matCellDef="let element">
             <ul>
                 <li *ngFor="let service of element.serviceRecord">
-                    <a [routerLink]="['/one-repair/', service._id]" >{{service.repairTag}} on {{service.dateReceived}}</a>
+                    <a [routerLink]="['/one-repair/', service._id]" >{{service.repairTag}} on {{service.dateReceived | date: 'MMM d, y' }}</a>
                 </li>
                 <li><a [routerLink]="['/submit', { serialNumber: element.serialNumber}]">Add Repair</a></li>
             </ul>

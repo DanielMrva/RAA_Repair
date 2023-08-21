@@ -46,7 +46,6 @@ userSchema.post("save", async function (next)  {
     await Organization.findOneAndUpdate({orgName: this.orgName}, {$addToSet: {users: this._id}})
 });
 
-//TODID?: consider putting User-Organization association into a method?  Need to research
 
 const User = model("User", userSchema);
 

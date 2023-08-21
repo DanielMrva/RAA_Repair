@@ -39,11 +39,11 @@
 
         <div class="col">
           <h6 class="row">Date Sold: </h6>
-          <p class="row">{{radio.dateSold}}</p>
+          <p class="row">{{radio.dateSold | date: 'MMM d, y'}}</p>
         </div>
         <div class="col">
           <h6 class="row">Date Entered: </h6>
-          <p class="row">{{radio.dateEntered}}</p>
+          <p class="row">{{radio.dateEntered  | date: 'MMM d, y'}}</p>
         </div>
         <div class="col">
           <h6 class="row">Warranty: </h6>

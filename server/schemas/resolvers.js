@@ -261,6 +261,9 @@ const resolvers = {
         // End Add Radio
 
         editRepair: async( parent, { _id, updates }) => {
+
+            console.log(`id: ${_id}`)
+            console.log(`updates: ${updates}`)
             try {
                 const repair = await Repair.findOneAndUpdate({ _id }, { $set: updates}, { new: true});
 
@@ -274,6 +277,7 @@ const resolvers = {
 
                 return repair;
             } catch (error) {
+                console.log(`resolver error: ${error}`);
                 throw new GraphQLError('Failed to edit repair')
             }
         }
