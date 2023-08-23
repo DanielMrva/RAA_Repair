@@ -79,6 +79,14 @@ const routes: Routes = [
     }
   },
   {
+    path: 'edit-radio/:id',
+    component: EditRadioComponent,
+    pathMatch: 'full',
+    data: {
+      role: ['admin']
+    }
+  },
+  {
     path: '**',
     redirectTo: '',
   }
