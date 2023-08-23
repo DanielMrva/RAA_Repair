@@ -84,9 +84,9 @@ export class RepairService {
 
   editRepair(id: string, updates: any) {
     return this.apollo.mutate<{editRepair: Repair}> ({
-      mutation: Edit_Repair,
-      variables: {id, updates}
-    })
+        mutation: Edit_Repair,
+        variables: {id, updates}
+      })
 
     }
 }

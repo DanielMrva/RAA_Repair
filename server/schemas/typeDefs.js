@@ -109,6 +109,22 @@ const typeDefs = `#graphql
             remarks: String
     }
 
+    input UpdateRadioInput {
+        orgName: String
+        location: String
+        dateSold: String
+        dateEntered: String
+        inventoryNumber: String
+        make: String
+        model: String
+        progChannels: String
+        notes: [String]
+        serialNumber: String
+        warranty: String
+        refurb: Boolean
+        radioType: String
+    }
+
     type Mutation {
         addUser(
             username: String!
@@ -174,6 +190,11 @@ const typeDefs = `#graphql
             _id: ID!
             updates: UpdateRepairInput
         ): Repair
+
+        editRadio(
+            _id: ID!
+            updates: UpdateRadioInput
+        ): Radio
 
 
 

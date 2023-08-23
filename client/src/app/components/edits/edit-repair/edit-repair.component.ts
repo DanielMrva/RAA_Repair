@@ -153,7 +153,7 @@ export class EditRepairComponent implements OnInit {
       })
     }
   
-  });
+    });
 
   }
 

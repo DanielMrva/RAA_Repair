@@ -135,6 +135,22 @@ export type UpdateRepairFields = {
     remarks: string
 }
 
+export type UpdateRadioFields = {
+    orgName: string,
+    location: string,
+    dateSold: Date,
+    dateEntered: Date,
+    inventoryNumber: string,
+    make: string,
+    model: string,
+    progChannels: string,
+    notes: string[],
+    serialNumber: string,
+    warranty: Date,
+    refurb: boolean,
+    radioType: string    
+}
+
 export type TableSearchParams = {
     queryType: string,
     queryParams: string,

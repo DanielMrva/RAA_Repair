@@ -175,6 +175,7 @@ export const ADD_RADIO = gql`
         ) {
             _id
             orgName
+            location
             dateSold
             dateEntered
             inventoryNumber
@@ -222,6 +223,30 @@ export const Edit_Repair = gql`
             repHours
             partsUsed
             remarks
+        }
+    }
+`
+
+export const Edit_Radio = gql`
+    mutation editRadio($id: ID!, $updates: UpdateRadioInput) {
+        editRadio(_id: $id, updates: $updates) {
+            _id
+            orgName
+            location
+            dateSold
+            dateEntered
+            inventoryNumber
+            make
+            model
+            progChannels
+            notes
+            serialNumber
+            serviceRecord {
+                _id
+            }
+            warranty
+            refurb
+            radioType
         }
     }
 `

@@ -280,7 +280,28 @@ const resolvers = {
                 console.log(`resolver error: ${error}`);
                 throw new GraphQLError('Failed to edit repair')
             }
-        }
+        },
+        // End Edit Repair
+
+        editRadio: async( parent, {_id, updates}) => {
+            try {
+                const radio = await Radio.findOneAndUpdate({ _id}, {$set: updates}, {new: true});
+
+                if (!radio) {
+                    throw new GraphQLError('Radio Not Found', {
+                        extensions: {
+                            code: 'Edit_Radio_Error'
+                        }
+                    })
+                }
+
+                return radio;
+            } catch (error) {
+                console.log(`resolver error: ${error}`);
+                throw new GraphQLError('Failed to edit radio')
+            }
+        },
+        // End Edit Radio
         
     }
 };
