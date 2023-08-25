@@ -125,6 +125,14 @@ const typeDefs = `#graphql
         radioType: String
     }
 
+    input UpdateUserInput {
+        username: String
+        email: String
+        password: String
+        accessLevel: String
+        orgName: String
+    }
+
     type Mutation {
         addUser(
             username: String!
@@ -195,6 +203,11 @@ const typeDefs = `#graphql
             _id: ID!
             updates: UpdateRadioInput
         ): Radio
+
+        editUser(
+            _id: ID!
+            updates: UpdateUserInput
+        )
 
 
 

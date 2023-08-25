@@ -302,6 +302,26 @@ const resolvers = {
             }
         },
         // End Edit Radio
+
+        editUser: async(parent, {_id, updates }) => {
+            try {
+                const user = await User.findOneAndUpdate({_id}, {$set: updates}, {new: true});
+
+                if (!user) {
+                    throw new GraphQLError('User Not Found', {
+                        extensions: {
+                            code: 'Edit_User_Error'
+                        }
+                    })
+                }
+
+                return user
+            } catch (error) {
+                console.log(`resolver error: ${error}`);
+                throw new GraphQLError('Failed to Edit User')
+            }
+        }
+        // End Edit User
         
     }
 };
