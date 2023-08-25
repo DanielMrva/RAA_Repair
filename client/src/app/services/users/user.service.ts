@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, QueryRef, MutationResult } from 'apollo-angular';
-import { ADD_USER, LOGIN_USER } from '@app/graphql/schemas/mutations';
+import { ADD_USER, EDIT_USER, LOGIN_USER } from '@app/graphql/schemas/mutations';
+import { User } from '@app/graphql/schemas/typeInterfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,12 @@ export class UserService {
         password
       }
     });
+  }
+
+  editUser(id: string, updates: any) {
+    return this.apollo.mutate<{editUser: User}> ({
+      mutation: EDIT_USER,
+      variables: {id, updates}
+    })
   }
 }

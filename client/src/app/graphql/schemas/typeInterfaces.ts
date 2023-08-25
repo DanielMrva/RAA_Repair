@@ -151,6 +151,13 @@ export type UpdateRadioFields = {
     radioType: string    
 }
 
+export type UpdateUserFields = {
+    username: string,
+    email: string,
+    accessLevel: string
+    orgName: string
+}
+
 export type TableSearchParams = {
     queryType: string,
     queryParams: string,

@@ -128,7 +128,6 @@ const typeDefs = `#graphql
     input UpdateUserInput {
         username: String
         email: String
-        password: String
         accessLevel: String
         orgName: String
     }

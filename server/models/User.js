@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
-const Organization = require("./Organization")
+const Organization = require("./Organization");
 
 const userSchema = new Schema({
     username: {
@@ -46,6 +46,35 @@ userSchema.post("save", async function (next)  {
     await Organization.findOneAndUpdate({orgName: this.orgName}, {$addToSet: {users: this._id}})
 });
 
+userSchema.statics.updateOrganization = async function (_id, newOrgName) {
+    try {
+        const user = await this.findById(_id);
+
+        if (!user) {
+            throw new Error('User Not Found');
+        }
+
+        const oldOrgName = user.orgName;
+
+        if (oldOrgName !== newOrgName) {
+            await Organization.updateOne(
+                {orgName: oldOrgName},
+                { $pull: { users: _id} }
+            );
+
+            await Organization.updateOne(
+                { orgName: newOrgName},
+                { $addToSet: { users: _id} }
+            )
+
+            user.orgName = newOrgName;
+            await user.save();
+        }
+    } catch (error) {
+        console.log(`User Model - updateOrganization error: ${error}`);
+        throw new Error ('Failed to update user organization')
+    }
+};
 
 const User = model("User", userSchema);
 
