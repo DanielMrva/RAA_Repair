@@ -57,12 +57,13 @@ userSchema.statics.updateOrganization = async function (_id, newOrgName) {
         const oldOrgName = user.orgName;
 
         if (oldOrgName !== newOrgName) {
-            await Organization.updateOne(
+            console.log(`update: ${oldOrgName} to ${newOrgName}`)
+            await Organization.findOneAndUpdate(
                 {orgName: oldOrgName},
                 { $pull: { users: _id} }
-            );
+            )
 
-            await Organization.updateOne(
+            await Organization.findOneAndUpdate(
                 { orgName: newOrgName},
                 { $addToSet: { users: _id} }
             )
