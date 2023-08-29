@@ -52,6 +52,9 @@ const resolvers = {
         },
         orgNames: async () => {
             return Organization.find();
+        },
+        org: async (parent, { orgId }) => {
+            return Organization.findById({_id: orgId}).populate(["users", "radios"]);
         }
     },
     Mutation: {

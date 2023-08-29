@@ -1,6 +1,4 @@
 const {Schema, model} = require('mongoose');
-const User = require('./User');
-const Radio = require('./Radio')
 
 const orgSchema = new Schema({
     orgName: {
@@ -23,9 +21,17 @@ orgSchema.statics.updateUsersOrg = async function (oldOrgName, newOrgName) {
     if (oldOrgName !== newOrgName) {
 
         try {
+
+            const User = require('./User');
+
+
             const result = await User.updateMany({ orgName: oldOrgName }, { $set: { orgName: newOrgName } });
 
-            console.log(`${result.nModified} users' orgNames updated.`);
+            if (result.modifiedCount > 0) {
+                console.log(`${result.modifiedCount} users' orgNames updated.`);
+            } else {
+                console.log(`No users' orgNames were updated.`);
+            }
 
         } catch (error) {
 
@@ -36,13 +42,21 @@ orgSchema.statics.updateUsersOrg = async function (oldOrgName, newOrgName) {
     }
 };
 
-orgSchema.statics.updatesRadiosOrg = async function (oldOrgName, newOrgName) {
+orgSchema.statics.updateRadiosOrg = async function (oldOrgName, newOrgName) {
     if (oldOrgName !== newOrgName) {
         
         try {
+
+            const Radio = require('./Radio')
+
             const result = await Radio.updateMany({ orgName: oldOrgName}, { $set: { orgName: newOrgName}});
 
-            console.log(`${result.nModified} radios' orgNames updated.`);
+            if (result.modifiedCount > 0) {
+                console.log(`${result.modifiedCount} radios' orgNames updated.`);
+            } else {
+                console.log(`No radios' orgNames were updated.`);
+            }
+
         } catch (error) {
 
             console.error(`Organization Model - updateRadioOrg error: ${error}`);

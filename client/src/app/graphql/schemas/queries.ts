@@ -23,6 +23,21 @@ export const QUERY_SINGLEUSER = gql`
 
 `
 
+export const QUERY_SINGLEORG = gql`
+    query org($orgId: ID!) {
+        org(orgId: $orgId) {
+            _id
+            orgName
+            users {
+                _id
+            }
+            radios {
+                _id
+            }
+        }
+    }
+`
+
 export const ALL_RADIOS = gql`
     query allRadios {
         allRadios {

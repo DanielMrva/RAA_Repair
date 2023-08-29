@@ -15,6 +15,8 @@ import { EditRadioComponent } from '@app/components/edits/edit-radio/edit-radio.
 import { EditRepairComponent } from '@app/components/edits/edit-repair/edit-repair.component';
 import { EditUserComponent } from '@app/components/edits/edit-user/edit-user.component';
 import { OneUserComponent } from '@app/components/one-user/one-user.component';
+import { EditOrganizationComponent } from './components/edits/edit-organization/edit-organization.component';
+import { OneOrganizationComponent } from './components/one-organization/one-organization.component';
 
 const routes: Routes = [
   {
@@ -73,6 +75,13 @@ const routes: Routes = [
     }
   },
   {
+    path: 'one-org/:id',
+    component: OneOrganizationComponent,
+    data: {
+      role: ['admin', 'user']
+    }
+  },
+  {
     path: 'org-radio/:orgName',
     component: AdminRadioReportsComponent,
     data: {
@@ -98,6 +107,14 @@ const routes: Routes = [
   {
     path: 'edit-user/:id',
     component: EditUserComponent,
+    pathMatch: 'full',
+    data: {
+      role: ['admin']
+    }
+  },
+  {
+    path: 'edit-org/:id',
+    component: EditOrganizationComponent,
     pathMatch: 'full',
     data: {
       role: ['admin']

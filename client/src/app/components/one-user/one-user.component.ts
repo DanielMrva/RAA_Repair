@@ -16,6 +16,13 @@ export class OneUserComponent implements OnInit{
     private userService: UserService
   ) { }
 
+  loadUser(userId: string): void {
+    this.userService.querySingleUser(userId)
+    .subscribe(( { data } ) => {
+     this.user = data.user;
+    })   
+   }
+
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -25,10 +32,5 @@ export class OneUserComponent implements OnInit{
       
   }
 
-  loadUser(userId: string): void {
-   this.userService.querySingleUser(userId)
-   .subscribe(( { data } ) => {
-    this.user = data.user;
-   })   
-  }
+
 }

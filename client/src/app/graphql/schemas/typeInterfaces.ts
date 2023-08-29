@@ -158,6 +158,10 @@ export type UpdateUserFields = {
     orgName: string
 }
 
+export type UpdateOrgFields = {
+    orgName: string
+}
+
 export type TableSearchParams = {
     queryType: string,
     queryParams: string,

@@ -80,6 +80,7 @@ const typeDefs = `#graphql
         orgRadios(orgName: String!): [Radio]
         orgUsers(orgName: String!): [User]
         orgNames: [Organization]
+        org(orgId: ID!): Organization
     }
 
     input UpdateRepairInput {

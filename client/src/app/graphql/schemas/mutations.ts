@@ -263,3 +263,18 @@ export const EDIT_USER = gql`
     }
 `
 
+export const EDIT_ORG = gql`
+    mutation editOrg($id: ID!, $updates: UpdateOrgInput) {
+        editOrg(_id: $id, updates: $updates) {
+            _id
+            orgName
+            users {
+                _id
+            }
+            radios {
+                _id
+            }
+        }
+    }
+`
+

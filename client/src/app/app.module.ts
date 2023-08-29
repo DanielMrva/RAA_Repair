@@ -38,6 +38,7 @@ import { EditUserComponent } from './components/edits/edit-user/edit-user.compon
 import { EditRadioComponent } from './components/edits/edit-radio/edit-radio.component';
 import { EditOrganizationComponent } from './components/edits/edit-organization/edit-organization.component';
 import { OneUserComponent } from './components/one-user/one-user.component';
+import { OneOrganizationComponent } from './components/one-organization/one-organization.component';
 
 
 
@@ -60,6 +61,7 @@ import { OneUserComponent } from './components/one-user/one-user.component';
     EditRadioComponent,
     EditOrganizationComponent,
     OneUserComponent,
+    OneOrganizationComponent,
   ],
   imports: [
     BrowserModule,
