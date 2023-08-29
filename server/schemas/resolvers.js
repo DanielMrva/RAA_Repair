@@ -3,7 +3,7 @@ const { unwrapResolverError } = require('@apollo/server/errors');
 const { signToken } = require('../utils/auth');
 const { sign }=require('jsonwebtoken');
 const mongoose = require('mongoose');
-const { GraphQLError } = require('graphql');
+const { GraphQLError, graphql } = require('graphql');
 
 // TODO: Add Resolver Error Handling Per:
 
@@ -52,6 +52,9 @@ const resolvers = {
         },
         orgNames: async () => {
             return Organization.find();
+        },
+        org: async (parent, { orgId }) => {
+            return Organization.findById({_id: orgId}).populate(["users", "radios"]);
         }
     },
     Mutation: {
@@ -343,8 +346,48 @@ const resolvers = {
                 console.log(`resolver error: ${error}`);
                 throw new GraphQLError('Failed to Edit User')
             }
-        }
+        },
         // End Edit User
+        editOrg: async(parent, { _id, updates }) => {
+            try {
+
+                const oldOrg = await Organization.findById({_id});
+
+                if (!oldOrg) {
+                    throw new GraphQLError('Old Organization Not Found', {
+                        extensions: {
+                            code: 'Edit_Organization_Error_No_Old_Org'
+                        }
+                    });
+                }
+
+                const oldOrgName = oldOrg.orgName;
+
+                const org = await Organization.findByIdAndUpdate({_id}, {$set: updates}, {new: true});
+
+                if(!org) {
+                    throw new GraphQLError('Organization Not Found', {
+                        extensions: {
+                            code: 'Edit_Org_Error'
+                        }
+                    })
+                }
+
+                if (updates.orgName) {
+
+                    await Organization.updateUsersOrg(oldOrgName, updates.orgName);
+
+                    await Organization.updateRadiosOrg(oldOrgName, updates.orgName);
+
+                }
+
+                return org
+            } catch (error) {
+                console.log(`resolver error: ${error}`);
+                throw new GraphQLError('Failed to Edit Organization')
+            }
+        }
+        // End Edit Org
         
     }
 };

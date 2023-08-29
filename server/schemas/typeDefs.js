@@ -80,6 +80,7 @@ const typeDefs = `#graphql
         orgRadios(orgName: String!): [Radio]
         orgUsers(orgName: String!): [User]
         orgNames: [Organization]
+        org(orgId: ID!): Organization
     }
 
     input UpdateRepairInput {
@@ -130,6 +131,10 @@ const typeDefs = `#graphql
         username: String
         email: String
         accessLevel: String
+        orgName: String
+    }
+
+    input UpdateOrgInput {
         orgName: String
     }
 
@@ -208,6 +213,11 @@ const typeDefs = `#graphql
             _id: ID!
             updates: UpdateUserInput
         ): User
+
+        editOrg(
+            _id: ID!
+            updates: UpdateOrgInput
+        ): Organization
 
 
 

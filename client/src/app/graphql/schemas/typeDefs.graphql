@@ -76,6 +76,8 @@ type Query {
     repair(repairId: String!): Repair
     orgRadios(orgName: String!): [Radio]
     orgUsers(orgName: String!): [User]
+    orgNames: [Organization]
+    org: Organization
 }
 
 type Mutation {
@@ -140,4 +142,24 @@ type Mutation {
             refurb: Boolean,
             radioType: String
         ): Radio
+
+        editRepair(
+            _id: ID!
+            updates: UpdateRepairInput
+        ): Repair
+
+        editRadio(
+            _id: ID!
+            updates: UpdateRadioInput
+        ): Radio
+
+        editUser(
+            _id: ID!
+            updates: UpdateUserInput
+        ): User
+
+        editOrg(
+            _id: ID!
+            updates: UpdateOrgInput
+        ): Organization
 }

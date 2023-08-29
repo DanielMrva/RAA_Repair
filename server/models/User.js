@@ -1,6 +1,6 @@
-const { Schema, model } = require("mongoose");
-const bcrypt = require("bcrypt");
-const Organization = require("./Organization");
+const { Schema, model } = require('mongoose');
+const bcrypt = require('bcrypt');
+const Organization = require('./Organization');
 
 const userSchema = new Schema({
     username: {
@@ -72,7 +72,7 @@ userSchema.statics.updateOrganization = async function (_id, newOrgName) {
         }
     } catch (error) {
         console.log(`User Model - updateOrganization error: ${error}`);
-        throw new Error ('Failed to update user organization')
+        throw new Error (`Failed to update user organization ${error.message}`)
     }
 };
 
