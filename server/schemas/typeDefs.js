@@ -79,6 +79,7 @@ const typeDefs = `#graphql
         repair(repairId: String!): Repair
         orgRadios(orgName: String!): [Radio]
         orgUsers(orgName: String!): [User]
+        orgNames: [Organization]
     }
 
     input UpdateRepairInput {
@@ -123,6 +124,13 @@ const typeDefs = `#graphql
         warranty: String
         refurb: Boolean
         radioType: String
+    }
+
+    input UpdateUserInput {
+        username: String
+        email: String
+        accessLevel: String
+        orgName: String
     }
 
     type Mutation {
@@ -195,6 +203,11 @@ const typeDefs = `#graphql
             _id: ID!
             updates: UpdateRadioInput
         ): Radio
+
+        editUser(
+            _id: ID!
+            updates: UpdateUserInput
+        ): User
 
 
 

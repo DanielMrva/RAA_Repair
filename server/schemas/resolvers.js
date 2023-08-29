@@ -5,6 +5,21 @@ const { sign }=require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { GraphQLError } = require('graphql');
 
+// TODO: Add Resolver Error Handling Per:
+
+// Query: {
+//     orgNames: async () => {
+//       try {
+//         const organizations = await Organization.find();
+//         return organizations;
+//       } catch (error) {
+//         throw new Error("Failed to fetch organization names.");
+//       }
+//     }
+//   }
+  
+
+
 const resolvers = {
     Query: {
 
@@ -34,6 +49,9 @@ const resolvers = {
         },
         orgUsers: async (parent, {orgName}) => {
             return User.find({orgName: orgName});
+        },
+        orgNames: async () => {
+            return Organization.find();
         }
     },
     Mutation: {
@@ -302,6 +320,31 @@ const resolvers = {
             }
         },
         // End Edit Radio
+
+        editUser: async(parent, {_id, updates }) => {
+            try {
+
+                const user = await User.findOneAndUpdate({_id}, {$set: updates}, {new: true});
+
+                if (!user) {
+                    throw new GraphQLError('User Not Found', {
+                        extensions: {
+                            code: 'Edit_User_Error'
+                        }
+                    })
+                }
+
+                if (updates.orgName) {
+                    await User.updateOrganization(_id, updates.orgName);
+                }
+
+                return user
+            } catch (error) {
+                console.log(`resolver error: ${error}`);
+                throw new GraphQLError('Failed to Edit User')
+            }
+        }
+        // End Edit User
         
     }
 };

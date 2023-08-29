@@ -6,13 +6,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from '@app/components/home/home.component';
 import { LoginComponent } from '@app/components/login/login.component';
 import { SubmitServiceComponent } from '@app/components/submit-service/submit-service.component';
-import { OneRepairComponent } from './components/one-repair/one-repair.component';
-import { AddRadioComponent } from './components/add-radio/add-radio.component';
-import { OneRadioComponent } from './components/one-radio/one-radio.component';
-import { AdminRadioComponent } from './components/add-radio/admin-radio/admin-radio.component';
-import { AdminRadioReportsComponent } from './components/admin-radio-reports/admin-radio-reports.component';
-import { EditRadioComponent } from './components/edits/edit-radio/edit-radio.component';
-import { EditRepairComponent } from './components/edits/edit-repair/edit-repair.component';
+import { OneRepairComponent } from '@app/components/one-repair/one-repair.component';
+import { AddRadioComponent } from '@app/components/add-radio/add-radio.component';
+import { OneRadioComponent } from '@app/components/one-radio/one-radio.component';
+import { AdminRadioComponent } from '@app/components/add-radio/admin-radio/admin-radio.component';
+import { AdminRadioReportsComponent } from '@app/components/admin-radio-reports/admin-radio-reports.component';
+import { EditRadioComponent } from '@app/components/edits/edit-radio/edit-radio.component';
+import { EditRepairComponent } from '@app/components/edits/edit-repair/edit-repair.component';
+import { EditUserComponent } from '@app/components/edits/edit-user/edit-user.component';
+import { OneUserComponent } from '@app/components/one-user/one-user.component';
 
 const routes: Routes = [
   {
@@ -64,6 +66,13 @@ const routes: Routes = [
     }
   },
   {
+    path: 'one-user/:id',
+    component: OneUserComponent,
+    data: {
+      role: ['admin', 'user']
+    }
+  },
+  {
     path: 'org-radio/:orgName',
     component: AdminRadioReportsComponent,
     data: {
@@ -81,6 +90,14 @@ const routes: Routes = [
   {
     path: 'edit-radio/:id',
     component: EditRadioComponent,
+    pathMatch: 'full',
+    data: {
+      role: ['admin']
+    }
+  },  
+  {
+    path: 'edit-user/:id',
+    component: EditUserComponent,
     pathMatch: 'full',
     data: {
       role: ['admin']
