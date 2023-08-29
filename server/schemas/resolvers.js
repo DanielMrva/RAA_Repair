@@ -327,6 +327,11 @@ const resolvers = {
         editUser: async(parent, {_id, updates }) => {
             try {
 
+                if (updates.orgName) {
+
+                    await User.updateOrganization(_id, updates.orgName);
+                }
+
                 const user = await User.findOneAndUpdate({_id}, {$set: updates}, {new: true});
 
                 if (!user) {
@@ -335,10 +340,6 @@ const resolvers = {
                             code: 'Edit_User_Error'
                         }
                     })
-                }
-
-                if (updates.orgName) {
-                    await User.updateOrganization(_id, updates.orgName);
                 }
 
                 return user
