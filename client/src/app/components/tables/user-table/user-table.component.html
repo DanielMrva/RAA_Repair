@@ -1,1 +1,9 @@
-<p>user-table works!</p>
+<div *ngIf="dataSource.isLoading$ | async">Loading...</div>
+<table 
+    class="table"
+    mat-table
+    [dataSource]="dataSource"
+>
+    <!-- TODO: Lots of things... -->
+
+</table>
