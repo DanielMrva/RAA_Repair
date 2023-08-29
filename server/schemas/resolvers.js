@@ -5,6 +5,21 @@ const { sign }=require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { GraphQLError } = require('graphql');
 
+// TODO: Add Resolver Error Handling Per:
+
+// Query: {
+//     orgNames: async () => {
+//       try {
+//         const organizations = await Organization.find();
+//         return organizations;
+//       } catch (error) {
+//         throw new Error("Failed to fetch organization names.");
+//       }
+//     }
+//   }
+  
+
+
 const resolvers = {
     Query: {
 
@@ -34,6 +49,9 @@ const resolvers = {
         },
         orgUsers: async (parent, {orgName}) => {
             return User.find({orgName: orgName});
+        },
+        orgNames: async () => {
+            return Organization.find();
         }
     },
     Mutation: {

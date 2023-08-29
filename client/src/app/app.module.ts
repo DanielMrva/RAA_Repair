@@ -12,9 +12,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TableModule } from '@app/modules/tableModule/table/table.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
-import { BrowserAnimationsModule} from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 
@@ -35,6 +37,7 @@ import { EditRepairComponent } from './components/edits/edit-repair/edit-repair.
 import { EditUserComponent } from './components/edits/edit-user/edit-user.component';
 import { EditRadioComponent } from './components/edits/edit-radio/edit-radio.component';
 import { EditOrganizationComponent } from './components/edits/edit-organization/edit-organization.component';
+import { OneUserComponent } from './components/one-user/one-user.component';
 
 
 
@@ -56,6 +59,7 @@ import { EditOrganizationComponent } from './components/edits/edit-organization/
     EditUserComponent,
     EditRadioComponent,
     EditOrganizationComponent,
+    OneUserComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,7 +76,9 @@ import { EditOrganizationComponent } from './components/edits/edit-organization/
     MatInputModule,
     MatNativeDateModule,
     BrowserAnimationsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSelectModule,
+    MatProgressSpinnerModule
   ],
   providers: [ AuthService ],
   bootstrap: [ AppComponent ]

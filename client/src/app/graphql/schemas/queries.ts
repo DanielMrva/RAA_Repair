@@ -11,8 +11,8 @@ export const QUERY_USERS = gql`
 `
 
 export const QUERY_SINGLEUSER = gql`
-    query user($userId: String!) {
-        user(_id: $userId) {
+    query user($userId: ID!) {
+        user(userId: $userId) {
             _id
             username
             email
@@ -297,4 +297,14 @@ export const ORG_USERS = gql`
         }
     }
 `
+
+export const ORG_NAMES = gql`
+    query OrgNames {
+        orgNames {
+            _id
+            orgName
+        }
+    }
+`
+
 

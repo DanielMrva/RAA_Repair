@@ -252,7 +252,7 @@ export const Edit_Radio = gql`
 `
 
 export const EDIT_USER = gql`
-    mutation editUser($id: ID!, $updates: UpdateUserFields) {
+    mutation editUser($id: ID!, $updates: UpdateUserInput) {
         editUser(_id: $id, updates: $updates) {
             _id
             username
