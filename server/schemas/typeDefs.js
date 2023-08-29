@@ -213,6 +213,11 @@ const typeDefs = `#graphql
             updates: UpdateUserInput
         ): User
 
+        editOrg(
+            _id: ID!
+            updates: UpdateOrgInput
+        ): Organization
+
 
 
     }
