@@ -133,6 +133,10 @@ const typeDefs = `#graphql
         orgName: String
     }
 
+    input UpdateOrgInput {
+        orgName: String
+    }
+
     type Mutation {
         addUser(
             username: String!
