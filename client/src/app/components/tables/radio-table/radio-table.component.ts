@@ -11,7 +11,7 @@ import { TableSearchParams } from '@app/graphql/schemas';
   templateUrl: './radio-table.component.html',
   styleUrls: ['./radio-table.component.css']
 })
-export class RadioTableComponent implements OnInit{
+export class RadioTableComponent implements OnInit {
 
 
 

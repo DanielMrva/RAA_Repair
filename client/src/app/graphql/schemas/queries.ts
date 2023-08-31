@@ -341,34 +341,6 @@ export const QUERY_ORGS = gql`
                 progChannels
                 notes
                 serialNumber
-                serviceRecord {
-                    _id
-                    radioSerial
-                    dateReceived
-                    endUserPO
-                    raaPO
-                    repairTag
-                    dateSentTech
-                    dateRecTech
-                    dateSentEU
-                    techInvNum
-                    raaInvNum
-                    symptoms
-                    testFreq
-                    incRxSens
-                    incFreqErr
-                    incMod
-                    incPowerOut
-                    outRxSens
-                    outFreqErr
-                    outMod
-                    outPowerOut
-                    accessories
-                    workPerformed
-                    repHours
-                    partsUsed
-                    remarks
-                }
                 warranty
                 refurb
                 radioType

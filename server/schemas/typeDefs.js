@@ -81,7 +81,7 @@ const typeDefs = `#graphql
         orgUsers(orgName: String!): [User]
         orgNames: [Organization]
         org(orgId: ID!): Organization
-        allOrgs(): [Organization]
+        allOrgs: [Organization]
     }
 
     input UpdateRepairInput {

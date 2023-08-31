@@ -22,11 +22,20 @@ export class OrganizationDataSource extends DataSource<Organization> {
         this.organization$.complete();
     }
 
+    loadOneOrg(orgName: string): void {
+        this.isLoading$.next(true);
+        this.orgService.querySingleOrg(orgName).subscribe(( {data} ) => {
+            const oneOrgArray: Organization[] = [data.org] 
+            this.organization$.next(oneOrgArray);
+            this.isLoading$.next(false);
+        })
+    }
+
     loadAllOrgs(): void {
         this.isLoading$.next(true);
         this.orgService.allOrgs().subscribe(( {data} ) => {
-            this.organization$.next(data.allOrgs)
-            this.isLoading$.next(false)
+            this.organization$.next(data.allOrgs);
+            this.isLoading$.next(false);
         })
     }
 }
