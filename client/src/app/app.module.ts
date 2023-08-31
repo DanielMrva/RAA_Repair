@@ -40,6 +40,7 @@ import { EditOrganizationComponent } from './components/edits/edit-organization/
 import { OneUserComponent } from './components/one-user/one-user.component';
 import { OneOrganizationComponent } from './components/one-organization/one-organization.component';
 import { AdminUserReportsComponent } from './components/admin-user-reports/admin-user-reports.component';
+import { AdminOrgReportsComponent } from './components/admin-org-reports/admin-org-reports.component';
 
 
 
@@ -64,6 +65,7 @@ import { AdminUserReportsComponent } from './components/admin-user-reports/admin
     OneUserComponent,
     OneOrganizationComponent,
     AdminUserReportsComponent,
+    AdminOrgReportsComponent,
   ],
   imports: [
     BrowserModule,

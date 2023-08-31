@@ -22,9 +22,11 @@ export class OrganizationDataSource extends DataSource<Organization> {
         this.organization$.complete();
     }
 
-    loadOrgs(): void {
+    loadAllOrgs(): void {
         this.isLoading$.next(true);
-        // TODO: Implement methods on OrgService.  It is currently incomplete
-        // this.orgService.
+        this.orgService.allOrgs().subscribe(( {data} ) => {
+            this.organization$.next(data.allOrgs)
+            this.isLoading$.next(false)
+        })
     }
 }
