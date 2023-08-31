@@ -2,11 +2,13 @@ import { gql } from 'apollo-angular';
 
 export const QUERY_USERS = gql`
     query users {
-        _id
-        username
-        email
-        accessLevel
-        orgName
+        users {
+            _id
+            username
+            email
+            accessLevel
+            orgName
+        }
     }
 `
 

@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Sort } from "@angular/material/sort";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Radio } from "@app/graphql/schemas/typeInterfaces";
-import { RadioService } from "./radio.service";
+import { RadioService } from "@app/services/radios/radio.service";
 
 @Injectable()
 export class RadioDataSource extends DataSource<Radio> {

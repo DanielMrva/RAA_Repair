@@ -11,6 +11,7 @@ import { AddRadioComponent } from '@app/components/add-radio/add-radio.component
 import { OneRadioComponent } from '@app/components/one-radio/one-radio.component';
 import { AdminRadioComponent } from '@app/components/add-radio/admin-radio/admin-radio.component';
 import { AdminRadioReportsComponent } from '@app/components/admin-radio-reports/admin-radio-reports.component';
+import { AdminUserReportsComponent } from '@app/components/admin-user-reports/admin-user-reports.component';
 import { EditRadioComponent } from '@app/components/edits/edit-radio/edit-radio.component';
 import { EditRepairComponent } from '@app/components/edits/edit-repair/edit-repair.component';
 import { EditUserComponent } from '@app/components/edits/edit-user/edit-user.component';
@@ -87,7 +88,15 @@ const routes: Routes = [
     data: {
       role: ['admin']
     }
+  },  
+  {
+    path: 'user-reports',
+    component: AdminUserReportsComponent,
+    data: {
+      role: ['admin']
+    }
   },
+
   {
     path: 'edit-repair/:id',
     component: EditRepairComponent,

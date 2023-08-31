@@ -22,7 +22,19 @@ export class UserDataSource extends DataSource<User> {
         this.users$.complete();
     }
 
-    loadUsers(): void {
+    loadAllUsers(): void {
         this.isLoading$.next(true);
+        this.userService.queryUsers().subscribe(( {data}) => {
+            this.users$.next(data.users);
+            this.isLoading$.next(false);
+        })
+    }
+
+    loadOrgUsers(orgName: string): void {
+        this.isLoading$.next(true)
+        this.userService.queryOrgUsers(orgName).subscribe(( {data}) => {
+            this.users$.next(data.orgUsers);
+            this.isLoading$.next(false);
+        })
     }
 }

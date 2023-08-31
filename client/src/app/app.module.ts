@@ -39,6 +39,7 @@ import { EditRadioComponent } from './components/edits/edit-radio/edit-radio.com
 import { EditOrganizationComponent } from './components/edits/edit-organization/edit-organization.component';
 import { OneUserComponent } from './components/one-user/one-user.component';
 import { OneOrganizationComponent } from './components/one-organization/one-organization.component';
+import { AdminUserReportsComponent } from './components/admin-user-reports/admin-user-reports.component';
 
 
 
@@ -62,6 +63,7 @@ import { OneOrganizationComponent } from './components/one-organization/one-orga
     EditOrganizationComponent,
     OneUserComponent,
     OneOrganizationComponent,
+    AdminUserReportsComponent,
   ],
   imports: [
     BrowserModule,
