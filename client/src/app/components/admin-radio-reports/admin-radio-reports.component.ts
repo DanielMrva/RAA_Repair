@@ -31,12 +31,4 @@ export class AdminRadioReportsComponent implements OnInit {
       });
   }
 
-  loadOrgRadios(orgName: string): void {
-    this.radioService.orgRadios(orgName)
-    .subscribe(( { data } ) => {
-      console.log(data)
-      this.queryResults = data.orgRadios;
-    });
-  }
-
 }

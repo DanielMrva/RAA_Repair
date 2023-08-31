@@ -19,7 +19,8 @@ export class UserTableComponent implements OnInit {
   displayedColumns: string[] = [
     'username',
     'email',
-    'orgName'
+    'orgName',
+    'accessLevel'
   ]
 
   constructor(private userService: UserService) {}
