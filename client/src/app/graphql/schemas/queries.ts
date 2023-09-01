@@ -316,10 +316,42 @@ export const ORG_USERS = gql`
 `
 
 export const ORG_NAMES = gql`
-    query OrgNames {
+    query orgNames {
         orgNames {
             _id
             orgName
+        }
+    }
+`
+
+export const QUERY_ORGS = gql`
+    query allOrgs {
+        allOrgs {
+            _id
+            orgName
+            radios {
+                _id
+                orgName
+                location
+                dateSold
+                dateEntered
+                inventoryNumber
+                make
+                model
+                progChannels
+                notes
+                serialNumber
+                warranty
+                refurb
+                radioType
+            }
+            users {
+                _id
+                username
+                email
+                accessLevel
+                orgName
+            }
         }
     }
 `

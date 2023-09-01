@@ -18,6 +18,7 @@ import { EditUserComponent } from '@app/components/edits/edit-user/edit-user.com
 import { OneUserComponent } from '@app/components/one-user/one-user.component';
 import { EditOrganizationComponent } from './components/edits/edit-organization/edit-organization.component';
 import { OneOrganizationComponent } from './components/one-organization/one-organization.component';
+import { AdminOrgReportsComponent } from './components/admin-org-reports/admin-org-reports.component';
 
 const routes: Routes = [
   {
@@ -96,7 +97,13 @@ const routes: Routes = [
       role: ['admin']
     }
   },
-
+  {
+    path: 'org-reports',
+    component: AdminOrgReportsComponent,
+    data: {
+      role: ['admin']
+    }
+  },
   {
     path: 'edit-repair/:id',
     component: EditRepairComponent,
