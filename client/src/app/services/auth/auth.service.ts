@@ -40,6 +40,11 @@ export class AuthService {
     localStorage.setItem('token', JSON.stringify(auth));
   }
 
+  getUserAccessLevel(): string | null {
+    const user = this.loggedUser$.getValue();
+    return user ? user.accessLevel : null;
+  }
+
   logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('token');

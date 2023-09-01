@@ -1,0 +1,24 @@
+import { Component } from '@angular/core';
+import { AuthService } from '@app/services/auth/auth.service';
+import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER } from '@app/utils/constants';
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
+})
+export class DashboardComponent {
+
+  loggedUser$ = this.authService.loggedUser$;
+
+  userAccessLevel: string | null = this.authService.getUserAccessLevel();
+  
+  ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
+  USER_ACCESS = ACCESS_LEVEL_USER;
+  TECH_ACCESS = ACCESS_LEVEL_TECH;
+
+  constructor (private authService: AuthService) {
+    
+  }
+
+}
