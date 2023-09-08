@@ -1,29 +1,33 @@
+// External Modules
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { GraphQLModule } from '@app/graphql/graphql.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-// Services and Modules
-import { AuthService } from '@app/services/auth/auth.service';
-import { AppRoutingModule } from '@app/app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TableModule } from '@app/modules/tableModule/table/table.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+// APP Modules and Services
+
+import { AppRoutingModule } from '@app/app-routing.module';
+import { AuthService } from '@app/services/auth/auth.service';
+import { TableModule } from '@app/modules/tableModule/table/table.module';
+import { NavModule } from '@app/_modules/nav/nav.module';
+
+
 
 
 
 // Components
 import { AppComponent } from '@app/app.component';
 import { LoginComponent } from '@app/components/login/login.component';
-import { HeaderComponent } from '@app/components/header/header.component';
 import { HomeComponent } from '@app/components/home/home.component';
 import { SubmitServiceComponent } from '@app/components/submit-service/submit-service.component';
 import { AdminSubmitComponent } from '@app/components/submit-service/admin-submit/admin-submit.component';
@@ -54,7 +58,6 @@ import { TechDashboardComponent } from './components/dashboard/dashboards/tech-d
     AppComponent,
     HomeComponent,
     LoginComponent,
-    HeaderComponent,
     SubmitServiceComponent,
     AdminSubmitComponent,
     OneRepairComponent,
@@ -92,7 +95,8 @@ import { TechDashboardComponent } from './components/dashboard/dashboards/tech-d
     BrowserAnimationsModule,
     MatRadioModule,
     MatSelectModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NavModule
   ],
   providers: [ AuthService ],
   bootstrap: [ AppComponent ]

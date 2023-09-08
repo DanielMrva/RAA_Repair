@@ -94,7 +94,6 @@ const routes: Routes = [
   {
     path: 'user-reports',
     component: AdminUserReportsComponent,
-    outlet: 'dashboard',
     data: {
       role: ['admin']
     }
