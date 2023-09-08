@@ -41,6 +41,10 @@ import { OneUserComponent } from './components/one-user/one-user.component';
 import { OneOrganizationComponent } from './components/one-organization/one-organization.component';
 import { AdminUserReportsComponent } from './components/admin-user-reports/admin-user-reports.component';
 import { AdminOrgReportsComponent } from './components/admin-org-reports/admin-org-reports.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AdminDashboardComponent } from './components/dashboard/dashboards/admin-dashboard/admin-dashboard.component';
+import { UserDashboardComponent } from './components/dashboard/dashboards/user-dashboard/user-dashboard.component';
+import { TechDashboardComponent } from './components/dashboard/dashboards/tech-dashboard/tech-dashboard.component';
 
 
 
@@ -66,6 +70,10 @@ import { AdminOrgReportsComponent } from './components/admin-org-reports/admin-o
     OneOrganizationComponent,
     AdminUserReportsComponent,
     AdminOrgReportsComponent,
+    DashboardComponent,
+    AdminDashboardComponent,
+    UserDashboardComponent,
+    TechDashboardComponent,
   ],
   imports: [
     BrowserModule,

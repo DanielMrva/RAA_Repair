@@ -16,9 +16,10 @@ import { EditRadioComponent } from '@app/components/edits/edit-radio/edit-radio.
 import { EditRepairComponent } from '@app/components/edits/edit-repair/edit-repair.component';
 import { EditUserComponent } from '@app/components/edits/edit-user/edit-user.component';
 import { OneUserComponent } from '@app/components/one-user/one-user.component';
-import { EditOrganizationComponent } from './components/edits/edit-organization/edit-organization.component';
-import { OneOrganizationComponent } from './components/one-organization/one-organization.component';
-import { AdminOrgReportsComponent } from './components/admin-org-reports/admin-org-reports.component';
+import { EditOrganizationComponent } from '@app/components/edits/edit-organization/edit-organization.component';
+import { OneOrganizationComponent } from '@app/components/one-organization/one-organization.component';
+import { AdminOrgReportsComponent } from '@app/components/admin-org-reports/admin-org-reports.component';
+import { DashboardComponent } from '@app/components/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -93,6 +94,7 @@ const routes: Routes = [
   {
     path: 'user-reports',
     component: AdminUserReportsComponent,
+    outlet: 'dashboard',
     data: {
       role: ['admin']
     }
@@ -100,6 +102,7 @@ const routes: Routes = [
   {
     path: 'org-reports',
     component: AdminOrgReportsComponent,
+    outlet: 'dashboard',
     data: {
       role: ['admin']
     }
@@ -134,6 +137,14 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       role: ['admin']
+    }
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    pathMatch: 'full',
+    data: {
+      role: ['admin', 'user', 'tech']
     }
   },
   {
