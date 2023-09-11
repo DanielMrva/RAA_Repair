@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '@app/app-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HeaderComponent } from './header/header.component';
 import { AdminNavComponent } from './admin-nav/admin-nav.component';
@@ -19,8 +20,9 @@ import { AuthService } from '@app/services/auth/auth.service';
   ],
   imports: [
     CommonModule,
-    
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     HeaderComponent

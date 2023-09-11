@@ -25,6 +25,7 @@ export class RadioDataSource extends DataSource<Radio> {
     loadOrgRadios(orgName: string): void {
         this.isLoading$.next(true);
         this.radioService.orgRadios(orgName).subscribe(( {data} ) => {
+            console.log(data);
             this.radios$.next(data.orgRadios);
             this.isLoading$.next(false);
         });

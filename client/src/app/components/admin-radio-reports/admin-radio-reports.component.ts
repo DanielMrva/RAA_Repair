@@ -20,14 +20,20 @@ export class AdminRadioReportsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private radioService: RadioService
   ) {}
 
 
   ngOnInit(): void {
-      this.route.params.subscribe((params) => {
+
+      this.route.paramMap.subscribe((params) => {
         this.queryParams.queryType = 'orgRadios'
-        this.queryParams.queryParams = params['orgName'];
+        const tempQueryParams = params.get('orgName');
+
+        if (tempQueryParams) {
+          this.queryParams.queryParams = tempQueryParams;
+        } else {
+          this.queryParams.queryParams = 'raa'
+        }
       });
   }
 

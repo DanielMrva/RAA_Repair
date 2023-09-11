@@ -18,7 +18,7 @@
             <ng-container *ngIf="{loggedUser: loggedUser$ | async} as data">
 
    
-                <ng-container *ngIf="data.loggedUser !== null && data.loggedUser !== undefined">
+                <ng-container *ngIf="data.loggedUser !== null && data.loggedUser !== undefined else elseBlock">
 
                     <li class="nav-item">
                         <a [routerLink]="['/dashboard']" class="nav-link">Dashboard</a>

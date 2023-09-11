@@ -1,4 +1,4 @@
-import { Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { RadioDataSource } from '@app/services/radios/radio.dataSource';
 import { RadioService } from '@app/services/radios/radio.service';
@@ -11,7 +11,7 @@ import { TableSearchParams } from '@app/graphql/schemas';
   templateUrl: './radio-table.component.html',
   styleUrls: ['./radio-table.component.css']
 })
-export class RadioTableComponent implements OnInit {
+export class RadioTableComponent implements OnInit{
 
 
 
@@ -43,6 +43,9 @@ export class RadioTableComponent implements OnInit {
   constructor(private radioService: RadioService) {}
 
   ngOnInit(): void {
+
+    this.dataSource = new RadioDataSource(this.radioService);
+
     switch (this.searchParams.queryType) {
       case 'orgRadios': this.dataSource.loadOrgRadios(this.searchParams.queryParams);
         break;
@@ -50,4 +53,5 @@ export class RadioTableComponent implements OnInit {
     }
 
   }
+
 }

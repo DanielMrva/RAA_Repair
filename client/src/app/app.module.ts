@@ -1,5 +1,6 @@
 // External Modules
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { GraphQLModule } from '@app/graphql/graphql.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -80,6 +81,7 @@ import { TechDashboardComponent } from './components/dashboard/dashboards/tech-d
   ],
   imports: [
     BrowserModule,
+    RouterModule,
     FontAwesomeModule,
     AppRoutingModule,
     HttpClientModule,
