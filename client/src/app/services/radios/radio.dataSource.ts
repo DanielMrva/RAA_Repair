@@ -15,6 +15,7 @@ export class RadioDataSource extends DataSource<Radio> {
     }
 
     connect(): Observable<Radio[]> {
+        console.log(`dataSource: connect`)
         return this.radios$.asObservable();
     }
 
