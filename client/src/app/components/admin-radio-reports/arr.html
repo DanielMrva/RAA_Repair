@@ -1,0 +1,13 @@
+<div>
+    <h1>Parent Component</h1>
+    <!-- Display query parameters -->
+    <p>Query Parameters: {{ queryParams | async | json }}</p>
+  </div>
+  
+  <!-- Child component with data binding -->
+  <app-radio-table
+    [items]="dataItems$ | async"
+    [loading]="dataLoading$ | async"
+    [error]="dataError$ | async"
+  ></app-radio-table>
+  
