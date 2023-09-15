@@ -52,10 +52,10 @@ export class RadioTableComponent implements OnInit, OnChanges{
     console.log('r-t loadData')
     switch (this.searchParams.queryType) {
       case 'orgRadios':
-        // this.dataSource.loadOrgRadios(this.searchParams.queryParams);
+        this.dataSource.loadOrgRadios(this.searchParams.queryParams);
         break;
       default:
-        // this.dataSource.loadAllRadios();
+        this.dataSource.loadAllRadios();
     }
   }
 
@@ -68,10 +68,10 @@ export class RadioTableComponent implements OnInit, OnChanges{
     switch (this.searchParams.queryType) {
       case 'orgRadios': {
         console.log(`r-t switch: ${this.searchParams.queryParams}`)
-        // this.dataSource.loadOrgRadios(this.searchParams.queryParams);
+        this.dataSource.loadOrgRadios(this.searchParams.queryParams);
       }
         break;
-      // default: this.dataSource.loadAllRadios();
+      default: this.dataSource.loadAllRadios();
     }
 
   }
