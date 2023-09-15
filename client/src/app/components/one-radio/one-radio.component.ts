@@ -26,7 +26,7 @@ export class OneRadioComponent implements OnInit {
   }
 
   loadRadio(radioId: string): void {
-    this.radioService.querySingleRadio(radioId)
+    this.radioService.querySingleRadio(radioId).valueChanges
     .subscribe(({ data }) => {
       this.radio = data.radio;
     });

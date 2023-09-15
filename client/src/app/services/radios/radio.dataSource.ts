@@ -15,6 +15,7 @@ export class RadioDataSource extends DataSource<Radio> {
     }
 
     connect(): Observable<Radio[]> {
+        console.log(`dataSource: connect`)
         return this.radios$.asObservable();
     }
 
@@ -24,7 +25,8 @@ export class RadioDataSource extends DataSource<Radio> {
 
     loadOrgRadios(orgName: string): void {
         this.isLoading$.next(true);
-        this.radioService.orgRadios(orgName).subscribe(( {data} ) => {
+        this.radioService.orgRadios(orgName).valueChanges.subscribe(( {data} ) => {
+            console.log(data);
             this.radios$.next(data.orgRadios);
             this.isLoading$.next(false);
         });
@@ -32,7 +34,7 @@ export class RadioDataSource extends DataSource<Radio> {
 
     loadAllRadios(): void {
         this.isLoading$.next(true);
-        this.radioService.allRadios().subscribe(( {data} ) => {
+        this.radioService.allRadios().valueChanges.subscribe(( {data} ) => {
             this.radios$.next(data.radios);
             this.isLoading$.next(false);
         });

@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    
+    <a class="navbar-brand" href="#">Radios Across America</a>
+
+  
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+        <span class="navbar-toggler-icon"></span>
+  
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+        <ul class="navbar-nav">
+
+            <a [routerLink]="['/']" class="nav-link">Home</a>
+
+            <ng-container *ngIf="{loggedUser: loggedUser$ | async} as data">
+
+   
+                <ng-container *ngIf="data.loggedUser !== null && data.loggedUser !== undefined else elseBlock">
+
+                    <li class="nav-item">
+                        <a [routerLink]="['/dashboard']" class="nav-link">Dashboard</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <div class="nav-link" (click)="logout()">Logout</div>
+                    </li>
+            
+                </ng-container>
+
+
+
+            
+            
+            </ng-container>
+
+            <ng-template #elseBlock>
+                <li class="nav-item">
+                    <a [routerLink]="['/login']" class="nav-link">Login</a>
+                </li>
+            </ng-template>
+    
+
+
+        </ul>
+
+        <ng-container [ngSwitch]="userAccessLevel">
+
+            <app-admin-nav *ngSwitchCase="ADMIN_ACCESS"></app-admin-nav>
+
+            <app-tech-nav *ngSwitchCase="TECH_ACCESS"></app-tech-nav>
+
+            <app-user-nav *ngSwitchCase="USER_ACCESS"></app-user-nav>
+
+            <li class="nav-item" *ngSwitchDefault><a [routerLink]="['/login']" class="nav-link">Cannot Establish Access Level</a>
+            </li>
+
+
+        </ng-container>
+
+
+    </div>
+
+
+</nav>

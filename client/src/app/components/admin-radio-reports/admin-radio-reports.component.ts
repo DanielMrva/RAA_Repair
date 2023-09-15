@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RadioService } from '@app/services/radios/radio.service';
 import { Radio } from '@app/graphql/schemas/typeInterfaces';
@@ -20,15 +20,31 @@ export class AdminRadioReportsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private radioService: RadioService
-  ) {}
+  ) {
+
+    console.log(`ARR: constructor`)
+  }
 
 
   ngOnInit(): void {
-      this.route.params.subscribe((params) => {
+
+      this.route.paramMap.subscribe((params) => {
+        console.log(`admin-r-report init w/ ${params.get('orgName')}`)
         this.queryParams.queryType = 'orgRadios'
-        this.queryParams.queryParams = params['orgName'];
+        const tempQueryParams = params.get('orgName');
+
+        if (tempQueryParams) {
+          console.log(`TQP: ${tempQueryParams}`)
+
+          this.queryParams.queryParams = tempQueryParams;
+          console.log(`ARC: queryParams Obj: ${this.queryParams.queryType},  ${this.queryParams.queryParams}`)
+
+        } else {
+          this.queryParams.queryParams = 'raa'
+        }
       });
   }
+
+
 
 }

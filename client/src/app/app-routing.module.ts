@@ -87,6 +87,8 @@ const routes: Routes = [
   {
     path: 'org-radio/:orgName',
     component: AdminRadioReportsComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
     data: {
       role: ['admin']
     }
@@ -94,7 +96,6 @@ const routes: Routes = [
   {
     path: 'user-reports',
     component: AdminUserReportsComponent,
-    outlet: 'dashboard',
     data: {
       role: ['admin']
     }
