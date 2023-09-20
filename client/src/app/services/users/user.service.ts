@@ -23,11 +23,11 @@ export class UserService {
     });
   }
 
-  loginUser(username: string, password: string) {
+  loginUser(email: string, password: string) {
     return this.apollo.mutate({
       mutation: LOGIN_USER,
       variables: {
-        username,
+        email,
         password
       }
     });

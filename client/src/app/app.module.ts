@@ -1,5 +1,5 @@
 // External Modules
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { GraphQLModule } from '@app/graphql/graphql.module';
@@ -50,6 +50,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminDashboardComponent } from './components/dashboard/dashboards/admin-dashboard/admin-dashboard.component';
 import { UserDashboardComponent } from './components/dashboard/dashboards/user-dashboard/user-dashboard.component';
 import { TechDashboardComponent } from './components/dashboard/dashboards/tech-dashboard/tech-dashboard.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
 
@@ -98,7 +101,10 @@ import { TechDashboardComponent } from './components/dashboard/dashboards/tech-d
     MatRadioModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    NavModule
+    NavModule,
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ],
   providers: [ AuthService ],
   bootstrap: [ AppComponent ]

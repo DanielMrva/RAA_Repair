@@ -79,7 +79,7 @@ export type LoginResults = {
 };
 
 export type LoginVariables = {
-    username: string,
+    email: string,
     password: string
 };
 
