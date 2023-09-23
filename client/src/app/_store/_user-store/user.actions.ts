@@ -61,7 +61,7 @@ export const editUser = createAction(
             password?: string,
             orgName?: string,
             accessLevel?: string
-    }>
+    }>()
 );
 
 export const editUserSucess = createAction(
