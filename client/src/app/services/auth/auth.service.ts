@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { User} from '@app/graphql/schemas';
+import { Auth, User} from '@app/graphql/schemas';
 
 
 @Injectable({
@@ -36,7 +36,7 @@ export class AuthService {
     this.loggedUser$.next(user);
   }
 
-  saveUserToken(auth: String) {
+  saveUserToken(auth: Auth) {
     localStorage.setItem('token', JSON.stringify(auth));
   }
 

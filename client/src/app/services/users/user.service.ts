@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, QueryRef, MutationResult } from 'apollo-angular';
 import { ADD_USER, EDIT_USER, LOGIN_USER } from '@app/graphql/schemas/mutations';
-import { UpdateUserFields, User } from '@app/graphql/schemas/typeInterfaces';
+import { Auth, LoginResults, UpdateUserFields, User } from '@app/graphql/schemas/typeInterfaces';
 import { ORG_USERS, QUERY_SINGLEUSER, QUERY_USERS } from '@app/graphql/schemas/queries';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class UserService {
   constructor(private apollo: Apollo) { }
 
   addUser(username: string, email: string, password: string, orgName: string) {
-    return this.apollo.mutate({
+    return this.apollo.mutate<{addUser: User}>({
       mutation: ADD_USER, 
       variables: {
         username,
@@ -24,7 +24,7 @@ export class UserService {
   }
 
   loginUser(email: string, password: string) {
-    return this.apollo.mutate({
+    return this.apollo.mutate<{loginUser: LoginResults}>({
       mutation: LOGIN_USER,
       variables: {
         email,

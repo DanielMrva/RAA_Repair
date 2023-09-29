@@ -1,8 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { 
-        loginUser, 
-        addUser, 
+        loginUser,
+        loginUserSuccess,
+        loginUserFailure,
+        addUser,
+        addUserSuccess,
+        addUserFailure, 
         loadUsers, 
         loadUsersSucess, 
         loadUsersFailure,
@@ -15,10 +19,11 @@ import {
     } from "./user.actions";
 import { UserService } from "@app/services/users/user.service";
 import { of, from } from "rxjs";
-import { switchMap, map, catchError, withLatestFrom } from "rxjs/operators";
-import { Store } from "@ngrx/store";
+import { switchMap, map, catchError, withLatestFrom, exhaustMap } from "rxjs/operators";
+import { Store, createAction } from "@ngrx/store";
 import { selectAllUsers } from "./user.selectors";
 import { AppState } from "../app.state";
+import { create } from "domain";
 
 @Injectable()
 export class UserEffects {
@@ -42,6 +47,57 @@ export class UserEffects {
                 )
             )
         )
-    )
+    );
+
+    loadOneUser$ = createEffect(() => 
+        this.actions$.pipe(
+            ofType(loadOneUser),
+            switchMap(( { userId } ) => 
+                from(this.userService.querySingleUser(userId)).pipe(
+                    map(( {data} ) => loadOneUserSucess( {user: data.user})),
+                    catchError((error) => of(loadOneUserFailure({ error })))
+                )
+            )
+        )
+    );
+
+    addUser$ = createEffect(() => 
+        this.actions$.pipe(
+            ofType(addUser),
+            switchMap(( { username, email, password, orgName} ) =>
+                this.userService.addUser(username, email, password, orgName).pipe(
+                    map(( { data }) => addUserSuccess({ user: data?.addUser})),
+                    catchError((error) => of(addUserFailure({ error })))
+                    
+                    
+                )
+            )
+        )
+    );
+
+    editUser$ = createEffect(() => 
+        this.actions$.pipe(
+            ofType(editUser),
+            switchMap(( { id, updates }) => 
+                this.userService.editUser(id, updates).pipe(
+                    map(( { data }) => editUserSucess({ user: data?.editUser})),
+                    catchError((error) => of(editUserFailure({ error })))
+                )
+            )
+        )
+    );
+
+    loginUser$ = createEffect(() => 
+        this.actions$.pipe(
+            ofType(loginUser),
+            switchMap(( { email, password}) => 
+                this.userService.loginUser( email, password).pipe(
+                    map(( { data } ) => loginUserSuccess({ loginResults: data?.loginUser})),
+                    catchError((error) => of(loginUserFailure({ error})))
+                )
+            )
+        )
+    );
+
 }
 

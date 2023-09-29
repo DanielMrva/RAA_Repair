@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ADD_USER, LOGIN_USER } from 'src/app/graphql/schemas';
+import { ADD_USER, LOGIN_USER, User } from 'src/app/graphql/schemas';
 import { Apollo } from 'apollo-angular';
+import { UserService } from '@app/services/users/user.service';
 import { AuthService } from '@app/services/auth/auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastService } from '@app/services/toast/toast.service';
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit{
 
   constructor(
               private formBuilder: FormBuilder,
+              private userService: UserService,
               private authService: AuthService,
               private router: Router,
               private apollo: Apollo,
@@ -37,31 +39,43 @@ export class LoginComponent implements OnInit{
   onSubmit() {
 
     if (this.login) {
-      this.apollo.mutate<any>({
-        mutation: LOGIN_USER,
-        variables: {
-          email: this.loginForm.value.email,
-          password: this.loginForm.value.password
-        }
-      }) .subscribe({next: (result) => {
 
-        this.authService.saveUserData(result.data.login.user);
-        this.authService.saveUserToken(result.data.login.token);
+      if (this.loginForm.value.email && this.loginForm.value.password) {
+        this.userService.loginUser(this.loginForm.value.email, this.loginForm.value.password)
 
-        this.toastService.show(`Welcome ${result.data.login.user.username} !`, {
-          classname: 'bg-success text-light',
-          delay: 3000
-        });
+        // this.apollo.mutate<any>({
+        //   mutation: LOGIN_USER,
+        //   variables: {
+        //     email: this.loginForm.value.email,
+        //     password: this.loginForm.value.password
+        //   }
+        // }) 
+        .subscribe({next: (result) => {
 
-        this.router.navigate(['/']);
-      }, error: (error) => {
-        console.error(error);
-        this.toastService.show(`${error}`, {
-          classname: 'bg-danger text-light',
-          delay: 3000
-        });
+          if (result.data?.loginUser.user) {
+            this.authService.saveUserData(result.data?.loginUser.user)
+            this.authService.saveUserToken(result.data?.loginUser.token)
 
-      }});
+          }
+  
+  
+          this.toastService.show(`Welcome ${result.data?.loginUser.user.username} !`, {
+            classname: 'bg-success text-light',
+            delay: 3000
+          });
+  
+          this.router.navigate(['/']);
+        }, error: (error) => {
+          console.error(error);
+          this.toastService.show(`${error}`, {
+            classname: 'bg-danger text-light',
+            delay: 3000
+          });
+  
+        }});
+      }
+
+
     } else {
       this.apollo.mutate<any> ({
         mutation: ADD_USER,
