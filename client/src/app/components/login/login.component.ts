@@ -40,40 +40,31 @@ export class LoginComponent implements OnInit{
 
     if (this.login) {
 
-      if (this.loginForm.value.email && this.loginForm.value.password) {
-        this.userService.loginUser(this.loginForm.value.email, this.loginForm.value.password)
+      this.apollo.mutate<any>({
+        mutation: LOGIN_USER,
+        variables: {
+          email: this.loginForm.value.email,
+          password: this.loginForm.value.password
+        }
+      }) .subscribe({next: (result) => {
 
-        // this.apollo.mutate<any>({
-        //   mutation: LOGIN_USER,
-        //   variables: {
-        //     email: this.loginForm.value.email,
-        //     password: this.loginForm.value.password
-        //   }
-        // }) 
-        .subscribe({next: (result) => {
+        this.authService.saveUserData(result.data.login.user);
+        this.authService.saveUserToken(result.data.login.token);
 
-          if (result.data?.loginUser.user) {
-            this.authService.saveUserData(result.data?.loginUser.user)
-            this.authService.saveUserToken(result.data?.loginUser.token)
+        this.toastService.show(`Welcome ${result.data.login.user.username} !`, {
+          classname: 'bg-success text-light',
+          delay: 3000
+        });
 
-          }
-  
-  
-          this.toastService.show(`Welcome ${result.data?.loginUser.user.username} !`, {
-            classname: 'bg-success text-light',
-            delay: 3000
-          });
-  
-          this.router.navigate(['/']);
-        }, error: (error) => {
-          console.error(error);
-          this.toastService.show(`${error}`, {
-            classname: 'bg-danger text-light',
-            delay: 3000
-          });
-  
-        }});
-      }
+        this.router.navigate(['/']);
+      }, error: (error) => {
+        console.error(error);
+        this.toastService.show(`${error}`, {
+          classname: 'bg-danger text-light',
+          delay: 3000
+        });
+
+      }});
 
 
     } else {
