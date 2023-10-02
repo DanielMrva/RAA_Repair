@@ -166,3 +166,5 @@ export type TableSearchParams = {
     queryType: string,
     queryParams: string,
 }
+
+export type statusType = 'pending' | 'loading' | 'error' | 'success' 

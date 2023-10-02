@@ -5,7 +5,7 @@ export interface NavState {
     clickedRoute: string | null;
     routeParams: string | null;
     error: string | null;
-    status: 'pending' | 'loading' | 'error' | 'sucess';
+    status: 'pending' | 'loading' | 'error' | 'success';
 };
 
 export const initialState: NavState = {

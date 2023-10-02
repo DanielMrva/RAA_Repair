@@ -73,7 +73,7 @@ export class EditRadioComponent implements OnInit {
         const editedRadio = result.data?.editRadio ?? null;
 
         if(editedRadio) {
-          this.toastService.show('Repair Edited Sucessfully', {
+          this.toastService.show('Repair Edited successfully', {
             delay: 3000
           })
 

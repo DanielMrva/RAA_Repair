@@ -6,7 +6,7 @@ export interface RepairState {
     oneRepair: Repair | null;
     repairs: Repair[];
     error: string | null;
-    status: 'pending' | 'loading' | 'error' | 'sucess';
+    status: 'pending' | 'loading' | 'error' | 'success';
 };
 
 export const initialState: RepairState = {

@@ -131,7 +131,7 @@ export class EditRepairComponent implements OnInit {
       const editedRepair = result.data?.editRepair ?? null;
 
       if(editedRepair) {
-        this.toastService.show('Repair Edited Sucessfully!', {
+        this.toastService.show('Repair Edited successfully!', {
           delay: 3000
         })
 

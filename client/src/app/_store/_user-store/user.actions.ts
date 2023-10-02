@@ -39,7 +39,7 @@ export const addUserFailure = createAction(
 
 export const loadUsers = createAction('[User Reports Page] Load Users');
 
-export const loadUsersSucess = createAction(
+export const loadUsersSuccess = createAction(
     '[User Service] Load Users Success',
     props<{ users: User[] }>()    
 );
@@ -54,7 +54,7 @@ export const loadOneUser = createAction(
     props<{ userId: string}>()
 );
 
-export const loadOneUserSucess = createAction(
+export const loadOneUserSuccess = createAction(
     '[User Service] Load One User Successs',
     props<{ user: User}>()
 );
@@ -66,7 +66,7 @@ export const loadOneUserFailure = createAction(
 
 export const loadOrgUsers = createAction('[Org User Reports Page] Load Org Users');
 
-export const loadOrgUsersSucess = createAction(
+export const loadOrgUsersSuccess = createAction(
     '[User Service] Load Org Users Success',
     props<{ users: User[] }>()    
 );
@@ -83,7 +83,7 @@ export const editUser = createAction(
     }>()
 );
 
-export const editUserSucess = createAction(
+export const editUserSuccess = createAction(
     '[User Service]',
     props<{ user?: User }>()
 );

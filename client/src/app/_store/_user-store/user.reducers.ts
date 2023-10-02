@@ -1,24 +1,32 @@
 import { createReducer, on } from "@ngrx/store";
 import { 
     loginUser, 
-    addUser, 
+    loginUserSuccess,
+    loginUserFailure,
+    addUser,
+    addUserSuccess,
+    addUserFailure,
     loadUsers, 
-    loadUsersSucess, 
+    loadUsersSuccess, 
     loadUsersFailure,
     loadOneUser,
-    loadOneUserSucess,
+    loadOneUserSuccess,
     loadOneUserFailure,
+    loadOrgUsers,
+    loadOrgUsersSuccess,
+    loadOrgUsersFailure,
     editUser,
-    editUserSucess,
+    editUserSuccess,
     editUserFailure
 } from "./user.actions";
-import { User } from "@app/graphql/schemas";
+import { User, statusType } from "@app/graphql/schemas";
+
 
 export interface UserState {
     oneUser: User | null;
     users: User[];
     error: string | null;
-    status: 'pending' | 'loading' | 'error' | 'sucess';
+    status: 'pending' | 'loading' | 'error' | 'success';
 };
 
 export const initialState: UserState = {
@@ -26,4 +34,121 @@ export const initialState: UserState = {
     users: [],
     error: null,
     status: 'pending'
-}
+};
+
+export const userReducer = createReducer(
+
+    initialState,
+
+    on(loginUser, state => ({ ...state, status: 'pending' as statusType, error: null,})),
+
+    on(loginUserSuccess, (state, { loginResults}) => ({
+        ...state,
+        status: "success" as statusType,
+        error: null
+        // TODO:  Handle the login results here, this likely requires an AuthStore dispatch?...
+    })),
+
+    on(loadOneUserFailure, (state, { error}) => ({
+        ...state,
+        status: 'error' as statusType,
+        error: error
+    })),
+
+    on(addUser, (state) => ({
+        ...state,
+        status: "loading" as statusType,
+        error: null,
+
+    })),
+
+    on(addUserSuccess, (state, { user }) => ({
+        ...state,
+        oneUser: user as User,
+        status: 'success' as statusType,
+        error: null,
+    })),
+
+    on(addUserFailure, (state, { error }) => ({
+        ...state,
+        status: 'error' as statusType,
+        error: error
+    })),
+
+    on(loadUsers, (state) => ({
+        ...state,
+        status: "loading" as statusType,
+        error: null,
+    })),
+
+    on(loadUsersSuccess, (state, { users }) => ({
+        ...state,
+        users: users as User[],
+        status: 'success' as statusType,
+        error: null,
+    })),
+
+    on(loadUsersFailure, (state, { error }) => ({
+        ...state,
+        status: 'error' as statusType,
+        error: error
+    })),
+
+    on(loadOneUser, (state) => ({
+        ...state,
+        status: "loading" as statusType,
+        error: null,
+
+    })),
+
+    on(loadOneUserSuccess, (state, { user }) => ({
+        ...state,
+        oneUser: user as User,
+        status: 'success' as statusType,
+        error: null,
+    })),
+
+    on(loadOneUserFailure, (state, { error }) => ({
+        ...state,
+        status: 'error' as statusType,
+        error: error
+    })),
+
+    on(loadOrgUsers, (state) => ({
+        ...state,
+        status: "loading" as statusType,
+        error: null,
+    })),
+
+    on(loadOrgUsersSuccess, (state, { users }) => ({
+        ...state,
+        users: users as User[],
+        status: 'success' as statusType,
+        error: null,
+    })),
+
+    on(loadOrgUsersFailure, (state, { error }) => ({
+        ...state,
+        status: 'error' as statusType,
+        error: error
+    })),
+
+    on(editUser, (state) => ({
+        ...state,
+        status: 'loading' as statusType,
+        error: null
+    })),
+
+    on(editUserSuccess, (state, { user }) => ({
+        ...state,
+        oneUser: user as User,
+        status: 'success' as statusType,
+        error: null
+    })),
+
+    on(editUserFailure, (state, { error }) => ({
+        ...state,
+        status: 'error' as statusType,
+        error: error
+    }))
+)

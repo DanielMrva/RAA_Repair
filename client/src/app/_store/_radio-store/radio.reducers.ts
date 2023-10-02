@@ -6,7 +6,7 @@ export interface RadioState {
     oneRadio: Radio | null;
     Radios: Radio[];
     error: string | null;
-    status: 'pending' | 'loading' | 'error' | 'sucess';
+    status: 'pending' | 'loading' | 'error' | 'success';
 };
 
 export const initialState: RadioState = {

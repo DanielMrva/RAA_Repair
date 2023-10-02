@@ -8,13 +8,13 @@ import {
         addUserSuccess,
         addUserFailure, 
         loadUsers, 
-        loadUsersSucess, 
+        loadUsersSuccess, 
         loadUsersFailure,
         loadOneUser,
-        loadOneUserSucess,
+        loadOneUserSuccess,
         loadOneUserFailure,
         editUser,
-        editUserSucess,
+        editUserSuccess,
         editUserFailure
     } from "./user.actions";
 import { UserService } from "@app/services/users/user.service";
@@ -41,7 +41,7 @@ export class UserEffects {
                 // call 
                 from(this.userService.queryUsers()).pipe(
                     // Take the returned data from ApolloQueryResult and return a new success action containing the users
-                    map(( {data} ) => loadUsersSucess({ users: data.users})),
+                    map(( {data} ) => loadUsersSuccess({ users: data.users})),
                     // Or if there are errors, return a new failure action with the error
                     catchError((error) => of(loadUsersFailure({ error })))
                 )
@@ -54,7 +54,7 @@ export class UserEffects {
             ofType(loadOneUser),
             switchMap(( { userId } ) => 
                 from(this.userService.querySingleUser(userId)).pipe(
-                    map(( {data} ) => loadOneUserSucess( {user: data.user})),
+                    map(( {data} ) => loadOneUserSuccess( {user: data.user})),
                     catchError((error) => of(loadOneUserFailure({ error })))
                 )
             )
@@ -80,7 +80,7 @@ export class UserEffects {
             ofType(editUser),
             switchMap(( { id, updates }) => 
                 this.userService.editUser(id, updates).pipe(
-                    map(( { data }) => editUserSucess({ user: data?.editUser})),
+                    map(( { data }) => editUserSuccess({ user: data?.editUser})),
                     catchError((error) => of(editUserFailure({ error })))
                 )
             )

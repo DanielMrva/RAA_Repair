@@ -6,7 +6,7 @@ export interface OrgState {
     oneOrganization: Organization | null;
     Organizations: Organization[];
     error: string | null;
-    status: 'pending' | 'loading' | 'error' | 'sucess';
+    status: 'pending' | 'loading' | 'error' | 'success';
 };
 
 export const initialState: OrgState = {
