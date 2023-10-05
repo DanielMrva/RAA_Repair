@@ -49,6 +49,12 @@ export const userReducer = createReducer(
         // TODO:  Handle the login results here, this likely requires an AuthStore dispatch?...
     })),
 
+    on(loginUserFailure, (state, { error }) => ({
+        ...state,
+        status: "error" as statusType,
+        error: error
+    })),
+
     on(loadOneUserFailure, (state, { error}) => ({
         ...state,
         status: 'error' as statusType,

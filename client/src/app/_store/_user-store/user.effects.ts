@@ -4,6 +4,7 @@ import {
         loginUser,
         loginUserSuccess,
         loginUserFailure,
+        logoutUser,
         addUser,
         addUserSuccess,
         addUserFailure, 
@@ -17,13 +18,13 @@ import {
         editUserSuccess,
         editUserFailure
     } from "./user.actions";
+import { setAuthInfo, clearAuthInfo } from "../_auth-store/auth.actions";
 import { UserService } from "@app/services/users/user.service";
 import { of, from } from "rxjs";
 import { switchMap, map, catchError, withLatestFrom, exhaustMap } from "rxjs/operators";
 import { Store, createAction } from "@ngrx/store";
 import { selectAllUsers } from "./user.selectors";
 import { AppState } from "../app.state";
-import { create } from "domain";
 
 @Injectable()
 export class UserEffects {
@@ -96,6 +97,27 @@ export class UserEffects {
                     catchError((error) => of(loginUserFailure({ error})))
                 )
             )
+        )
+    );
+
+    loginUserSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loginUserSuccess),
+            map(({loginResults}) => {
+                if(loginResults) {
+                    const { username, orgName, accessLevel } = loginResults.user;
+                    return setAuthInfo({ username, orgName, accessLevel })
+                } else {
+                    return clearAuthInfo();
+                }
+            })
+        )
+    );
+
+    logoutUser$ = createEffect(() => 
+    this.actions$.pipe(
+        ofType(logoutUser),
+        map(() => clearAuthInfo())
         )
     );
 

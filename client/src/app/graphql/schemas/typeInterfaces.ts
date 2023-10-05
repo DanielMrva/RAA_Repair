@@ -167,4 +167,6 @@ export type TableSearchParams = {
     queryParams: string,
 }
 
-export type statusType = 'pending' | 'loading' | 'error' | 'success' 
+export type statusType = 'pending' | 'loading' | 'error' | 'success';
+
+export type accessLevels = 'admin' | 'user' | 'tech' | null;

@@ -14,7 +14,11 @@ export const loginUserSuccess = createAction(
 export const loginUserFailure = createAction(
     '[User Service] Login User Failure',
     props<{error: string}>()
-)
+);
+
+export const logoutUser = createAction(
+    '[Logout Button] Logout User'
+);
 
 export const addUser = createAction(
     '[Add User Page] Add User',
@@ -23,7 +27,7 @@ export const addUser = createAction(
         email: string,
         password: string,
         orgName: string,
-        accessLevel?: string
+        accessLevel: string
     }>()
 );
 
