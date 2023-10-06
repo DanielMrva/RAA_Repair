@@ -278,3 +278,18 @@ export const EDIT_ORG = gql`
     }
 `
 
+export const ADD_ORG = gql`
+    mutation addOrg($orgName: String) {
+        addOrg(orgName: $orgName) {
+            _id
+            orgName
+            users {
+                _id
+            }
+            radios {
+                _id
+            }
+        }
+    }
+`
+

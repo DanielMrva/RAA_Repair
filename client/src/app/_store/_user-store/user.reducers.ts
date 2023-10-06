@@ -42,22 +42,15 @@ export const userReducer = createReducer(
 
     on(loginUser, state => ({ ...state, status: 'pending' as statusType, error: null,})),
 
-    on(loginUserSuccess, (state, { loginResults}) => ({
+    on(loginUserSuccess, (state, { loginResults }) => ({
         ...state,
         status: "success" as statusType,
         error: null
-        // TODO:  Handle the login results here, this likely requires an AuthStore dispatch?...
     })),
 
     on(loginUserFailure, (state, { error }) => ({
         ...state,
         status: "error" as statusType,
-        error: error
-    })),
-
-    on(loadOneUserFailure, (state, { error}) => ({
-        ...state,
-        status: 'error' as statusType,
         error: error
     })),
 

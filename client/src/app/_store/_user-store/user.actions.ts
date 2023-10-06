@@ -39,7 +39,7 @@ export const addUserSuccess = createAction(
 export const addUserFailure = createAction(
     '[User Service] Add User Failure',
     props<{ error: string}>()
-)
+);
 
 export const loadUsers = createAction('[User Reports Page] Load Users');
 
@@ -88,12 +88,12 @@ export const editUser = createAction(
 );
 
 export const editUserSuccess = createAction(
-    '[User Service]',
+    '[User Service] Edit User Success',
     props<{ user?: User }>()
 );
 
 export const editUserFailure = createAction(
-    '[User Service]',
+    '[User Service] Edit User Failure',
     props<{ error: string}>()
 );
 
