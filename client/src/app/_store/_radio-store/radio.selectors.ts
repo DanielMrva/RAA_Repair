@@ -4,7 +4,7 @@ import { RadioState } from "./radio.reducers";
 
 export const selectRadios = ( state: AppState ) => state.radio;
 
-export const selectAllUsers = createSelector(
+export const selectAllRadios = createSelector(
     selectRadios,
     (state: RadioState) => state.radios
 );
