@@ -18,3 +18,8 @@ export const selectOrgName = createSelector(
     selectAuth,
     (state: AuthState) => state.orgName
 );
+
+export const selectIsAuthenticated = createSelector(
+    selectAuth,
+    (state: AuthState) => state.isAuthenticated
+);

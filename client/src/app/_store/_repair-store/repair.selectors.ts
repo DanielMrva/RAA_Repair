@@ -13,3 +13,13 @@ export const selectOneRepair = createSelector(
     selectRepairs,
     (state: RepairState) => state.oneRepair
 );
+
+export const repairStatusSelector = createSelector(
+    selectRepairs,
+    (state: RepairState) => state.status
+);
+
+export const repairErrorSelector = createSelector(
+    selectRepairs,
+    (state: RepairState) => state.error
+);

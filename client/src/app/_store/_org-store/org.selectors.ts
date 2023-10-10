@@ -18,3 +18,13 @@ export const selectOrgNames = createSelector(
     selectOrgs,
     (state: OrgState) => state.orgNames
 );
+
+export const orgStatusSelector = createSelector(
+    selectOrgs,
+    (state: OrgState) => state.status
+);
+
+export const orgErrorSelector = createSelector(
+    selectOrgs,
+    (state: OrgState) => state.error
+);

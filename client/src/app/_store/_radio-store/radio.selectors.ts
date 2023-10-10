@@ -13,3 +13,13 @@ export const selectOneRadio = createSelector(
     selectRadios,
     (state: RadioState) => state.oneRadio
 );
+
+export const radioStatusSelector = createSelector(
+    selectRadios,
+    (state: RadioState) => state.status
+);
+
+export const radioErrorSelector = createSelector(
+    selectRadios,
+    (state: RadioState) => state.error
+);
