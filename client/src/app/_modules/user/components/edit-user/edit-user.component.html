@@ -1,0 +1,58 @@
+<div *ngIf="user" class="container">
+
+    <div class="row">
+
+        <h2 class="col-12 text-center">Edit User</h2>
+
+        <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()" class="row" >
+
+            <div class="form-group col-6">
+                <label for="username">User Name: </label>
+                <input
+                    type="text"
+                    id="username"
+                    formControlName="username"
+                    placeholder="User Name"
+                    class="form-control"
+                />
+            </div>
+
+            <div class="form-group col-6">
+                <label for="email">Email: </label>
+                <input
+                    type="email"
+                    id="email"
+                    formControlName="email"
+                    placeholder="Email"
+                    class="form-control"
+                />
+            </div>
+
+            <div class="form-group col-6">
+                <label for="orgName">Organization: </label>
+                <mat-select *ngIf="!loadingOrgs" id="orgName" formControlName="orgName">
+                    <mat-option *ngFor="let org of orgList" [value]="org.orgName">
+                        {{ org.orgName }}
+                    </mat-option>
+                </mat-select>
+                <mat-spinner *ngIf="loadingOrgs"></mat-spinner>
+            </div>
+            
+            
+
+            <div class="form-group col-6">
+                <label for="accessLevel">Access Level: </label>
+                <mat-select formControlName="accessLevel" id="accessLevel">
+                  <mat-option value="admin">Admin</mat-option>
+                  <mat-option value="user">User</mat-option>
+                  <mat-option value="tech">Tech</mat-option>
+                </mat-select>
+            </div>
+              
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+
+    </div>
+
+</div>

@@ -1,0 +1,26 @@
+<div *ngIf="org" class="container">
+    <div class="row">
+
+        <h2 class="col-12 text-center">Edit Organization</h2>
+
+        <form [formGroup]="editOrgForm" (ngSubmit)="onSubmit()" class="row">
+
+            
+            <div class="form-group col-12">
+                <label for="orgName">Organization Name: </label>
+                <input
+                    type="text"
+                    id="orgName"
+                    formControlName="orgName"
+                    placeholder="Organization Name"
+                    class="form-control"
+                />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+
+        </form>
+
+    </div>
+</div>
