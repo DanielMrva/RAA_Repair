@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { AddRepairComponent } from './components/add-repair/add-repair.component';
 import { OneRepairComponent } from './components/one-repair/one-repair.component';
@@ -36,6 +37,7 @@ import { AdminAddRepairComponent } from './components/add-repair/admin-add-repai
     MatRadioModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    MatFormFieldModule
   ]
 })
 export class RepairModule { }
