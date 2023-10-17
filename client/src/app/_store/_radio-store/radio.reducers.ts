@@ -42,7 +42,7 @@ export const radioReducer = createReducer(
 
     on(RadioActions.loadOneRadio, (state) => ({
         ...state,
-        status: "loading" as statusType,
+        status: 'loading' as statusType,
         error: null,
     })),
 

@@ -7,6 +7,10 @@ import { AuthService } from '@app/services/auth/auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastService } from '@app/services/toast/toast.service';
 
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { loginUser } from '@app/_store/_user-store/user.actions';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -29,12 +33,17 @@ export class LoginComponent implements OnInit{
               private authService: AuthService,
               private router: Router,
               private apollo: Apollo,
-              private toastService: ToastService
+              private toastService: ToastService,
+              private store: Store
               ) { }
 
   ngOnInit(): void {
       
   }
+
+  // onLogin() {
+  //   this.store.dispatch(loginUser({ email, password}))
+  // }
 
   onSubmit() {
 
