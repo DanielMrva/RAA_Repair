@@ -7,7 +7,7 @@ import { RadioState } from '@app/_store/_radio-store/radio.reducers';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as RadioActions from '@app/_store/_radio-store/radio.actions';
-import { selectOneRadio, radioStatusSelector, radioErrorSelector } from '@app/_store/_radio-store/radio.selectors';
+import { selectOneRadio, radioLoadingSelector, radioErrorSelector } from '@app/_store/_radio-store/radio.selectors';
 
 @Component({
   selector: 'app-one-radio',
@@ -16,11 +16,13 @@ import { selectOneRadio, radioStatusSelector, radioErrorSelector } from '@app/_s
 })
 export class OneRadioComponent implements OnInit{
 
-  public radioStatus$ = this.store.select(radioStatusSelector);
-  public radioError$ = this.store.select(radioErrorSelector);
-  public oneRadio$ = this.store.select(selectOneRadio);
+  // public radioStatus$ = this.store.select(radioStatusSelector);
+  isLoading$ = this.store.select(radioLoadingSelector);
+  radioError$ = this.store.select(radioErrorSelector);
+  oneRadio$ = this.store.select(selectOneRadio);
 
   // radioStatus$: Observable<statusType>;
+  // isLoading$: Observable<boolean>;
   // radioError$: Observable<string | null>;
   // oneRadio$: Observable<Radio | null>;
 
@@ -32,6 +34,7 @@ export class OneRadioComponent implements OnInit{
     private store: Store<AppState>
   ) {
     // this.radioStatus$ = this.store.select(radioStatusSelector);
+    // this.isLoading$ = this.store.select(radioLoadingSelector);
     // this.radioError$ = this.store.select(radioErrorSelector);
     // this.oneRadio$ = this.store.select(selectOneRadio);
   }

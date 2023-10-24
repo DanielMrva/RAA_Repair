@@ -7,14 +7,16 @@ export interface RadioState {
     oneRadio: Radio | null;
     radios: Radio[];
     error: string | null;
-    status: 'pending' | 'loading' | 'error' | 'success';
+    // status: 'pending' | 'loading' | 'error' | 'success';
+    isLoading: boolean;
 };
 
 export const initialState: RadioState = {
     oneRadio: null,
     radios: [],
     error: null,
-    status: 'pending'
+    // status: 'pending',
+    isLoading: false
 };
 
 export const radioReducer = createReducer(
@@ -42,21 +44,26 @@ export const radioReducer = createReducer(
 
     on(RadioActions.loadOneRadio, (state) => ({
         ...state,
-        status: 'loading' as statusType,
+        oneRadio: null,
+        // status: 'loading' as statusType,
+        isLoading: true,
         error: null,
     })),
 
-    on(RadioActions.loadOneRadioSuccess, (state, { radio }) => ({
+    on(RadioActions.loadOneRadioSuccess, (state, action ) => ({
         ...state,
-        oneRadio: radio as Radio,
-        status: 'success' as statusType,
+        oneRadio: action.radio,
+        // status: 'success' as statusType,
+        isLoading: false,
         error: null,
     })),
 
-    on(RadioActions.loadOneRadioFailure, (state, { error }) => ({
+    on(RadioActions.loadOneRadioFailure, (state, action) => ({
         ...state,
-        status: 'error' as statusType,
-        error: error
+        oneRadio: null,
+        // status: 'error' as statusType,
+        isLoading: false,
+        error: action.error
     })),
 
     on(RadioActions.loadAllRadios, (state) => ({

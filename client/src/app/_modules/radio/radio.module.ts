@@ -24,12 +24,6 @@ import { radioReducer } from '@app/_store/_radio-store/radio.reducers'
 
 
 @NgModule({
-  declarations: [
-    AddRadioComponent,
-    AdminAddRadioComponent,
-    OneRadioComponent,
-    EditRadioComponent,
-  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -42,8 +36,14 @@ import { radioReducer } from '@app/_store/_radio-store/radio.reducers'
     MatRadioModule,
     // MatSelectModule,
     // MatProgressSpinnerModule,
-    StoreModule.forFeature('radios', radioReducer),
+    StoreModule.forFeature('radio', radioReducer),
     EffectsModule.forFeature([RadioEffects])
-  ]
+  ],
+  declarations: [
+    AddRadioComponent,
+    AdminAddRadioComponent,
+    OneRadioComponent,
+    EditRadioComponent,
+  ],
 })
 export class RadioModule { }

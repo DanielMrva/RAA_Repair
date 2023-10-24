@@ -19,10 +19,15 @@ export const selectOrgNames = createSelector(
     (state: OrgState) => state.orgNames
 );
 
-export const orgStatusSelector = createSelector(
+// export const orgStatusSelector = createSelector(
+//     selectOrgs,
+//     (state: OrgState) => state.status
+// );
+
+export const orgLoadingSelector = createSelector(
     selectOrgs,
-    (state: OrgState) => state.status
-);
+    (state: OrgState) => state.isLoading
+)
 
 export const orgErrorSelector = createSelector(
     selectOrgs,

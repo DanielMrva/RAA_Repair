@@ -192,8 +192,8 @@ import { ToastComponent } from './components/toast/toast.component';
         OrgModule,
         RepairModule,
         ToastComponent,
-        StoreModule.forRoot({}, {}),
-        EffectsModule.forRoot([]),
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot(),
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
         
     ],

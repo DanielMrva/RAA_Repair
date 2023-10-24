@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as RadioActions from "./radio.actions";
 import { RadioService } from "@app/services/radios/radio.service";
 import { of, from } from "rxjs";
-import { switchMap, map, catchError } from "rxjs/operators";
+import { switchMap, map, catchError, mergeMap } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
 
@@ -11,7 +11,6 @@ import { AppState } from "../app.state";
 export class RadioEffects {
     constructor(
         private actions$: Actions,
-        private store: Store<AppState>,
         private radioService: RadioService
     ) {}
 
@@ -28,18 +27,38 @@ export class RadioEffects {
         )
     );
 
-    loadOneRadio$ = createEffect(() => 
+    // loadOneRadio$ = createEffect(() =>
+    //     this.actions$.pipe(
+    //         ofType(RadioActions.loadOneRadio),
+    //         mergeMap(( {radioId}) => {
+    //             return this.radioService.querySingleRadio(radioId).valueChanges.pipe(
+    //                 map(( { data }) => RadioActions.loadOneRadioSuccess({ radio: data.radio})),
+
+    //                 catchError(( error ) => of(RadioActions.loadOneRadioFailure({error})))
+    //             )
+    //         })
+    //     )
+    // );
+
+    loadOneRadio$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RadioActions.loadOneRadio),
-            switchMap(( { radioId } ) => 
-                from(this.radioService.querySingleRadio(radioId).valueChanges).pipe(
-                    map(( { data }) => RadioActions.loadOneRadioSuccess({ radio: data.radio })),
+            mergeMap(({ radioId }) => {
+                console.log('Dispatched loadOneRadio action with ID: ', radioId);
+                return this.radioService.querySingleRadio(radioId).valueChanges.pipe(
+                    map(({ data }) => {
+                    console.log('Loaded oneRadio data: ', data.radio);
+                    return RadioActions.loadOneRadioSuccess({ radio: data.radio });
+                    }),
+        catchError((error) => {
+          console.error('Error loading oneRadio: ', error);
+          return of(RadioActions.loadOneRadioFailure({ error }));
+        })
+      );
+    })
+  )
+);
 
-                    catchError((error) => of(RadioActions.loadOneRadioFailure({ error })))
-                )
-            )
-        )
-    );
 
     loadAllRadios$ = createEffect(() => 
         this.actions$.pipe(

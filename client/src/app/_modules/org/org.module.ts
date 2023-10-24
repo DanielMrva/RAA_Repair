@@ -14,6 +14,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OneOrgComponent } from './components/one-org/one-org.component';
 import { EditOrgComponent } from './components/edit-org/edit-org.component';
 import { AddOrgComponent } from './components/add-org/add-org.component';
+import { StoreModule } from '@ngrx/store';
+import { orgReducer } from '@app/_store/_org-store/org.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { OrgEffects } from '@app/_store/_org-store/org.effects';
 
 
 
@@ -35,6 +39,8 @@ import { AddOrgComponent } from './components/add-org/add-org.component';
     // MatRadioModule,
     // MatSelectModule,
     MatProgressSpinnerModule,
+    StoreModule.forFeature('org', orgReducer),
+    EffectsModule.forFeature([OrgEffects])
   ]
 })
 export class OrgModule { }
