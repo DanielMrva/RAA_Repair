@@ -4,9 +4,8 @@ import { RadioService } from '@app/services/radios/radio.service'
 import { Radio, statusType } from '@app/graphql/schemas/typeInterfaces';
 import { AppState} from '@app/_store/app.state';
 import { RadioState } from '@app/_store/_radio-store/radio.reducers';
-import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import * as RadioActions from '@app/_store/_radio-store/radio.actions';
+import { Store } from '@ngrx/store';
+import { loadOneRadio} from '@app/_store/_radio-store/radio.actions';
 import { selectOneRadio, radioLoadingSelector, radioErrorSelector } from '@app/_store/_radio-store/radio.selectors';
 
 @Component({
@@ -16,15 +15,10 @@ import { selectOneRadio, radioLoadingSelector, radioErrorSelector } from '@app/_
 })
 export class OneRadioComponent implements OnInit{
 
-  // public radioStatus$ = this.store.select(radioStatusSelector);
   isLoading$ = this.store.select(radioLoadingSelector);
   radioError$ = this.store.select(radioErrorSelector);
   oneRadio$ = this.store.select(selectOneRadio);
 
-  // radioStatus$: Observable<statusType>;
-  // isLoading$: Observable<boolean>;
-  // radioError$: Observable<string | null>;
-  // oneRadio$: Observable<Radio | null>;
 
   radio: Radio | undefined;
 
@@ -32,25 +26,20 @@ export class OneRadioComponent implements OnInit{
     private route: ActivatedRoute,
     private radioService: RadioService,
     private store: Store<AppState>
-  ) {
-    // this.radioStatus$ = this.store.select(radioStatusSelector);
-    // this.isLoading$ = this.store.select(radioLoadingSelector);
-    // this.radioError$ = this.store.select(radioErrorSelector);
-    // this.oneRadio$ = this.store.select(selectOneRadio);
-  }
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       const radioId = params['id'];
       console.log(radioId)
-      this.store.dispatch(RadioActions.loadOneRadio({radioId}));
+      this.store.dispatch(loadOneRadio({radioId}));
       // this.loadRadio(radioId)
     });
   }
 
   loadRadio(radioId: string): void {
     
-    this.store.dispatch(RadioActions.loadOneRadio({radioId}));
+    this.store.dispatch(loadOneRadio({radioId}));
 
     // this.radioService.querySingleRadio(radioId).valueChanges
     // .subscribe(({ data }) => {
