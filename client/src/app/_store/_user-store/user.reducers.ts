@@ -26,37 +26,37 @@ export interface UserState {
     oneUser: User | null;
     users: User[];
     error: string | null;
-    status: 'pending' | 'loading' | 'error' | 'success';
+    isLoading: boolean;
 };
 
 export const initialState: UserState = {
     oneUser: null,
     users: [],
     error: null,
-    status: 'pending'
+    isLoading: false
 };
 
 export const userReducer = createReducer(
 
     initialState,
 
-    on(loginUser, state => ({ ...state, status: 'pending' as statusType, error: null,})),
+    on(loginUser, state => ({ ...state, isLoading: true, error: null,})),
 
     on(loginUserSuccess, (state, { loginResults }) => ({
         ...state,
-        status: "success" as statusType,
+        isLoading: false,
         error: null
     })),
 
     on(loginUserFailure, (state, { error }) => ({
         ...state,
-        status: "error" as statusType,
+        isLoading: false,
         error: error
     })),
 
     on(addUser, (state) => ({
         ...state,
-        status: "loading" as statusType,
+        isLoading: true,
         error: null,
 
     })),
@@ -64,38 +64,38 @@ export const userReducer = createReducer(
     on(addUserSuccess, (state, { user }) => ({
         ...state,
         oneUser: user as User,
-        status: 'success' as statusType,
+        isLoading: false,
         error: null,
     })),
 
     on(addUserFailure, (state, { error }) => ({
         ...state,
-        status: 'error' as statusType,
+        isLoading: false,
         error: error
     })),
 
     on(loadUsers, (state) => ({
         ...state,
-        status: "loading" as statusType,
+        isLoading: true,
         error: null,
     })),
 
     on(loadUsersSuccess, (state, { users }) => ({
         ...state,
         users: users as User[],
-        status: 'success' as statusType,
+        isLoading: false,
         error: null,
     })),
 
     on(loadUsersFailure, (state, { error }) => ({
         ...state,
-        status: 'error' as statusType,
+        isLoading: false,
         error: error
     })),
 
     on(loadOneUser, (state) => ({
         ...state,
-        status: "loading" as statusType,
+        isLoading: true,
         error: null,
 
     })),
@@ -103,51 +103,51 @@ export const userReducer = createReducer(
     on(loadOneUserSuccess, (state, { user }) => ({
         ...state,
         oneUser: user as User,
-        status: 'success' as statusType,
+        isLoading: false,
         error: null,
     })),
 
     on(loadOneUserFailure, (state, { error }) => ({
         ...state,
-        status: 'error' as statusType,
+        isLoading: false,
         error: error
     })),
 
     on(loadOrgUsers, (state) => ({
         ...state,
-        status: "loading" as statusType,
+        isLoading: true,
         error: null,
     })),
 
     on(loadOrgUsersSuccess, (state, { users }) => ({
         ...state,
         users: users as User[],
-        status: 'success' as statusType,
+        isLoading: false,
         error: null,
     })),
 
     on(loadOrgUsersFailure, (state, { error }) => ({
         ...state,
-        status: 'error' as statusType,
+        isLoading: false,
         error: error
     })),
 
     on(editUser, (state) => ({
         ...state,
-        status: 'loading' as statusType,
+        isLoading: true,
         error: null
     })),
 
     on(editUserSuccess, (state, { user }) => ({
         ...state,
         oneUser: user as User,
-        status: 'success' as statusType,
+        isLoading: false,
         error: null
     })),
 
     on(editUserFailure, (state, { error }) => ({
         ...state,
-        status: 'error' as statusType,
+        isLoading: false,
         error: error
     }))
 )

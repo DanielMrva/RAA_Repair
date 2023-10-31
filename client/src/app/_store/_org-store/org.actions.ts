@@ -63,7 +63,7 @@ export const addOrgFailure = createAction(
 );
 
 export const loadOrgNames = createAction(
-    '[Org Name Selector] Load Org Names'
+    '[Org Name Dropdown] Load Org Names'
 );
 
 export const loadOrgNamesSuccess = createAction(

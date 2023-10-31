@@ -25,7 +25,6 @@ export interface OrgState {
     orgNames: Organization[];
     error: string | null;
     isLoading: boolean;
-    // status: 'pending' | 'loading' | 'error' | 'success';
 };
 
 export const initialState: OrgState = {
@@ -34,7 +33,6 @@ export const initialState: OrgState = {
     orgNames: [],
     error: null,
     isLoading: false,
-    // status: 'pending'
 }
 
 export const orgReducer = createReducer(
@@ -43,7 +41,6 @@ export const orgReducer = createReducer(
 
     on(loadAllOrgs, state => ({ 
         ...state, 
-        // status: 'pending' as statusType,
         isLoading: true,
         error: null 
     })),
@@ -51,21 +48,18 @@ export const orgReducer = createReducer(
     on(loadAllOrgsSuccess, (state, { organizations }) => ({
         ...state,
         organizations: organizations as Organization[],
-        // status: "success" as statusType,
         isLoading: false,
         error: null
     })),
 
     on(loadAllOrgsFailure, (state, { error }) => ({
         ...state,
-        // status: "error" as statusType,
         isLoading: false,
         error: error
     })),
 
     on(loadOneOrg, (state) => ({
         ...state,
-        // status: "loading" as statusType,
         isLoading: true,
         error: null,
 
@@ -74,21 +68,18 @@ export const orgReducer = createReducer(
     on(loadOneOrgSuccess, (state, { organization }) => ({
         ...state,
         oneOrganization: organization as Organization,
-        // status: 'success' as statusType,
         isLoading: false,
         error: null,
     })),
 
     on(loadOneOrgFailure, (state, { error }) => ({
         ...state,
-        // status: 'error' as statusType,
         isLoading: false,
         error: error
     })),
 
     on(editOrg, (state) => ({
         ...state,
-        // status: 'loading' as statusType,
         isLoading: true,
         error: null
     })),
@@ -96,21 +87,18 @@ export const orgReducer = createReducer(
     on(editOrgSuccess, (state, { organization }) => ({
         ...state,
         oneOrganization: organization as Organization,
-        // status: 'success' as statusType,
         isLoading: false,
         error: null
     })),
 
     on(editOrgFailure, (state, { error }) => ({
         ...state,
-        // status: 'error' as statusType,
         isLoading: false,
         error: error
     })),
 
     on(addOrg, (state) => ({
         ...state,
-        // status: "loading" as statusType,
         isLoading: true,
         error: null,
 
@@ -119,21 +107,18 @@ export const orgReducer = createReducer(
     on(addOrgSuccess, (state, { organization }) => ({
         ...state,
         oneOrganization: organization as Organization,
-        // status: 'success' as statusType,
         isLoading: false,
         error: null,
     })),
 
     on(addOrgFailure, (state, { error }) => ({
         ...state,
-        // status: 'error' as statusType,
         isLoading: false,
         error: error
     })),
 
     on(loadOrgNames, state => ({ 
         ...state, 
-        // status: 'pending' as statusType,
         isLoading: true, 
         error: null 
     })),
@@ -141,14 +126,12 @@ export const orgReducer = createReducer(
     on(loadOrgNamesSuccess, (state, { organizations }) => ({
         ...state,
         orgNames: organizations as Organization[],
-        // status: "success" as statusType,
         isLoading: false,
         error: null
     })),
 
     on(loadOrgNamesFailure, (state, { error }) => ({
         ...state,
-        // status: "error" as statusType,
         isLoading: false,
         error: error
     })),

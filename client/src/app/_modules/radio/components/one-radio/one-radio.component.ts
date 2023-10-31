@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { RadioService } from '@app/services/radios/radio.service'
 import { Radio, statusType } from '@app/graphql/schemas/typeInterfaces';
 import { AppState} from '@app/_store/app.state';
 import { RadioState } from '@app/_store/_radio-store/radio.reducers';
@@ -19,12 +18,8 @@ export class OneRadioComponent implements OnInit{
   radioError$ = this.store.select(radioErrorSelector);
   oneRadio$ = this.store.select(selectOneRadio);
 
-
-  radio: Radio | undefined;
-
   constructor(
     private route: ActivatedRoute,
-    private radioService: RadioService,
     private store: Store<AppState>
   ) { }
 
@@ -33,7 +28,6 @@ export class OneRadioComponent implements OnInit{
       const radioId = params['id'];
       console.log(radioId)
       this.store.dispatch(loadOneRadio({radioId}));
-      // this.loadRadio(radioId)
     });
   }
 
@@ -41,10 +35,7 @@ export class OneRadioComponent implements OnInit{
     
     this.store.dispatch(loadOneRadio({radioId}));
 
-    // this.radioService.querySingleRadio(radioId).valueChanges
-    // .subscribe(({ data }) => {
-    //   this.radio = data.radio;
-    // });
+
   }
 
 
