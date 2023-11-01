@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UserService } from '@app/services/users/user.service';
 import { OrganizationService } from '@app/services/orgs/organization.service';
 import { User, UpdateUserFields, Organization} from '@app/graphql/schemas/typeInterfaces';
 import { ToastService } from '@app/services/toast/toast.service';
+import { AppState } from '@app/_store/app.state';
+import { Store } from '@ngrx/store';
+import { editUser, loadOneUser } from '@app/_store/_user-store/user.actions';
+import { loadOrgNames } from '@app/_store/_org-store/org.actions';
+import { selectOneUser, userErrorSelector, userLoadingSelector } from '@app/_store/_user-store/user.selectors';
+import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
 
 
 @Component({
@@ -14,12 +20,21 @@ import { ToastService } from '@app/services/toast/toast.service';
 })
 export class EditUserComponent implements OnInit {
 
+  orgNames$ = this.store.select(selectOrgNames);
+  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+  orgNameError$ = this.store.select(orgErrorSelector);
+
+  oneUser$ = this.store.select(selectOneUser);
+  isLoadingUser$ = this.store.select(userLoadingSelector);
+  userError$ = this.store.select(userErrorSelector);
   userId!: string;
-  user!: User;
-  orgList!: Organization[];
-  editUserForm!: FormGroup;
-  loadingUser: boolean = true;
-  loadingOrgs: boolean = true;
+
+  userForm = new FormGroup({
+    userName: new FormControl<string>('', { nonNullable: true }),
+    email: new FormControl<string>('', { nonNullable: true }),
+    orgName: new FormControl<string>(''),
+    accessLevel: new FormControl<string>('')
+  })
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,73 +42,58 @@ export class EditUserComponent implements OnInit {
     private orgService: OrganizationService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private store: Store<AppState>
+
   ) {}
 
   loadUser(id: string): void {
-    this.userService.querySingleUser(id)
-    .subscribe(( { data }) => {
-      console.log(data)
-      this.user = data.user;
-      this.populateForm();
-      this.loadingUser = false;
-    } )
+
+    this.store.dispatch(loadOneUser({userId: id}));
   }
 
   loadOrgNames(): void {
-    this.orgService.orgNames()
-    .subscribe(( { data }) => {
-      console.log(data.orgNames)
-      this.orgList = data.orgNames;
-      this.loadingOrgs = false;
-    })
+
+    this.store.dispatch(loadOrgNames());
   }
 
   populateForm() {
-    
-    this.editUserForm.patchValue({
-      username: this.user.username,
-      email: this.user.email,
-      accessLevel: this.user.accessLevel,
-      orgName: this.user.orgName
+
+    this.oneUser$.subscribe((user: User | null) => {
+      if(user) {
+        this.userForm.patchValue({
+          userName: user.username,
+          email: user.email,
+          orgName: user.orgName,
+          accessLevel: user.accessLevel
+        })
+      }
     })
-  }
+  };
 
   updateUser(updateUser: UpdateUserFields): void {
-    this.userService.editUser(this.userId, updateUser).subscribe( { next: (result) => {
 
-      const editedUser = result.data?.editUser ?? null;
-
-      if (editedUser) {
-        this.toastService.show('User Edited successfully!', {
-          delay: 3000
-        })
-
-        this.router.navigate(['/one-user', editedUser._id])
-      } else {
-        this.router.navigate(['/'])
+    this.oneUser$.subscribe((user: User | null) => {
+      if(user) {
+        this.userId = user._id
       }
-
-
-    }, error: (error) => {
-      console.error(error);
-
-      this.toastService.show('Failed to edit User. Please Try Again', {
-        delay: 3000
-      })
-    }
-  
-  
     });
+
+    this.store.dispatch(editUser({id: this.userId, updates: updateUser}))
   }
 
   onSubmit() {
 
+    const username = this.userForm.value.userName ?? '';
+    const email = this.userForm.value.email ?? '';
+    const accessLevel = this.userForm.value.accessLevel ?? '';
+    const orgName = this.userForm.value.orgName ?? '';
+
     const sumbittedUser: UpdateUserFields = {
-      username: this.editUserForm.value.username,
-      email: this.editUserForm.value.email,
-      accessLevel: this.editUserForm.value.accessLevel,
-      orgName: this.editUserForm.value.orgName
+      username: username,
+      email: email,
+      accessLevel: accessLevel,
+      orgName: orgName
     }
 
     this.updateUser(sumbittedUser);
@@ -102,19 +102,22 @@ export class EditUserComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.editUserForm = this.formBuilder.group({
-      username: '',
+    this.userForm.patchValue({
+      userName: '',
       email: '',
-      accessLevel: '',
-      orgName: ''
+      orgName: '',
+      accessLevel: ''
     })
 
     this.loadOrgNames();
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.userId = params['id'];
-      this.loadUser(this.userId);
-    })
+      const userId = params['id'];
+      this.loadUser(userId);
+      
+    });
+
+    this.populateForm();
       
   };
 

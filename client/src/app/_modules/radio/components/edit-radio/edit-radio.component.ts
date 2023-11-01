@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FormBuilder, FormArray, FormGroup, FormControl, Form} from '@angular/forms';
+import { FormBuilder, FormArray, FormGroup, FormControl} from '@angular/forms';
 import { RadioService } from '@app/services/radios/radio.service';
 import { Radio, UpdateRadioFields } from '@app/graphql/schemas/typeInterfaces';
 import { ToastService } from '@app/services/toast/toast.service';
@@ -55,12 +55,7 @@ export class EditRadioComponent implements OnInit{
   ) { }
 
   loadRadio(id: string): void {
-    // this.radioService.querySingleRadio(id).valueChanges
-    // .subscribe(( { data }) => {
-    //   console.log(data)
-    //   this.radio = data.radio;
 
-    // })
     this.store.dispatch(loadOneRadio({radioId: id}))
   }
 
@@ -122,29 +117,6 @@ export class EditRadioComponent implements OnInit{
   };
 
   updateRadio(updateRadio: UpdateRadioFields): void {
-    // this.radioService.editRadio(this.radioId, updateRadio).subscribe( {
-    //   next: (result) => {
-    //     const editedRadio = result.data?.editRadio ?? null;
-
-    //     if(editedRadio) {
-    //       this.toastService.show('Repair Edited successfully', {
-    //         delay: 3000
-    //       })
-
-    //       this.router.navigate(['/one-radio', editedRadio._id]);
-
-
-    //     } else {
-    //       this.router.navigate(['/']);
-    //     }
-    //   }, error: (error) => {
-    //     console.error(error);
-
-    //     this.toastService.show('Failed to edit radio. Please try again', {
-    //       delay: 3000
-    //     })
-    //   }
-    // });
 
     this.oneRadio$.subscribe((radio: Radio | null) => {
       if(radio) {
