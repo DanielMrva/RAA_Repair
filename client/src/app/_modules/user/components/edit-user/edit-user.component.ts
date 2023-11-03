@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { UserService } from '@app/services/users/user.service';
-import { OrganizationService } from '@app/services/orgs/organization.service';
 import { User, UpdateUserFields, Organization} from '@app/graphql/schemas/typeInterfaces';
-import { ToastService } from '@app/services/toast/toast.service';
 import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
 import { editUser, loadOneUser } from '@app/_store/_user-store/user.actions';
@@ -37,12 +34,7 @@ export class EditUserComponent implements OnInit {
   })
 
   constructor(
-    private formBuilder: FormBuilder,
-    private userService: UserService,
-    private orgService: OrganizationService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
-    private toastService: ToastService,
     private store: Store<AppState>
 
   ) {}

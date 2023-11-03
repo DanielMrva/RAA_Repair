@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { OrganizationService } from '@app/services/orgs/organization.service';
+import { ActivatedRoute, Params } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
 import { UpdateOrgFields, Organization} from '@app/graphql/schemas/typeInterfaces';
-import { ToastService } from '@app/services/toast/toast.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '@app/_store/app.state';
+import { editOrg, loadOneOrg } from '@app/_store/_org-store/org.actions';
+import { selectOneOrg, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
 
 @Component({
   selector: 'app-edit-org',
@@ -12,78 +14,75 @@ import { ToastService } from '@app/services/toast/toast.service';
 })
 export class EditOrgComponent implements OnInit{
 
+  oneOrg$ = this.store.select(selectOneOrg);
+  isLoading$ = this.store.select(orgLoadingSelector);
+  error$ = this.store.select(orgErrorSelector);
+
+  orgForm = new FormGroup({
+    orgName: new FormControl<string>('', { nonNullable: true})
+  })
+
   orgId!: string;
   org!: Organization;
   editOrgForm!: FormGroup;
   loadingOrg: boolean = true;
 
+
+
   constructor(
-    private formBuilder: FormBuilder,
-    private orgService: OrganizationService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
-    private toastService: ToastService
+    private store: Store<AppState>
   ) {}
 
   loadOrg(id: string): void {
-    this.orgService.querySingleOrg(id)
-    .subscribe(( { data }) => {
-      console.log(data)
-      this.org = data.org;
-      this.populateForm();
-      this.loadingOrg = false;
-    })
+
+    this.store.dispatch(loadOneOrg({ orgId: id}))
   }
 
   populateForm() {
-    this.editOrgForm.patchValue({
-      orgName: this.org.orgName
+
+    this.oneOrg$.subscribe(( org: Organization | null) => {
+      if(org) {
+        this.orgForm.patchValue({
+          orgName: org.orgName
+        })
+      }
     })
-  }
+
+  };
 
   updateOrg(updateOrg: UpdateOrgFields): void {
-    this.orgService.editOrg(this.orgId, updateOrg).subscribe( { next: (result) => {
-      const editiedOrg = result.data?.editOrg ?? null;
-
-      if (editiedOrg) {
-        this.toastService.show('Organization Editied successfully!', {
-          delay: 3000
-        })
-
-        this.router.navigate(['/one-org', editiedOrg._id]);
-      } else {
-        this.router.navigate(['/'])
+    this.oneOrg$.subscribe(( org: Organization | null) => {
+      if(org) {
+        this.orgId = org._id
       }
-    }, error: (error) => {
-      console.error(error);
+    });
 
-      this.toastService.show('Falied to edit Organization. Please Try Again', {
-        delay: 3000
-      })
-    }
-  
-    })
+    this.store.dispatch(editOrg({id: this.orgId, updates: updateOrg}))
   }
 
   onSubmit() {
-    const sumbittedOrg: UpdateOrgFields = {
-      orgName: this.editOrgForm.value.orgName
+      
+    const orgName = this.orgForm.value.orgName ?? '';
+
+    const submittedOrg: UpdateOrgFields = {
+      orgName: orgName
     }
 
-    this.updateOrg(sumbittedOrg)
+    this.updateOrg(submittedOrg);
+      
   }
 
-
   ngOnInit(): void {
+      this.orgForm.patchValue({
+        orgName: ''
+      })
 
-    this.editOrgForm = this.formBuilder.group({
-      orgName: '',
-    })
+      this.activatedRoute.params.subscribe((params: Params) => {
+        const orgId = params['id'];
+        this.loadOrg(orgId);
+      });
 
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.orgId = params['id'];
-      this.loadOrg(this.orgId);
-    })
-      
+      this.populateForm();
   }
 }

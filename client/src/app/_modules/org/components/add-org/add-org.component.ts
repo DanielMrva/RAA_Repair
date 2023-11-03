@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray, Validators, ValidatorFn } from '@angular/forms';
-import { OrganizationService } from '@app/services/orgs/organization.service';
-import { ToastService } from '@app/services/toast/toast.service';
+import { FormGroup, FormControl, ValidatorFn } from '@angular/forms';
 import { Organization } from '@app/graphql/schemas';
+import { Store } from '@ngrx/store';
+import { AppState } from '@app/_store/app.state';
+import { addOrg, loadOrgNames } from '@app/_store/_org-store/org.actions';
+import { selectOrgNames, orgLoadingSelector, orgErrorSelector  } from '@app/_store/_org-store/org.selectors';
 
 @Component({
   selector: 'app-add-org',
@@ -12,19 +13,19 @@ import { Organization } from '@app/graphql/schemas';
 })
 export class AddOrgComponent implements OnInit {
 
+  orgNames$ = this.store.select(selectOrgNames);
+  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+  orgError$ = this.store.select(orgErrorSelector);
   orgList!: Organization[];
-  loadingOrgs: boolean = true;
 
-  orgForm = this.formBuilder.group({
-    orgName: ['', [Validators.required], this.orgNameValidator(this.orgList)],  });
+  orgForm = new FormGroup({
+    orgName: new FormControl<string>('', {nonNullable: true, validators: this.orgNameValidator(this.orgList)})
+  })
 
   isSubmitted = false;
 
   constructor( 
-    private formBuilder: FormBuilder,
-    private orgService: OrganizationService,
-    private router: Router,
-    private toastService: ToastService
+    private store: Store<AppState>
   ){ }
 
   ngOnInit(): void {
@@ -44,11 +45,14 @@ export class AddOrgComponent implements OnInit {
   };
 
   loadOrgNames(): void {
-    this.orgService.orgNames()
-    .subscribe(( { data }) => {
-      console.log(data.orgNames)
-      this.orgList = data.orgNames;
-      this.loadingOrgs = false;
+    this.store.dispatch(loadOrgNames());
+
+    this.orgNames$.subscribe(( orgL: Organization[] | null) => {
+      if(orgL) {
+        this.orgList = orgL
+      } else {
+        this.orgList = [];
+      }
     })
   };
 
@@ -59,8 +63,8 @@ export class AddOrgComponent implements OnInit {
         return { orgNameExists: true };
       }
       return null;
-    };
-  }
+    }
+  };
 
   onSubmit() {
 
@@ -68,36 +72,8 @@ export class AddOrgComponent implements OnInit {
 
     const orgName = this.orgForm.value.orgName ?? '';
 
-    this.orgService.addOrg(
-      orgName
-    ).subscribe({ next: (result) => {
-      const newOrg = result.data?.addOrg ?? null;
+    this.store.dispatch(addOrg({orgName: orgName}));
 
-      if(newOrg) {
-        this.toastService.show('Organization added successfully!', {
-          delay: 3000
-        })
-        this.router.navigate(['/one-organization', newOrg._id]);
-
-        this.isSubmitted = true;
-      } else {
-        this.router.navigate(['/']);
-      
-        this.isSubmitted = true;
-      }
-    }, error: (error) => {
-      console.error(error);
-
-      this.toastService.show('Failed to submit Organization. Please try again', {
-        classname: 'bg-danger light-text',
-        delay: 3000
-      })
-    }
-  
-    })
-
-  }
-
-
+  };
 
 }
