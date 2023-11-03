@@ -4,6 +4,11 @@ import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { RepairService } from '@app/services/repairs/repair.service';
 import { Repair, UpdateRepairFields} from '@app/graphql/schemas/typeInterfaces';
 import { ToastService } from '@app/services/toast/toast.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '@app/_store/app.state';
+import { editRepair, loadOneRepair } from '@app/_store/_repair-store/repair.actions';
+import { selectOneRepair, repairErrorSelector, repairLoadingSelector } from '@app/_store/_repair-store/repair.selectors';
+
 
 @Component({
   selector: 'app-edit-repair',
@@ -12,24 +17,54 @@ import { ToastService } from '@app/services/toast/toast.service';
 })
 export class EditRepairComponent implements OnInit {
 
+  repairForm = new FormGroup({
+    radioSerial: new FormControl<string>(''),
+    dateReceived: new FormControl<Date>(new Date()),
+    endUserPO: new FormControl<string>(''),
+    raaPO: new FormControl<string>(''),
+    dateSentTech: new FormControl<Date>(new Date()),
+    dateRecTech: new FormControl<Date>(new Date()),
+    dateSentEU: new FormControl<Date>(new Date()),
+    techInvNum: new FormControl<string>(''),
+    raaInvNum: new FormControl<string>(''),
+    symptoms: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
+    testFreq: new FormControl<string>(''),
+    incRxSens: new FormControl<string>(''),
+    incFreqErr: new FormControl<string>(''),
+    incMod: new FormControl<string>(''),
+    incPowerOut: new FormControl<string>(''),
+    outRxSens: new FormControl<string>(''),
+    outFreqErr: new FormControl<string>(''),
+    outMod: new FormControl<string>(''),
+    outPowerOut: new FormControl<string>(''),
+    accessories: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
+    workPerformed: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
+    repHours: new FormControl<number>(0),
+    partsUsed: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
+    remarks: new FormControl<string>(''),
+  });
+
+  isLoading$ = this.store.select(repairLoadingSelector);
+  repairError$ = this.store.select(repairErrorSelector);
+  oneRepair$ = this.store.select(selectOneRepair);
+
   repairId!: string;
-  repair!: Repair;
-  editRepairForm!: FormGroup;
+  repairTag!: string;
 
   get symptomsArray(): FormArray {
-    return this.editRepairForm.get('symptoms') as FormArray;
+    return this.repairForm.get('symptoms') as FormArray;
   }
 
   get accessoriesArray(): FormArray {
-    return this.editRepairForm.get('accessories') as FormArray;
+    return this.repairForm.get('accessories') as FormArray;
   }
 
   get workPerformedArray(): FormArray {
-    return this.editRepairForm.get('workPerformed') as FormArray;
+    return this.repairForm.get('workPerformed') as FormArray;
   }
 
   get partsUsedArray(): FormArray {
-    return this.editRepairForm.get('partsUsed') as FormArray;
+    return this.repairForm.get('partsUsed') as FormArray;
   }
 
   constructor(
@@ -37,182 +72,163 @@ export class EditRepairComponent implements OnInit {
     private repairService: RepairService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private store: Store<AppState>
     ) { }
 
 
   loadRepair(id: string): void {
-    this.repairService.querySingleRepair(id)
-    .subscribe(( { data }) => {
-      console.log(data)
-      this.repair = data.repair;
-      this.populateForm();
-    })
+
+    this.store.dispatch(loadOneRepair({repairId: id}))
   }
 
   populateForm() {
 
-    this.editRepairForm.patchValue({
-      radioSerial: this.repair.radioSerial,
-      dateReceived: new Date(parseInt(this.repair.dateReceived)),
-      endUserPO: this.repair.endUserPO,
-      raaPO: this.repair.raaPO,
-      dateSentTech: new Date(parseInt(this.repair.dateSentTech)),
-      dateRecTech: new Date(parseInt(this.repair.dateRecTech)),
-      dateSentEU: new Date(parseInt(this.repair.dateSentEU)),
-      techInvNum: this.repair.techInvNum,
-      raaInvNum: this.repair.raaInvNum,
-      testFreq: this.repair.testFreq,
-      incRxSens: this.repair.incRxSens,
-      incFreqErr: this.repair.incFreqErr,
-      incMod: this.repair.incMod,
-      incPowerOut: this.repair.incPowerOut,
-      outRxSens: this.repair.outRxSens,
-      outFreqErr: this.repair.outFreqErr,
-      outMod: this.repair.outMod,
-      outPowerOut: this.repair.outPowerOut,
-      repHours: this.repair.repHours,
-      remarks: this.repair.remarks
+    this.oneRepair$.subscribe((repair: Repair | null) => {
+      if (repair) {
+        this.repairForm.patchValue({
+          radioSerial: repair.radioSerial,
+          dateReceived: new Date(parseInt(repair.dateReceived)),
+          endUserPO: repair.endUserPO,
+          raaPO: repair.raaPO,
+          dateSentTech: new Date(parseInt(repair.dateSentTech)),
+          dateRecTech: new Date(parseInt(repair.dateRecTech)),
+          dateSentEU: new Date(parseInt(repair.dateSentEU)),
+          techInvNum: repair.techInvNum,
+          raaInvNum: repair.raaInvNum,
+          testFreq: repair.testFreq,
+          incRxSens: repair.incRxSens,
+          incFreqErr: repair.incFreqErr,
+          incMod: repair.incMod,
+          incPowerOut: repair.incPowerOut,
+          outRxSens: repair.outRxSens,
+          outFreqErr: repair.outFreqErr,
+          outMod: repair.outMod,
+          outPowerOut: repair.outPowerOut,
+          repHours: repair.repHours,
+          remarks: repair.remarks
+    
+        });
 
+        repair.symptoms.forEach(symptom => {
+          (this.repairForm.get('symptoms') as FormArray).push(this.formBuilder.control(symptom));
+        });
+    
+        repair.accessories.forEach(accessory => {
+          (this.repairForm.get('accessories') as FormArray).push(this.formBuilder.control(accessory));
+        });
+        repair.workPerformed.forEach(work => {
+          (this.repairForm.get('workPerformed') as FormArray).push(this.formBuilder.control(work));
+        });
+        repair.partsUsed.forEach(part => {
+          (this.repairForm.get('partsUsed') as FormArray).push(this.formBuilder.control(part));
+        });
+
+      }
     })
-
-    this.repair.symptoms.forEach(symptom => {
-      (this.editRepairForm.get('symptoms') as FormArray).push(this.formBuilder.control(symptom));
-    });
-
-    this.repair.accessories.forEach(accessory => {
-      (this.editRepairForm.get('accessories') as FormArray).push(this.formBuilder.control(accessory));
-    });
-    this.repair.workPerformed.forEach(work => {
-      (this.editRepairForm.get('workPerformed') as FormArray).push(this.formBuilder.control(work));
-    });
-    this.repair.partsUsed.forEach(part => {
-      (this.editRepairForm.get('partsUsed') as FormArray).push(this.formBuilder.control(part));
-    });
-  }
+  };
 
   addSymptom() {
-    this.symptomsArray.push(this.formBuilder.control(''));
-  }
+    this.symptomsArray.push(new FormControl<string>('', { nonNullable: true}));
+  };
 
   removeSymptom(index: number) {
     this.symptomsArray.removeAt(index);
-  }
+  };
 
 
   addAccessory() {
     console.log('accessory click')
-    this.accessoriesArray.push(this.formBuilder.control(''));
-  }
+    this.accessoriesArray.push(new FormControl<string>('', { nonNullable: true}));
+  };
 
   removeAccessory(index: number) {
     this.accessoriesArray.removeAt(index);
-  }
+  };
 
   addWorkPerformed() {
-    this.workPerformedArray.push(this.formBuilder.control(''));
-  }
+    this.workPerformedArray.push(new FormControl<string>('', { nonNullable: true}));
+  };
 
   removeWorkPerformed(index: number) {
     this.workPerformedArray.removeAt(index);
-  }
+  };
 
   addPartsUsed() {
-    this.partsUsedArray.push(this.formBuilder.control(''));
-  }
+    this.partsUsedArray.push(new FormControl<string>('', { nonNullable: true}));
+  };
 
   removePartsUsed(index: number) {
     this.partsUsedArray.removeAt(index);
-  }
+  };
 
 
   updateRepair(updateRepair: UpdateRepairFields): void {
-    this.repairService.editRepair(this.repairId, updateRepair).subscribe( { next: (result) => {
-      const editedRepair = result.data?.editRepair ?? null;
 
-      if(editedRepair) {
-        this.toastService.show('Repair Edited successfully!', {
-          delay: 3000
-        })
-
-        this.router.navigate(['/one-repair', editedRepair._id]);
-
-        // this.isSubmitted = true 
-      } else {
-        this.router.navigate(['/'])
-
-        // this.isSubmitted = true 
-
+    this.oneRepair$.subscribe((repair: Repair | null) => {
+      if (repair) {
+        this.repairId = repair._id;
       }
 
-    }, error: (error) => {
-      console.error(error);
+    })
 
-      this.toastService.show('Failed to edit repair. Please Try again', {
-        delay: 3000
-      })
-    }
-  
-    });
+    this.store.dispatch(editRepair({id: this.repairId, updates: updateRepair}))
 
-  }
+  };
 
   onSubmit() {
 
-    console.log(this.editRepairForm.value)
+    console.log(this.repairForm.value)
 
-    // const formattedDates = {
-    //   fDateReceived: new Date(this.editRepairForm.value.dateReceived),
-    //   fDateSentTech: new Date(this.editRepairForm.value.dateSentTech),
-    //   fDateRecTech: new Date(this.editRepairForm.value.dateRecTech),
-    //   fDateSentEU: new Date(this.editRepairForm.value.dateSentEU),
-    // }
-
-    // console.log(formattedDates)
+    this.oneRepair$.subscribe((repair: Repair | null) => {
+      if (repair) {
+        this.repairTag = repair.repairTag;
+      }
+    })
 
     const submittedRepair: UpdateRepairFields = {
-      radioSerial: this.editRepairForm.value.radioSerial,
-      dateReceived: this.editRepairForm.value.dateReceived,
-      endUserPO: this.editRepairForm.value.endUserPO,
-      raaPO: this.editRepairForm.value.raaPO,
-      repairTag: this.repair.repairTag,
-      dateSentTech: this.editRepairForm.value.dateSentTech,
-      dateRecTech: this.editRepairForm.value.dateRecTech,
-      dateSentEU: this.editRepairForm.value.dateSentEU,
-      techInvNum: this.editRepairForm.value.techInvNum,
-      raaInvNum: this.editRepairForm.value.raaInvNum,
-      symptoms: Array.isArray(this.editRepairForm.value.symptoms) ? this.editRepairForm.value.symptoms : [''],
-      testFreq: this.editRepairForm.value.testFreq,
-      incRxSens: this.editRepairForm.value.incRxSens,
-      incFreqErr: this.editRepairForm.value.incFreqErr,
-      incMod: this.editRepairForm.value.incMod,
-      incPowerOut: this.editRepairForm.value.incPowerOut,
-      outRxSens: this.editRepairForm.value.outRxSens,
-      outFreqErr: this.editRepairForm.value.outFreqErr,
-      outMod: this.editRepairForm.value.outMod,
-      outPowerOut: this.editRepairForm.value.outPowerOut,
-      accessories: Array.isArray(this.editRepairForm.value.accessories) ? this.editRepairForm.value.accessories : [''],
-      workPerformed: Array.isArray(this.editRepairForm.value.workPerformed) ? this.editRepairForm.value.workPerformed : [''],
-      repHours: this.editRepairForm.value.repHours,
-      partsUsed: Array.isArray(this.editRepairForm.value.partsUsed) ? this.editRepairForm.value.partsUsed : [''],
-      remarks: this.editRepairForm.value.remarks,
+      radioSerial: this.repairForm.value.radioSerial ?? '',
+      dateReceived: this.repairForm.value.dateReceived ?? new Date(),
+      endUserPO: this.repairForm.value.endUserPO ?? '',
+      raaPO: this.repairForm.value.raaPO ?? '',
+      repairTag: this.repairTag,
+      dateSentTech: this.repairForm.value.dateSentTech ?? new Date(),
+      dateRecTech: this.repairForm.value.dateRecTech ?? new Date(),
+      dateSentEU: this.repairForm.value.dateSentEU ?? new Date(),
+      techInvNum: this.repairForm.value.techInvNum ?? '',
+      raaInvNum: this.repairForm.value.raaInvNum ?? '',
+      symptoms: Array.isArray(this.repairForm.value.symptoms) ? this.repairForm.value.symptoms.map(symptom => symptom ?? '') : [''],
+      testFreq: this.repairForm.value.testFreq ?? '',
+      incRxSens: this.repairForm.value.incRxSens ?? '',
+      incFreqErr: this.repairForm.value.incFreqErr ?? '',
+      incMod: this.repairForm.value.incMod ?? '',
+      incPowerOut: this.repairForm.value.incPowerOut ?? '',
+      outRxSens: this.repairForm.value.outRxSens ?? '',
+      outFreqErr: this.repairForm.value.outFreqErr ?? '',
+      outMod: this.repairForm.value.outMod ?? '',
+      outPowerOut: this.repairForm.value.outPowerOut ?? '',
+      accessories: Array.isArray(this.repairForm.value.accessories) ? this.repairForm.value.accessories.map(a => a ?? '') : [''],
+      workPerformed: Array.isArray(this.repairForm.value.workPerformed) ? this.repairForm.value.workPerformed.map(wp => wp ?? '') : [''],
+      repHours: this.repairForm.value.repHours ?? 0,
+      partsUsed: Array.isArray(this.repairForm.value.partsUsed) ? this.repairForm.value.partsUsed.map(pu => pu ?? '') : [''],
+      remarks: this.repairForm.value.remarks ?? '',
     };
 
     this.updateRepair(submittedRepair);
   }
 
   ngOnInit(): void {
-    this.editRepairForm = this.formBuilder.group({
+    this.repairForm.patchValue({
       radioSerial: '',
-      dateReceived: new FormControl(new Date()),
+      dateReceived: new Date(),
       endUserPO: '',
       raaPO: '',
-      dateSentTech: new FormControl(new Date()),
-      dateRecTech: new FormControl(new Date()),
-      dateSentEU: new FormControl(new Date()),
+      dateSentTech: new Date(),
+      dateRecTech: new Date(),
+      dateSentEU: new Date(),
       techInvNum: '',
       raaInvNum: '',
-      symptoms: this.formBuilder.array([]),
+      symptoms: [],
       testFreq: '',
       incRxSens: '',
       incFreqErr: '',
@@ -222,10 +238,10 @@ export class EditRepairComponent implements OnInit {
       outFreqErr: '',
       outMod: '',
       outPowerOut: '',
-      accessories: this.formBuilder.array([]),
-      workPerformed: this.formBuilder.array([]),
+      accessories: [],
+      workPerformed: [],
       repHours: 0,
-      partsUsed: this.formBuilder.array([]),
+      partsUsed: [],
       remarks: ''
 
     })
@@ -234,6 +250,8 @@ export class EditRepairComponent implements OnInit {
       this.repairId = params['id'];
       this.loadRepair(this.repairId);
     })
+
+    this.populateForm();
   };
 
 }

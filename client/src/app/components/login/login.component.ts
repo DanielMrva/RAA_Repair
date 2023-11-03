@@ -10,6 +10,7 @@ import { ToastService } from '@app/services/toast/toast.service';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { loginUser } from '@app/_store/_user-store/user.actions';
+import { AppState } from '@app/_store/app.state';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +35,7 @@ export class LoginComponent implements OnInit{
               private router: Router,
               private apollo: Apollo,
               private toastService: ToastService,
-              private store: Store
+              private store: Store<AppState>
               ) { }
 
   ngOnInit(): void {

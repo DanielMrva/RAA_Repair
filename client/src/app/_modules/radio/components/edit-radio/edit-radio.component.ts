@@ -81,7 +81,7 @@ export class EditRadioComponent implements OnInit{
   //   })
   // }
 
-  async populateForm() {
+  populateForm() {
 
     this.oneRadio$.subscribe((radio: Radio | null) => {
       if (radio) {
@@ -119,7 +119,7 @@ export class EditRadioComponent implements OnInit{
   updateRadio(updateRadio: UpdateRadioFields): void {
 
     this.oneRadio$.subscribe((radio: Radio | null) => {
-      if(radio) {
+      if (radio) {
         this.radioId = radio._id
       }
     })

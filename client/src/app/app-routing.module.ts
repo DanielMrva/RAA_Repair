@@ -32,7 +32,7 @@ import { EditRepairComponent } from './_modules/repair/components/edit-repair/ed
 import { EditRadioComponent } from './_modules/radio/components/edit-radio/edit-radio.component';
 import { EditUserComponent } from './_modules/user/components/edit-user/edit-user.component';
 import { EditOrgComponent } from './_modules/org/components/edit-org/edit-org.component';
-import { OneUserComponent } from './components/one-user/one-user.component';
+import { OneUserComponent } from './_modules/user/components/one-user/one-user.component';
 import { OneOrgComponent } from './_modules/org/components/one-org/one-org.component';
 import { AddOrgComponent } from './_modules/org/components/add-org/add-org.component';
 import { AddUserComponent } from './_modules/user/components/add-user/add-user.component';
@@ -60,22 +60,6 @@ const routes: Routes = [
       role: ['admin', 'user']
     }
   },
-  // {
-  //   path: 'submit',
-  //   component: SubmitServiceComponent,
-  //   pathMatch: 'full',
-  //   data: {
-  //     role: ['admin', 'user']
-  //   }
-  // },
-  // {
-  //   path: 'submit/:serialNumber?',
-  //   component: SubmitServiceComponent,
-  //   pathMatch: 'full',
-  //   data: {
-  //     role: ['admin', 'user']
-  //   }
-  // },
   {
     path: 'add-radio',
     component: AddRadioComponent,
@@ -110,13 +94,6 @@ const routes: Routes = [
       role: ['admin', 'user']
     }
   },
-  // {
-  //   path: 'one-org/:id',
-  //   component: OneOrganizationComponent,
-  //   data: {
-  //     role: ['admin', 'user']
-  //   }
-  // },
   {
     path: 'one-org/:id',
     component: OneOrgComponent,
@@ -180,14 +157,6 @@ const routes: Routes = [
       role: ['admin']
     }
   },
-  // {
-  //   path: 'edit-org/:id',
-  //   component: EditOrganizationComponent,
-  //   pathMatch: 'full',
-  //   data: {
-  //     role: ['admin']
-  //   }
-  // },
   {
     path: 'dashboard',
     component: DashboardComponent,

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { RepairService } from '@app/services/repairs/repair.service';
-import { Repair } from '@app/graphql/schemas/typeInterfaces';
-import { ToastService } from '@app/services/toast/toast.service';
+import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { AppState } from '@app/_store/app.state';
+import { Store } from '@ngrx/store';
+import { addRepair } from '@app/_store/_repair-store/repair.actions';
 
 @Component({
   selector: 'app-admin-add-repair',
@@ -12,35 +12,34 @@ import { ToastService } from '@app/services/toast/toast.service';
 })
 export class AdminAddRepairComponent implements OnInit {
 
-  adminRepairForm = this.formBuilder.group({
-    
-    radioSerial: '',
-    dateReceived: '',
-    endUserPO: '',
-    raaPO: '',
-    dateSentTech: '',
-    dateRecTech: '',
-    dateSentEU: '',
-    techInvNum: '',
-    raaInvNum: '',
-    symptoms: this.formBuilder.array(['']),
-    testFreq: '',
-    incRxSens: '',
-    incFreqErr: '',
-    incMod: '',
-    incPowerOut: '',
-    outRxSens: '',
-    outFreqErr: '',
-    outMod: '',
-    outPowerOut: '',
-    accessories: this.formBuilder.array(['']),
-    workPerformed: this.formBuilder.array(['']),
-    repHours: 0,
-    partsUsed: this.formBuilder.array(['']),
-    remarks: ''
-    
-  
-  })
+  adminRepairForm = new FormGroup({
+    radioSerial: new FormControl<string>(''),
+    dateReceived: new FormControl<string>(''),
+    endUserPO: new FormControl<string>(''),
+    raaPO: new FormControl<string>(''),
+    dateSentTech: new FormControl<string>(''),
+    dateRecTech: new FormControl<string>(''),
+    dateSentEU: new FormControl<string>(''),
+    techInvNum: new FormControl<string>(''),
+    raaInvNum: new FormControl<string>(''),
+    symptoms: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
+    testFreq: new FormControl<string>(''),
+    incRxSens: new FormControl<string>(''),
+    incFreqErr: new FormControl<string>(''),
+    incMod: new FormControl<string>(''),
+    incPowerOut: new FormControl<string>(''),
+    outRxSens: new FormControl<string>(''),
+    outFreqErr: new FormControl<string>(''),
+    outMod: new FormControl<string>(''),
+    outPowerOut: new FormControl<string>(''),
+    accessories: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
+    workPerformed: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
+    repHours: new FormControl<number>(0),
+    partsUsed: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
+    remarks: new FormControl<string>(''),
+  });
+
+  isSubmitted = false;
 
   get symptomsArray(): FormArray {
     return this.adminRepairForm.get('symptoms') as FormArray;
@@ -60,15 +59,12 @@ export class AdminAddRepairComponent implements OnInit {
 
 
   constructor(
-    private formBuilder: FormBuilder,
-    private repairService: RepairService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
-    private toastService: ToastService
+    private store: Store<AppState>
   ) {  }
 
   addSymptom() {
-    this.symptomsArray.push(this.formBuilder.control(''));
+    this.symptomsArray.push(new FormControl<string>('', { nonNullable: true}));
   }
 
   removeSymptom(index: number) {
@@ -76,7 +72,7 @@ export class AdminAddRepairComponent implements OnInit {
   }
 
   addAccessory() {
-    this.accessoriesArray.push(this.formBuilder.control(''));
+    this.accessoriesArray.push(new FormControl<string>('', { nonNullable: true}));
   }
 
   removeAccessory(index: number) {
@@ -84,7 +80,7 @@ export class AdminAddRepairComponent implements OnInit {
   }
 
   addWorkPerformed() {
-    this.workPerformedArray.push(this.formBuilder.control(''));
+    this.workPerformedArray.push(new FormControl<string>('', { nonNullable: true}));
   }
 
   removeWorkPerformed(index: number) {
@@ -92,11 +88,23 @@ export class AdminAddRepairComponent implements OnInit {
   }
 
   addPartsUsed() {
-    this.partsUsedArray.push(this.formBuilder.control(''));
+    this.partsUsedArray.push(new FormControl<string>('', { nonNullable: true}));
   }
 
   removePartsUsed(index: number) {
     this.partsUsedArray.removeAt(index);
+  }
+
+  fieldValidCheck(field: string) {
+    if (
+      this.adminRepairForm.get(`${field}`)?.invalid &&
+      this.adminRepairForm.get(`${field}`)?.dirty ||
+      this.adminRepairForm.get(`${field}`)?.touched ||
+      this.isSubmitted) {
+        return true
+      } else {
+        return false
+      }
   }
 
   ngOnInit(): void {
@@ -111,7 +119,7 @@ export class AdminAddRepairComponent implements OnInit {
 
   onSubmit() {
 
-    // console.log(this.adminRepairForm.value);
+    console.log(this.adminRepairForm.value);
 
 
     const radioSerial = this.adminRepairForm.value.radioSerial ?? '';
@@ -139,7 +147,7 @@ export class AdminAddRepairComponent implements OnInit {
     const partsUsed = Array.isArray(this.adminRepairForm.value.partsUsed) ? this.adminRepairForm.value.partsUsed : [''];
     const remarks = this.adminRepairForm.value.remarks ?? '';
 
-    this.repairService.addRepair(
+    this.store.dispatch(addRepair({
       radioSerial,
       dateReceived,
       endUserPO,
@@ -149,7 +157,7 @@ export class AdminAddRepairComponent implements OnInit {
       dateSentEU,
       techInvNum,
       raaInvNum,
-      symptoms as string[],
+      symptoms,
       testFreq,
       incRxSens,
       incFreqErr,
@@ -159,36 +167,13 @@ export class AdminAddRepairComponent implements OnInit {
       outFreqErr,
       outMod,
       outPowerOut,
-      accessories as string[],
-      workPerformed as string[],
+      accessories,
+      workPerformed,
       repHours,
-      partsUsed as string[],
+      partsUsed,
       remarks
-    ) 
-    
-    .subscribe({ next: (result) => {
+    }))
 
-      const newRepair = result.data?.addRepair ?? null;
-      // console.log(newRepair);
+  };
 
-
-      if(newRepair) {
-        this.toastService.show('Repair added successfully!', {
-          classname: 'bg-success text-light',
-          delay: 3000
-        })
-        this.router.navigate(['/one-repair', newRepair._id]);
-      } else {
-        this.router.navigate(['/']);
-
-      }
-    }, error: (error) => {
-      console.error(error);
-
-      this.toastService.show('Failed to submit repair. Please try again', {
-        classname: 'bg-danger text-light',
-        delay: 3000
-      })
-    }});
-  }
 }

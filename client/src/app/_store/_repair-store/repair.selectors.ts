@@ -14,12 +14,12 @@ export const selectOneRepair = createSelector(
     (state: RepairState) => state.oneRepair
 );
 
-export const repairStatusSelector = createSelector(
-    selectRepairs,
-    (state: RepairState) => state.status
-);
-
 export const repairErrorSelector = createSelector(
     selectRepairs,
     (state: RepairState) => state.error
+);
+
+export const repairLoadingSelector = createSelector(
+    selectRepairs,
+    (state: RepairState) => state.isLoading
 );

@@ -131,7 +131,7 @@ export type UpdateRepairFields = {
     accessories: string[],
     workPerformed: string[],
     repHours: number,
-    partsUsed: string,
+    partsUsed: string[],
     remarks: string
 }
 
