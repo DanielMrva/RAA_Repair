@@ -1,19 +1,10 @@
-<ng-container *ngIf="{loggedUser: loggedUser$ | async} as data">
+<ng-container *ngIf="userAccessLevel$ | async as accessLevel">
 
-    <div *ngIf="
-        data.loggedUser !== null &&
-        data.loggedUser !== undefined
-        "
-    >
-        <div *ngIf="data.loggedUser.accessLevel === 'admin' ">
+    <ng-container [ngSwitch]="accessLevel">
 
-            <app-admin-add-radio/>
+        <app-admin-add-radio *ngSwitchCase="ADMIN_ACCESS"></app-admin-add-radio>
 
-        </div>
-
-
-
-    </div>
+    </ng-container>
 
 </ng-container>
 

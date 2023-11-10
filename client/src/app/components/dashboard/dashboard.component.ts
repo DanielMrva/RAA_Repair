@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { AuthService } from '@app/services/auth/auth.service';
 import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER } from '@app/utils/constants';
+import { Store } from '@ngrx/store';
+import { AppState } from '@app/_store/app.state';
+import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,16 +11,14 @@ import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER } from '@app/u
 })
 export class DashboardComponent {
 
-  loggedUser$ = this.authService.loggedUser$;
+  userAccessLevel$ = this.store.select(selectAccessLevel);
 
-  userAccessLevel: string | null = this.authService.getUserAccessLevel();
-  
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
   USER_ACCESS = ACCESS_LEVEL_USER;
   TECH_ACCESS = ACCESS_LEVEL_TECH;
 
-  constructor (private authService: AuthService) {
-    
-  }
+  constructor(
+    private store: Store<AppState>
+  ) {}
 
 }

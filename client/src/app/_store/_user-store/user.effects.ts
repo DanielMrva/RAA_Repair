@@ -23,7 +23,7 @@ import { setAuthInfo, clearAuthInfo } from "../_auth-store/auth.actions";
 import { UserService } from "@app/services/users/user.service";
 import { ToastService } from "@app/services/toast/toast.service";
 import { of, from } from "rxjs";
-import { switchMap, map, catchError, withLatestFrom, exhaustMap } from "rxjs/operators";
+import { switchMap, map, catchError, withLatestFrom, exhaustMap, tap } from "rxjs/operators";
 import { Store, createAction } from "@ngrx/store";
 import { selectAllUsers } from "./user.selectors";
 import { AppState } from "../app.state";
@@ -146,50 +146,104 @@ export class UserEffects {
         { dispatch: false }
     );
 
+    // loginUser$ = createEffect(() =>
+    //     this.actions$.pipe(
+    //         ofType(loginUser),
+    //         switchMap(({ email, password }) =>
+    //             this.userService.loginUser(email, password).pipe(
+    //                 map(({ data }) => loginUserSuccess({ loginResults: data?.loginUser })),
+    //                 catchError((error) => of(loginUserFailure({ error })))
+    //             )
+    //         )
+    //     )
+    // );
+
     loginUser$ = createEffect(() =>
         this.actions$.pipe(
             ofType(loginUser),
             switchMap(({ email, password }) =>
                 this.userService.loginUser(email, password).pipe(
-                    map(({ data }) => loginUserSuccess({ loginResults: data?.loginUser })),
+                    tap(response => console.log('Login response:', response)),
+                    map(({ data }) => {
+                        const login = data?.login;
+                        console.log(login?.user);
+                        // return login
+                        //     ? loginUserSuccess({ login })
+                        //     : loginUserFailure({ error: 'No login results' });
+                        return loginUserSuccess({ login })
+                    }),
                     catchError((error) => of(loginUserFailure({ error })))
                 )
             )
         )
     );
 
+
+
+
+
+
+
+    // loginUserSuccess2$ = createEffect(() =>
+    //     this.actions$.pipe(
+    //         ofType(loginUserSuccess),
+    //         map(({ loginResults }) => {
+    //             if (loginResults) {
+
+    //                 console.log(loginResults);
+    //                 const { username, orgName, accessLevel } = loginResults.user;
+
+    //                 this.toastService.show(`Welcome ${loginResults.user.username} !`, {
+    //                     classname: 'bg-success text-light',
+    //                     delay: 3000
+    //                 });
+
+    //                 return setAuthInfo({ username, orgName, accessLevel })
+    //             } else {
+    //                 console.log('no login results apparently?...')
+    //                 return clearAuthInfo();
+    //             }
+    //         })
+    //     )
+    // );
+
     loginUserSuccess$ = createEffect(() =>
         this.actions$.pipe(
             ofType(loginUserSuccess),
-            map(({ loginResults }) => {
-                if (loginResults) {
-                    const { username, orgName, accessLevel } = loginResults.user;
+            map(({ login }) => {
+                if (login && login.token && login.user) {
+                    const { username, orgName, accessLevel } = login.user;
 
-                    this.toastService.show(`Welcome ${loginResults.user.username} !`, {
+                    this.toastService.show(`Welcome ${username}!`, {
                         classname: 'bg-success text-light',
                         delay: 3000
-                    });
+                    }),
 
-                    return setAuthInfo({ username, orgName, accessLevel })
+                    this.router.navigate(['/'])
+                    console.log('Login User Success dispatching SET AUTH INFO')
+                    return setAuthInfo({ username, orgName, accessLevel });
                 } else {
+                    console.log('no login results or user information available.');
                     return clearAuthInfo();
                 }
             })
         )
     );
 
-    loginUserFailure$ = createEffect(() => 
+
+
+    loginUserFailure$ = createEffect(() =>
         this.actions$.pipe(
             ofType(loginUserFailure),
-            map(( { error }) => {
+            map(({ error }) => {
                 this.toastService.show(`${error}`, {
                     classname: 'bg-danger text-light',
                     delay: 3000
-                  }),
-                  console.error(error)
+                }),
+                    console.error(error)
             })
         ),
-        { dispatch: false}
+        { dispatch: false }
     );
 
     logoutUser$ = createEffect(() =>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Auth, User} from '@app/graphql/schemas';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Auth, AuthInfo, User} from '@app/graphql/schemas';
 
 
 @Injectable({
@@ -14,19 +14,32 @@ export class AuthService {
     User | null | undefined
   >(undefined);
 
-  autoLogin() {
+  // autoLogin() {
+  //   if (localStorage.getItem('user')) {
+  //     const localUser = JSON.parse(localStorage.getItem('user') ?? '');
+  //     this.loggedUser$.next(
+  //         {
+  //           _id: localUser._id, 
+  //           username: localUser.username,
+  //           email: localUser.email,
+  //           password: localUser.password,
+  //           accessLevel: localUser.accessLevel,
+  //           orgName: localUser.orgName
+  //         }
+  //       )
+  //   }
+  // }
+
+  autoLogin(): Observable <AuthInfo | null> {
     if (localStorage.getItem('user')) {
-      const localUser = JSON.parse(localStorage.getItem('user') ?? '');
-      this.loggedUser$.next(
-          {
-            _id: localUser._id, 
-            username: localUser.username,
-            email: localUser.email,
-            password: localUser.password,
-            accessLevel: localUser.accessLevel,
-            orgName: localUser.orgName
-          }
-        )
+      const localUser = JSON.parse(localStorage.getItem('user') ?? '') as AuthInfo;
+      return of({
+        username: localUser.username,
+        orgName: localUser.orgName,
+        accessLevel: localUser.accessLevel
+      })
+    } else {
+      return of(null)
     }
   }
 

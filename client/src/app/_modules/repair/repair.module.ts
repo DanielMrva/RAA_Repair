@@ -16,6 +16,11 @@ import { OneRepairComponent } from './components/one-repair/one-repair.component
 import { EditRepairComponent } from './components/edit-repair/edit-repair.component';
 import { AdminAddRepairComponent } from './components/add-repair/admin-add-repair/admin-add-repair.component';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { RepairEffects } from '@app/_store/_repair-store/repair.effects';
+import { repairReducer } from '@app/_store/_repair-store/repair.reducers';
+
 
 
 
@@ -37,7 +42,9 @@ import { AdminAddRepairComponent } from './components/add-repair/admin-add-repai
     MatRadioModule,
     // MatSelectModule,
     // MatProgressSpinnerModule,
-    // MatFormFieldModule
+    // MatFormFieldModule,
+    StoreModule.forFeature('repair', repairReducer),
+    EffectsModule.forFeature([RepairEffects])
   ]
 })
 export class RepairModule { }

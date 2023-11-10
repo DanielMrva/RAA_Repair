@@ -42,7 +42,7 @@ export const userReducer = createReducer(
 
     on(loginUser, state => ({ ...state, isLoading: true, error: null,})),
 
-    on(loginUserSuccess, (state, { loginResults }) => ({
+    on(loginUserSuccess, (state, { login }) => ({
         ...state,
         isLoading: false,
         error: null

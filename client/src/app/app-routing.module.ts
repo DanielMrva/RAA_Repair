@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 // component imports
 import { HomeComponent } from '@app/components/home/home.component';
-import { LoginComponent } from '@app/components/login/login.component';
+// import { LoginComponent } from '@app/components/login/login.component';
 // import { SubmitServiceComponent } from '@app/components/submit-service/submit-service.component';
 // import { OneRepairComponent } from '@app/components/one-repair/one-repair.component';
 // import { AddRadioComponent } from '@app/components/add-radio/add-radio.component';
@@ -36,6 +36,7 @@ import { OneUserComponent } from './_modules/user/components/one-user/one-user.c
 import { OneOrgComponent } from './_modules/org/components/one-org/one-org.component';
 import { AddOrgComponent } from './_modules/org/components/add-org/add-org.component';
 import { AddUserComponent } from './_modules/user/components/add-user/add-user.component';
+import { LoginComponent } from './_modules/user/components/login/login.component';
 
 
 const routes: Routes = [
@@ -63,6 +64,22 @@ const routes: Routes = [
   {
     path: 'add-radio',
     component: AddRadioComponent,
+    pathMatch: 'full',
+    data: {
+      role: ['admin']
+    }
+  },
+  {
+    path: 'add-user',
+    component: AddUserComponent,
+    pathMatch: 'full',
+    data: {
+      role: ['admin']
+    }
+  },
+  {
+    path: 'add-org',
+    component: AddOrgComponent,
     pathMatch: 'full',
     data: {
       role: ['admin']

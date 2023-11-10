@@ -1,17 +1,10 @@
-<ng-container *ngIf="{loggedUser: loggedUser$ | async} as data">
-    <div *ngIf="
-        data.loggedUser !== null &&
-        data.loggedUser !== undefined
-        "
-    >
-        <div *ngIf="data.loggedUser.accessLevel === 'admin' ">
+<ng-container *ngIf="userAccessLevel$ | async as accessLevel">
 
-            <app-admin-add-repair/>
-            
-        </div>
+    <ng-container [ngSwitch]="accessLevel">
 
-    </div>
+        <app-admin-add-repair *ngSwitchCase="ADMIN_ACCESS"></app-admin-add-repair>
 
+    </ng-container>
 
 </ng-container>
 

@@ -54,6 +54,12 @@ export type User = {
     orgName: string,
 };
 
+export type AuthInfo = {
+    username: string;
+    orgName: string;
+    accessLevel: string;
+};
+
 export type StoredUser = {
     _id: string,
     username: string,

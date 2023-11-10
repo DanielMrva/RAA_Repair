@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@app/services/auth/auth.service';
 import { User } from '@app/graphql/schemas';
+import { Store } from '@ngrx/store';
+import { AppState } from '@app/_store/app.state';
+import { selectUserName } from '@app/_store/_auth-store/auth.selectors';
 
 @Component({
   selector: 'app-home',
@@ -12,8 +15,11 @@ export class HomeComponent {
   loading = false;
   user: User;
 
+  userName$ = this.store.select(selectUserName);
+
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store<AppState>
   ) {
     this.user = <User>this.authService.loggedUser$.value;
   }
