@@ -36,7 +36,7 @@ export class EditOrgComponent implements OnInit{
 
   loadOrg(id: string): void {
 
-    this.store.dispatch(loadOneOrg({ orgId: id}))
+    this.store.dispatch(loadOneOrg({ orgId: id }))
   }
 
   populateForm() {

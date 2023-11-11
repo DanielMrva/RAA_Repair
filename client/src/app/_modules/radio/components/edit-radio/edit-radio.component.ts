@@ -47,39 +47,14 @@ export class EditRadioComponent implements OnInit{
     
   constructor(
     private formBuilder: FormBuilder,
-    private radioService: RadioService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
-    private toastService: ToastService,
     private store: Store<AppState>
   ) { }
 
   loadRadio(id: string): void {
 
     this.store.dispatch(loadOneRadio({radioId: id}))
-  }
-
-  // async populateForm() {
-  //   this.editRadioForm.patchValue({
-  //     orgName: this.radio.orgName,
-  //     location: this.radio.location,
-  //     dateSold: new Date(parseInt(this.radio.dateSold)),
-  //     dateEntered: new Date(parseInt(this.radio.dateEntered)),
-  //     inventoryNumber: this.radio.inventoryNumber,
-  //     make: this.radio.make,
-  //     model: this.radio.model,
-  //     progChannels: this.radio.progChannels,
-  //     serialNumber: this.radio.serialNumber,
-  //     warranty: new Date(parseInt(this.radio.warranty)),
-  //     refurb: this.radio.refurb.toString(),
-  //     radioType: this.radio.radioType
-
-  //   })
-
-  //   this.radio.notes.forEach(note => {
-  //     (this.editRadioForm.get('notes') as FormArray).push(this.formBuilder.control(note));
-  //   })
-  // }
+  };
 
   populateForm() {
 

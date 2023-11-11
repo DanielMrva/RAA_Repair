@@ -18,7 +18,7 @@ export class AddUserComponent implements OnInit {
   orgNameError$ = this.store.select(orgErrorSelector);
 
   userForm = new FormGroup({
-    userName: new FormControl<string>('', { nonNullable: true }),
+    username: new FormControl<string>('', { nonNullable: true }),
     email: new FormControl<string>('', { nonNullable: true }),
     password: new FormControl<string>('', { nonNullable: true }),
     orgName: new FormControl<string>(''),
@@ -51,7 +51,7 @@ export class AddUserComponent implements OnInit {
 
     console.log(this.userForm.value);
 
-    const username = this.userForm.value.userName ?? '';
+    const username = this.userForm.value.username ?? '';
     const email = this.userForm.value.email ?? '';
     const password = this.userForm.value.password ?? '';
     const orgName = this.userForm.value.orgName ?? '';

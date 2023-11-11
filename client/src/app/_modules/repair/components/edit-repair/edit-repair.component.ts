@@ -27,7 +27,7 @@ export class EditRepairComponent implements OnInit {
     dateSentEU: new FormControl<Date>(new Date()),
     techInvNum: new FormControl<string>(''),
     raaInvNum: new FormControl<string>(''),
-    symptoms: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
+    symptoms: new FormArray([]),
     testFreq: new FormControl<string>(''),
     incRxSens: new FormControl<string>(''),
     incFreqErr: new FormControl<string>(''),
@@ -37,10 +37,10 @@ export class EditRepairComponent implements OnInit {
     outFreqErr: new FormControl<string>(''),
     outMod: new FormControl<string>(''),
     outPowerOut: new FormControl<string>(''),
-    accessories: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
-    workPerformed: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
+    accessories: new FormArray([]),
+    workPerformed: new FormArray([]),
     repHours: new FormControl<number>(0),
-    partsUsed: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
+    partsUsed: new FormArray([]),
     remarks: new FormControl<string>(''),
   });
 
@@ -69,10 +69,7 @@ export class EditRepairComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private repairService: RepairService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
-    private toastService: ToastService,
     private store: Store<AppState>
     ) { }
 

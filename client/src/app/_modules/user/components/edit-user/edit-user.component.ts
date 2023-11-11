@@ -27,7 +27,7 @@ export class EditUserComponent implements OnInit {
   userId!: string;
 
   userForm = new FormGroup({
-    userName: new FormControl<string>('', { nonNullable: true }),
+    username: new FormControl<string>('', { nonNullable: true }),
     email: new FormControl<string>('', { nonNullable: true }),
     orgName: new FormControl<string>(''),
     accessLevel: new FormControl<string>('')
@@ -54,7 +54,7 @@ export class EditUserComponent implements OnInit {
     this.oneUser$.subscribe((user: User | null) => {
       if(user) {
         this.userForm.patchValue({
-          userName: user.username,
+          username: user.username,
           email: user.email,
           orgName: user.orgName,
           accessLevel: user.accessLevel
@@ -76,7 +76,7 @@ export class EditUserComponent implements OnInit {
 
   onSubmit() {
 
-    const username = this.userForm.value.userName ?? '';
+    const username = this.userForm.value.username ?? '';
     const email = this.userForm.value.email ?? '';
     const accessLevel = this.userForm.value.accessLevel ?? '';
     const orgName = this.userForm.value.orgName ?? '';
@@ -95,7 +95,7 @@ export class EditUserComponent implements OnInit {
   ngOnInit(): void {
 
     this.userForm.patchValue({
-      userName: '',
+      username: '',
       email: '',
       orgName: '',
       accessLevel: ''

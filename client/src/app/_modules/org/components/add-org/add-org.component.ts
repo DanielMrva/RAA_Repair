@@ -19,7 +19,7 @@ export class AddOrgComponent implements OnInit {
   orgList!: Organization[];
 
   orgForm = new FormGroup({
-    orgName: new FormControl<string>('', {nonNullable: true, validators: this.orgNameValidator(this.orgList)})
+    orgName: new FormControl<string>('', {nonNullable: true, validators: this.orgNameValidator().bind(this) })
   })
 
   isSubmitted = false;
@@ -56,10 +56,10 @@ export class AddOrgComponent implements OnInit {
     })
   };
 
-  orgNameValidator(orgList: Organization[]): ValidatorFn {
+  orgNameValidator(): ValidatorFn {
     return (control) => {
       const input = control.value;
-      if (orgList.some((org) => org.orgName === input)) {
+      if (this.orgList && this.orgList.some((org) => org.orgName === input)) {
         return { orgNameExists: true };
       }
       return null;
