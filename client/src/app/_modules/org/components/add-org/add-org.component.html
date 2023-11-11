@@ -1,0 +1,45 @@
+<div *ngIf="isLoadingOrgNames$ | async; else loadedData">
+    <h2>Loading...</h2>
+</div>
+
+
+
+<ng-template #loadedData>
+
+    <div *ngIf="orgError$ | async as error">{{ error }}</div>
+
+
+    <div class="row">
+    
+        <h2 class="col-12 text-center">Add Organization</h2>
+    
+        <form [formGroup]="orgForm" (ngSubmit)="onSubmit()" class="row">
+    
+    
+            <div class="form-group col-12">
+                <label for="orgName">Organization Name: </label>
+                <input
+                    type="text"
+                    id="orgName"
+                    formControlName="orgName"
+                    placeholder="Organization Name"
+                    class="form-control"
+                />
+            </div>
+    
+            <div *ngIf="fieldValidCheck('orgName')">
+                <div
+                  class="text-danger"
+                  *ngIf="orgForm.get('orgName')?.hasError('orgNameExists')"
+                >
+                  This organization name already exists.
+                </div>
+            </div>
+    
+            <button type="submit" class="btn btn-primary">Submit</button>
+    
+    
+        </form>
+    
+    </div>
+</ng-template>

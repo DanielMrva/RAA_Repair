@@ -1,0 +1,21 @@
+<div *ngIf="isLoading$">
+    <h2>Loading...</h2>
+</div>
+
+<div *ngIf="orgError$ | async as error">
+    {{ error }}
+</div>
+
+<div *ngIf="oneOrg$ | async as oneOrg" class="container">
+
+    <div class="row">
+        <h2 class="col-12 text-center">{{oneOrg.orgName}}</h2>
+    </div>
+
+</div>
+
+<!-- <div *ngIf="org" class="container">
+    <div class="row">
+        <h2 class="col-12 text-center">{{org.orgName}}</h2>
+    </div>
+</div> -->

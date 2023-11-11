@@ -1,0 +1,27 @@
+<div *ngIf="isLoading$ | async; else loadedData" >
+
+</div>
+
+<ng-template #loadedData>
+
+    <div *ngIf="userError$ | async as error">{{ error }}</div>
+
+    <div *ngIf="oneUser$ | async as user; else noUserFound" class="container">
+        <div class="row">
+            <h2 class="col-12 text-center">User: {{user.username}}</h2>
+            <ul class="col-6 p-3">
+                <li>Email: {{user.email}}</li>
+                <li>Organization: {{user.orgName}}</li>
+                <li>Access Level: {{user.accessLevel}}</li>
+            </ul>
+    
+        </div>
+    </div>
+
+</ng-template>
+
+<ng-template #noUserFound>
+    <div class="container">
+        <h2>No User Found</h2>
+    </div>
+</ng-template>

@@ -46,7 +46,7 @@ export class EditOrganizationComponent implements OnInit{
       const editiedOrg = result.data?.editOrg ?? null;
 
       if (editiedOrg) {
-        this.toastService.show('Organization Editied Sucessfully!', {
+        this.toastService.show('Organization Editied successfully!', {
           delay: 3000
         })
 

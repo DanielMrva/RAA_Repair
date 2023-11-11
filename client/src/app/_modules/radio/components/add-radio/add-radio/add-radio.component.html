@@ -1,0 +1,23 @@
+<ng-container *ngIf="userAccessLevel$ | async as accessLevel">
+
+    <ng-container [ngSwitch]="accessLevel">
+
+        <app-admin-add-radio *ngSwitchCase="ADMIN_ACCESS"></app-admin-add-radio>
+
+    </ng-container>
+
+</ng-container>
+
+<!-- <ng-container *ngIf="userAccessLevel$ | async as accessLevel">
+
+    <ng-container [ngSwitch]="accessLevel">
+
+        <app-admin-add-radio *ngSwitchCase="ADMIN_ACCESS"></app-admin-add-radio>
+
+        <ng-template *ngSwitchDefault>
+            <h2>Please Log In To Access This Page</h2>
+        </ng-template>
+
+    </ng-container>
+
+</ng-container> -->

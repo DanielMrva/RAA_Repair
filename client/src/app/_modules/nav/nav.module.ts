@@ -9,7 +9,8 @@ import { UserNavComponent } from './user-nav/user-nav.component';
 import { TechNavComponent } from './tech-nav/tech-nav.component';
 import { AuthService } from '@app/services/auth/auth.service';
 
-
+import { StoreModule } from '@ngrx/store';
+import { authReducer } from '@app/_store/_auth-store/auth.reducers';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AuthService } from '@app/services/auth/auth.service';
     CommonModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forFeature('auth', authReducer)
   ],
   exports: [
     HeaderComponent

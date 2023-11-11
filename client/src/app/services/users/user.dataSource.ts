@@ -7,6 +7,7 @@ import { UserService } from "./user.service";
 
 @Injectable()
 export class UserDataSource extends DataSource<User> {
+    
     users$ = new BehaviorSubject<User[]>([]);
     isLoading$ = new BehaviorSubject<boolean>(false);
 
@@ -24,7 +25,7 @@ export class UserDataSource extends DataSource<User> {
 
     loadAllUsers(): void {
         this.isLoading$.next(true);
-        this.userService.queryUsers().subscribe(( {data}) => {
+        this.userService.queryUsers().subscribe(( {data} ) => {
             this.users$.next(data.users);
             this.isLoading$.next(false);
         })
@@ -32,7 +33,7 @@ export class UserDataSource extends DataSource<User> {
 
     loadOrgUsers(orgName: string): void {
         this.isLoading$.next(true)
-        this.userService.queryOrgUsers(orgName).subscribe(( {data}) => {
+        this.userService.queryOrgUsers(orgName).subscribe(( {data} ) => {
             this.users$.next(data.orgUsers);
             this.isLoading$.next(false);
         })

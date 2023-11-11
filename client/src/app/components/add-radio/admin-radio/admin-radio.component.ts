@@ -105,7 +105,7 @@ export class AdminRadioComponent implements OnInit {
         const newRadio = result.data?.addRadio ?? null;
 
         if(newRadio) {
-          this.toastService.show('Radio added sucessfully!', {
+          this.toastService.show('Radio added successfully!', {
             delay: 3000
           })
           this.router.navigate(['/one-radio', newRadio._id]);

@@ -4,22 +4,30 @@ import { RouterModule, Routes } from '@angular/router';
 
 // component imports
 import { HomeComponent } from '@app/components/home/home.component';
-import { LoginComponent } from '@app/components/login/login.component';
-import { SubmitServiceComponent } from '@app/components/submit-service/submit-service.component';
-import { OneRepairComponent } from '@app/components/one-repair/one-repair.component';
-import { AddRadioComponent } from '@app/components/add-radio/add-radio.component';
-import { OneRadioComponent } from '@app/components/one-radio/one-radio.component';
-import { AdminRadioComponent } from '@app/components/add-radio/admin-radio/admin-radio.component';
 import { AdminRadioReportsComponent } from '@app/components/admin-radio-reports/admin-radio-reports.component';
 import { AdminUserReportsComponent } from '@app/components/admin-user-reports/admin-user-reports.component';
-import { EditRadioComponent } from '@app/components/edits/edit-radio/edit-radio.component';
-import { EditRepairComponent } from '@app/components/edits/edit-repair/edit-repair.component';
-import { EditUserComponent } from '@app/components/edits/edit-user/edit-user.component';
-import { OneUserComponent } from '@app/components/one-user/one-user.component';
-import { EditOrganizationComponent } from '@app/components/edits/edit-organization/edit-organization.component';
-import { OneOrganizationComponent } from '@app/components/one-organization/one-organization.component';
 import { AdminOrgReportsComponent } from '@app/components/admin-org-reports/admin-org-reports.component';
 import { DashboardComponent } from '@app/components/dashboard/dashboard.component';
+
+
+import { AddRepairComponent } from './_modules/repair/components/add-repair/add-repair.component';
+import { AdminAddRepairComponent } from './_modules/repair/components/add-repair/admin-add-repair/admin-add-repair.component';
+import { AddRadioComponent } from './_modules/radio/components/add-radio/add-radio/add-radio.component';
+import { OneRadioComponent } from './_modules/radio/components/one-radio/one-radio.component';
+import { OneRepairComponent } from './_modules/repair/components/one-repair/one-repair.component';
+import { EditRepairComponent } from './_modules/repair/components/edit-repair/edit-repair.component';
+import { EditRadioComponent } from './_modules/radio/components/edit-radio/edit-radio.component';
+import { EditUserComponent } from './_modules/user/components/edit-user/edit-user.component';
+import { EditOrgComponent } from './_modules/org/components/edit-org/edit-org.component';
+import { OneUserComponent } from './_modules/user/components/one-user/one-user.component';
+import { OneOrgComponent } from './_modules/org/components/one-org/one-org.component';
+import { AddOrgComponent } from './_modules/org/components/add-org/add-org.component';
+import { AddUserComponent } from './_modules/user/components/add-user/add-user.component';
+import { LoginComponent } from './_modules/user/components/login/login.component';
+
+import { roleGuard } from './guards/role-guard';
+import { authGuard } from './guards/auth-guard';
+
 
 const routes: Routes = [
   {
@@ -29,19 +37,21 @@ const routes: Routes = [
   },
   {
     path: 'submit',
-    component: SubmitServiceComponent,
+    component: AddRepairComponent,
     pathMatch: 'full',
     data: {
       role: ['admin', 'user']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'submit/:serialNumber?',
-    component: SubmitServiceComponent,
+    component: AdminAddRepairComponent,
     pathMatch: 'full',
     data: {
       role: ['admin', 'user']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'add-radio',
@@ -49,7 +59,26 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       role: ['admin']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
+  },
+  {
+    path: 'add-user',
+    component: AddUserComponent,
+    pathMatch: 'full',
+    data: {
+      role: ['admin']
+    },
+    canActivate: [authGuard, roleGuard]
+  },
+  {
+    path: 'add-org',
+    component: AddOrgComponent,
+    pathMatch: 'full',
+    data: {
+      role: ['admin']
+    },
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'login',
@@ -61,28 +90,32 @@ const routes: Routes = [
     component: OneRepairComponent,
     data: {
       role: ['admin', 'user']
-    }
+    },
+    canActivate: [authGuard]
   },
   {
     path: 'one-radio/:id',
     component: OneRadioComponent,
     data: {
       role: ['admin', 'user']
-    }
+    },
+    canActivate: [authGuard]
   },
   {
     path: 'one-user/:id',
     component: OneUserComponent,
     data: {
       role: ['admin', 'user']
-    }
+    },
+    canActivate: [authGuard]
   },
   {
     path: 'one-org/:id',
-    component: OneOrganizationComponent,
+    component: OneOrgComponent,
     data: {
       role: ['admin', 'user']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'org-radio/:orgName',
@@ -91,14 +124,16 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     data: {
       role: ['admin']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
   },  
   {
     path: 'user-reports',
     component: AdminUserReportsComponent,
     data: {
       role: ['admin']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'org-reports',
@@ -106,7 +141,8 @@ const routes: Routes = [
     outlet: 'dashboard',
     data: {
       role: ['admin']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'edit-repair/:id',
@@ -114,7 +150,8 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       role: ['admin']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'edit-radio/:id',
@@ -122,7 +159,8 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       role: ['admin']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
   },  
   {
     path: 'edit-user/:id',
@@ -130,15 +168,17 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       role: ['admin']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'edit-org/:id',
-    component: EditOrganizationComponent,
+    component: EditOrgComponent,
     pathMatch: 'full',
     data: {
       role: ['admin']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'dashboard',
@@ -146,7 +186,8 @@ const routes: Routes = [
     pathMatch: 'full',
     data: {
       role: ['admin', 'user', 'tech']
-    }
+    },
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: '**',

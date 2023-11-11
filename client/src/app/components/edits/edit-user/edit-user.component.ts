@@ -64,7 +64,7 @@ export class EditUserComponent implements OnInit {
       const editedUser = result.data?.editUser ?? null;
 
       if (editedUser) {
-        this.toastService.show('User Edited Sucessfully!', {
+        this.toastService.show('User Edited successfully!', {
           delay: 3000
         })
 

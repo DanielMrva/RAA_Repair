@@ -1,0 +1,261 @@
+<div *ngIf="isLoading$ | async; else loadedData">
+  <h2>Loading...</h2>
+</div>
+
+
+
+<ng-template #loadedData>
+
+  <div *ngIf="radioError$ | async as error">{{ error }}</div>
+
+
+  <div *ngIf="oneRadio$ | async as radio; else noRadioFound" class="container">
+  
+      <div class="row">
+  
+          <h2 class="col-12 text-center">Edit Radio</h2>
+  
+          <form [formGroup]="editRadioForm" (ngSubmit)="onSubmit()" class="row">
+  
+              <section class="row" id="timelineSection">
+  
+                  <h4 class="col-12 text-center">Timeline</h4>
+  
+                  <mat-form-field class="form-group col-4">
+                      <mat-label>Date Sold</mat-label>
+                      <input matInput [matDatepicker]="dateSoldPicker" formControlName="dateSold">
+                      <mat-datepicker-toggle matSuffix [for]="dateSoldPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #dateSoldPicker></mat-datepicker>
+                  </mat-form-field>
+  
+                  <mat-form-field class="form-group col-4">
+                      <mat-label>Date Entered</mat-label>
+                      <input matInput [matDatepicker]="dateEnteredPicker" formControlName="dateEntered">
+                      <mat-datepicker-toggle matSuffix [for]="dateEnteredPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #dateEnteredPicker></mat-datepicker>
+                  </mat-form-field>
+  
+                  <mat-form-field class="form-group col-4">
+                      <mat-label>Warranty Experation</mat-label>
+                      <input matInput [matDatepicker]="warrantyPicker" formControlName="warranty">
+                      <mat-datepicker-toggle matSuffix [for]="warrantyPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #warrantyPicker></mat-datepicker>
+                  </mat-form-field>
+  
+              </section>
+  
+              <!-- Tracking Info Section -->
+  
+              <section class="row" id="trackingSection">
+  
+                  <h4 class="col-12 text-center">Tracking</h4>
+  
+                  <div class="form-group col-4">
+                      <label for="make">Organization:</label>
+                      <input
+                          type="text"
+                          id="orgName"
+                          formControlName="orgName"
+                          class="form-control"
+                      >
+                  </div>
+  
+                  <div class="form-group col-4">
+                      <label for="make">Location:</label>
+                      <input
+                          type="text"
+                          id="location"
+                          formControlName="location"
+                          class="form-control"
+                      >
+                  </div>
+  
+                  <div class="form-group col-4">
+                      <label for="make">Inventory Number:</label>
+                      <input
+                          type="text"
+                          id="inventory"
+                          formControlName="inventoryNumber"
+                          class="form-control"
+                      >
+                  </div>
+  
+  
+  
+              </section>
+  
+              <!-- Radio Details Section -->
+  
+              <section class="row" id="radioSection">
+  
+                  <h4 class="col-12 text-center">Radio Details</h4>
+  
+                  <div class="form-group col-4">
+                      <label for="make">Make:</label>
+                      <input
+                          type="text"
+                          id="make"
+                          formControlName="make"
+                          class="form-control"
+                      >
+                  </div>
+  
+                  <div class="form-group col-4">
+                      <label for="make">Model:</label>
+                      <input
+                          type="text"
+                          id="model"
+                          formControlName="model"
+                          class="form-control"
+                      >
+                  </div>
+  
+                  <div class="form-group col-4">
+                      <label for="make">Serial Number:</label>
+                      <input
+                          type="text"
+                          id="serialNumber"
+                          formControlName="serialNumber"
+                          class="form-control"
+                      >
+                  </div>
+  
+                  <div class="form-group col-6">
+                      <label for="make">Radio Type:</label>
+                      <input
+                          type="text"
+                          id="radioType"
+                          formControlName="radioType"
+                          class="form-control"
+                      >
+                  </div>
+  
+  
+                  <div class="form-group col-6">
+                      <label>Refurb:</label>
+                      <mat-radio-group formControlName="refurb">
+                          <mat-radio-button [value]="true">Yes</mat-radio-button>
+                          <mat-radio-button [value]="false">No</mat-radio-button>
+                      </mat-radio-group>
+                  </div>
+  
+  
+              </section>
+  
+              <!-- Notes Section -->
+  
+              <h4 class="col-12 text-center">Notes: </h4>
+  
+  
+              <section class="row" id="notesSection">
+                  <div class="form-group col-12">
+                      <label for="notes">Notes: </label>
+                      <div formArrayName="notes">
+                          <div *ngFor="let note of notesArray.controls; let i = index;">
+                              <div class="input-group">
+                                  <input
+                                      type="text"
+                                      [formControlName]="i"
+                                      class="form-control"
+                                  />
+                                  <button type="button" class="btn btn-danger" (click)="removeNote(i)"><i class="bi bi-trash-fill"></i></button>
+                              </div>
+                          </div>
+                      </div>
+                      <button type="button" (click)="addNotes()" class="btn btn-primary"><i class="bi bi-plus-circle"></i></button>
+                  </div>
+              </section>
+  
+              <!-- Service Section -->
+  
+              <section class="row" id="serviceSection">
+  
+                  <div class="col">
+  
+                      <h4 class="col-12 text-center">Service Record:</h4>
+  
+  
+                      <ng-container *ngIf="radio.serviceRecord.length > 0; else noService">
+  
+                        <div class="row">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">
+  
+                                </th>
+                                <th scope="col">
+                                  Date Received
+                                </th>
+                                <th scope="col">
+                                  RAA Inoice #
+                                </th>
+                                <th scope="col">
+                                  RAA PO #
+                                </th>
+                                <th scope="col">
+                                  End User PO #
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <ng-container *ngFor="let record of radio.serviceRecord; index as i">
+                                <tr>
+                                  <th scope="row">{{i + 1}}</th>
+                                  <td>
+                                    <a [routerLink]="['/one-repair/', record._id]" >{{record.dateReceived | date: 'MMM d, y'}}</a>
+                                  </td>
+                                  <td>
+                                    {{record.raaInvNum}}
+                                  </td>
+                                  <td>
+                                    {{record.raaPO}}
+                                  </td>
+                                  <td>
+                                    {{record.endUserPO}}
+                                  </td>
+                                </tr>
+                              </ng-container>
+                            </tbody>
+                          </table>
+                        </div>
+  
+  
+  
+                      </ng-container>
+  
+                      <ng-template #noService>
+                        <div class="row">
+                          <p>No Recorded Repair Tickets...</p>
+                        </div>
+                      </ng-template>
+  
+                      <div class="row">
+                        <a [routerLink]="['/submit', {serialNumber: radio.serialNumber}]">Add A Repair Ticket</a>
+                      </div>
+  
+                    </div>
+  
+  
+              </section>
+  
+              <!-- Submit -->
+  
+              <button type="submit" class="btn btn-primary">Submit</button>
+  
+  
+  
+          </form>
+  
+      </div>
+  
+  
+  </div>
+</ng-template>
+
+<ng-template #noRadioFound>
+  <div class="container">
+    <h2>No Radio Found</h2>
+    <!-- You can add additional content or messages here for when no radio is found -->
+  </div>
+</ng-template>

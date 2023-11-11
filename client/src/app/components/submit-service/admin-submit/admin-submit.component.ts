@@ -174,7 +174,7 @@ export class AdminSubmitComponent implements OnInit{
 
 
       if(newRepair) {
-        this.toastService.show('Repair added sucessfully!', {
+        this.toastService.show('Repair added successfully!', {
           classname: 'bg-success text-light',
           delay: 3000
         })

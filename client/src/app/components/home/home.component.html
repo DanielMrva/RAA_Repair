@@ -1,5 +1,6 @@
 <div>
     <p>home works!</p>
+    <p>Welcome {{userName$ | async}} !</p>
 
     <div *ngIf="user;else elseBlock">
         <p>{{user.username}}</p>

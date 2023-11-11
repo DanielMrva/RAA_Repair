@@ -54,6 +54,12 @@ export type User = {
     orgName: string,
 };
 
+export type AuthInfo = {
+    username: string;
+    orgName: string;
+    accessLevel: string;
+};
+
 export type StoredUser = {
     _id: string,
     username: string,
@@ -79,7 +85,7 @@ export type LoginResults = {
 };
 
 export type LoginVariables = {
-    username: string,
+    email: string,
     password: string
 };
 
@@ -131,7 +137,7 @@ export type UpdateRepairFields = {
     accessories: string[],
     workPerformed: string[],
     repHours: number,
-    partsUsed: string,
+    partsUsed: string[],
     remarks: string
 }
 
@@ -166,3 +172,7 @@ export type TableSearchParams = {
     queryType: string,
     queryParams: string,
 }
+
+export type statusType = 'pending' | 'loading' | 'error' | 'success';
+
+export type accessLevels = 'admin' | 'user' | 'tech' | null;

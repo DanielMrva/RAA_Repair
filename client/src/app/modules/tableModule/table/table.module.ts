@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import { UserTableComponent } from '@app/components/tables/user-table/user-table.component';
 import { OrgTableComponent } from '@app/components/tables/org-table/org-table.component';
 import { RadioTableComponent } from '@app/components/tables/radio-table/radio-table.component';
 import { RepairTableComponent } from '@app/components/tables/repair-table/repair-table.component';
 import { DataTableComponent } from '@app/components/tables/data-table/data-table.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
 import { UserService } from '@app/services/users/user.service';
 import { RadioService } from '@app/services/radios/radio.service';
 import { RepairService } from '@app/services/repairs/repair.service';

@@ -1,0 +1,162 @@
+<div *ngIf="isLoading$ | async; else loadedData">
+  <h2>Loading...</h2>
+</div>
+
+<ng-template #loadedData>
+
+  <div *ngIf="radioError$ | async as error">{{ error }}</div>
+
+  <div *ngIf="oneRadio$ | async as oneRadio; else noRadioFound" class="container">
+
+    <div class="row">
+      <h2 class="col-12 text-center">Radio Details</h2>
+      <div class="row">
+        <div class="col">
+          <h6 class="row">Organization:</h6>
+          <p class="row">{{oneRadio.orgName}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Location:</h6>
+          <p class="row">{{oneRadio.location}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Intentory: </h6>
+          <p class="row">{{oneRadio.inventoryNumber}}</p>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col">
+          <h6 class="row">Make: </h6>
+          <p class="row">{{oneRadio.make}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Model: </h6>
+          <p class="row">{{oneRadio.model}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Serial Number: </h6>
+          <p class="row">{{oneRadio.serialNumber}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Radio Type: </h6>
+          <p class="row">{{oneRadio.radioType}}</p>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col">
+          <h6 class="row">Date Sold: </h6>
+          <p class="row">{{oneRadio.dateSold | date: 'MMM d, y'}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Date Entered: </h6>
+          <p class="row">{{oneRadio.dateEntered  | date: 'MMM d, y'}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Warranty: </h6>
+          <p class="row">{{oneRadio.warranty | date: 'MMM d, y'}}</p>
+        </div>
+        <div class="col">
+          <h6 class="row">Refurb: </h6>
+          <ng-container *ngIf="oneRadio.refurb">
+            <p class="row"> <i class="bi bi-check"></i> </p>
+          </ng-container>
+          <ng-container *ngIf="!oneRadio.refurb">
+            <p class="row"> <i class="bi bi-x-lg"></i> </p>
+          </ng-container>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6 class="row">
+            Notes:
+          </h6>
+          <ul class="row">
+            <li *ngFor="let note of oneRadio.notes">
+              {{ note }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6 class="row">
+            Service Record
+          </h6>
+
+          <ng-container *ngIf="oneRadio.serviceRecord.length > 0; else noService">
+
+            <div class="row">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      
+                    </th>
+                    <th scope="col">
+                      Date Received
+                    </th>
+                    <th scope="col">
+                      RAA Inventory #
+                    </th>
+                    <th scope="col">
+                      RAA PO #
+                    </th>
+                    <th scope="col">
+                      End User PO #
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let record of oneRadio.serviceRecord; index as i">
+                    <tr>
+                      <th scope="row">{{i + 1}}</th>
+                      <td>
+                        <a [routerLink]="['/one-repair/', record._id]" >{{record.dateReceived | date: 'MMM d, y'}}</a>
+                      </td>
+                      <td>
+                        {{record.raaInvNum}}
+                      </td>
+                      <td>
+                        {{record.raaPO}}
+                      </td>
+                      <td>
+                        {{record.endUserPO}}
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+
+
+
+          </ng-container>
+
+          <ng-template #noService>
+            <div class="row">
+              <p>No Recorded Repair Tickets...</p>
+            </div>
+          </ng-template>
+
+          <div class="row">
+            <a [routerLink]="['/submit', {serialNumber: oneRadio.serialNumber}]">Add A Repair Ticket</a>
+          </div>
+
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #noRadioFound>
+  <div class="container">
+    <h2>No Radio Found</h2>
+  </div>
+</ng-template>
+
+

@@ -1,27 +1,20 @@
-import { inject } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Router, ActivatedRouteSnapshot } from '@angular/router';
-import { filter, map } from 'rxjs';
-import { AuthService } from "@app/services/auth/auth.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "@app/_store/app.state";
+import { selectAccessLevel } from "@app/_store/_auth-store/auth.selectors";
 
-export const RoleGuard = () => {
-    const router = inject(Router);
-    const route = inject(ActivatedRouteSnapshot);
-    const authService = inject(AuthService);
+export const roleGuard = (router: Router, store: Store<AppState>) => (route: ActivatedRouteSnapshot): boolean => {
+  const expectedRoles: Array<string> = route.data["role"];
 
+  const selectAccessLevel$ = store.select(selectAccessLevel).subscribe(accessLevel => {
+    if (accessLevel !== null && !expectedRoles.includes(accessLevel)) {
+      router.navigateByUrl('/');
+    }
+  });
 
-    const expectedRole: Array<string> = route.data['role'];
+  // Remember to unsubscribe to avoid memory leaks
+  selectAccessLevel$.unsubscribe();
 
-
-
-    return authService.loggedUser$.pipe(
-        filter((loggedUser) => loggedUser !== undefined), 
-        map((loggedUser) => {
-            if (!loggedUser || !expectedRole.includes(loggedUser.accessLevel)) {
-                router.navigateByUrl('/');
-                return false;
-            }
-            return true
-        })
-    )
-    
-}
+  return true;
+};
