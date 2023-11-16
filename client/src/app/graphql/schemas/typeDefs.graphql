@@ -13,7 +13,7 @@ type Repair {
     dateReceived: String!
     endUserPO: String
     raaPO: String
-    repairTag: String
+    repairTag: Int
     dateSentTech: String
     dateRecTech: String
     dateSentEU: String
@@ -104,7 +104,7 @@ type Mutation {
             dateReceived: String!,
             endUserPO: String,
             raaPO: String,
-            repairTag: String,
+            repairTag: Int,
             dateSentTech: String,
             dateRecTech: String,
             dateSentEU: String,

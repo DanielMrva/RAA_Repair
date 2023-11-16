@@ -49,7 +49,7 @@ export class EditRepairComponent implements OnInit {
   oneRepair$ = this.store.select(selectOneRepair);
 
   repairId!: string;
-  repairTag!: string;
+  repairTag!: number;
 
   get symptomsArray(): FormArray {
     return this.repairForm.get('symptoms') as FormArray;

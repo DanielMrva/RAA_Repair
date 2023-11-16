@@ -60,7 +60,7 @@ export const ADD_REPAIR = gql `
         $dateReceived: String!
         $endUserPO: String
         $raaPO: String
-        $repairTag: String
+        $repairTag: Int
         $dateSentTech: String
         $dateRecTech: String
         $dateSentEU: String
