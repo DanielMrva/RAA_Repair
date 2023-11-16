@@ -3,6 +3,9 @@ import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
 import { addRadio } from '@app/_store/_radio-store/radio.actions';
+import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
+import { loadOrgNames } from '@app/_store/_org-store/org.actions';
+
 
 @Component({
   selector: 'app-admin-add-radio',
@@ -10,6 +13,10 @@ import { addRadio } from '@app/_store/_radio-store/radio.actions';
   styleUrls: ['./admin-add-radio.component.css']
 })
 export class AdminAddRadioComponent implements OnInit{
+
+  orgNames$ = this.store.select(selectOrgNames);
+  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+  orgNameError$ = this.store.select(orgErrorSelector);
 
   adminRadioForm = new FormGroup({
     orgName: new FormControl<string>(''),
@@ -59,6 +66,7 @@ export class AdminAddRadioComponent implements OnInit{
 
 
   ngOnInit(): void {
+    this.store.dispatch(loadOrgNames())
       
   }
 

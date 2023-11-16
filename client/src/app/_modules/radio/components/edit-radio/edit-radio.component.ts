@@ -38,9 +38,6 @@ export class EditRadioComponent implements OnInit{
 
   radioId!: string;
 
-  // radio!: Radio;
-  // editRadioForm!: FormGroup;
-
   get notesArray(): FormArray {
     return this.editRadioForm.get('notes') as FormArray;
   }

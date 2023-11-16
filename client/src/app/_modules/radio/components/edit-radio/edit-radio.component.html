@@ -120,34 +120,44 @@
                       >
                   </div>
   
-                  <div class="form-group col-6">
-                      <label for="make">Radio Type:</label>
-                      <input
-                          type="text"
-                          id="radioType"
-                          formControlName="radioType"
-                          class="form-control"
-                      >
+                  <div class="form-group col-4">
+                    <label for="radioType">Radio Type:</label>
+                    <mat-radio-group formControlName="radioType">
+                        <mat-radio-button value="mobile">Mobile</mat-radio-button>
+                        <mat-radio-button value="static">Static</mat-radio-button>
+                    </mat-radio-group>
                   </div>
   
   
-                  <div class="form-group col-6">
+                  <div class="form-group col-4">
                       <label>Refurb:</label>
                       <mat-radio-group formControlName="refurb">
                           <mat-radio-button [value]="true">Yes</mat-radio-button>
                           <mat-radio-button [value]="false">No</mat-radio-button>
                       </mat-radio-group>
                   </div>
+
+                  <div class="form-group col-4">
+                    <label for="progChannels">Programmed Channels:</label>
+                    <input
+                        type="text"
+                        id="progChannels"
+                        formControlName="progChannels"
+                        class="form-control"
+                    >
+                </div>
   
   
               </section>
   
               <!-- Notes Section -->
   
-              <h4 class="col-12 text-center">Notes: </h4>
   
   
               <section class="row" id="notesSection">
+
+                  <h4 class="col-12 text-center">Notes: </h4>
+
                   <div class="form-group col-12">
                       <label for="notes">Notes: </label>
                       <div formArrayName="notes">
@@ -231,7 +241,7 @@
                       </ng-template>
   
                       <div class="row">
-                        <a [routerLink]="['/submit', {serialNumber: radio.serialNumber}]">Add A Repair Ticket</a>
+                        <a [routerLink]="['/submit', {serialNumber: radio.serialNumber}]" class="btn btn-primary col-3">Add A Repair Ticket</a>
                       </div>
   
                     </div>
