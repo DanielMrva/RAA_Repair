@@ -161,16 +161,19 @@ export class PdfService {
       styles: {
         header: {
           fontSize: 18,
-          bold: true
+          bold: true,
+          lineHeight: 1.75
         },
         subHeader: {
           fontSize: 14,
-          bold: true
+          bold: true,
+          lineHeight: 1.5
         }
 
       },
       defaultStyle: {
-        columnGap: 15
+        columnGap: 15,
+        lineHeight: 1
       }
     }
   };
