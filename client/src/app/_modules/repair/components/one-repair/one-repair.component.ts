@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { loadOneRepair } from '@app/_store/_repair-store/repair.actions';
 import { selectOneRepair, repairErrorSelector, repairLoadingSelector } from '@app/_store/_repair-store/repair.selectors';
+import { PdfService } from '@app/services/pdf/pdf.service';
 
 @Component({
   selector: 'app-one-repair',
@@ -23,7 +24,8 @@ export class OneRepairComponent implements OnInit{
   constructor(
     private route: ActivatedRoute,
     private repairService: RepairService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private pdfService: PdfService
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +37,16 @@ export class OneRepairComponent implements OnInit{
 
   loadRepair(repairId: string): void {
     this.store.dispatch(loadOneRepair({repairId: repairId}));
+  };
+
+  generatePDF() {
+    this.oneRepair$.subscribe((repair: Repair | null) => {
+      if (repair) {
+        const docDef = this.pdfService.formatRepairForPdf(repair);
+        this.pdfService.repairPDFGen(docDef);
+      }
+
+    })
   }
 }
 

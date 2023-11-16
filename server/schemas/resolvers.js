@@ -155,9 +155,12 @@ const resolvers = {
                     });
                 }
 
-                const highestRepair = await Repair.findOne().sort({ repairTag: -1 }).limit(1);
-                const highestRepairTag = parseInt(highestRepair.repairTag);
-                const newRepairTag = (highestRepairTag + 1).toString();
+                const highestRepair = await Repair.find({}).sort({ repairTag: -1 }).limit(1);
+                console.log(highestRepair)
+                
+                const highestRepairTag = highestRepair[0].repairTag;
+                console.log(`HRT: ${highestRepairTag}`);
+                const newRepairTag = (highestRepairTag + 1);
 
 
 

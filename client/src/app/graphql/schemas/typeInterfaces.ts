@@ -4,7 +4,7 @@ export type Repair = {
     dateReceived: string
     endUserPO: string
     raaPO: string
-    repairTag: string
+    repairTag: number
     dateSentTech: string
     dateRecTech: string
     dateSentEU: string
@@ -118,7 +118,7 @@ export type UpdateRepairFields = {
     dateReceived: Date,
     endUserPO: string,
     raaPO: string,
-    repairTag: string,
+    repairTag: number,
     dateSentTech: Date,
     dateRecTech: Date,
     dateSentEU: Date,

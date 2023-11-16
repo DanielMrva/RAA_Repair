@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as RepairActions from "./repair.actions";
+import { Router } from "@angular/router";
 import { RepairService } from "@app/services/repairs/repair.service";
+import { ToastService } from "@app/services/toast/toast.service";
 import { of, from } from "rxjs";
 import { switchMap, map, catchError } from "rxjs/operators";
 import { Store } from "@ngrx/store";
@@ -12,15 +14,17 @@ export class RepairEffects {
     constructor(
         private actions$: Actions,
         private store: Store<AppState>,
-        private repairService: RepairService
-    ) {}
+        private repairService: RepairService,
+        private toastService: ToastService,
+        private router: Router
+    ) { }
 
-    loadOneRepair$ = createEffect(() => 
+    loadOneRepair$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RepairActions.loadOneRepair),
-            switchMap(( { repairId } ) => 
+            switchMap(({ repairId }) =>
                 from(this.repairService.querySingleRepair(repairId)).pipe(
-                    map(( { data }) => RepairActions.loadOneRepairSuccess({ repair: data.repair })),
+                    map(({ data }) => RepairActions.loadOneRepairSuccess({ repair: data.repair })),
 
                     catchError((error) => of(RepairActions.loadOneRepairFailure({ error })))
                 )
@@ -28,12 +32,12 @@ export class RepairEffects {
         )
     );
 
-    loadAllRepairs$ = createEffect(() => 
+    loadAllRepairs$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RepairActions.loadAllRepairs),
-            switchMap(() => 
+            switchMap(() =>
                 from(this.repairService.allRepairs()).pipe(
-                    map(( { data }) => RepairActions.loadAllRepairsSuccess({ repairs: data.allRepairs})),
+                    map(({ data }) => RepairActions.loadAllRepairsSuccess({ repairs: data.allRepairs })),
 
                     catchError((error) => of(RepairActions.loadAllRepairsFailure({ error })))
 
@@ -41,11 +45,11 @@ export class RepairEffects {
             )
         )
     );
-    
-    addRepair$ = createEffect(() => 
-    this.actions$.pipe(
-        ofType(RepairActions.addRepair),
-        switchMap(( {   
+
+    addRepair$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RepairActions.addRepair),
+            switchMap(({
                 radioSerial,
                 dateReceived,
                 endUserPO,
@@ -69,53 +73,107 @@ export class RepairEffects {
                 workPerformed,
                 repHours,
                 partsUsed,
-                remarks 
-                    }) => 
-            from(this.repairService.addRepair(
-                                                radioSerial,
-                                                dateReceived,
-                                                endUserPO,
-                                                raaPO,
-                                                dateSentTech,
-                                                dateRecTech,
-                                                dateSentEU,
-                                                techInvNum,
-                                                raaInvNum,
-                                                symptoms,
-                                                testFreq,
-                                                incRxSens,
-                                                incFreqErr,
-                                                incMod,
-                                                incPowerOut,
-                                                outRxSens,
-                                                outFreqErr,
-                                                outMod,
-                                                outPowerOut,
-                                                accessories,
-                                                workPerformed,
-                                                repHours,
-                                                partsUsed,
-                                                remarks
-                                            )).pipe(
-                                                    map(( { data }) => RepairActions.addRepairSuccess({ repair: data?.addRepair})),
+                remarks
+            }) =>
+                from(this.repairService.addRepair(
+                    radioSerial,
+                    dateReceived,
+                    endUserPO,
+                    raaPO,
+                    dateSentTech,
+                    dateRecTech,
+                    dateSentEU,
+                    techInvNum,
+                    raaInvNum,
+                    symptoms,
+                    testFreq,
+                    incRxSens,
+                    incFreqErr,
+                    incMod,
+                    incPowerOut,
+                    outRxSens,
+                    outFreqErr,
+                    outMod,
+                    outPowerOut,
+                    accessories,
+                    workPerformed,
+                    repHours,
+                    partsUsed,
+                    remarks
+                )).pipe(
+                    map(({ data }) => RepairActions.addRepairSuccess({ repair: data?.addRepair })),
 
-                                                    catchError((error) => of(RepairActions.addRepairFailure({ error })))
-                        )
-                    )
+                    catchError((error) => of(RepairActions.addRepairFailure({ error })))
+                )
+            )
         )
     );
 
-    editRepair$ = createEffect(() => 
+    addRepairSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RepairActions.addRepairSuccess),
+            map(({ repair }) => {
+                this.toastService.show('Repair added succesfully!', {
+                    delay: 3000
+                }),
+                    this.router.navigate(['one-repair', repair?._id])
+            })
+        ),
+        { dispatch: false }
+    );
+
+    addRepairFailure$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RepairActions.addRepairFailure),
+            map(({ error }) => {
+                this.toastService.show('Failed to submit Repair. Please try again', {
+                    classname: 'bg-danger light-text',
+                    delay: 3000
+                }),
+                    console.error(error)
+            })
+        ),
+        { dispatch: false }
+    );
+
+    editRepair$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RepairActions.editRepair),
-            switchMap(( { id, updates}) => 
+            switchMap(({ id, updates }) =>
                 from(this.repairService.editRepair(id, updates)).pipe(
-                    map(( { data }) => 
-                        RepairActions.editRepairSuccess({ repair: data?.editRepair})),
+                    map(({ data }) =>
+                        RepairActions.editRepairSuccess({ repair: data?.editRepair })),
 
                     catchError((error) => of(RepairActions.editRepairFailure({ error })))
                 )
             )
         )
-    )
+    );
+
+    editRepairSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RepairActions.editRepairSuccess),
+            map(({ repair }) => {
+                this.toastService.show('Repair edited successfully!', {
+                    delay: 3000
+                }),
+                    this.router.navigate(['one-repair', repair?._id])
+            })
+        ),
+        { dispatch: false }
+    );
+
+    editRepairFailure$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RepairActions.editRepairFailure),
+            map(({ error }) => {
+                this.toastService.show('Failed to edit Repair. Please try again', {
+                    classname: 'bg-danger light-text',
+                    delay: 3000
+                }),
+                    console.error(error)
+            })
+        ),
+        { dispatch: false }
+    );
 }

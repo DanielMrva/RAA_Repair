@@ -16,7 +16,7 @@ const typeDefs = `#graphql
         dateReceived: String!
         endUserPO: String
         raaPO: String
-        repairTag: String
+        repairTag: Int
         dateSentTech: String
         dateRecTech: String
         dateSentEU: String
@@ -89,7 +89,7 @@ const typeDefs = `#graphql
             dateReceived: String
             endUserPO: String
             raaPO: String
-            repairTag: String
+            repairTag: Int
             dateSentTech: String
             dateRecTech: String
             dateSentEU: String
@@ -161,7 +161,7 @@ const typeDefs = `#graphql
             dateReceived: String!
             endUserPO: String
             raaPO: String
-            repairTag: String
+            repairTag: Int
             dateSentTech: String
             dateRecTech: String
             dateSentEU: String
