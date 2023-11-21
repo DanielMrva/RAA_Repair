@@ -41,7 +41,7 @@
 
             <section class="row" id="inventory-po">
 
-                <h4 class="col-12 text-center">Inventory / PO Tracking</h4>
+                <h4 class="col-12 text-center">Inventory / PO </h4>
 
                 <div class="form-group col-4">
                     <label for="raaPO">RAA Invoice:</label>
@@ -70,19 +70,21 @@
                             class="input-group mb-2">
                             <input type="text" [formControlName]="i" class="form-control">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-secondary" (click)="removeAccessory(i)">
-                                    Remove
+                                <button *ngIf="accessoriesArray.length > 1" type="button" class="btn btn-danger"
+                                    (click)="removeAccessory(i)">
+                                    <i class="bi bi-trash-fill"></i>
                                 </button>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary" (click)="addAccessory()">Add Accessory</button>
+                        <button type="button" class="btn btn-primary" (click)="addAccessory()"><i
+                                class="bi bi-plus-circle"></i></button>
                     </div>
                 </div>
 
             </section>
 
             <section class="row" id="symptom-diagnoistics">
-                <h4 class="col-12 text-center">Symptoms and Diagnositcs</h4>
+                <h4 class="col-12 text-center">Symptoms & Diagnositcs</h4>
 
                 <div class="form-group col-6">
                     <label for="symptoms">Symptoms:</label>
@@ -90,12 +92,14 @@
                         <div *ngFor="let symptoms of symptomsArray.controls; let i = index" class="input-group mb-2">
                             <input type="text" [formControlName]="i" class="form-control">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-secondary" (click)="removeSymptom(i)">
-                                    Remove
+                                <button *ngIf="symptomsArray.length > 1" type="button" class="btn btn-danger"
+                                    (click)="removeSymptom(i)">
+                                    <i class="bi bi-trash-fill"></i>
                                 </button>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary" (click)="addSymptom()">Add Symptom</button>
+                        <button type="button" class="btn btn-primary" (click)="addSymptom()"><i
+                                class="bi bi-plus-circle"></i></button>
                     </div>
                 </div>
 
@@ -178,13 +182,15 @@
                         <div *ngFor="let work of workPerformedArray.controls; let i = index" class="input-group mb-2">
                             <input type="text" [formControlName]="i" class="form-control">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-secondary"
+                                <button *ngIf="workPerformedArray.length > 1" type="button" class="btn btn-danger"
                                     (click)="removeWorkPerformed(i)">
-                                    Remove
+                                    <i class="bi bi-trash-fill"></i>
                                 </button>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary" (click)="addWorkPerformed()">Add Work</button>
+                        <button type="button" class="btn btn-primary" (click)="addWorkPerformed()">
+                            <i class="bi bi-plus-circle"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -194,12 +200,14 @@
                         <div *ngFor="let part of partsUsedArray.controls; let i = index" class="input-group mb-2">
                             <input type="text" [formControlName]="i" class="form-control">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-secondary" (click)="removePartsUsed(i)">
-                                    Remove
+                                <button *ngIf="partsUsedArray.length > 1" type="button" class="btn btn-danger"
+                                    (click)="removePartsUsed(i)">
+                                    <i class="bi bi-trash-fill"></i>
                                 </button>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary" (click)="addPartsUsed()">Add Part</button>
+                        <button type="button" class="btn btn-primary" (click)="addPartsUsed()"><i
+                                class="bi bi-plus-circle"></i></button>
                     </div>
                 </div>
 

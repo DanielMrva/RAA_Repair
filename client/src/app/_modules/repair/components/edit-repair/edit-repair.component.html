@@ -12,7 +12,7 @@
 
         <div class="row">
 
-            <h2 class="col-12 text-center">Edit Repair</h2>
+            <h2 class="col-12 text-center">Edit Repair Ticket</h2>
 
             <form [formGroup]="repairForm" (ngSubmit)="onSubmit()" class="row">
 
@@ -86,8 +86,8 @@
                                 <div class="input-group mb-3">
 
                                     <input type="text" [formControlName]="j" class="form-control" />
-                                    <button type="button" class="btn btn-danger" (click)="removeAccessory(j)"><i
-                                            class="bi bi-trash-fill"></i></button>
+                                    <button *ngIf="accessoriesArray.length > 1" type="button" class="btn btn-danger"
+                                        (click)="removeAccessory(j)"><i class="bi bi-trash-fill"></i></button>
                                 </div>
 
                             </div>
@@ -111,8 +111,8 @@
                             <div *ngFor="let symptom of symptomsArray.controls; let i = index;">
                                 <div class="input-group">
                                     <input type="text" [formControlName]="i" class="form-control" />
-                                    <button type="button" class="btn btn-danger" (click)="removeSymptom(i)"><i
-                                            class="bi bi-trash-fill"></i></button>
+                                    <button *ngIf="symptomsArray.length > 1" type="button" class="btn btn-danger"
+                                        (click)="removeSymptom(i)"><i class="bi bi-trash-fill"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -128,54 +128,45 @@
                             </div>
                         </div>
 
-                        <h5 class="col-6">
-                            Incomming:
-                        </h5>
-                        <h5 class="col-6">
-                            Outgoing:
-                        </h5>
-
-                        <div class="form-group col-6">
-                            <label for="incRxSens">Incoming RX Sensitivity:</label>
-                            <input type="text" id="incRxSens" formControlName="incRxSens" class="form-control">
-                        </div>
-
-                        <div class="form-group col-6">
-                            <label for="outRxSens">Outgoing RX Sensitivity:</label>
-                            <input type="text" id="outRxSens" formControlName="outRxSens" class="form-control">
-                        </div>
-
-
-                        <div class="form-group col-6">
-                            <label for="incFreqErr">Incoming Frequency Error:</label>
-                            <input type="text" id="incFreqErr" formControlName="incFreqErr" class="form-control">
-                        </div>
-
-                        <div class="form-group col-6">
-                            <label for="outFreqErr">Outgoing Frequency Error:</label>
-                            <input type="text" id="outFreqErr" formControlName="outFreqErr" class="form-control">
-                        </div>
-
-
-                        <div class="form-group col-6">
-                            <label for="incMod">Incoming Modulation:</label>
-                            <input type="text" id="incMod" formControlName="incMod" class="form-control">
-                        </div>
-
-                        <div class="form-group col-6">
-                            <label for="outMod">Outgoing Modulation:</label>
-                            <input type="text" id="outMod" formControlName="outMod" class="form-control">
-                        </div>
-
-
-                        <div class="form-group col-6">
-                            <label for="incPowerOut">Incoming Power Output:</label>
-                            <input type="text" id="incPowerOut" formControlName="incPowerOut" class="form-control">
-                        </div>
-
-                        <div class="form-group col-6">
-                            <label for="outPowerOut">Outgoing Power Output:</label>
-                            <input type="text" id="outPowerOut" formControlName="outPowerOut" class="form-control">
+                        <div class="row">
+                            <h5 class="col-6">
+                                Incomming:
+                            </h5>
+                            <h5 class="col-6">
+                                Outgoing:
+                            </h5>
+                            <div class="form-group col-6">
+                                <label for="incRxSens">Incoming RX Sensitivity:</label>
+                                <input type="text" id="incRxSens" formControlName="incRxSens" class="form-control">
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="outRxSens">Outgoing RX Sensitivity:</label>
+                                <input type="text" id="outRxSens" formControlName="outRxSens" class="form-control">
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="incFreqErr">Incoming Frequency Error:</label>
+                                <input type="text" id="incFreqErr" formControlName="incFreqErr" class="form-control">
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="outFreqErr">Outgoing Frequency Error:</label>
+                                <input type="text" id="outFreqErr" formControlName="outFreqErr" class="form-control">
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="incMod">Incoming Modulation:</label>
+                                <input type="text" id="incMod" formControlName="incMod" class="form-control">
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="outMod">Outgoing Modulation:</label>
+                                <input type="text" id="outMod" formControlName="outMod" class="form-control">
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="incPowerOut">Incoming Power Output:</label>
+                                <input type="text" id="incPowerOut" formControlName="incPowerOut" class="form-control">
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="outPowerOut">Outgoing Power Output:</label>
+                                <input type="text" id="outPowerOut" formControlName="outPowerOut" class="form-control">
+                            </div>
                         </div>
                     </div>
 
@@ -203,8 +194,8 @@
                             <div *ngFor="let work of workPerformedArray.controls; let k = index;">
                                 <div class="input-group">
                                     <input type="text" [formControlName]="k" class="form-control" />
-                                    <button type="button" class="btn btn-danger" (click)="removeWorkPerformed(k)"><i
-                                            class="bi bi-trash-fill"></i></button>
+                                    <button *ngIf="workPerformedArray.length > 1" type="button" class="btn btn-danger"
+                                        (click)="removeWorkPerformed(k)"><i class="bi bi-trash-fill"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -218,8 +209,8 @@
                             <div *ngFor="let part of partsUsedArray.controls; let l = index;">
                                 <div class="input-group">
                                     <input type="text" [formControlName]="l" class="form-control" />
-                                    <button type="button" class="btn btn-danger" (click)="removePartsUsed(l)"><i
-                                            class="bi bi-trash-fill"></i></button>
+                                    <button *ngIf="partsUsedArray.length > 1" type="button" class="btn btn-danger"
+                                        (click)="removePartsUsed(l)"><i class="bi bi-trash-fill"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -231,7 +222,9 @@
                         <input type="text" id="remarks" formControlName="remarks" class="form-control">
                     </div>
                 </section>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="col-12 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
             </form>
         </div>
     </div>

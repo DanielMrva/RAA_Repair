@@ -3,7 +3,7 @@ import { AuthService } from '@app/services/auth/auth.service';
 import { User } from '@app/graphql/schemas';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
-import { selectUserName } from '@app/_store/_auth-store/auth.selectors';
+import { selectIsAuthenticated, selectUserName } from '@app/_store/_auth-store/auth.selectors';
 
 @Component({
   selector: 'app-home',
@@ -13,15 +13,16 @@ import { selectUserName } from '@app/_store/_auth-store/auth.selectors';
 export class HomeComponent {
 
   loading = false;
-  user: User;
+  // user: User;
 
   userName$ = this.store.select(selectUserName);
+  isAuthenticated$ = this.store.select(selectIsAuthenticated);
 
   constructor(
     private authService: AuthService,
     private store: Store<AppState>
   ) {
-    this.user = <User>this.authService.loggedUser$.value;
+    // this.user = <User>this.authService.loggedUser$.value;
   }
 
 }

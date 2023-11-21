@@ -62,7 +62,7 @@
                 </mat-form-field>
 
             </section>
-        
+
             <section class="row" id="tracking">
 
                 <h4 class="col-12 text-center">Tracking</h4>
@@ -83,35 +83,19 @@
 
                 <div class="form-group col-4">
                     <label for="orgName">Organization Name:</label>
-                    <input
-                        type="text"
-                        id="orgName"
-                        formControlName="orgName"
-                        class="form-control"
-                        [class.invalid]="fieldValidCheck('orgName')"
-                    >
+                    <input type="text" id="orgName" formControlName="orgName" class="form-control"
+                        [class.invalid]="fieldValidCheck('orgName')">
                 </div>
 
                 <div class="form-group col-4">
                     <label for="location">Location:</label>
-                    <input
-                        type="text"
-                        id="location"
-                        formControlName="location"
-                        class="form-control"
-                    >
+                    <input type="text" id="location" formControlName="location" class="form-control">
                 </div>
 
                 <div class="form-group col-4">
                     <label for="inventoryNumber">Inventory Number:</label>
-                    <input
-                        type="text"
-                        id="inventoryNumber"
-                        formControlName="inventoryNumber"
-                        class="form-control"
-                        [class.invalid]="fieldValidCheck('inventoryNumber')"
-            
-                    >
+                    <input type="text" id="inventoryNumber" formControlName="inventoryNumber" class="form-control"
+                        [class.invalid]="fieldValidCheck('inventoryNumber')">
                 </div>
 
             </section>
@@ -122,38 +106,20 @@
 
                 <div class="form-group col-4">
                     <label for="make">Make:</label>
-                    <input
-                        type="text"
-                        id="make"
-                        formControlName="make"
-                        class="form-control"
-                        [class.invalid]="fieldValidCheck('make')"
-            
-                    >
+                    <input type="text" id="make" formControlName="make" class="form-control"
+                        [class.invalid]="fieldValidCheck('make')">
                 </div>
 
                 <div class="form-group col-4">
                     <label for="model">Model:</label>
-                    <input
-                        type="text"
-                        id="model"
-                        formControlName="model"
-                        class="form-control"
-                        [class.invalid]="fieldValidCheck('model')"
-            
-                    >
+                    <input type="text" id="model" formControlName="model" class="form-control"
+                        [class.invalid]="fieldValidCheck('model')">
                 </div>
 
                 <div class="form-group col-4">
                     <label for="serialNumber">Serial Number:</label>
-                    <input
-                        type="text"
-                        id="serialNumber"
-                        formControlName="serialNumber"
-                        class="form-control"
-                        [class.invalid]="fieldValidCheck('serialNumber')"
-            
-                    >
+                    <input type="text" id="serialNumber" formControlName="serialNumber" class="form-control"
+                        [class.invalid]="fieldValidCheck('serialNumber')">
                 </div>
 
                 <div class="form-group col-4">
@@ -174,12 +140,7 @@
 
                 <div class="form-group col-4">
                     <label for="progChannels">Programmed Channels:</label>
-                    <input
-                        type="text"
-                        id="progChannels"
-                        formControlName="progChannels"
-                        class="form-control"
-                    >
+                    <input type="text" id="progChannels" formControlName="progChannels" class="form-control">
                 </div>
 
             </section>
@@ -190,25 +151,27 @@
                 <div class="form-group col-12">
                     <label for="notes">Notes:</label>
                     <div formArrayName="notes">
-                        <div *ngFor="let note of notesArray.controls; let i = index"
-                        class="input-group mb-2">
+                        <div *ngFor="let note of notesArray.controls; let i = index" class="input-group mb-2">
                             <input type="text" [formControlName]="i" class="form-control">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-secondary" (click)="removeNotes(i)">
-                                    Remove
+                                <button *ngIf="notesArray.length > 1" type="button" class="btn btn-danger"
+                                    (click)="removeNotes(i)">
+                                    <i class="bi bi-trash-fill"></i>
                                 </button>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-primary" (click)="addNotes()">Add Note</button>
+                        <button type="button" class="btn btn-primary" (click)="addNotes()"><i
+                                class="bi bi-plus-circle"></i></button>
                     </div>
                 </div>
 
             </section>
-        
-            <button type="submit" class="btn btn-primary">Submit</button>
-        
-        
-        
+
+            <div class="col-12 d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+
         </form>
     </div>
 </div>
