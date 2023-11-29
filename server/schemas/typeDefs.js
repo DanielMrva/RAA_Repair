@@ -145,6 +145,7 @@ const typeDefs = `#graphql
             email: String!
             password: String!
             orgName: String!
+            accessLevel: String!
         ): Auth
 
         login(

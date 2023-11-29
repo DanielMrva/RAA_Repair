@@ -64,10 +64,10 @@ const resolvers = {
     Mutation: {
         addUser: 
             async (parent, {
-                username, email, password, orgName
+                username, email, password, orgName, accessLevel
             }) =>  {
             
-            const user = await User.create({ username, email, password, orgName});
+            const user = await User.create({ username, email, password, orgName, accessLevel});
             const token = signToken(user);
         
             return { token, user}

@@ -69,9 +69,9 @@ export class UserEffects {
     addUser$ = createEffect(() =>
         this.actions$.pipe(
             ofType(addUser),
-            switchMap(({ username, email, password, orgName }) =>
-                this.userService.addUser(username, email, password, orgName).pipe(
-                    map(({ data }) => addUserSuccess({ user: data?.addUser })),
+            switchMap(({ username, email, password, orgName, accessLevel }) =>
+                this.userService.addUser(username, email, password, orgName, accessLevel).pipe(
+                    map(({ data }) => addUserSuccess({ user: data?.addUser.user })),
                     catchError((error) => of(addUserFailure({ error })))
 
 
@@ -81,17 +81,27 @@ export class UserEffects {
     );
 
     addUserSuccess$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(addUserSuccess),
-            map(({ user }) => {
-                this.toastService.show('User added successfully', {
-                    delay: 3000
-                }),
-                    this.router.navigate(['one-user', user?._id])
-            })
-        ),
-        { dispatch: false }
-    );
+    this.actions$.pipe(
+        ofType(addUserSuccess),
+        map(({ user }) => {
+            this.toastService.show('User added successfully', {
+                delay: 3000
+            });
+
+            // Check if user and user._id are defined before navigating
+            if (user && user._id) {
+                this.router.navigate(['one-user', user._id]);
+            } else {
+                // Handle the case where user or user._id is undefined
+                console.error('User or user._id is undefined');
+                this.router.navigate(['/'])
+                // You might want to navigate to a default route or handle this case accordingly
+            }
+        })
+    ),
+    { dispatch: false }
+);
+
 
     addUserFailure$ = createEffect(() =>
         this.actions$.pipe(
@@ -105,7 +115,7 @@ export class UserEffects {
             })
         ),
         { dispatch: false }
-    )
+    );
 
     editUser$ = createEffect(() =>
         this.actions$.pipe(
@@ -121,7 +131,7 @@ export class UserEffects {
 
     editUserSuccess$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(addUserSuccess),
+            ofType(editUserSuccess),
             map(({ user }) => {
                 this.toastService.show('User edited successfully', {
                     delay: 3000
@@ -134,7 +144,7 @@ export class UserEffects {
 
     editUserFailure$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(addUserFailure),
+            ofType(editUserFailure),
             map(({ error }) => {
                 this.toastService.show('Failed to edit user. Please try again', {
                     classname: 'bg-danger light-text',
@@ -146,18 +156,6 @@ export class UserEffects {
         { dispatch: false }
     );
 
-    // loginUser$ = createEffect(() =>
-    //     this.actions$.pipe(
-    //         ofType(loginUser),
-    //         switchMap(({ email, password }) =>
-    //             this.userService.loginUser(email, password).pipe(
-    //                 map(({ data }) => loginUserSuccess({ loginResults: data?.loginUser })),
-    //                 catchError((error) => of(loginUserFailure({ error })))
-    //             )
-    //         )
-    //     )
-    // );
-
     loginUser$ = createEffect(() =>
         this.actions$.pipe(
             ofType(loginUser),
@@ -167,9 +165,6 @@ export class UserEffects {
                     map(({ data }) => {
                         const login = data?.login;
                         console.log(login?.user);
-                        // return login
-                        //     ? loginUserSuccess({ login })
-                        //     : loginUserFailure({ error: 'No login results' });
                         return loginUserSuccess({ login })
                     }),
                     catchError((error) => of(loginUserFailure({ error })))
