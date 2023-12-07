@@ -67,32 +67,6 @@
             </ng-template>
     
         </div>
-
-        <!-- <div class="form-group col-6 offset-1">
-    
-            <mat-form-field>
-                <mat-label>Organization Name</mat-label>
-                <input
-                    type="text"
-                    placeholder="Select / Type Organization"
-                    aria-label="Organization Name"
-                    matInput
-                    formControlName="orgName"
-                    [matAutocomplete]="auto"
-                >
-                
-                <mat-autocomplete #auto="matAutocomplete">
-                    <ng-container *ngIf="orgNames$ | async as orgList">
-                        <mat-option *ngFor="let org of orgList" [value]="org.orgName">
-                            {{ org.orgName }}
-                        </mat-option>
-                    </ng-container>
-
-                </mat-autocomplete>
-
-            </mat-form-field>
-    
-        </div> -->
     
         <div class="form-group col-6 offset-1">
             <label for="accessLevel">Access Level: </label>

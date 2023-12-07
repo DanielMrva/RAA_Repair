@@ -221,6 +221,10 @@ const typeDefs = `#graphql
             updates: UpdateOrgInput
         ): Organization
 
+        addOrg(
+            orgName: String
+        ): Organization
+
 
 
     }

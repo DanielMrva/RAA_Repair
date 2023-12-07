@@ -23,7 +23,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="form-group col-6">
-                    <mat-label>Date Received by Tech</mat-label>
+                    <mat-label>Date Received From Tech</mat-label>
                     <input matInput [matDatepicker]="dateReceivedTechPicker" formControlName="dateRecTech">
                     <mat-datepicker-toggle matSuffix [for]="dateReceivedTechPicker"></mat-datepicker-toggle>
                     <mat-datepicker #dateReceivedTechPicker></mat-datepicker>
@@ -44,11 +44,6 @@
                 <h4 class="col-12 text-center">Inventory / PO </h4>
 
                 <div class="form-group col-4">
-                    <label for="raaPO">RAA Invoice:</label>
-                    <input type="text" id="raaInvNum" formControlName="raaInvNum" class="form-control">
-                </div>
-
-                <div class="form-group col-4">
                     <label for="raaPO">RAA PO:</label>
                     <input type="text" id="raaPO" formControlName="raaPO" class="form-control">
                 </div>
@@ -56,6 +51,11 @@
                 <div class="form-group col-4">
                     <label for="endUserPO">End User PO:</label>
                     <input type="text" id="endUserPO" formControlName="endUserPO" class="form-control">
+                </div>
+
+                <div class="form-group col-4">
+                    <label for="raaPO">RAA Invoice:</label>
+                    <input type="text" id="raaInvNum" formControlName="raaInvNum" class="form-control">
                 </div>
 
                 <div class="form-group col-4">

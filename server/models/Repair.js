@@ -58,12 +58,12 @@ const repairSchema = new Schema({
     }],
     testFreq: {
         type: String,
-        // MHZ
+        // MHZ (MegaHertz)
         // Tech / Admin
     },
     incRxSens: {
         type: String,
-        // uV
+        // uV ()
         // Tech / Admin
     },
     incFreqErr: {

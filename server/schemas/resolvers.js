@@ -394,8 +394,43 @@ const resolvers = {
                 console.log(`resolver error: ${error}`);
                 throw new GraphQLError('Failed to Edit Organization')
             }
-        }
+        },
         // End Edit Org
+        addOrg: 
+        async (parent, {
+            orgName
+        }) =>  {
+            try {
+
+                const existingOrg = await Organization.findOne(
+                    {
+                        orgName: orgName
+                    }
+                );
+
+                if(existingOrg) {
+                    throw new GraphQLError('Organization already exists', {
+                        extensions: {
+                            code: 'ORG_EXISTS',
+                            argumentName: 'orgName'
+                        }
+                    });
+                }
+
+                const org = await Organization.create({ orgName });
+
+                return org;
+
+
+            } catch (error) {
+
+                throw new GraphQLError('Failed to submit organization', {
+                    extensions: {
+                        code: 'SUBMIT_ORG_ERROR'
+                    }
+                });
+            }
+    },
         
     }
 };

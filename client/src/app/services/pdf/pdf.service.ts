@@ -11,7 +11,7 @@ export class PdfService {
 
   formatRepairForPdf(repair: Repair): any {
 
-    const fDateRec = repair.dateReceived ? new Date(parseInt(repair.dateReceived)).toLocaleDateString() :  `__________________`;
+    const fDateRec = repair.dateReceived ? new Date(parseInt(repair.dateReceived)).toLocaleDateString() : `__________________`;
     const fDateSentTech = repair.dateSentTech ? new Date(parseInt(repair.dateSentTech)).toLocaleDateString() : `__________________`;
     const fDateRecTech = repair.dateRecTech ? new Date(parseInt(repair.dateRecTech)).toLocaleDateString() : `__________________`;
     const fDateSentEU = repair.dateSentEU ? new Date(parseInt(repair.dateSentEU)).toLocaleDateString() : `__________________`;
@@ -78,7 +78,7 @@ export class PdfService {
             'Accessories:',
             {
               ul: [
-                ...repair.accessories.map(accessory => ({ text: accessory ||  `_________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________\n _________________________________` }))
+                ...repair.accessories.map(accessory => ({ text: accessory || `_________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________\n _________________________________` }))
               ]
             }
           ]
@@ -96,21 +96,21 @@ export class PdfService {
             {
               ul: [
                 ...repair.symptoms.map(symptom => ({ text: symptom || '_________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ ' }))
-    
+
               ]
             }
           ],
           [
             'Diagnostics:',
-            `Test Frequency: ${repair.testFreq  || '______'}`,
+            `Test Frequency: ${repair.testFreq || '______'}`,
             {
               style: 'testTable',
               table: {
                 body: [
                   ['Attribute', 'IN', 'OUT'],
                   ['RX Sensitivity', `${repair.incRxSens || '______'}`, `${repair.outRxSens || '______'}`],
-                  ['Freq Err', `${repair.incFreqErr || '______'}`,`${repair.outFreqErr || '______'}`],
-                  ['Modulation', `${repair.incMod  || '______'}`, `${repair.outMod || '______'}`],
+                  ['Freq Err', `${repair.incFreqErr || '______'}`, `${repair.outFreqErr || '______'}`],
+                  ['Modulation', `${repair.incMod || '______'}`, `${repair.outMod || '______'}`],
                   ['Power Output', `${repair.incPowerOut || '______'}`, `${repair.outPowerOut || '______'}`]
                 ]
               }
@@ -131,7 +131,7 @@ export class PdfService {
             {
               ul: [
                 ...repair.workPerformed.map(work => ({ text: work || '_______________________________ \n _______________________________ \n _______________________________ \n _______________________________ \n _______________________________ \n _______________________________ \n _______________________________ \n _______________________________ \n' }))
-    
+
               ]
             }
           ],
@@ -141,7 +141,7 @@ export class PdfService {
             {
               ul: [
                 ...repair.partsUsed.map(part => ({ text: part || '_______________________________ \n _______________________________ \n _______________________________ \n _______________________________ \n _______________________________ \n _______________________________ \n _______________________________ \n _______________________________ \n ' }))
-    
+
               ]
             }
           ]
