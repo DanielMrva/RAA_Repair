@@ -13,7 +13,7 @@ const typeDefs = `#graphql
     type Repair {
         _id: ID!
         radioSerial: String!
-        dateReceived: String!
+        dateReceived: String
         endUserPO: String
         raaPO: String
         repairTag: Int

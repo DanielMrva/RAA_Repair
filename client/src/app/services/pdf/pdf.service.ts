@@ -108,10 +108,10 @@ export class PdfService {
               table: {
                 body: [
                   ['Attribute', 'IN', 'OUT'],
-                  ['RX Sensitivity', `${repair.incRxSens || '______'}`, `${repair.outRxSens || '______'}`],
-                  ['Freq Err', `${repair.incFreqErr || '______'}`, `${repair.outFreqErr || '______'}`],
-                  ['Modulation', `${repair.incMod || '______'}`, `${repair.outMod || '______'}`],
-                  ['Power Output', `${repair.incPowerOut || '______'}`, `${repair.outPowerOut || '______'}`]
+                  ['RX Sensitivity', `${repair.incRxSens || '_________'}`, `${repair.outRxSens || '_________'}`],
+                  ['Freq Err', `${repair.incFreqErr || '_________'}`, `${repair.outFreqErr || '_________'}`],
+                  ['Modulation', `${repair.incMod || '_________'}`, `${repair.outMod || '_________'}`],
+                  ['Power Output', `${repair.incPowerOut || '_________'}`, `${repair.outPowerOut || '_________'}`]
                 ]
               }
             }

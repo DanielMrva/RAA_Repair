@@ -132,7 +132,12 @@
                   <tr>
                     <th scope="row">{{i + 1}}</th>
                     <td>
-                      <a [routerLink]="['/one-repair/', record._id]" >{{record.dateReceived | date: 'MMM d, y'}}</a>
+                      <ng-container *ngIf="!record.dateReceived; else beenReceived">
+                        <a [routerLink]="['/one-repair/', record._id]" >Radio Not Yet Received</a>
+                      </ng-container>
+                      <ng-template #beenReceived>
+                        <a [routerLink]="['/one-repair/', record._id]" >{{record.dateReceived | date: 'MMM d, y'}}</a>
+                      </ng-template>
                     </td>
                     <td>
                       {{record.raaInvNum}}
