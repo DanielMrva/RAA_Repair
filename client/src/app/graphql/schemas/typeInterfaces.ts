@@ -70,9 +70,25 @@ export type StoredUser = {
 export type Organization = {
     _id: string,
     orgName: string,
-    radios: Radio[],
+    locations: Location[],
+    // radios: Radio[],
     users: User[],
 };
+
+export type Location = {
+    _id: string,
+    locationName: string,
+    orgName: string,
+    street: string,
+    city: string,
+    state: string,
+    zip: string,
+    country: string,
+    phone: string,
+    contactEmail: string,
+    primaryContact: string,
+    radios: Radio[]
+}
 
 export type Auth = {
     token: string,
@@ -160,8 +176,22 @@ export type UpdateRadioFields = {
 export type UpdateUserFields = {
     username: string,
     email: string,
-    accessLevel: string
+    accessLevel: string,
     orgName: string
+}
+
+export type UpdateLocationFields = {
+    locationName: string,
+    orgName: string,
+    street: string,
+    city: string,
+    state: string,
+    zip: string,
+    country: string,
+    phone: string,
+    contactEmail: string,
+    primaryContact: string,
+    radios: Radio[]
 }
 
 export type UpdateOrgFields = {

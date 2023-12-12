@@ -138,7 +138,6 @@ export const ADD_REPAIR = gql `
                 repHours
                 partsUsed
                 remarks
-            
         }
     }
 
@@ -157,7 +156,7 @@ export const ADD_RADIO = gql`
         $notes: [String]
         $serialNumber: String
         $warranty: String
-        $refurb: Boolean,
+        $refurb: Boolean
         $radioType: String
     ) {
         addRadio(
@@ -288,6 +287,67 @@ export const ADD_ORG = gql`
             users {
                 _id
             }
+            radios {
+                _id
+            }
+        }
+    }
+`
+
+export const ADD_LOCATION = gql`
+    mutation addLocation(
+        $locationName: String!
+        $orgName: String!
+        $street: String
+        $city: String
+        $state: String
+        $zip: String
+        $country: String
+        $phone: String
+        $contactEmail: String
+        $primaryContact: String
+    ) {
+        addLocation(
+            locationName: $locationName
+            orgName: $orgName
+            street: $street
+            city: $city 
+            state: $state   
+            zip: $zip   
+            country: $country   
+            phone: $phone   
+            contactEmail: $contactEmail 
+            primaryContact: $primaryContact
+        ) {
+            _id
+            locationName
+            orgName
+            street
+            city
+            state
+            zip
+            country
+            phone
+            contactEmail
+            primaryContact
+        }
+    }
+`
+
+export const EDIT_LOCATION = gql`
+        mutation editLocation($id: ID!, $updates: UpdateLocationInput) {
+        editLocation(_id: $id, updates: $updates) {
+            _id
+            locationName
+            orgName
+            street
+            city
+            state
+            zip
+            country
+            phone
+            contactEmail
+            primaryContact
             radios {
                 _id
             }

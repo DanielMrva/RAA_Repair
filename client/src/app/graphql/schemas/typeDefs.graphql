@@ -54,10 +54,26 @@ type Radio {
     radioType: String
 }
 
+type Location {
+    _id: ID!
+    locationName: String!
+    orgName: String!
+    street: String
+    city: String
+    state: String
+    zip: String
+    country: String
+    phone: String
+    contactEmail: String
+    primaryContact: String
+    radios: [Radio]
+}
+
 type Organization {
     _id: ID!
-    orgName: String,
-    radios: [Radio]
+    orgName: String
+    locations: [Location]
+    # radios: [Radio]
     users: [User]
 }
 
@@ -79,6 +95,9 @@ type Query {
     orgNames: [Organization]
     org: Organization
     allOrgs: [Organization]
+    allLocations: [Location]
+    location(locationId: String!): Location
+    orgLocations(orgName: String!): [Location]
 }
 
 type Mutation {
@@ -144,6 +163,23 @@ type Mutation {
             radioType: String
         ): Radio
 
+        addOrg(
+            orgName: String
+        ): Organization
+
+        addLocation(
+            locationName: String!
+            orgName: String!
+            street: String
+            city: String
+            state: String
+            zip: String
+            country: String
+            phone: String
+            contactEmail: String
+            primaryContact: String
+        ): Location
+
         editRepair(
             _id: ID!
             updates: UpdateRepairInput
@@ -163,4 +199,9 @@ type Mutation {
             _id: ID!
             updates: UpdateOrgInput
         ): Organization
+
+        editLocation(
+            _id: ID!
+            updates: UpdateLocationInput
+        ): Location
 }

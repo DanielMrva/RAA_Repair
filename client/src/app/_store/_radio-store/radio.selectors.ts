@@ -14,11 +14,6 @@ export const selectOneRadio = createSelector(
     (state: RadioState) => state.oneRadio
 );
 
-// export const radioStatusSelector = createSelector(
-//     selectRadios,
-//     (state: RadioState) => state.status
-// );
-
 export const radioLoadingSelector = createSelector(
     selectRadios,
     (state: RadioState) => state.isLoading

@@ -78,7 +78,6 @@ export class RadioService {
           radioType
         }
       })
-
   }
 
   editRadio(id: string, updates: any) {
@@ -86,7 +85,6 @@ export class RadioService {
       mutation: Edit_Radio,
       variables: {id, updates}
     })
-    
   }
 
 

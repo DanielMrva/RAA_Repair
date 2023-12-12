@@ -57,10 +57,25 @@ const typeDefs = `#graphql
         radioType: String
     }
 
+    type Location {
+        _id: ID!
+        locationName: String!
+        orgName: String!
+        street: String
+        city: String
+        state: String
+        zip: String
+        country: String
+        phone: String
+        contactEmail: String
+        primaryContact: String
+        radios: [Radio]
+    }
+
     type Organization {
         _id: ID!
-        orgName: String,
-        radios: [Radio]
+        orgName: String
+        locations: [Location]
         users: [User]
     }
 
@@ -82,6 +97,9 @@ const typeDefs = `#graphql
         orgNames: [Organization]
         org(orgId: ID!): Organization
         allOrgs: [Organization]
+        allLocations: [Location]
+        location(locationId: String!): Location
+        orgLocations(orgName: String!): [Location]
     }
 
     input UpdateRepairInput {
@@ -139,6 +157,19 @@ const typeDefs = `#graphql
         orgName: String
     }
 
+    input UpdateLocationInput {
+        locationName: String
+        orgName: String
+        street: String
+        city: String
+        state: String
+        zip: String
+        country: String
+        phone: String
+        contactEmail: String
+        primaryContact: String
+    }
+
     type Mutation {
         addUser(
             username: String!
@@ -150,7 +181,8 @@ const typeDefs = `#graphql
 
         login(
             email: String!
-            password: String!): Auth
+            password: String!
+        ): Auth
 
         validateAccess(
             username: String!
@@ -200,6 +232,23 @@ const typeDefs = `#graphql
             refurb: Boolean,
             radioType: String
         ): Radio
+
+        addOrg(
+            orgName: String
+        ): Organization
+
+        addLocation(
+            locationName: String!
+            orgName: String!
+            street: String
+            city: String
+            state: String
+            zip: String
+            country: String
+            phone: String
+            contactEmail: String
+            primaryContact: String
+        ): Location
         
         editRepair(
             _id: ID!
@@ -221,12 +270,10 @@ const typeDefs = `#graphql
             updates: UpdateOrgInput
         ): Organization
 
-        addOrg(
-            orgName: String
-        ): Organization
-
-
-
+        editLocation(
+            _id: ID!
+            updates: UpdateLocationInput
+        ): Location
     }
 
 `;

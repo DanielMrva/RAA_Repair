@@ -33,7 +33,7 @@ export const QUERY_SINGLEORG = gql`
             users {
                 _id
             }
-            radios {
+            locations {
                 _id
             }
         }
@@ -329,6 +329,85 @@ export const QUERY_ORGS = gql`
         allOrgs {
             _id
             orgName
+            locations {
+                _id
+                locationName
+                orgName
+                street
+                city
+                state
+                zip
+                country
+                phone
+                contactEmail
+                primaryContact
+                radios {
+                    _id
+                    orgName
+                    location
+                    dateSold
+                    dateEntered
+                    inventoryNumber
+                    make
+                    model
+                    progChannels
+                    notes
+                    serialNumber
+                    serviceRecord {
+                        _id
+                        radioSerial
+                        dateReceived
+                        endUserPO
+                        raaPO
+                        repairTag
+                        dateSentTech
+                        dateRecTech
+                        dateSentEU
+                        techInvNum
+                        raaInvNum
+                        symptoms
+                        testFreq
+                        incRxSens
+                        incFreqErr
+                        incMod
+                        incPowerOut
+                        outRxSens
+                        outFreqErr
+                        outMod
+                        outPowerOut
+                        accessories
+                        workPerformed
+                        repHours
+                        partsUsed
+                        remarks
+                    }
+                }
+            }
+            users {
+                _id
+                username
+                email
+                accessLevel
+                orgName
+            }
+        }
+    }
+`
+
+export const QUERY_LOCATIONS = gql`
+    query allLocations {
+        allLocations {
+            _id
+            locationName
+            orgName
+            street
+            city
+            state
+            zip
+            country
+            phone
+            contactEmail
+            primaryContact
             radios {
                 _id
                 orgName
@@ -341,16 +420,152 @@ export const QUERY_ORGS = gql`
                 progChannels
                 notes
                 serialNumber
-                warranty
-                refurb
-                radioType
+                serviceRecord {
+                    _id
+                    radioSerial
+                    dateReceived
+                    endUserPO
+                    raaPO
+                    repairTag
+                    dateSentTech
+                    dateRecTech
+                    dateSentEU
+                    techInvNum
+                    raaInvNum
+                    symptoms
+                    testFreq
+                    incRxSens
+                    incFreqErr
+                    incMod
+                    incPowerOut
+                    outRxSens
+                    outFreqErr
+                    outMod
+                    outPowerOut
+                    accessories
+                    workPerformed
+                    repHours
+                    partsUsed
+                    remarks
+                }
             }
-            users {
+        }
+    }
+`
+
+export const QUERY_SINGLELOCATION = gql`
+    query location($locationId: String!) {
+        location(locationId: $locationId) {
+            _id
+            locationName
+            orgName
+            street
+            city
+            state
+            zip
+            country
+            phone
+            contactEmail
+            primaryContact
+            radios {
                 _id
-                username
-                email
-                accessLevel
                 orgName
+                location
+                dateSold
+                dateEntered
+                inventoryNumber
+                make
+                model
+                progChannels
+                notes
+                serialNumber
+                serviceRecord {
+                    _id
+                    radioSerial
+                    dateReceived
+                    endUserPO
+                    raaPO
+                    repairTag
+                    dateSentTech
+                    dateRecTech
+                    dateSentEU
+                    techInvNum
+                    raaInvNum
+                    symptoms
+                    testFreq
+                    incRxSens
+                    incFreqErr
+                    incMod
+                    incPowerOut
+                    outRxSens
+                    outFreqErr
+                    outMod
+                    outPowerOut
+                    accessories
+                    workPerformed
+                    repHours
+                    partsUsed
+                    remarks
+                }
+            }
+        }
+    }
+`
+
+export const ORG_LOCATIONS = gql`
+    query orgLocations($orgName: String!) {
+        orgLocations(orgName: $orgName) {
+            _id
+            locationName
+            orgName
+            street
+            city
+            state
+            zip
+            country
+            phone
+            contactEmail
+            primaryContact
+            radios {
+                _id
+                orgName
+                location
+                dateSold
+                dateEntered
+                inventoryNumber
+                make
+                model
+                progChannels
+                notes
+                serialNumber
+                serviceRecord {
+                    _id
+                    radioSerial
+                    dateReceived
+                    endUserPO
+                    raaPO
+                    repairTag
+                    dateSentTech
+                    dateRecTech
+                    dateSentEU
+                    techInvNum
+                    raaInvNum
+                    symptoms
+                    testFreq
+                    incRxSens
+                    incFreqErr
+                    incMod
+                    incPowerOut
+                    outRxSens
+                    outFreqErr
+                    outMod
+                    outPowerOut
+                    accessories
+                    workPerformed
+                    repHours
+                    partsUsed
+                    remarks
+                }
             }
         }
     }
