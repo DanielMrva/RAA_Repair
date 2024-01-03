@@ -14,6 +14,16 @@ export const selectOneLocation = createSelector(
     (state: LocationState) => state.oneLocation
 );
 
+// export const selectLocationNames = createSelector(
+//     selectLocations,
+//     (state: LocationState) => state.locationNames
+// )
+
+export const selectLocationNames = createSelector(
+    selectLocations,
+    (state: LocationState) => state.locationNames
+)
+
 export const locationLoadingSelector = createSelector(
     selectLocations,
     (state: LocationState) => state.isLoading

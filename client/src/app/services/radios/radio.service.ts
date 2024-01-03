@@ -47,7 +47,7 @@ export class RadioService {
 
   addRadio(
       orgName: string,
-      location: string,
+      locationName: string,
       dateSold: string,
       dateEntered: string,
       inventoryNumber: string,
@@ -64,7 +64,7 @@ export class RadioService {
         mutation: ADD_RADIO,
         variables: {
           orgName,
-          location,
+          locationName,
           dateSold,
           dateEntered,
           inventoryNumber,

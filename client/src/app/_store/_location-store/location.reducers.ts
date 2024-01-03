@@ -6,6 +6,7 @@ import { Location } from "@app/graphql/schemas";
 export interface LocationState {
     oneLocation: Location | null;
     locations: Location[];
+    locationNames: Location[];
     error: string | null;
     isLoading: boolean;
 };
@@ -13,6 +14,7 @@ export interface LocationState {
 export const initialState: LocationState = {
     oneLocation: null,
     locations: [],
+    locationNames: [],
     error: null,
     isLoading: false
 };
@@ -117,4 +119,22 @@ export const locationReducer = createReducer(
         error: error
     })),
 
+    on(LocationActions.loadLocationNames, state => ({ 
+        ...state, 
+        isLoading: true, 
+        error: null 
+    })),
+
+    on(LocationActions.loadLocationNamesSuccess, (state, { locationNames }) => ({
+        ...state,
+        locationNames: locationNames as Location[],
+        isLoading: false,
+        error: null
+    })),
+
+    on(LocationActions.loadLocationNamesFailure, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error
+    })),
 )

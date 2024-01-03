@@ -85,3 +85,17 @@ export const editLocationFailure = createAction(
     '[Location Service] Edit Location Failure',
     props<{ error: string}>()
 );
+
+export const loadLocationNames = createAction(
+    '[Location Name Dropdown] Load Location Names'
+);
+
+export const loadLocationNamesSuccess = createAction(
+    '[Location Service] Load Location Names Success',
+    props<{ locationNames?: Location[] }>()
+);
+
+export const loadLocationNamesFailure = createAction(
+    '[Location Service] Load Location Names Failure',
+    props<{ error: string }>()
+);

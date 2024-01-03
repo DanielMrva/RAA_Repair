@@ -45,7 +45,7 @@ export const ALL_RADIOS = gql`
         allRadios {
            _id
            orgName
-           location
+           locationName
            dateSold
            dateEntered
            inventoryNumber
@@ -94,7 +94,7 @@ export const QUERY_SINGLERADIO = gql`
         radio(radioId: $radioId) {
            _id
            orgName
-           location
+           locationName
            dateSold
            dateEntered
            inventoryNumber
@@ -143,7 +143,7 @@ export const QUERY_SERIALRADIO = gql`
         radio(serialNumber: $serialNumber) {
            _id
            orgName
-           location
+           locationName
            dateSold
            dateEntered
            inventoryNumber
@@ -259,7 +259,7 @@ export const ORG_RADIOS = gql`
         orgRadios(orgName: $orgName) {
            _id
            orgName
-           location
+           locationName
            dateSold
            dateEntered
            inventoryNumber
@@ -344,7 +344,7 @@ export const QUERY_ORGS = gql`
                 radios {
                     _id
                     orgName
-                    location
+                    locationName
                     dateSold
                     dateEntered
                     inventoryNumber
@@ -411,7 +411,7 @@ export const QUERY_LOCATIONS = gql`
             radios {
                 _id
                 orgName
-                location
+                locationName
                 dateSold
                 dateEntered
                 inventoryNumber
@@ -470,7 +470,7 @@ export const QUERY_SINGLELOCATION = gql`
             radios {
                 _id
                 orgName
-                location
+                locationName
                 dateSold
                 dateEntered
                 inventoryNumber
@@ -529,7 +529,7 @@ export const ORG_LOCATIONS = gql`
             radios {
                 _id
                 orgName
-                location
+                locationName
                 dateSold
                 dateEntered
                 inventoryNumber
@@ -567,6 +567,15 @@ export const ORG_LOCATIONS = gql`
                     remarks
                 }
             }
+        }
+    }
+`
+
+export const LOCATION_NAMES = gql`
+    query locationNames {
+        locationNames {
+            _id
+            locationName
         }
     }
 `

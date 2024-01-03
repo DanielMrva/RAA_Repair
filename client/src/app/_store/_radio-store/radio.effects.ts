@@ -85,7 +85,7 @@ export class RadioEffects {
             ofType(RadioActions.addRadio),
             switchMap(({
                 orgName,
-                location,
+                locationName,
                 dateSold,
                 dateEntered,
                 inventoryNumber,
@@ -100,7 +100,7 @@ export class RadioEffects {
             }) =>
                 from(this.radioService.addRadio(
                     orgName,
-                    location,
+                    locationName,
                     dateSold,
                     dateEntered,
                     inventoryNumber,

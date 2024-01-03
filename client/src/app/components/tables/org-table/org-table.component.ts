@@ -17,7 +17,7 @@ export class OrgTableComponent implements OnInit {
 
   displayedColumns: string[] = [
     'orgName',
-    'radios',
+    'locations',
     'users'
   ];
 

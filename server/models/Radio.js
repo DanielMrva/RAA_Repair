@@ -6,8 +6,8 @@ const radioSchema = new Schema({
         type: String,
         required: true,
     },
-    location: {
-        type: String,
+    locationName: {
+        type: String
     },
     dateSold: {
         type: Date,

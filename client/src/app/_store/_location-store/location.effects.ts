@@ -171,4 +171,18 @@ export class LocationEffects {
         ),
         { dispatch: false }
     );
+
+    loadLocationNames$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(LocationActions.loadLocationNames),
+        switchMap(() =>
+            from(this.locationService.locationNames()).pipe(
+                map(({ data }) => LocationActions.loadLocationNamesSuccess({ locationNames: data.locationNames })),
+
+                catchError((error) => of(LocationActions.loadLocationNamesFailure({ error })))
+            )
+        )
+
+    )
+)
 }

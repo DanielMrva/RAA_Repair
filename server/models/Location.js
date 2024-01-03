@@ -5,7 +5,7 @@ const locationSchema = new Schema({
     locationName: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
         trim: true
     },
     orgName: {

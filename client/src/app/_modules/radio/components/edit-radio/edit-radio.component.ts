@@ -16,7 +16,7 @@ export class EditRadioComponent implements OnInit{
 
   editRadioForm = new FormGroup({
     orgName: new FormControl<string>(''),
-    location: new FormControl<string>(''),
+    locationName: new FormControl<string>(''),
     dateSold: new FormControl<Date>(new Date()),
     dateEntered: new FormControl<Date>(new Date()),
     inventoryNumber: new FormControl<string>(''),
@@ -57,7 +57,7 @@ export class EditRadioComponent implements OnInit{
       if (radio) {
       this.editRadioForm.patchValue({
           orgName: radio.orgName,
-          location: radio.location,
+          locationName: radio.locationName,
           dateSold: new Date(parseInt(radio.dateSold)),
           dateEntered: new Date(parseInt(radio.dateEntered)),
           inventoryNumber: radio.inventoryNumber,
@@ -100,7 +100,7 @@ export class EditRadioComponent implements OnInit{
   onSubmit() {
 
     const orgName = this.editRadioForm.value.orgName ?? '';
-    const location = this.editRadioForm.value.location ?? '';
+    const locationName = this.editRadioForm.value.locationName ?? '';
     const dateSold = this.editRadioForm.value.dateSold ?? new Date();
     const dateEntered = this.editRadioForm.value.dateEntered ?? new Date();
     const inventoryNumber = this.editRadioForm.value.inventoryNumber ?? '';
@@ -115,7 +115,7 @@ export class EditRadioComponent implements OnInit{
 
     const submittedRadio: UpdateRadioFields = {
       orgName: orgName,
-      location: location,
+      locationName: locationName,
       dateSold: new Date(dateSold),
       dateEntered: new Date(dateEntered),
       inventoryNumber: inventoryNumber,
@@ -138,7 +138,7 @@ export class EditRadioComponent implements OnInit{
 
     this.editRadioForm.patchValue({
       orgName: '',
-      location: '',
+      locationName: '',
       dateSold: new Date(),
       dateEntered: new Date(),
       inventoryNumber: '',

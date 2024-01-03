@@ -39,27 +39,9 @@ const typeDefs = `#graphql
         remarks: String
     }
 
-    type Radio {
-        _id: ID!
-        orgName: String
-        location: String
-        dateSold: String
-        dateEntered: String
-        inventoryNumber: String
-        make: String
-        model: String
-        progChannels: String
-        notes: [String]
-        serialNumber: String
-        serviceRecord: [Repair]
-        warranty: String
-        refurb: Boolean
-        radioType: String
-    }
-
     type Location {
         _id: ID!
-        locationName: String!
+        locationName: String
         orgName: String!
         street: String
         city: String
@@ -72,11 +54,30 @@ const typeDefs = `#graphql
         radios: [Radio]
     }
 
+    
     type Organization {
         _id: ID!
         orgName: String
         locations: [Location]
         users: [User]
+    }
+
+    type Radio {
+        _id: ID!
+        orgName: String
+        locationName: String
+        dateSold: String
+        dateEntered: String
+        inventoryNumber: String
+        make: String
+        model: String
+        progChannels: String
+        notes: [String]
+        serialNumber: String
+        serviceRecord: [Repair]
+        warranty: String
+        refurb: Boolean
+        radioType: String
     }
 
     type Auth {
@@ -100,6 +101,7 @@ const typeDefs = `#graphql
         allLocations: [Location]
         location(locationId: String!): Location
         orgLocations(orgName: String!): [Location]
+        locationNames: [Location]
     }
 
     input UpdateRepairInput {
@@ -132,7 +134,7 @@ const typeDefs = `#graphql
 
     input UpdateRadioInput {
         orgName: String
-        location: String
+        locationName: String
         dateSold: String
         dateEntered: String
         inventoryNumber: String
@@ -219,7 +221,7 @@ const typeDefs = `#graphql
 
         addRadio(
             orgName: String!
-            location: String
+            locationName: String
             dateSold: String
             dateEntered: String
             inventoryNumber: String!

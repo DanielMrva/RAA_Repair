@@ -30,7 +30,7 @@ export type Repair = {
 export type Radio = {
     _id: string,
     orgName: string,
-    location: string,
+    locationName: string,
     dateSold: string,
     dateEntered: string,
     inventoryNumber: string,
@@ -114,7 +114,7 @@ export type LimitedRecord = {
 export type AdminRadioFields = {
     _id: string,
     orgName: string,
-    location: string,
+    locationName: string,
     dateSold: string,
     dateEntered: string,
     inventoryNumber: string,
@@ -159,7 +159,7 @@ export type UpdateRepairFields = {
 
 export type UpdateRadioFields = {
     orgName: string,
-    location: string,
+    locationName: string,
     dateSold: Date,
     dateEntered: Date,
     inventoryNumber: string,
@@ -191,7 +191,6 @@ export type UpdateLocationFields = {
     phone: string,
     contactEmail: string,
     primaryContact: string,
-    radios: Radio[]
 }
 
 export type UpdateOrgFields = {

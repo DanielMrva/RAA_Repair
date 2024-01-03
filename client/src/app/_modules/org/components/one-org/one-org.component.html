@@ -12,6 +12,52 @@
         <div class="row">
             <h2 class="col-12 text-center">{{oneOrg.orgName}}</h2>
         </div>
+
+        <ng-container *ngIf="oneOrg.locations.length > 0">
+
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+
+                            </th>
+                            <th scope="col">
+                                Location Name
+                            </th>
+                            <th scope="col">
+                                Radios
+                            </th>
+
+
+                        </tr>
+                    </thead>
+                    <!-- TODO: Debug this data from locationName and Radios not displaying -->
+                    <tbody>
+                        <ng-container *ngFor="let location of oneOrg.locations; index as i">
+                            <tr>
+                                <th scope="row">{{i +1}}</th>
+                                <td>
+                                    {{location.locationName}}
+                                </td>
+                                <td>
+                                    <ul>
+                                        <ng-container *ngFor="let radio of location.radios; index as j">
+                                            <li >
+                                                {{j}}{{radio._id}}
+                                            </li>
+                                        </ng-container>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+
+        </ng-container>
     
     </div>
+
+    
 </ng-template>

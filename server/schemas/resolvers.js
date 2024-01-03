@@ -73,7 +73,10 @@ const resolvers = {
         },
         orgLocations: async(parent, { orgName }) => {
             return Location.find({ orgName: orgName}).populate("radios")
-        }
+        },
+        locationNames: async () => {
+            return Location.find();
+        },
 
     },
     Mutation: {
@@ -234,7 +237,7 @@ const resolvers = {
         addRadio: async (
             parent, {
                 orgName,
-                location,
+                locationName,
                 dateSold,
                 dateEntered,
                 inventoryNumber,
@@ -269,7 +272,7 @@ const resolvers = {
 
                 const newRadio = await Radio.create({
                     orgName,
-                    location,
+                    locationName,
                     dateSold,
                     dateEntered,
                     inventoryNumber,
@@ -290,7 +293,7 @@ const resolvers = {
                 // );
 
                 await Location.findOneAndUpdate(
-                    { locationName: location },
+                    { locationName: locationName },
                     { $addToSet: { radios: newRadio._id } }
                 );
 

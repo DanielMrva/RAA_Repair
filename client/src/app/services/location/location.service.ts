@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { Location, UpdateLocationFields } from '@app/graphql/schemas';
+import { LOCATION_NAMES, Location, UpdateLocationFields } from '@app/graphql/schemas';
 import { ADD_LOCATION, EDIT_LOCATION } from '@app/graphql/schemas/mutations';
 import { QUERY_LOCATIONS, QUERY_SINGLELOCATION, ORG_LOCATIONS } from '@app/graphql/schemas';
 
@@ -68,6 +68,12 @@ export class LocationService {
     return this.apollo.mutate<{editLocation: Location}> ({
       mutation: EDIT_LOCATION,
       variables: {id, updates}
+    })
+  }
+
+  locationNames() {
+    return this.apollo.query<{locationNames: Location[]}> ({
+      query: LOCATION_NAMES
     })
   }
   
