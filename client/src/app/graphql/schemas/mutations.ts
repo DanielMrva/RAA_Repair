@@ -161,7 +161,7 @@ export const ADD_RADIO = gql`
     ) {
         addRadio(
             orgName: $orgName,
-            locationName: $location,
+            locationName: $locationName,
             dateSold: $dateSold,
             dateEntered: $dateEntered,
             inventoryNumber: $inventoryNumber,

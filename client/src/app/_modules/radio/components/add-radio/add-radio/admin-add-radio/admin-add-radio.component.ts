@@ -4,7 +4,13 @@ import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
 import { addRadio } from '@app/_store/_radio-store/radio.actions';
 import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
+import { selectLocationNames, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
+import { loadLocationNames } from '@app/_store/_location-store/location.actions';
+import { Observable, combineLatest } from 'rxjs';
+import { map, startWith } from 'rxjs/operators'
+import { Organization } from '@app/graphql/schemas';
+import { Location } from '@app/graphql/schemas';
 
 
 @Component({
@@ -17,6 +23,14 @@ export class AdminAddRadioComponent implements OnInit{
   orgNames$ = this.store.select(selectOrgNames);
   isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
   orgNameError$ = this.store.select(orgErrorSelector);
+  orgNameOptions: string[] = [];
+  filteredOrgNames$!: Observable<string[]>;
+
+  locationNames$ = this.store.select(selectLocationNames);
+  isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
+  locationNameError$ = this.store.select(locationErrorSelector);
+  locNameOptions: string[] = [];
+  filteredLocNames$!: Observable<string[]>;
 
   adminRadioForm = new FormGroup({
     orgName: new FormControl<string>(''),
@@ -67,7 +81,51 @@ export class AdminAddRadioComponent implements OnInit{
 
   ngOnInit(): void {
     this.store.dispatch(loadOrgNames())
+    this.store.dispatch(loadLocationNames())
+
+    this.filteredOrgNames$ = this.adminRadioForm.controls.orgName.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterOrgs(value || ''))
+    )
+
+    this.filteredLocNames$ = combineLatest([
+      this.adminRadioForm.controls.locationName.valueChanges.pipe(startWith('')),
+      this.adminRadioForm.controls.orgName.valueChanges.pipe(startWith('')),
+      this.locationNames$,
+    ]).pipe(
+      map(([locName, orgName, locations]) => this._filterLocs(locName, orgName, locations))
+    );
       
+  }
+
+  private _filterOrgs(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    let orgOptions: string[] = []
+
+    this.orgNames$.subscribe((orgList: Organization[] | []) => {
+      if (orgList.length > 0) {
+        orgOptions = orgList.map(org => org.orgName)
+      } 
+    })
+
+    return orgOptions.filter(option => option.toLowerCase().includes(filterValue))
+
+  }
+
+  private _filterLocs(locValue: string | null, orgValue: string | null, locations: Location[]): string[] {
+    const filteredLocValue = (locValue || '').toLowerCase();
+    const filteredOrgValue = (orgValue || '').toLowerCase();
+  
+    let locOptions: string[] = [];
+  
+    locations.forEach((loc) => {
+      if (loc.locationName.toLowerCase().includes(filteredLocValue) && loc.orgName.toLowerCase() === filteredOrgValue) {
+        locOptions.push(loc.locationName);
+      }
+    });
+  
+    return locOptions;
   }
 
   onSubmit() {

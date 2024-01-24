@@ -24,6 +24,9 @@ import { OneOrgComponent } from './_modules/org/components/one-org/one-org.compo
 import { AddOrgComponent } from './_modules/org/components/add-org/add-org.component';
 import { AddUserComponent } from './_modules/user/components/add-user/add-user.component';
 import { LoginComponent } from './_modules/user/components/login/login.component';
+import { OneLocationComponent } from './_modules/location/components/one-location/one-location.component';
+import { AddLocationComponent } from './_modules/location/components/add-location/add-location.component';
+import { EditLocationComponent } from './_modules/location/components/edit-location/edit-location.component';
 
 import { roleGuard } from './guards/role-guard';
 import { authGuard } from './guards/auth-guard';
@@ -81,6 +84,15 @@ const routes: Routes = [
     canActivate: [authGuard, roleGuard]
   },
   {
+    path: 'add-location',
+    component: AddLocationComponent,
+    pathMatch: 'full',
+    data: {
+      role: ['admin']
+    },
+    canActivate: [authGuard, roleGuard]
+  },
+  {
     path: 'login',
     component: LoginComponent,
     pathMatch: 'full'
@@ -117,6 +129,23 @@ const routes: Routes = [
     },
     canActivate: [authGuard, roleGuard]
   },
+  {
+    path: 'one-location/:id',
+    component: OneLocationComponent,
+    data: {
+      role: ['admin', 'user']
+    },
+    canActivate: [authGuard, roleGuard]
+  },
+  {
+    path: 'edit-location/:id',
+    component: EditLocationComponent,
+    data: {
+      role: ['admin', 'user']
+    },
+    canActivate: [authGuard, roleGuard]
+  },
+
   {
     path: 'org-radio/:orgName',
     component: AdminRadioReportsComponent,

@@ -36,30 +36,54 @@
 
                 <h4 class="col-12 text-center">Tracking</h4>
 
-                <!-- <div class="form-group col-6">
-                    <label for="orgName">Organization: </label>
-                    <mat-spinner *ngIf="isLoadingOrgNames$ | async; else loadedOrgNames"></mat-spinner>
-                    <div *ngIf="orgNameError$ | async as error">{{ error }}</div>
-                    <ng-template #loadedOrgNames>
-                        <mat-select *ngIf="orgNames$ | async as orgList" id="orgName" formControlName="orgName">
-                            <mat-option *ngFor="let org of orgList" [value]="org.orgName">
-                                {{ org.orgName }}
-                            </mat-option>
-                        </mat-select>
-                    </ng-template>
-                </div> -->
+                <mat-form-field class="form-group col-4">
+                    <mat-label for="orgName">
+                        Organization:
+                    </mat-label>
+                    <input  type="text"
+                            placeholder="Organization"
+                            aria-label="Organizaiton"
+                            matInput
+                            [formControl]="adminRadioForm.controls.orgName"
+                            [matAutocomplete]="orgAuto"
+                    >
+                    <mat-autocomplete 
+                    autoActiveFirstOption
+                    #orgAuto="matAutocomplete">
+                        <mat-option *ngFor="let option of filteredOrgNames$ | async" [value]="option">
+                            {{option}}
+                        </mat-option>
 
+                    </mat-autocomplete>
 
-                <div class="form-group col-4">
-                    <label for="orgName">Organization Name:</label>
-                    <input type="text" id="orgName" formControlName="orgName" class="form-control"
-                        [class.invalid]="fieldValidCheck('orgName')">
-                </div>
+                </mat-form-field>
 
-                <div class="form-group col-4">
+                <mat-form-field class="form-group col-4">
+                    <mat-label for="locationName">
+                        Location:
+                    </mat-label>
+                    <input  type="text"
+                            placeholder="Location"
+                            aria-label="Location"
+                            matInput
+                            [formControl]="adminRadioForm.controls.locationName"
+                            [matAutocomplete]="locAuto"
+                    >
+                    <mat-autocomplete 
+                    autoActiveFirstOption
+                    #locAuto="matAutocomplete">
+                        <mat-option *ngFor="let locOption of filteredLocNames$ | async" [value]="locOption">
+                            {{locOption}}
+                        </mat-option>
+
+                    </mat-autocomplete>
+
+                </mat-form-field>
+
+                <!-- <div class="form-group col-4">
                     <label for="locationName">Location:</label>
                     <input type="text" id="locationName" formControlName="locationName" class="form-control">
-                </div>
+                </div> -->
 
                 <div class="form-group col-4">
                     <label for="inventoryNumber">Inventory Number:</label>

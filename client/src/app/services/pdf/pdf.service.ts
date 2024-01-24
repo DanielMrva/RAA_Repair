@@ -39,7 +39,7 @@ export class PdfService {
           },
           {
             width: '*',
-            text: `Date Received Tech: ${fDateRecTech}`
+            text: `Date Received From Tech: ${fDateRecTech}`
           },
           {
             width: '*',

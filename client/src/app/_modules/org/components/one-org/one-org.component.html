@@ -13,7 +13,9 @@
             <h2 class="col-12 text-center">{{oneOrg.orgName}}</h2>
         </div>
 
-        <ng-container *ngIf="oneOrg.locations.length > 0">
+        <h4 class="col-12 text-center">Locations:</h4>
+
+        <ng-container *ngIf="oneOrg.locations.length > 0; else noLocations">
 
             <div class="row">
                 <table class="table">
@@ -32,7 +34,6 @@
 
                         </tr>
                     </thead>
-                    <!-- TODO: Debug this data from locationName and Radios not displaying -->
                     <tbody>
                         <ng-container *ngFor="let location of oneOrg.locations; index as i">
                             <tr>
@@ -44,7 +45,7 @@
                                     <ul>
                                         <ng-container *ngFor="let radio of location.radios; index as j">
                                             <li >
-                                                {{j}}{{radio._id}}
+                                                {{j+1}} <a [routerLink]="['/one-radio/', radio._id]">{{radio.make}} {{radio.model}} {{radio.serialNumber}}</a>
                                             </li>
                                         </ng-container>
                                     </ul>
@@ -56,6 +57,12 @@
             </div>
 
         </ng-container>
+
+        <ng-template #noLocations>
+            <div class="row">
+                <p>No Radios at this Location...</p>
+            </div>
+        </ng-template>
     
     </div>
 

@@ -10,6 +10,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 import { AddRadioComponent } from './components/add-radio/add-radio/add-radio.component';
 import { AdminAddRadioComponent } from './components/add-radio/add-radio/admin-add-radio/admin-add-radio.component';
@@ -36,6 +38,8 @@ import { radioReducer } from '@app/_store/_radio-store/radio.reducers'
     MatRadioModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
     StoreModule.forFeature('radio', radioReducer),
     EffectsModule.forFeature([RadioEffects])
   ],

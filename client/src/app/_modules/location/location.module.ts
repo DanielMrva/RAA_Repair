@@ -3,8 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -20,22 +23,25 @@ import { locationReducer } from '@app/_store/_location-store/location.reducers';
 
 
 @NgModule({
-  declarations: [
-    AddLocationComponent,
-    EditLocationComponent,
-    OneLocationComponent
-  ],
   imports: [
     CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDatepickerModule,
     MatInputModule,
+    MatNativeDateModule,
     BrowserAnimationsModule,
+    MatRadioModule,
     MatSelectModule,
     MatProgressSpinnerModule,
     StoreModule.forFeature('location', locationReducer),
     EffectsModule.forFeature([LocationEffects])
+  ],
+  declarations: [
+    AddLocationComponent,
+    EditLocationComponent,
+    OneLocationComponent
   ]
 })
 export class LocationModule { }

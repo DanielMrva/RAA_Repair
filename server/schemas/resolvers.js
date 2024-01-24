@@ -60,19 +60,49 @@ const resolvers = {
         //     return Organization.find().populate(["users", "radios"])
         // },
         org: async (parent, { orgId }) => {
-            return Organization.findById({ _id: orgId }).populate(["users", "locations"]);
+            return Organization.findById({ _id: orgId }).populate(
+                [
+                    {
+                        path: "users"
+                    },
+                    {
+                        path: "locations",
+                        populate: {
+                            path: "radios",
+                            populate: {
+                                path: "serviceRecord"
+                            }
+                        }
+                    }
+                ]
+            );
         },
         allOrgs: async () => {
             return Organization.find().populate(["users", "locations"])
         },
         allLocations: async () => {
-            return Location.find().populate(["radios"]);
+            return Location.find().populate({
+                path: "radios",
+                populate: {
+                    path: "serviceRecord",
+                },
+            });
         },
-        location: async (locationId ) => {
-            return Location.findById({ _id: locationId }).populate("radios");
+        location: async (parent, { locationId } ) => {
+            return Location.findById({ _id: locationId }).populate({
+                path: "radios",
+                populate: {
+                    path: "serviceRecord",
+                },
+            });
         },
         orgLocations: async(parent, { orgName }) => {
-            return Location.find({ orgName: orgName}).populate("radios")
+            return Location.find({ orgName: orgName}).populate({
+                path: "radios",
+                populate: {
+                    path: "serviceRecord",
+                },
+            });
         },
         locationNames: async () => {
             return Location.find();
@@ -437,6 +467,11 @@ const resolvers = {
 
         editRadio: async (parent, { _id, updates }) => {
             try {
+
+                if (updates.locationName) {
+                    await Radio.updateLocation(_id, updates.locationName);
+                }
+
                 const radio = await Radio.findOneAndUpdate({ _id }, { $set: updates }, { new: true });
 
                 if (!radio) {

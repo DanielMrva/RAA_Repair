@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
-import { Radio, UpdateRadioFields } from '@app/graphql/schemas/typeInterfaces';
+import { Organization, Radio, UpdateRadioFields, Location } from '@app/graphql/schemas/typeInterfaces';
 import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
 import { editRadio, loadOneRadio } from '@app/_store/_radio-store/radio.actions';
 import { selectOneRadio, radioErrorSelector, radioLoadingSelector } from '@app/_store/_radio-store/radio.selectors';
+import { Observable, combineLatest } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
+import { selectLocationNames, locationLoadingSelector, locationErrorSelector } from '@app/_store/_location-store/location.selectors';
+import { selectOrgNames, orgLoadingSelector, orgErrorSelector } from '@app/_store/_org-store/org.selectors';
+import { loadLocationNames } from '@app/_store/_location-store/location.actions';
+import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 
 @Component({
   selector: 'app-edit-radio',
@@ -13,6 +19,24 @@ import { selectOneRadio, radioErrorSelector, radioLoadingSelector } from '@app/_
   styleUrls: ['./edit-radio.component.css']
 })
 export class EditRadioComponent implements OnInit{
+
+  isLoading$ = this.store.select(radioLoadingSelector);
+  radioError$ = this.store.select(radioErrorSelector);
+  oneRadio$ = this.store.select(selectOneRadio);
+
+  orgNames$ = this.store.select(selectOrgNames);
+  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+  orgNameError$ = this.store.select(orgErrorSelector);
+  orgNameOptions: string[] = [];
+  filteredOrgNames$!: Observable<string[]>;
+
+  locationNames$ = this.store.select(selectLocationNames);
+  isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
+  locationNameError$ = this.store.select(locationErrorSelector);
+  locNameOptions: string[] = [];
+  filteredLocNames$!: Observable<string[]>;
+
+  radioId!: string;
 
   editRadioForm = new FormGroup({
     orgName: new FormControl<string>(''),
@@ -30,11 +54,7 @@ export class EditRadioComponent implements OnInit{
     radioType: new FormControl<string>(''),
   })
 
-  isLoading$ = this.store.select(radioLoadingSelector);
-  radioError$ = this.store.select(radioErrorSelector);
-  oneRadio$ = this.store.select(selectOneRadio);
 
-  radioId!: string;
 
   get notesArray(): FormArray {
     return this.editRadioForm.get('notes') as FormArray;
@@ -133,8 +153,42 @@ export class EditRadioComponent implements OnInit{
     this.updateRadio(submittedRadio);
   }
 
+  private _filterOrgs(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    let orgOptions: string[] = []
+
+    this.orgNames$.subscribe((orgList: Organization[] | []) => {
+      if (orgList.length > 0) {
+        orgOptions = orgList.map(org => org.orgName)
+      } 
+    })
+
+    return orgOptions.filter(option => option.toLowerCase().includes(filterValue))
+
+  }
+
+  private _filterLocs(locValue: string | null, orgValue: string | null, locations: Location[]): string[] {
+    const filteredLocValue = (locValue || '').toLowerCase();
+    const filteredOrgValue = (orgValue || '').toLowerCase();
+  
+    let locOptions: string[] = [];
+  
+    locations.forEach((loc) => {
+      if (loc.locationName.toLowerCase().includes(filteredLocValue) && loc.orgName.toLowerCase() === filteredOrgValue) {
+        locOptions.push(loc.locationName);
+      }
+    });
+  
+    return locOptions;
+  }
+
+
 
   ngOnInit(): void {
+
+    this.store.dispatch(loadOrgNames());
+    this.store.dispatch(loadLocationNames())
 
     this.editRadioForm.patchValue({
       orgName: '',
@@ -158,6 +212,19 @@ export class EditRadioComponent implements OnInit{
     })
 
     this.populateForm();
+
+    this.filteredOrgNames$ = this.editRadioForm.controls.orgName.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterOrgs(value || ''))
+    )
+
+    this.filteredLocNames$ = combineLatest([
+      this.editRadioForm.controls.locationName.valueChanges.pipe(startWith('')),
+      this.editRadioForm.controls.orgName.valueChanges.pipe(startWith('')),
+      this.locationNames$,
+    ]).pipe(
+      map(([locName, orgName, locations]) => this._filterLocs(locName, orgName, locations))
+    );
 
       
   };
