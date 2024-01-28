@@ -13,6 +13,7 @@ const typeDefs = `#graphql
     type Repair {
         _id: ID!
         radioSerial: String!
+        radioLocation: String
         dateReceived: String
         endUserPO: String
         raaPO: String
@@ -106,6 +107,7 @@ const typeDefs = `#graphql
 
     input UpdateRepairInput {
             radioSerial: String
+            radioLocation: String
             dateReceived: String
             endUserPO: String
             raaPO: String
@@ -193,6 +195,7 @@ const typeDefs = `#graphql
 
         addRepair(
             radioSerial: String!
+            radioLocation: String!
             dateReceived: String!
             endUserPO: String
             raaPO: String

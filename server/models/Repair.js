@@ -8,6 +8,9 @@ const repairSchema = new Schema({
         type: String,
         required: true
     },
+    radioLocation: {
+        type: String
+    },
     dateReceived: {
         type: Date,
         default: Date.now,

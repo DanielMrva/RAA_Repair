@@ -123,6 +123,7 @@ export class AdminAddRepairComponent implements OnInit {
 
 
     const radioSerial = this.adminRepairForm.value.radioSerial ?? '';
+    const radioLocation = '';
     const dateReceived = this.adminRepairForm.value.dateReceived ?? '';
     const endUserPO = this.adminRepairForm.value.endUserPO  ?? '';
     const raaPO = this.adminRepairForm.value.raaPO  ?? '';
@@ -149,6 +150,7 @@ export class AdminAddRepairComponent implements OnInit {
 
     this.store.dispatch(addRepair({
       radioSerial,
+      radioLocation,
       dateReceived,
       endUserPO,
       raaPO,

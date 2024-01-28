@@ -163,6 +163,7 @@ const resolvers = {
             parent,
             {
                 radioSerial,
+                radioLocation,
                 dateReceived,
                 endUserPO,
                 raaPO,
@@ -214,6 +215,7 @@ const resolvers = {
 
                 const repair = await Repair.create({
                     radioSerial,
+                    radioLocation,
                     dateReceived,
                     endUserPO,
                     raaPO,
