@@ -4,6 +4,12 @@ import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
 import { addRepair } from '@app/_store/_repair-store/repair.actions';
+import { selectLocationNames, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
+import { selectOrgName } from '@app/_store/_auth-store/auth.selectors';
+import { loadLocationNames } from '@app/_store/_location-store/location.actions';
+import { Observable, combineLatest } from 'rxjs';
+import { map, startWith } from 'rxjs/operators'
+import { Location } from '@app/graphql/schemas';
 
 @Component({
   selector: 'app-admin-add-repair',
@@ -12,8 +18,17 @@ import { addRepair } from '@app/_store/_repair-store/repair.actions';
 })
 export class AdminAddRepairComponent implements OnInit {
 
+  orgName$ = this.store.select(selectOrgName);
+
+  locationNames$ = this.store.select(selectLocationNames);
+  isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
+  locationNameError$ = this.store.select(locationErrorSelector);
+  locNameOptions: string[] = [];
+  filteredLocNames$!: Observable<string[]>;
+
   adminRepairForm = new FormGroup({
     radioSerial: new FormControl<string>(''),
+    radioLocation: new FormControl<string>(''),
     dateReceived: new FormControl<string>(''),
     endUserPO: new FormControl<string>(''),
     raaPO: new FormControl<string>(''),
@@ -109,12 +124,39 @@ export class AdminAddRepairComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.store.dispatch(loadLocationNames());
+
+    this.filteredLocNames$ = combineLatest([
+      this.adminRepairForm.controls.radioLocation.valueChanges.pipe(startWith('')),
+      this.orgName$.pipe(),
+      this.locationNames$,
+    ]).pipe(
+      map(([locName, orgName, locations]) => this._filteredLocs(locName, orgName, locations))
+    )
+
     this.activatedRoute.paramMap.subscribe(params => {
       const serialNumber = params.get('serialNumber');
       if (serialNumber) {
         this.adminRepairForm.patchValue({ radioSerial: serialNumber })
       }
-    })
+    });
+
+    
+  }
+
+  private _filteredLocs(locValue: string | null, orgName: string | null, locations: Location[]): string[] {
+    const filteredLocValue = (locValue || '').toLowerCase();
+    const org = ( orgName || '').toLowerCase();
+
+    let locOptions: string[] = [];
+
+    locations.forEach((loc) => {
+      if (loc.locationName.toLowerCase().includes(filteredLocValue) && loc.orgName.toLowerCase() === org ) {
+        locOptions.push(loc.locationName);
+      }
+    });
+
+    return locOptions;
   }
 
   onSubmit() {
@@ -123,7 +165,7 @@ export class AdminAddRepairComponent implements OnInit {
 
 
     const radioSerial = this.adminRepairForm.value.radioSerial ?? '';
-    const radioLocation = '';
+    const radioLocation = this.adminRepairForm.value.radioLocation ?? '';
     const dateReceived = this.adminRepairForm.value.dateReceived ?? '';
     const endUserPO = this.adminRepairForm.value.endUserPO  ?? '';
     const raaPO = this.adminRepairForm.value.raaPO  ?? '';

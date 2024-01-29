@@ -5,6 +5,33 @@
 
         <form [formGroup]="adminRepairForm" (ngSubmit)="onSubmit()" class="row">
 
+            <section class="row" id="radioLocation">
+                <h4 class="col-12 text-center">Service Location</h4>
+
+                <mat-form-field class="form-group col-12">
+                    <mat-label for="radioLocation">
+                        Location:
+                    </mat-label>
+                    <input  type="text"
+                            placeholder="Location"
+                            aria-label="Location"
+                            matInput
+                            [formControl]="adminRepairForm.controls.radioLocation"
+                            [matAutocomplete]="locAuto"
+                    >
+                    <mat-autocomplete 
+                    autoActiveFirstOption
+                    #locAuto="matAutocomplete">
+                        <mat-option *ngFor="let locOption of filteredLocNames$ | async" [value]="locOption">
+                            {{locOption}}
+                        </mat-option>
+
+                    </mat-autocomplete>
+
+                </mat-form-field>
+
+            </section>
+
             <section class="row" id="timeline">
                 <h4 class="col-12 text-center">Timeline</h4>
 
