@@ -19,24 +19,24 @@
 
     </ng-container>
 
-    <ng-container matColumnDef="radios">
+    <ng-container matColumnDef="locations">
         <th
             mat-header-cell
             *matHeaderCellDef
         >
-            Radios: 
+            Locations: 
         </th>
         <td mat-cell *matCellDef="let element">
             <ul>
-                <ng-container *ngIf="element.radios">
-                    <ng-container *ngFor="let radio of element.radios; let i = index">
+                <ng-container *ngIf="element.locations">
+                    <ng-container *ngFor="let location of element.locations; let i = index">
                         <li  *ngIf="i < 5">
-                            <a [routerLink]="['/one-radio/', radio._id]" >{{radio.make}} - {{radio.model}} SN: {{radio.serialNumber}}</a>
+                            <a [routerLink]="['/one-location/', location.locationName]" >{{location.locationName}}</a>
                         </li>
                     </ng-container>
                 </ng-container>
-                <li *ngIf="element.radios && element.radios.length > 5">
-                    <a [routerLink]="['/org-radio/', element.orgName]">And {{element.radios.length - 5}} more...</a>
+                <li *ngIf="element.locations && element.locations.length > 5">
+                    <a [routerLink]="['/org-locations/', element.orgName]">And {{element.locations.length - 5}} more...</a>
                 </li>
             </ul>
         </td>

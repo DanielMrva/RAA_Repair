@@ -26,6 +26,7 @@ import { UserModule } from './_modules/user/user.module';
 import { OrgModule } from './_modules/org/org.module';
 import { RadioModule } from './_modules/radio/radio.module';
 import { RepairModule } from './_modules/repair/repair.module';
+import { LocationModule } from './_modules/location/location.module';
 
 
 import { AppComponent } from '@app/app.component';
@@ -79,6 +80,7 @@ import { AuthEffects } from './_store/_auth-store/auth.effects';
         RadioModule,
         OrgModule,
         RepairModule,
+        LocationModule,
         ToastComponent,
         StoreModule.forRoot({}),
         EffectsModule.forRoot([AuthEffects]),

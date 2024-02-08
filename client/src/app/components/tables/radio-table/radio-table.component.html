@@ -11,7 +11,7 @@
         [dataSource]="dataSource"
     >
     <!-- class full-table can be added to above to limit width, but it is not ideal... -->
-        <ng-container matColumnDef="location">
+        <ng-container matColumnDef="locationName">
             <th
                 mat-header-cell
                 *matHeaderCellDef
@@ -19,7 +19,7 @@
                 Location
             </th>
             <td mat-cell *matCellDef="let element">
-                {{ element.location }}
+                {{ element.locationName }}
             </td>
         </ng-container>
     
@@ -135,7 +135,12 @@
             <td mat-cell *matCellDef="let element">
                 <ul>
                     <li *ngFor="let service of element.serviceRecord">
-                        <a [routerLink]="['/one-repair/', service._id]" >{{service.repairTag}} on {{service.dateReceived | date: 'MMM d, y' }}</a>
+                        <ng-container *ngIf="!service.dateReceived; else beenReceived">
+                            <a [routerLink]="['/one-repair/', service._id]" >Radio Not Yet Received</a>
+                          </ng-container>
+                          <ng-template #beenReceived>
+                            <a [routerLink]="['/one-repair/', service._id]" >{{service.dateReceived | date: 'MMM d, y'}}</a>
+                          </ng-template>                    
                     </li>
                     <li><a [routerLink]="['/submit', { serialNumber: element.serialNumber}]">Add Repair</a></li>
                 </ul>

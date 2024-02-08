@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 // import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatAutocompleteModule} from '@angular/material/autocomplete';
 
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { OneUserComponent } from './components/one-user/one-user.component';
@@ -44,6 +45,7 @@ import { authReducer } from '@app/_store/_auth-store/auth.reducers';
     // MatRadioModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    MatAutocompleteModule,
     StoreModule.forFeature('user', userReducer),
     StoreModule.forFeature('auth', authReducer),
     EffectsModule.forFeature([UserEffects]),

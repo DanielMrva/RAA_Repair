@@ -1,304 +1,281 @@
 <div class="container">
-    <form [formGroup]="adminRepairForm" (ngSubmit)="onSubmit()">
-    
-        <div class="row">
 
-            <div class="col-12 text-center">
-                <h2>Add A New Repair Ticket</h2>
-            </div>
+    <div class="row">
+        <h2 class="col-12 text-center">Add A New Repair Ticket</h2>
 
-            <div class="col-12 text-center">
-                <h5>Timeline</h5>
-            </div>
-    
-            <div class="form-group col-3">
-                <label for="dateReceived">Date Received:</label>
-                <input
-                    type="text"
-                    id="dateReceived"
-                    formControlName="dateReceived"
-                    class="form-control"
-                >
-            </div>
-    
-            <div class="form-group col-3">
-                <label for="dateSentTech">Date Sent to Tech:</label>
-                <input
-                    type="text"
-                    id="dateSentTech"
-                    formControlName="dateSentTech"
-                    class="form-control"
-                >
-            </div>
-    
-            <div class="form-group col-3">
-                <label for="dateRecTech">Date Received by Tech:</label>
-                <input
-                    type="text"
-                    id="dateRecTech"
-                    formControlName="dateRecTech"
-                    class="form-control"
-                >
-            </div>
-    
-            <div class="form-group col-3">
-                <label for="dateSentEU">Date Sent to End User:</label>
-                <input
-                    type="text"
-                    id="dateSentEU"
-                    formControlName="dateSentEU"
-                    class="form-control"
-                >
-            </div>
+        <form [formGroup]="adminRepairForm" (ngSubmit)="onSubmit()" class="row">
 
-            <div class="col-12 text-center">
-                <h5>Inventory / PO Tracking</h5>
-            </div>
+            <section class="row" id="radioLocation">
+                <h4 class="col-12 text-center">Service Location</h4>
 
-            <div class="form-group col-4">
-                <label for="raaPO">RAA Invoice:</label>
-                <input
-                    type="text"
-                    id="raaInvNum"
-                    formControlName="raaInvNum"
-                    class="form-control"
-                >
-            </div>
+                <mat-form-field class="form-group col-12">
+                    <mat-label for="radioLocation">
+                        Location:
+                    </mat-label>
+                    <input  type="text"
+                            placeholder="Location"
+                            aria-label="Location"
+                            matInput
+                            [formControl]="adminRepairForm.controls.radioLocation"
+                            [matAutocomplete]="locAuto"
+                    >
+                    <mat-autocomplete 
+                    autoActiveFirstOption
+                    #locAuto="matAutocomplete">
+                        <mat-option *ngFor="let locOption of filteredLocNames$ | async" [value]="locOption">
+                            {{locOption}}
+                        </mat-option>
 
-            <div class="form-group col-4">
-                <label for="raaPO">RAA PO:</label>
-                <input
-                    type="text"
-                    id="raaPO"
-                    formControlName="raaPO"
-                    class="form-control"
-                >
-            </div>
+                    </mat-autocomplete>
 
-            <div class="form-group col-4">
-                <label for="endUserPO">End User PO:</label>
-                <input
-                    type="text"
-                    id="endUserPO"
-                    formControlName="endUserPO"
-                    class="form-control"
-                >
-            </div>
+                </mat-form-field>
 
-            <div class="form-group col-4">
-                <label for="radioSerial">Radio Serial:</label>
-                <input
-                    type="text"
-                    id="radioSerial"
-                    formControlName="radioSerial"
-                    class="form-control"
-                >
-            </div>
+            </section>
 
-            <div class="form-group col-8">
-                <label for="accessories">Accessories:</label>
-                <div formArrayName="accessories">
-                    <div *ngFor="let acccessory of accessoriesArray.controls; let i = index"
-                    class="input-group mb-2">
-                        <input type="text" [formControlName]="i" class="form-control">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-outline-secondary" (click)="removeAccessory(i)">
-                                Remove
-                            </button>
+            <section class="row" id="timeline">
+                <h4 class="col-12 text-center">Timeline</h4>
+
+                <mat-form-field class="form-group col-6">
+                    <mat-label>Date Received</mat-label>
+                    <input matInput [matDatepicker]="dateReceivedPicker" formControlName="dateReceived">
+                    <mat-datepicker-toggle matSuffix [for]="dateReceivedPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dateReceivedPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="form-group col-6">
+                    <mat-label>Date Sent to Tech</mat-label>
+                    <input matInput [matDatepicker]="dateSentTechPicker" formControlName="dateSentTech">
+                    <mat-datepicker-toggle matSuffix [for]="dateSentTechPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dateSentTechPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="form-group col-6">
+                    <mat-label>Date Received From Tech</mat-label>
+                    <input matInput [matDatepicker]="dateReceivedTechPicker" formControlName="dateRecTech">
+                    <mat-datepicker-toggle matSuffix [for]="dateReceivedTechPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dateReceivedTechPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="form-group col-6">
+                    <mat-label>Date Sent to End User</mat-label>
+                    <input matInput [matDatepicker]="dateSentEUPicker" formControlName="dateSentEU">
+                    <mat-datepicker-toggle matSuffix [for]="dateSentEUPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dateSentEUPicker></mat-datepicker>
+                </mat-form-field>
+
+
+            </section>
+
+            <section class="row" id="inventory-po">
+
+                <h4 class="col-12 text-center">Inventory / PO </h4>
+
+                <div class="form-group col-4">
+                    <label for="raaPO">RAA PO:</label>
+                    <input type="text" id="raaPO" formControlName="raaPO" class="form-control">
+                </div>
+
+                <div class="form-group col-4">
+                    <label for="endUserPO">End User PO:</label>
+                    <input type="text" id="endUserPO" formControlName="endUserPO" class="form-control">
+                </div>
+
+                <div class="form-group col-4">
+                    <label for="raaPO">RAA Invoice:</label>
+                    <input type="text" id="raaInvNum" formControlName="raaInvNum" class="form-control">
+                </div>
+
+                <div class="form-group col-4">
+                    <label for="radioSerial">Radio Serial:</label>
+                    <input type="text" id="radioSerial" formControlName="radioSerial" class="form-control">
+                </div>
+
+                <div class="form-group col-8">
+                    <label for="accessories">Accessories:</label>
+                    <div formArrayName="accessories">
+                        <div *ngFor="let acccessory of accessoriesArray.controls; let i = index"
+                            class="input-group mb-2">
+                            <input type="text" [formControlName]="i" class="form-control">
+                            <div class="input-group-append">
+                                <button *ngIf="accessoriesArray.length > 1" type="button" class="btn btn-danger"
+                                    (click)="removeAccessory(i)">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </div>
                         </div>
+                        <button type="button" class="btn btn-primary" (click)="addAccessory()"><i
+                                class="bi bi-plus-circle"></i></button>
                     </div>
-                    <button type="button" class="btn btn-primary" (click)="addAccessory()">Add Accessory</button>
                 </div>
-            </div>
 
-            <div class="col-12 text-center">
-                <h5>Symptoms and Diagnositcs</h5>
-            </div>
+            </section>
 
-            <div class="form-group col-6">
-                <label for="symptoms">Symptoms:</label>
-                <div formArrayName="symptoms">
-                    <div *ngFor="let symptoms of symptomsArray.controls; let i = index"
-                    class="input-group mb-2">
-                        <input type="text" [formControlName]="i" class="form-control">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-outline-secondary" (click)="removeSymptom(i)">
-                                Remove
-                            </button>
+            <section class="row" id="symptom-diagnoistics">
+                <h4 class="col-12 text-center">Symptoms & Diagnositcs</h4>
+
+                <div class="form-group col-6">
+                    <label for="symptoms">Symptoms:</label>
+                    <div formArrayName="symptoms">
+                        <div *ngFor="let symptoms of symptomsArray.controls; let i = index" class="input-group mb-2">
+                            <input type="text" [formControlName]="i" class="form-control">
+                            <div class="input-group-append">
+                                <button *ngIf="symptomsArray.length > 1" type="button" class="btn btn-danger"
+                                    (click)="removeSymptom(i)">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </div>
                         </div>
+                        <button type="button" class="btn btn-primary" (click)="addSymptom()"><i
+                                class="bi bi-plus-circle"></i></button>
                     </div>
-                    <button type="button" class="btn btn-primary" (click)="addSymptom()">Add Symptom</button>
                 </div>
-            </div>
 
-            <div class="col-6">
-                <div class="row">
+                <div class="col-6">
+                    <div class="row">
 
-                    <div class="form-group col-12">
-                        <label for="testFreq">Test Frequency:</label>
-                        <input
-                            type="text"
-                            id="testFreq"
-                            formControlName="testFreq"
-                            class="form-control"
-                        >
-                    </div>
-
-                    <div class="form-group col-6">
-                        <label for="incRxSens">Incoming RX Sensitivity:</label>
-                        <input
-                            type="text"
-                            id="incRxSens"
-                            formControlName="incRxSens"
-                            class="form-control"
-                        >
-                    </div>
-
-                    <div class="form-group col-6">
-                        <label for="outRxSens">Outgoing RX Sensitivity:</label>
-                        <input
-                            type="text"
-                            id="outRxSens"
-                            formControlName="outRxSens"
-                            class="form-control"
-                        >
-                    </div>
-
-                    <div class="form-group col-6">
-                        <label for="incFreqErr">Incoming Frequency Error:</label>
-                        <input
-                            type="text"
-                            id="incFreqErr"
-                            formControlName="incFreqErr"
-                            class="form-control"
-                        >
-                    </div>
-
-                    <div class="form-group col-6">
-                        <label for="outFreqErr">Outgoing Frequency Error:</label>
-                        <input
-                            type="text"
-                            id="outFreqErr"
-                            formControlName="outFreqErr"
-                            class="form-control"
-                        >
-                    </div>
-
-                    <div class="form-group col-6">
-                        <label for="incMod">Incoming Modulation:</label>
-                        <input
-                            type="text"
-                            id="incMod"
-                            formControlName="incMod"
-                            class="form-control"
-                        >
-                    </div>
-
-                    <div class="form-group col-6">
-                        <label for="outMod">Outgoing Modulation:</label>
-                        <input
-                            type="text"
-                            id="outMod"
-                            formControlName="outMod"
-                            class="form-control"
-                        >
-                    </div>
-
-                    <div class="form-group col-6">
-                        <label for="incPowerOut">Incoming Power Output:</label>
-                        <input
-                            type="text"
-                            id="incPowerOut"
-                            formControlName="incPowerOut"
-                            class="form-control"
-                        >
-                    </div>
-                                
-                    <div class="form-group col-6">
-                        <label for="outPowerOut">Outgoing Power Output:</label>
-                        <input
-                            type="text"
-                            id="outPowerOut"
-                            formControlName="outPowerOut"
-                            class="form-control"
-                        >
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="col-12 text-center">
-                <h5>Work Details</h5>
-            </div>
-        
-            <div class="form-group col-6">
-                <label for="techInvNum">Tech Invoice Number:</label>
-                <input
-                    type="text"
-                    id="techInvNum"
-                    formControlName="techInvNum"
-                    class="form-control"
-                >
-            </div>
-
-            <div class="form-group col-6">
-                <label for="repHours">Repair Hours:</label>
-                <input
-                    type="number"
-                    id="repHours"
-                    formControlName="repHours"
-                    class="form-control"
-                >
-            </div>
-
-            <div class="form-group col-6">
-                <label for="workPerformed">Work Performed:</label>
-                <div formArrayName="workPerformed">
-                    <div *ngFor="let work of workPerformedArray.controls; let i = index"
-                    class="input-group mb-2">
-                        <input type="text" [formControlName]="i" class="form-control">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-outline-secondary" (click)="removeWorkPerformed(i)">
-                                Remove
-                            </button>
+                        <div class="form-group col-12">
+                            <label for="testFreq">Test Frequency:</label>
+                            <input type="text" id="testFreq" formControlName="testFreq" class="form-control">
                         </div>
-                    </div>
-                    <button type="button" class="btn btn-primary" (click)="addWorkPerformed()">Add Work</button>
-                </div>
-            </div> 
-        
-            <div class="form-group col-6">
-                <label for="partsUsed">Parts Used:</label>
-                <div formArrayName="partsUsed">
-                    <div *ngFor="let part of partsUsedArray.controls; let i = index"
-                    class="input-group mb-2">
-                        <input type="text" [formControlName]="i" class="form-control">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-outline-secondary" (click)="removePartsUsed(i)">
-                                Remove
-                            </button>
+
+                        <h5 class="col-5">
+                            Incoming:
+                        </h5>
+                        <h5 class="col-5">
+                            Outgoing:
+                        </h5>
+                        <h5 class="col-2 text-center">
+                            Unit:
+                        </h5>
+
+                        <div class="form-group col-5">
+                            <label for="incRxSens">Inc RX Sensitivity:</label>
+                            <input type="text" id="incRxSens" formControlName="incRxSens" class="form-control">
                         </div>
+
+                        <div class="form-group col-5">
+                            <label for="outRxSens">Out RX Sensitivity:</label>
+                            <input type="text" id="outRxSens" formControlName="outRxSens" class="form-control">
+                        </div>
+                        <div class="col-2">
+                            <p class="text-center">
+                                uV
+                            </p>
+                        </div>
+
+                        <div class="form-group col-5">
+                            <label for="incFreqErr">Inc Frequency Error:</label>
+                            <input type="text" id="incFreqErr" formControlName="incFreqErr" class="form-control">
+                        </div>
+
+                        <div class="form-group col-5">
+                            <label for="outFreqErr">Out Frequency Error:</label>
+                            <input type="text" id="outFreqErr" formControlName="outFreqErr" class="form-control">
+                        </div>
+                        <div class="col-2">
+                            <p class="text-center">
+                                Hz
+                            </p>
+                        </div>
+
+                        <div class="form-group col-5">
+                            <label for="incMod">Inc Modulation:</label>
+                            <input type="text" id="incMod" formControlName="incMod" class="form-control">
+                        </div>
+
+                        <div class="form-group col-5">
+                            <label for="outMod">Out Modulation:</label>
+                            <input type="text" id="outMod" formControlName="outMod" class="form-control">
+                        </div>
+                        <div class="col-2">
+                            <p class="text-center">
+                                KHz
+                            </p>
+                        </div>
+
+                        <div class="form-group col-5">
+                            <label for="incPowerOut">Inc Power Output:</label>
+                            <input type="text" id="incPowerOut" formControlName="incPowerOut" class="form-control">
+                        </div>
+
+                        <div class="form-group col-5">
+                            <label for="outPowerOut">Out Power Output:</label>
+                            <input type="text" id="outPowerOut" formControlName="outPowerOut" class="form-control">
+                        </div>
+                        <div class="col-2">
+                            <p class="text-center">
+                                Watts
+                            </p>
+                        </div>
+
                     </div>
-                    <button type="button" class="btn btn-primary" (click)="addPartsUsed()">Add Part</button>
                 </div>
-            </div>
 
-            <div class="form-group col-12">
-                <label for="remarks">Remarks:</label>
-                <input
-                    type="text"
-                    id="remarks"
-                    formControlName="remarks"
-                    class="form-control"
-                >
-            </div>
+            </section>
 
-    
-        </div>
+            <section class="row" id="work">
+                <h4 class="col-12 text-center">Work Report</h4>
+
+                <div class="form-group col-6">
+                    <label for="techInvNum">Tech Invoice Number:</label>
+                    <input type="text" id="techInvNum" formControlName="techInvNum" class="form-control">
+                </div>
+
+                <div class="form-group col-6">
+                    <label for="repHours">Repair Hours:</label>
+                    <input type="number" id="repHours" formControlName="repHours" class="form-control">
+                </div>
+
+                <div class="form-group col-6">
+                    <label for="workPerformed">Work Performed:</label>
+                    <div formArrayName="workPerformed">
+                        <div *ngFor="let work of workPerformedArray.controls; let i = index" class="input-group mb-2">
+                            <input type="text" [formControlName]="i" class="form-control">
+                            <div class="input-group-append">
+                                <button *ngIf="workPerformedArray.length > 1" type="button" class="btn btn-danger"
+                                    (click)="removeWorkPerformed(i)">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" (click)="addWorkPerformed()">
+                            <i class="bi bi-plus-circle"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group col-6">
+                    <label for="partsUsed">Parts Used:</label>
+                    <div formArrayName="partsUsed">
+                        <div *ngFor="let part of partsUsedArray.controls; let i = index" class="input-group mb-2">
+                            <input type="text" [formControlName]="i" class="form-control">
+                            <div class="input-group-append">
+                                <button *ngIf="partsUsedArray.length > 1" type="button" class="btn btn-danger"
+                                    (click)="removePartsUsed(i)">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" (click)="addPartsUsed()"><i
+                                class="bi bi-plus-circle"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-group col-12">
+                    <label for="remarks">Remarks:</label>
+                    <input type="text" id="remarks" formControlName="remarks" class="form-control">
+                </div>
+
+
+            </section>
+
             <div class="col-12 d-flex justify-content-center">
-            <button type="submit" class="btn btn-primary text-center">Submit</button>
-        </div>
-    
-    
-    </form>
+                <button type="submit" class="btn btn-primary text-center">Submit</button>
+            </div>
+
+        </form>
+
+    </div>
+
+
 </div>

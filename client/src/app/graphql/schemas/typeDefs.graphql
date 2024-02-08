@@ -10,7 +10,8 @@ type User {
 type Repair {
     _id: ID!
     radioSerial: String!
-    dateReceived: String!
+    radioLocation: String
+    dateReceived: String
     endUserPO: String
     raaPO: String
     repairTag: Int
@@ -39,7 +40,7 @@ type Repair {
 type Radio {
     _id: ID!
     orgName: String
-    location: String
+    locationName: String
     dateSold: String
     dateEntered: String
     inventoryNumber: String
@@ -54,10 +55,26 @@ type Radio {
     radioType: String
 }
 
+type Location {
+    _id: ID!
+    locationName: String
+    orgName: String!
+    street: String
+    city: String
+    state: String
+    zip: String
+    country: String
+    phone: String
+    contactEmail: String
+    primaryContact: String
+    radios: [Radio]
+}
+
 type Organization {
     _id: ID!
-    orgName: String,
-    radios: [Radio]
+    orgName: String
+    locations: [Location]
+    # radios: [Radio]
     users: [User]
 }
 
@@ -79,6 +96,10 @@ type Query {
     orgNames: [Organization]
     org: Organization
     allOrgs: [Organization]
+    allLocations: [Location]
+    location(locationId: String!): Location
+    orgLocations(orgName: String!): [Location]
+    locationNames: [Location]
 }
 
 type Mutation {
@@ -101,6 +122,7 @@ type Mutation {
 
     addRepair(
             radioSerial: String!,
+            radioLocation: String,
             dateReceived: String!,
             endUserPO: String,
             raaPO: String,
@@ -144,6 +166,23 @@ type Mutation {
             radioType: String
         ): Radio
 
+        addOrg(
+            orgName: String
+        ): Organization
+
+        addLocation(
+            locationName: String!
+            orgName: String!
+            street: String
+            city: String
+            state: String
+            zip: String
+            country: String
+            phone: String
+            contactEmail: String
+            primaryContact: String
+        ): Location
+
         editRepair(
             _id: ID!
             updates: UpdateRepairInput
@@ -163,4 +202,9 @@ type Mutation {
             _id: ID!
             updates: UpdateOrgInput
         ): Organization
+
+        editLocation(
+            _id: ID!
+            updates: UpdateLocationInput
+        ): Location
 }

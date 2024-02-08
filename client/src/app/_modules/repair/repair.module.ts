@@ -7,6 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
 // import { MatSelectModule } from '@angular/material/select';
 // import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // import { MatFormFieldModule } from '@angular/material/form-field';
@@ -43,6 +46,8 @@ import { repairReducer } from '@app/_store/_repair-store/repair.reducers';
     // MatSelectModule,
     // MatProgressSpinnerModule,
     // MatFormFieldModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
     StoreModule.forFeature('repair', repairReducer),
     EffectsModule.forFeature([RepairEffects])
   ]

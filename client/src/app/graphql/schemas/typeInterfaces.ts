@@ -1,6 +1,7 @@
 export type Repair = {
     _id: string,
     radioSerial: string
+    radioLocation: string
     dateReceived: string
     endUserPO: string
     raaPO: string
@@ -30,7 +31,7 @@ export type Repair = {
 export type Radio = {
     _id: string,
     orgName: string,
-    location: string,
+    locationName: string,
     dateSold: string,
     dateEntered: string,
     inventoryNumber: string,
@@ -70,9 +71,25 @@ export type StoredUser = {
 export type Organization = {
     _id: string,
     orgName: string,
-    radios: Radio[],
+    locations: Location[],
+    // radios: Radio[],
     users: User[],
 };
+
+export type Location = {
+    _id: string,
+    locationName: string,
+    orgName: string,
+    street: string,
+    city: string,
+    state: string,
+    zip: string,
+    country: string,
+    phone: string,
+    contactEmail: string,
+    primaryContact: string,
+    radios: Radio[]
+}
 
 export type Auth = {
     token: string,
@@ -98,7 +115,7 @@ export type LimitedRecord = {
 export type AdminRadioFields = {
     _id: string,
     orgName: string,
-    location: string,
+    locationName: string,
     dateSold: string,
     dateEntered: string,
     inventoryNumber: string,
@@ -115,6 +132,7 @@ export type AdminRadioFields = {
 
 export type UpdateRepairFields = {
     radioSerial: string,
+    radioLocation: string,
     dateReceived: Date,
     endUserPO: string,
     raaPO: string,
@@ -143,7 +161,7 @@ export type UpdateRepairFields = {
 
 export type UpdateRadioFields = {
     orgName: string,
-    location: string,
+    locationName: string,
     dateSold: Date,
     dateEntered: Date,
     inventoryNumber: string,
@@ -160,8 +178,21 @@ export type UpdateRadioFields = {
 export type UpdateUserFields = {
     username: string,
     email: string,
-    accessLevel: string
+    accessLevel: string,
     orgName: string
+}
+
+export type UpdateLocationFields = {
+    locationName: string,
+    orgName: string,
+    street: string,
+    city: string,
+    state: string,
+    zip: string,
+    country: string,
+    phone: string,
+    contactEmail: string,
+    primaryContact: string,
 }
 
 export type UpdateOrgFields = {

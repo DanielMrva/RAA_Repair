@@ -58,6 +58,11 @@ export class AuthService {
     return user ? user.accessLevel : null;
   }
 
+  getUserOrgName(): string | null {
+    const user = this.loggedUser$.getValue();
+    return user ? user.orgName : null;
+  }
+
   logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('token');

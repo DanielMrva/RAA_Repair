@@ -62,7 +62,7 @@ export const addRadio = createAction(
     '[Add Radio Page] Add Radio',
     props<{ 
         orgName: string,
-        location: string,
+        locationName: string,
         dateSold: string,
         dateEntered: string,
         inventoryNumber: string,

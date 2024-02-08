@@ -1,10 +1,50 @@
-<div>
+<!-- <div>
     <p>home works!</p>
     <p>Welcome {{userName$ | async}} !</p>
 
-    <div *ngIf="user;else elseBlock">
-        <p>{{user.username}}</p>
-        <p>{{user.accessLevel}}</p>
-    </div>
     <ng-template #elseBlock>No User.</ng-template>
+</div>
+
+
+<ng-container *ngIf="isAuthenticated$ | async; else guestHome">
+
+</ng-container>
+
+<ng-template #guestHome>
+
+</ng-template> -->
+
+<div class="container mt-5">
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Welcome to Radios Across America</h1>
+        <p class="lead">Your destination for GMRS and business radio repairs.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">About Us</h5>
+                    <p class="card-text">Radios Across America is dedicated to providing top-notch service for
+                        repairing GMRS and business radios. Our team of experts ensures your communication devices
+                        are in optimal condition, keeping you connected when it matters most.</p>
+                </div>
+            </div>
+
+            <div class="card mt-4 text-center">
+                <div class="card-body">
+                    <!-- Check if the user is authenticated -->
+                    <ng-container *ngIf="isAuthenticated$ | async; else notAuthenticated">
+                        <h5 class="card-title">Welcome, {{ userName$ | async }}!</h5>
+                        <p class="card-text">You are logged in. Start submitting your service tickets now.</p>
+                    </ng-container>
+                    <ng-template #notAuthenticated>
+                        <h5 class="card-title">New User?</h5>
+                        <p class="card-text">Contact the admin to create a new account and access our services.</p>
+                        <p class="card-text">If you are an existing user, please log in to get started.</p>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

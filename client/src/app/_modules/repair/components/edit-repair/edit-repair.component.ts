@@ -185,6 +185,7 @@ export class EditRepairComponent implements OnInit {
 
     const submittedRepair: UpdateRepairFields = {
       radioSerial: this.repairForm.value.radioSerial ?? '',
+      radioLocation: '',
       dateReceived: this.repairForm.value.dateReceived ?? new Date(),
       endUserPO: this.repairForm.value.endUserPO ?? '',
       raaPO: this.repairForm.value.raaPO ?? '',

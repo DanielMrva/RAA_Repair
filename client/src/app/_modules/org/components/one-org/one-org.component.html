@@ -1,21 +1,70 @@
-<div *ngIf="isLoading$">
+<div *ngIf="isLoading$ | async; else loadedData">
     <h2>Loading...</h2>
 </div>
 
-<div *ngIf="orgError$ | async as error">
-    {{ error }}
-</div>
+<ng-template #loadedData>
+    <div *ngIf="orgError$ | async as error">
+        {{ error }}
+    </div>
+    
+    <div *ngIf="oneOrg$ | async as oneOrg" class="container">
+    
+        <div class="row">
+            <h2 class="col-12 text-center">{{oneOrg.orgName}}</h2>
+        </div>
 
-<div *ngIf="oneOrg$ | async as oneOrg" class="container">
+        <h4 class="col-12 text-center">Locations:</h4>
 
-    <div class="row">
-        <h2 class="col-12 text-center">{{oneOrg.orgName}}</h2>
+        <ng-container *ngIf="oneOrg.locations.length > 0; else noLocations">
+
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+
+                            </th>
+                            <th scope="col">
+                                Location Name
+                            </th>
+                            <th scope="col">
+                                Radios
+                            </th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let location of oneOrg.locations; index as i">
+                            <tr>
+                                <th scope="row">{{i +1}}</th>
+                                <td>
+                                    {{location.locationName}}
+                                </td>
+                                <td>
+                                    <ul>
+                                        <ng-container *ngFor="let radio of location.radios; index as j">
+                                            <li >
+                                                {{j+1}} <a [routerLink]="['/one-radio/', radio._id]">{{radio.make}} {{radio.model}} {{radio.serialNumber}}</a>
+                                            </li>
+                                        </ng-container>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+
+        </ng-container>
+
+        <ng-template #noLocations>
+            <div class="row">
+                <p>No Radios at this Location...</p>
+            </div>
+        </ng-template>
+    
     </div>
 
-</div>
-
-<!-- <div *ngIf="org" class="container">
-    <div class="row">
-        <h2 class="col-12 text-center">{{org.orgName}}</h2>
-    </div>
-</div> -->
+    
+</ng-template>

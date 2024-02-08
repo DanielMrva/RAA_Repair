@@ -8,6 +8,9 @@ const repairSchema = new Schema({
         type: String,
         required: true
     },
+    radioLocation: {
+        type: String
+    },
     dateReceived: {
         type: Date,
         default: Date.now,
@@ -58,12 +61,12 @@ const repairSchema = new Schema({
     }],
     testFreq: {
         type: String,
-        // MHZ
+        // MHZ (MegaHertz)
         // Tech / Admin
     },
     incRxSens: {
         type: String,
-        // uV
+        // uV ()
         // Tech / Admin
     },
     incFreqErr: {

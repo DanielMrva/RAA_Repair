@@ -5,6 +5,8 @@ import { Store} from '@ngrx/store';
 import { addUser } from '@app/_store/_user-store/user.actions';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
+import { Organization } from '@app/graphql/schemas';
+import { Observable, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-add-user',
@@ -16,6 +18,7 @@ export class AddUserComponent implements OnInit {
   orgNames$ = this.store.select(selectOrgNames);
   isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
   orgNameError$ = this.store.select(orgErrorSelector);
+  filteredOrgName$!: Observable<Organization[] | null>;
 
   userForm = new FormGroup({
     username: new FormControl<string>('', { nonNullable: true }),
@@ -26,6 +29,9 @@ export class AddUserComponent implements OnInit {
   });
 
   isSubmitted = false;
+
+  filteredOrgNames!: Observable<Organization[]>;
+
 
   fieldValidCheck(field: string) {
     if (
@@ -45,7 +51,30 @@ export class AddUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(loadOrgNames());
+
+    this.filteredOrgName$ = this.userForm.controls['orgName'].valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || ''))
+    )
+  };
+
+  private _filter(value: string): Organization[] {
+    const filterValue = value.toLowerCase();
+    let orgList: Organization[] = [];
+
+    // Subscribe to orgNames$ and populate orgList when values are emitted
+    this.orgNames$.subscribe((orgs: Organization[] | null) => {
+      if (orgs) {
+        orgList = orgs.filter(org => org.orgName.toLowerCase().includes(filterValue));
+      }
+    });
+
+    return orgList;
   }
+
+  displayOrgName(org: Organization): string {
+    return org && org.orgName ? org.orgName : '';
+  };
 
   onSubmit() {
 

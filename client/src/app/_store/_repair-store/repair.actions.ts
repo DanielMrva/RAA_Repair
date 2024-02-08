@@ -32,6 +32,7 @@ export const addRepair = createAction(
     '[Add Repair Page] Add Repair',
     props<{
         radioSerial: string,
+        radioLocation: string,
         dateReceived: string,
         endUserPO: string,
         raaPO: string,

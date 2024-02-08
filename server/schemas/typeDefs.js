@@ -13,7 +13,8 @@ const typeDefs = `#graphql
     type Repair {
         _id: ID!
         radioSerial: String!
-        dateReceived: String!
+        radioLocation: String
+        dateReceived: String
         endUserPO: String
         raaPO: String
         repairTag: Int
@@ -39,10 +40,33 @@ const typeDefs = `#graphql
         remarks: String
     }
 
+    type Location {
+        _id: ID!
+        locationName: String
+        orgName: String!
+        street: String
+        city: String
+        state: String
+        zip: String
+        country: String
+        phone: String
+        contactEmail: String
+        primaryContact: String
+        radios: [Radio]
+    }
+
+    
+    type Organization {
+        _id: ID!
+        orgName: String
+        locations: [Location]
+        users: [User]
+    }
+
     type Radio {
         _id: ID!
         orgName: String
-        location: String
+        locationName: String
         dateSold: String
         dateEntered: String
         inventoryNumber: String
@@ -55,13 +79,6 @@ const typeDefs = `#graphql
         warranty: String
         refurb: Boolean
         radioType: String
-    }
-
-    type Organization {
-        _id: ID!
-        orgName: String,
-        radios: [Radio]
-        users: [User]
     }
 
     type Auth {
@@ -82,10 +99,15 @@ const typeDefs = `#graphql
         orgNames: [Organization]
         org(orgId: ID!): Organization
         allOrgs: [Organization]
+        allLocations: [Location]
+        location(locationId: String!): Location
+        orgLocations(orgName: String!): [Location]
+        locationNames: [Location]
     }
 
     input UpdateRepairInput {
             radioSerial: String
+            radioLocation: String
             dateReceived: String
             endUserPO: String
             raaPO: String
@@ -114,7 +136,7 @@ const typeDefs = `#graphql
 
     input UpdateRadioInput {
         orgName: String
-        location: String
+        locationName: String
         dateSold: String
         dateEntered: String
         inventoryNumber: String
@@ -139,17 +161,32 @@ const typeDefs = `#graphql
         orgName: String
     }
 
+    input UpdateLocationInput {
+        locationName: String
+        orgName: String
+        street: String
+        city: String
+        state: String
+        zip: String
+        country: String
+        phone: String
+        contactEmail: String
+        primaryContact: String
+    }
+
     type Mutation {
         addUser(
             username: String!
             email: String!
             password: String!
             orgName: String!
+            accessLevel: String!
         ): Auth
 
         login(
             email: String!
-            password: String!): Auth
+            password: String!
+        ): Auth
 
         validateAccess(
             username: String!
@@ -158,6 +195,7 @@ const typeDefs = `#graphql
 
         addRepair(
             radioSerial: String!
+            radioLocation: String!
             dateReceived: String!
             endUserPO: String
             raaPO: String
@@ -186,7 +224,7 @@ const typeDefs = `#graphql
 
         addRadio(
             orgName: String!
-            location: String
+            locationName: String
             dateSold: String
             dateEntered: String
             inventoryNumber: String!
@@ -199,6 +237,23 @@ const typeDefs = `#graphql
             refurb: Boolean,
             radioType: String
         ): Radio
+
+        addOrg(
+            orgName: String
+        ): Organization
+
+        addLocation(
+            locationName: String!
+            orgName: String!
+            street: String
+            city: String
+            state: String
+            zip: String
+            country: String
+            phone: String
+            contactEmail: String
+            primaryContact: String
+        ): Location
         
         editRepair(
             _id: ID!
@@ -220,8 +275,10 @@ const typeDefs = `#graphql
             updates: UpdateOrgInput
         ): Organization
 
-
-
+        editLocation(
+            _id: ID!
+            updates: UpdateLocationInput
+        ): Location
     }
 
 `;

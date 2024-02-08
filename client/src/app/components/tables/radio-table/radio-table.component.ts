@@ -23,7 +23,7 @@ export class RadioTableComponent implements OnInit, OnChanges{
   // TODO: Later this will have to be some sort of serchable table; so it will want some sort of Params property, with a switch on ngOnInit to run through possible params types to determine which query to run, and what that param is (obviously defaulting to allRadios)
 
   displayedColumns: string[] = [
-    'location', 
+    'locationName', 
     'dateSold', 
     'dateEntered', 
     'inventoryNumber', 
