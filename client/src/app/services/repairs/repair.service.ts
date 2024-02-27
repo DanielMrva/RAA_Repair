@@ -10,11 +10,11 @@ export class RepairService {
 
   constructor(private apollo: Apollo) { }
 
-  querySingleRepair(repairId: string) {
+  querySingleRepair(repairID: string) {
     return this.apollo.query<{repair: Repair}>({
       query: QUERY_SINGLEREPAIR,
       variables: {
-        repairId
+        repairID
       }
     });
   }
@@ -26,7 +26,7 @@ export class RepairService {
   }
 
   addRepair(
-    radioSerial: string,
+    radioID: string,
     radioLocation: string,
     dateReceived: string,
     endUserPO: string,
@@ -55,7 +55,7 @@ export class RepairService {
     return this.apollo.mutate<{addRepair: Repair}> ({
       mutation: ADD_REPAIR,
       variables: {
-        radioSerial,
+        radioID,
         radioLocation,
         dateReceived,
         endUserPO,

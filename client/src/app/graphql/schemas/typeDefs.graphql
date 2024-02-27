@@ -9,7 +9,7 @@ type User {
 
 type Repair {
     _id: ID!
-    radioSerial: String!
+    radioID: String!
     radioLocation: String
     dateReceived: String
     endUserPO: String
@@ -87,10 +87,10 @@ type Query {
     user(userId: ID!): User
     users: [User]
     allRadios: [Radio]
-    radio(radioId: ID!): Radio
+    radio(radioID: ID!): Radio
     serialRadio(serialNumber: String!): Radio
     allRepairs: [Repair]
-    repair(repairId: String!): Repair
+    repair(repairID: String!): Repair
     orgRadios(orgName: String!): [Radio]
     orgUsers(orgName: String!): [User]
     orgNames: [Organization]
@@ -121,7 +121,7 @@ type Mutation {
     ): User
 
     addRepair(
-            radioSerial: String!,
+            radioID: String!,
             radioLocation: String,
             dateReceived: String!,
             endUserPO: String,

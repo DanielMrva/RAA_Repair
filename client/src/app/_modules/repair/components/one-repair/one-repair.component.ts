@@ -30,13 +30,13 @@ export class OneRepairComponent implements OnInit{
 
   ngOnInit(): void {
       this.route.params.subscribe((params) => {
-        const repairId = params['id'];
-        this.loadRepair(repairId)
+        const repairID = params['id'];
+        this.loadRepair(repairID)
       });
   }
 
-  loadRepair(repairId: string): void {
-    this.store.dispatch(loadOneRepair({repairId: repairId}));
+  loadRepair(repairID: string): void {
+    this.store.dispatch(loadOneRepair({repairID: repairID}));
   };
 
   generatePDF() {

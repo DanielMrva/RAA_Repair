@@ -32,8 +32,8 @@ const resolvers = {
         allRadios: async () => {
             return Radio.find().populate(["serviceRecord"]);
         },
-        radio: async (parent, { radioId }) => {
-            return Radio.findById({ _id: radioId }).populate(["serviceRecord"]);
+        radio: async (parent, { radioID }) => {
+            return Radio.findById({ _id: radioID }).populate(["serviceRecord"]);
         },
         serialRadio: async (parent, { serialNumber }) => {
             return Radio.findOne({ serialNumber: serialNumber });
@@ -41,8 +41,8 @@ const resolvers = {
         allRepairs: async () => {
             return Repair.find();
         },
-        repair: async (parent, { repairId }) => {
-            return Repair.findById({ _id: repairId });
+        repair: async (parent, { repairID }) => {
+            return Repair.findById({ _id: repairID });
         },
         orgRadios: async (parent, { orgName }) => {
             return Radio.find({ orgName: orgName }).populate(["serviceRecord"]);
@@ -162,7 +162,7 @@ const resolvers = {
         addRepair: async (
             parent,
             {
-                radioSerial,
+                radioID,
                 radioLocation,
                 dateReceived,
                 endUserPO,
@@ -192,14 +192,14 @@ const resolvers = {
         ) => {
 
             try {
-                const radio = await Radio.findOne({ serialNumber: radioSerial });
+                const radio = await Radio.findOne({ _id: radioID });
 
 
                 if (!radio) {
                     throw new GraphQLError('Radio not found', {
                         extensions: {
                             code: 'RADIO_NOT_FOUND',
-                            argumentName: 'radioSerial'
+                            argumentName: 'radioID'
                         }
                     });
                 }
@@ -214,7 +214,7 @@ const resolvers = {
 
 
                 const repair = await Repair.create({
-                    radioSerial,
+                    radioID,
                     radioLocation,
                     dateReceived,
                     endUserPO,
@@ -244,7 +244,7 @@ const resolvers = {
 
 
                 await Radio.findOneAndUpdate(
-                    { serialNumber: repair.radioSerial },
+                    { _id: repair.radioID },
                     { $addToSet: { serviceRecord: repair._id } }
                 )
 

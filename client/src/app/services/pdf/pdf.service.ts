@@ -72,7 +72,7 @@ export class PdfService {
         columns: [
           {
             width: '*',
-            text: `Radio Serial: ${repair.radioSerial || `______________`}`
+            text: `Radio ID: ${repair.radioID || `______________`}`
           },
           [
             'Accessories:',

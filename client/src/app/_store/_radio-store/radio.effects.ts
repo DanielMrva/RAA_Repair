@@ -34,9 +34,9 @@ export class RadioEffects {
     loadOneRadio$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RadioActions.loadOneRadio),
-            mergeMap(({ radioId }) => {
-                console.log('Dispatched loadOneRadio action with ID: ', radioId);
-                return this.radioService.querySingleRadio(radioId).valueChanges.pipe(
+            mergeMap(({ radioID }) => {
+                console.log('Dispatched loadOneRadio action with ID: ', radioID);
+                return this.radioService.querySingleRadio(radioID).valueChanges.pipe(
                     map(({ data }) => {
                         console.log('Loaded oneRadio data: ', data.radio);
                         return RadioActions.loadOneRadioSuccess({ radio: data.radio });

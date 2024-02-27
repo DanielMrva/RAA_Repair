@@ -12,7 +12,7 @@ import { ToastService } from '@app/services/toast/toast.service';
 })
 export class EditRepairComponent implements OnInit {
 
-  repairId!: string;
+  repairID!: string;
   repair!: Repair;
   editRepairForm!: FormGroup;
 
@@ -53,7 +53,7 @@ export class EditRepairComponent implements OnInit {
   populateForm() {
 
     this.editRepairForm.patchValue({
-      radioSerial: this.repair.radioSerial,
+      radioID: this.repair.radioID,
       dateReceived: new Date(parseInt(this.repair.dateReceived)),
       endUserPO: this.repair.endUserPO,
       raaPO: this.repair.raaPO,
@@ -127,7 +127,7 @@ export class EditRepairComponent implements OnInit {
 
 
   updateRepair(updateRepair: UpdateRepairFields): void {
-    this.repairService.editRepair(this.repairId, updateRepair).subscribe( { next: (result) => {
+    this.repairService.editRepair(this.repairID, updateRepair).subscribe( { next: (result) => {
       const editedRepair = result.data?.editRepair ?? null;
 
       if(editedRepair) {
@@ -171,7 +171,8 @@ export class EditRepairComponent implements OnInit {
     // console.log(formattedDates)
 
     const submittedRepair: UpdateRepairFields = {
-      radioSerial: this.editRepairForm.value.radioSerial,
+      radioID: this.editRepairForm.value.radioID,
+      radioLocation: this.editRepairForm.value.radioLocation,
       dateReceived: this.editRepairForm.value.dateReceived,
       endUserPO: this.editRepairForm.value.endUserPO,
       raaPO: this.editRepairForm.value.raaPO,
@@ -203,7 +204,7 @@ export class EditRepairComponent implements OnInit {
 
   ngOnInit(): void {
     this.editRepairForm = this.formBuilder.group({
-      radioSerial: '',
+      radioID: '',
       dateReceived: new FormControl(new Date()),
       endUserPO: '',
       raaPO: '',
@@ -231,8 +232,8 @@ export class EditRepairComponent implements OnInit {
     })
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.repairId = params['id'];
-      this.loadRepair(this.repairId);
+      this.repairID = params['id'];
+      this.loadRepair(this.repairID);
     })
   };
 

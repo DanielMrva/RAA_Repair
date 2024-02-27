@@ -27,7 +27,7 @@ export class AdminAddRepairComponent implements OnInit {
   filteredLocNames$!: Observable<string[]>;
 
   adminRepairForm = new FormGroup({
-    radioSerial: new FormControl<string>(''),
+    radioID: new FormControl<string>(''),
     radioLocation: new FormControl<string>(''),
     dateReceived: new FormControl<string>(''),
     endUserPO: new FormControl<string>(''),
@@ -135,9 +135,9 @@ export class AdminAddRepairComponent implements OnInit {
     )
 
     this.activatedRoute.paramMap.subscribe(params => {
-      const serialNumber = params.get('serialNumber');
-      if (serialNumber) {
-        this.adminRepairForm.patchValue({ radioSerial: serialNumber })
+      const radioID = params.get('radioID');
+      if (radioID) {
+        this.adminRepairForm.patchValue({ radioID: radioID })
       }
     });
 
@@ -164,7 +164,7 @@ export class AdminAddRepairComponent implements OnInit {
     console.log(this.adminRepairForm.value);
 
 
-    const radioSerial = this.adminRepairForm.value.radioSerial ?? '';
+    const radioID = this.adminRepairForm.value.radioID ?? '';
     const radioLocation = this.adminRepairForm.value.radioLocation ?? '';
     const dateReceived = this.adminRepairForm.value.dateReceived ?? '';
     const endUserPO = this.adminRepairForm.value.endUserPO  ?? '';
@@ -191,7 +191,7 @@ export class AdminAddRepairComponent implements OnInit {
     const remarks = this.adminRepairForm.value.remarks ?? '';
 
     this.store.dispatch(addRepair({
-      radioSerial,
+      radioID,
       radioLocation,
       dateReceived,
       endUserPO,

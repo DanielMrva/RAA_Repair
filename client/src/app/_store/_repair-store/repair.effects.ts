@@ -22,8 +22,8 @@ export class RepairEffects {
     loadOneRepair$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RepairActions.loadOneRepair),
-            switchMap(({ repairId }) =>
-                from(this.repairService.querySingleRepair(repairId)).pipe(
+            switchMap(({ repairID }) =>
+                from(this.repairService.querySingleRepair(repairID)).pipe(
                     map(({ data }) => RepairActions.loadOneRepairSuccess({ repair: data.repair })),
 
                     catchError((error) => of(RepairActions.loadOneRepairFailure({ error })))
@@ -50,7 +50,7 @@ export class RepairEffects {
         this.actions$.pipe(
             ofType(RepairActions.addRepair),
             switchMap(({
-                radioSerial,
+                radioID,
                 radioLocation,
                 dateReceived,
                 endUserPO,
@@ -77,7 +77,7 @@ export class RepairEffects {
                 remarks
             }) =>
                 from(this.repairService.addRepair(
-                    radioSerial,
+                    radioID,
                     radioLocation,
                     dateReceived,
                     endUserPO,

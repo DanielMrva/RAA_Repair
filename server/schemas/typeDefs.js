@@ -12,7 +12,7 @@ const typeDefs = `#graphql
 
     type Repair {
         _id: ID!
-        radioSerial: String!
+        radioID: String
         radioLocation: String
         dateReceived: String
         endUserPO: String
@@ -90,10 +90,10 @@ const typeDefs = `#graphql
         users: [User]
         user(userId: ID!): User
         allRadios: [Radio]
-        radio(radioId: String!): Radio
+        radio(radioID: String!): Radio
         serialRadio(serialNumber: String!): Radio 
         allRepairs: [Repair]
-        repair(repairId: String!): Repair
+        repair(repairID: String!): Repair
         orgRadios(orgName: String!): [Radio]
         orgUsers(orgName: String!): [User]
         orgNames: [Organization]
@@ -106,7 +106,7 @@ const typeDefs = `#graphql
     }
 
     input UpdateRepairInput {
-            radioSerial: String
+            radioID: String
             radioLocation: String
             dateReceived: String
             endUserPO: String
@@ -194,7 +194,7 @@ const typeDefs = `#graphql
         ): User
 
         addRepair(
-            radioSerial: String!
+            radioID: String
             radioLocation: String!
             dateReceived: String!
             endUserPO: String

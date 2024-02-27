@@ -12,7 +12,7 @@ import { ToastService } from '@app/services/toast/toast.service';
 })
 export class EditRadioComponent implements OnInit {
 
-  radioId!: string;
+  radioID!: string;
   radio!: Radio;
   editRadioForm!: FormGroup;
 
@@ -40,7 +40,7 @@ export class EditRadioComponent implements OnInit {
   populateForm() {
     this.editRadioForm.patchValue({
       orgName: this.radio.orgName,
-      location: this.radio.location,
+      location: this.radio.locationName,
       dateSold: new Date(parseInt(this.radio.dateSold)),
       dateEntered: new Date(parseInt(this.radio.dateEntered)),
       inventoryNumber: this.radio.inventoryNumber,
@@ -68,7 +68,7 @@ export class EditRadioComponent implements OnInit {
   }
 
   updateRadio(updateRadio: UpdateRadioFields): void {
-    this.radioService.editRadio(this.radioId, updateRadio).subscribe( {
+    this.radioService.editRadio(this.radioID, updateRadio).subscribe( {
       next: (result) => {
         const editedRadio = result.data?.editRadio ?? null;
 
@@ -97,7 +97,7 @@ export class EditRadioComponent implements OnInit {
 
     const submittedRadio: UpdateRadioFields = {
       orgName: this.editRadioForm.value.orgName,
-      location: this.editRadioForm.value.location,
+      locationName: this.editRadioForm.value.location,
       dateSold: this.editRadioForm.value.dateSold,
       dateEntered: this.editRadioForm.value.dateEntered,
       inventoryNumber: this.editRadioForm.value.inventoryNumber,
@@ -135,8 +135,8 @@ export class EditRadioComponent implements OnInit {
     })
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.radioId = params['id'];
-      this.loadRadio(this.radioId);
+      this.radioID = params['id'];
+      this.loadRadio(this.radioID);
     })
       
   };

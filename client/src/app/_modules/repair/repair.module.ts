@@ -23,6 +23,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RepairEffects } from '@app/_store/_repair-store/repair.effects';
 import { repairReducer } from '@app/_store/_repair-store/repair.reducers';
+import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-repair/admin-edit-repair.component';
 
 
 
@@ -32,7 +33,8 @@ import { repairReducer } from '@app/_store/_repair-store/repair.reducers';
     AddRepairComponent,
     OneRepairComponent,
     EditRepairComponent,
-    AdminAddRepairComponent
+    AdminAddRepairComponent,
+    AdminEditRepairComponent,
   ],
   imports: [
     CommonModule,

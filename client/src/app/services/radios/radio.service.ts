@@ -19,11 +19,11 @@ export class RadioService {
     });
   }
 
-  querySingleRadio(radioId: string) {
+  querySingleRadio(radioID: string) {
     return this.apollo.watchQuery<{radio: Radio}>({
       query: QUERY_SINGLERADIO,
       variables: {
-        radioId
+        radioID
       }
     })
   }

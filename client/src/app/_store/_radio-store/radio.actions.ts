@@ -18,7 +18,7 @@ export const loadSerialRadioFailure = createAction(
 
 export const loadOneRadio = createAction(
     '[Radio Page] Load One Radio',
-    props<{ radioId: string}>()
+    props<{ radioID: string}>()
 );
 
 export const loadOneRadioSuccess = createAction(

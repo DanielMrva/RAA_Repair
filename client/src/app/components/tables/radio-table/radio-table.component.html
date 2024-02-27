@@ -142,7 +142,7 @@
                             <a [routerLink]="['/one-repair/', service._id]" >{{service.dateReceived | date: 'MMM d, y'}}</a>
                           </ng-template>                    
                     </li>
-                    <li><a [routerLink]="['/submit', { serialNumber: element.serialNumber}]">Add Repair</a></li>
+                    <li><a [routerLink]="['/submit', { radioID: element._id}]">Add Repair</a></li>
                 </ul>
             </td>
         </ng-container>

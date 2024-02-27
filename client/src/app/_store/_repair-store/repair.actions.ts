@@ -3,7 +3,7 @@ import { Repair, UpdateRepairFields } from "@app/graphql/schemas";
 
 export const loadOneRepair = createAction(
     '[Repair Page] Load One Repair',
-    props<{ repairId: string }>()
+    props<{ repairID: string }>()
 );
 
 export const loadOneRepairSuccess = createAction(
@@ -31,7 +31,7 @@ export const loadAllRepairsFailure = createAction(
 export const addRepair = createAction(
     '[Add Repair Page] Add Repair',
     props<{
-        radioSerial: string,
+        radioID: string,
         radioLocation: string,
         dateReceived: string,
         endUserPO: string,

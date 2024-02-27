@@ -11,7 +11,7 @@
   <div *ngIf="oneRepair$ | async as repair; else noRepairFound" class="container">
 
     <div class="row">
-      <!-- TODO: I'd like a button to go to the associated radio, probably the best way to do that would be a one-radio [routerLink] with a query param of radioSerial?... -->
+      <!-- TODO: I'd like a button to go to the associated radio, probably the best way to do that would be a one-radio [routerLink] with a query param of radioID?... -->
       <!-- <a class="col-2" [routerLink]="['one-radio', ]"><i class="bi bi-arrow-90deg-left"></i></a> -->
       <h2 class="text-center col-12">Repair {{repair.repairTag}} Details</h2>
       <button (click)="generatePDF()" class="btn btn-primary">
@@ -74,8 +74,8 @@
       <div class="row">
 
         <div class="col">
-          <h6 class="row">Radio Serial: </h6>
-          <p class="row">{{repair.radioSerial}}</p>
+          <h6 class="row">Radio ID: </h6>
+          <p class="row">{{repair.radioID}}</p>
         </div>
 
         <div class="col">
