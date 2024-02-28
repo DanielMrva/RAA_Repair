@@ -27,6 +27,8 @@ export class RepairService {
 
   addRepair(
     radioID: string,
+    radioMake: string,
+    radioSerial: string,
     radioLocation: string,
     dateReceived: string,
     endUserPO: string,
@@ -56,6 +58,8 @@ export class RepairService {
       mutation: ADD_REPAIR,
       variables: {
         radioID,
+        radioMake,
+        radioSerial,
         radioLocation,
         dateReceived,
         endUserPO,

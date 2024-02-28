@@ -55,6 +55,8 @@ export class AdminEditRepairComponent implements OnInit {
 
   repairForm = new FormGroup({
     radioID: new FormControl<string>(''),
+    radioMake: new FormControl<string>(''),
+    radioSerial: new FormControl<string>(''),
     radioLocation: new FormControl<string>(''),
     dateReceived: new FormControl<Date>(new Date()),
     endUserPO: new FormControl<string>(''),
@@ -222,6 +224,8 @@ export class AdminEditRepairComponent implements OnInit {
 
     const submittedRepair: UpdateRepairFields = {
       radioID: this.repairForm.value.radioID ?? '',
+      radioMake: this.repairForm.value.radioMake ?? '',
+      radioSerial: this.repairForm.value.radioSerial ?? '',
       radioLocation: this.repairForm.value.radioLocation ?? '',
       dateReceived: this.repairForm.value.dateReceived ?? new Date(),
       endUserPO: this.repairForm.value.endUserPO ?? '',
@@ -258,6 +262,8 @@ export class AdminEditRepairComponent implements OnInit {
 
     this.repairForm.patchValue({
       radioID: '',
+      radioMake: '',
+      radioSerial: '',
       radioLocation: '',
       dateReceived: new Date(),
       endUserPO: '',

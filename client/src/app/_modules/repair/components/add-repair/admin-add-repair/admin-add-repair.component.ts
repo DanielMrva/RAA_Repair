@@ -28,6 +28,8 @@ export class AdminAddRepairComponent implements OnInit {
 
   adminRepairForm = new FormGroup({
     radioID: new FormControl<string>(''),
+    radioMake: new FormControl<string>(''),
+    radioSerial: new FormControl<string>(''),
     radioLocation: new FormControl<string>(''),
     dateReceived: new FormControl<string>(''),
     endUserPO: new FormControl<string>(''),
@@ -165,6 +167,8 @@ export class AdminAddRepairComponent implements OnInit {
 
 
     const radioID = this.adminRepairForm.value.radioID ?? '';
+    const radioMake = this.adminRepairForm.value.radioMake ?? '';
+    const radioSerial = this.adminRepairForm.value.radioSerial ?? '';
     const radioLocation = this.adminRepairForm.value.radioLocation ?? '';
     const dateReceived = this.adminRepairForm.value.dateReceived ?? '';
     const endUserPO = this.adminRepairForm.value.endUserPO  ?? '';
@@ -192,6 +196,8 @@ export class AdminAddRepairComponent implements OnInit {
 
     this.store.dispatch(addRepair({
       radioID,
+      radioMake,
+      radioSerial,
       radioLocation,
       dateReceived,
       endUserPO,

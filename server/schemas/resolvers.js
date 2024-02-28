@@ -35,8 +35,8 @@ const resolvers = {
         radio: async (parent, { radioID }) => {
             return Radio.findById({ _id: radioID }).populate(["serviceRecord"]);
         },
-        serialRadio: async (parent, { serialNumber }) => {
-            return Radio.findOne({ serialNumber: serialNumber });
+        serialRadio: async (parent, { serialNumber, make }) => {
+            return Radio.findOne({ $and: [{ serialNumber: serialNumber }, { make: make }] });
         },
         allRepairs: async () => {
             return Repair.find();

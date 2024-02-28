@@ -1,6 +1,8 @@
 export type Repair = {
     _id: string,
     radioID: string
+    radioMake: string
+    radioSerial: string
     radioLocation: string
     dateReceived: string
     endUserPO: string
@@ -132,6 +134,8 @@ export type AdminRadioFields = {
 
 export type UpdateRepairFields = {
     radioID: string,
+    radioMake: string,
+    radioSerial: string,
     radioLocation: string,
     dateReceived: Date,
     endUserPO: string,

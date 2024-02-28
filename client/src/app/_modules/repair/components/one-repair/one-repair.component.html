@@ -1,4 +1,4 @@
-<div *ngIf="isLoading$ | async; else loadedData">
+<div *ngIf="repairIsLoading$ | async; else loadedData">
   <h2>Loading...</h2>
 </div>
 
@@ -11,12 +11,13 @@
   <div *ngIf="oneRepair$ | async as repair; else noRepairFound" class="container">
 
     <div class="row">
-      <!-- TODO: I'd like a button to go to the associated radio, probably the best way to do that would be a one-radio [routerLink] with a query param of radioID?... -->
-      <!-- <a class="col-2" [routerLink]="['one-radio', ]"><i class="bi bi-arrow-90deg-left"></i></a> -->
-      <h2 class="text-center col-12">Repair {{repair.repairTag}} Details</h2>
-      <button (click)="generatePDF()" class="btn btn-primary">
-        Generate PDF
-      </button>
+      <div class="col-12 text-center">
+        <h2 class="text-center">Repair {{repair.repairTag}} Details</h2>
+        <button (click)="generatePDF()" class="btn btn-primary">
+          Generate PDF
+        </button>
+        <h4>Repair for Radio: <a [routerLink]="['/one-radio/', repair.radioID]">{{repair.radioMake}} {{repair.radioSerial}}</a></h4>
+      </div>
 
 
 
@@ -73,10 +74,10 @@
 
       <div class="row">
 
-        <div class="col">
-          <h6 class="row">Radio ID: </h6>
-          <p class="row">{{repair.radioID}}</p>
-        </div>
+        <!-- <div class="col">
+          <h6 class="row">Radio: </h6>
+          <a [routerLink]="['/one-radio/', repair.radioID]">{{repair.radioMake}} {{repair.radioSerial}}</a>
+        </div> -->
 
         <div class="col">
           <h6 class="row">Accessories: </h6>

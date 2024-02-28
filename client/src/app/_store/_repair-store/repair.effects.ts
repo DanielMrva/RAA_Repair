@@ -51,6 +51,8 @@ export class RepairEffects {
             ofType(RepairActions.addRepair),
             switchMap(({
                 radioID,
+                radioMake,
+                radioSerial,
                 radioLocation,
                 dateReceived,
                 endUserPO,
@@ -78,6 +80,8 @@ export class RepairEffects {
             }) =>
                 from(this.repairService.addRepair(
                     radioID,
+                    radioMake,
+                    radioSerial,
                     radioLocation,
                     dateReceived,
                     endUserPO,

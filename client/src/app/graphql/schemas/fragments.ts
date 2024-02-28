@@ -26,6 +26,8 @@ export const SERVICE_RECORD_FRAGMENT = gql`
     fragment ServiceRecordFragment on Repair {
         _id
         radioID
+        radioMake
+        radioSerial
         radioLocation
         dateReceived
         endUserPO

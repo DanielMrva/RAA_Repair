@@ -8,6 +8,12 @@ const repairSchema = new Schema({
         type: String,
         // required: true
     },
+    radioMake: {
+        type: String,
+    },
+    radioSerial: {
+        type: String
+    },
     radioLocation: {
         type: String
     },
