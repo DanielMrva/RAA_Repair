@@ -43,6 +43,27 @@ export const locationReducer = createReducer(
         error: action.error
     })),
 
+    on(LocationActions.loadLocationByName, (state) => ({
+        ...state,
+        oneLocation: null,
+        isLoading: true,
+        error: null,
+    })),
+
+    on(LocationActions.loadLocationByNameSuccess, (state, action ) => ({
+        ...state,
+        oneLocation: action.location,
+        isLoading: false,
+        error: null,
+    })),
+
+    on(LocationActions.loadLocationByNameFailure, (state, action) => ({
+        ...state,
+        oneLocation: null,
+        isLoading: false,
+        error: action.error
+    })),
+
     on(LocationActions.loadAllLocations, (state) => ({
         ...state,
         isLoading: true,

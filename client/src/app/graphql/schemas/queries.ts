@@ -157,6 +157,17 @@ export const QUERY_SINGLELOCATION = gql`
     }
 `
 
+export const LOCATION_BY_NAME = gql`
+    ${LOCATION_FIELDS_FRAGMENT}
+    ${RADIO_FIELDS_FRAGMENT}
+    ${SERVICE_RECORD_FRAGMENT}
+    query locationByName($locationName: String!) {
+        locationByName(locationName: $locationName) {
+            ... LocationFieldsFragment
+        }
+    }
+`
+
 export const ORG_LOCATIONS = gql`
     ${LOCATION_FIELDS_FRAGMENT}
     ${RADIO_FIELDS_FRAGMENT}

@@ -96,6 +96,14 @@ const resolvers = {
                 },
             });
         },
+        locationByName: async (parent, { locationName } ) => {
+            return Location.findOne( { locationName: locationName}).populate({
+                path: "radios",
+                populate: {
+                    path: "serviceRecord"
+                }
+            });
+        },
         orgLocations: async(parent, { orgName }) => {
             return Location.find({ orgName: orgName}).populate({
                 path: "radios",

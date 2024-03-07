@@ -37,6 +37,25 @@ export class LocationEffects {
         )
     );
 
+    loadLocationByName$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(LocationActions.loadLocationByName),
+        mergeMap(({ locationName }) => {
+            console.log('Dispatched loadLocationByName action with Name: ', locationName);
+            return this.locationService.queryLocationByName(locationName).valueChanges.pipe(
+                map(({ data }) => {
+                    console.log('Loaded Location by Name data: ', data.locationByName);
+                    return LocationActions.loadLocationByNameSuccess({ location: data.locationByName });
+                }),
+                catchError((error) => {
+                    console.error('Error loading Location by Name: ', error);
+                    return of(LocationActions.loadLocationByNameFailure({ error }));
+                })
+            );
+        })
+    )
+);
+
 
     loadAllLocations$ = createEffect(() =>
         this.actions$.pipe(

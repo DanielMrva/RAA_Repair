@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
-import { Repair, Radio } from '@app/graphql/schemas';
+import { Repair, Radio, Location } from '@app/graphql/schemas/typeInterfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -27,12 +27,55 @@ export class PdfService {
     }
   };
 
-  formatRepairForPdf(repair: Repair, radio?: Radio): any {
+  private edgeAndHeaderBorders = {
+    // Draw horizontal lines
+    hLineWidth: function (i: number, node: any) {
+      if (i === 0 || i === 1 || i === node.table.body.length) {
+        return 1; // First line (top border of the table), second line (under the header), and last line (bottom border of the table)
+      }
+      return 0; // No other horizontal lines
+    },
+    // Draw vertical lines
+    vLineWidth: function (i: number, node: any) {
+      if (i === 0 || i === node.table.widths.length) {
+        return 1; // First and last vertical lines (left and right borders of the table)
+      }
+      return 0; // No other vertical lines internally, except...
+    },
+    // Draw lines between header cells
+    hLineColor: function (i: number, node: any) {
+      return 'black'; // Color for horizontal lines
+    },
+    vLineColor: function (i: number, node: any) {
+      return 'black'; // Color for vertical lines
+    },
 
+  }
+
+  formatRepairForPdf(repair: Repair, radio?: Radio, location?: Location): any {
+
+
+    const fDateSold = radio?.dateSold ? new Date(parseInt(radio.dateSold)).toLocaleDateString() : `__________________`;
     const fDateRec = repair.dateReceived ? new Date(parseInt(repair.dateReceived)).toLocaleDateString() : `__________________`;
     const fDateSentTech = repair.dateSentTech ? new Date(parseInt(repair.dateSentTech)).toLocaleDateString() : `__________________`;
     const fDateRecTech = repair.dateRecTech ? new Date(parseInt(repair.dateRecTech)).toLocaleDateString() : `__________________`;
     const fDateSentEU = repair.dateSentEU ? new Date(parseInt(repair.dateSentEU)).toLocaleDateString() : `__________________`;
+
+    const warrantyDate = radio?.warranty ? new Date(parseInt(radio?.warranty)).getTime() : new Date(0).getTime();
+    const currentDate = Date.now();
+
+    // TODO: Some Grace Period logic, in case we want that in the future.
+    // const gracePeriod = 24 * 60 * 60 * 1000;
+    // const underWarrantyWithGrace = (warrantyDate + gracePeriod ) > currentDate ? "Yes" : "No"
+
+    const underWarranty = warrantyDate > currentDate ? "Yes" : "No";
+
+    let accessoriesArray = repair.accessories
+    let concatAccArr = ''
+
+    if (accessoriesArray && accessoriesArray.length > 0) {
+      concatAccArr = accessoriesArray.join(', ');
+    }
 
     const content = [
 
@@ -42,7 +85,6 @@ export class PdfService {
           {
             columns: [
               {
-                // Left column (70% width), left blank
                 width: '70%',
                 minHeight: 505,
                 stack: [
@@ -54,9 +96,9 @@ export class PdfService {
                   },
                   {
                     table: {
-                      width: ['*', '*'],
+                      widths: ['*', '*'],
                       body: [
-                        [`Date Sold:`, `TODO: EDIT THIS`],
+                        [`Date Sold:`, `${fDateSold}`],
                         [`Date Received:`, `${fDateRec}`],
                         [`Date Sent to Tech:`, `${fDateSentTech}`],
                         [`Date Received from Tech:`, `${fDateRecTech}`],
@@ -72,7 +114,7 @@ export class PdfService {
                   },
                   {
                     table: {
-                      width: ['*', '*'],
+                      widths: ['*', '*'],
                       body: [
                         [`End User PO:`, `${repair.endUserPO}`],
                         [`Customer PO:`, `${repair.raaPO}`],
@@ -88,10 +130,27 @@ export class PdfService {
                   },
                   {
                     table: {
-                      width: ['*', '*'],
+                      widths: ['*', '*'],
                       body: [
                         [`RAA Invoice Number:`, `${repair.raaInvNum}`],
                         [`Tech Invoice Number:`, `${repair.techInvNum}`],
+                      ]
+                    }
+                  },
+                  {
+                    // Sub-Header: Radio Details
+                    text: 'Radio Details:',
+                    style: 'subheader',
+                    margin: [0, 10, 0, 5]
+                  },
+                  {
+                    table: {
+                      widths: [`*`, `*`],
+                      body: [
+                        [`Radio Manufacturer:`, `${radio?.make}`],
+                        [`Model`, `${radio?.model}`],
+                        [`Serial Number:`, `${radio?.serialNumber}`],
+                        [`Under Warranty:`, `${underWarranty}`]
                       ]
                     }
                   }
@@ -118,9 +177,11 @@ export class PdfService {
                         ['Foo City, FS 12345'],
                         ['123-456-7890'],
                         ['foo@example.com']
-                      ]
+                      ],
+                      widths: [`*`]
+
                     },
-                    layout: this.edgeBordersLayout
+                    layout: this.edgeBordersLayout,
                   },
                   {
                     // Sub-header "Customer" before the second table
@@ -137,9 +198,11 @@ export class PdfService {
                         ['Bar Town, BT 67890'],
                         ['234-567-8901'],
                         ['bar@example.net']
-                      ]
+                      ],
+                      widths: [`*`]
+
                     },
-                    layout: this.edgeBordersLayout
+                    layout: this.edgeBordersLayout,
                   },
                   {
                     // Sub-header "End User" before the third table
@@ -151,25 +214,149 @@ export class PdfService {
                   {
                     table: {
                       body: [
-                        ['Baz'],
-                        ['789 Baz Blvd'],
-                        ['Baz City, BC 34567'],
-                        ['345-678-9012'],
-                        ['baz@example.org']
-                      ]
+                        [`${location?.locationName}`],
+                        [`${location?.street}`],
+                        [`${location?.city}, ${location?.state} ${location?.zip}`],
+                        [`${location?.phone}`],
+                        [`${location?.contactEmail}`]
+                      ],
+                      widths: [`*`]
+
                     },
-                    layout: this.edgeBordersLayout
+                    layout: this.edgeBordersLayout,
                   }
                 ]
               }
             ],
-            minHeight: 505
+            minHeight: 505,
+            margin: [0, 0, 0, 10]
           },
           {
-            minHeight: 337,
-            text: 'content for the bottom 40% goes here',
-            
+            table: {
+              body: [
+                [
+                  {
+                    table: {
+                      body: [
+                        [
+                          {
+                            // Sub-header "Symptoms"
+                            text: 'Symptoms:',
+                            style: 'subheader',
+                            margin: [0, 10, 0, 5] // Top and bottom margin
+                          },
+                          {
+                            ul: [
+                              ...repair.symptoms.map(symptom => ({ text: symptom || '_________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ ' }))
+
+                            ]
+                          },
+
+                        ]
+                      ],
+                      widths: [`*`, `*`],
+                    },
+                    layout: 'noBorders',
+                  },
+                  {
+                    table: {
+
+                      body: [
+                        [
+                          {
+                            // Sub-header "Accessories"
+                            text: 'Accessories:',
+                            style: 'subheader',
+                            margin: [0, 10, 0, 5] // Top and bottom margin
+                          },
+                          {
+                            ul: [
+                              ...repair.accessories.map(accessory => ({ text: accessory || '_________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ ' }))
+
+                            ]
+                          },
+                        ]
+                      ],
+                      widths: [`*`, `*`],
+                    },
+                    layout: 'noBorders',
+                  }
+                ],
+
+
+              ],
+              widths: [`*`, `*`]
+
+            }
+          },
+          {
+            table: {
+              body: [
+                [`Attribute`, `In`, `Out`, `Unit`, `Test Freq`],
+                [`RX Sensitivity`, `${repair.incRxSens || '_________'}`, `${repair.outRxSens || '_________'}`, `uV`, `${repair.testFreq || '_________'}`],
+                [`Freq Err`, `${repair.incFreqErr || '_________'}`, `${repair.outFreqErr || '_________'}`, `Hz`, `${repair.testFreq || '_________'}`],
+                [`Modulation`, `${repair.incMod || '_________'}`, `${repair.outMod || '_________'}`, `KHz`, `${repair.testFreq || '_________'}`],
+                [`Power Output`, `${repair.incPowerOut || '_________'}`, `${repair.outPowerOut || '_________'}`, `Watts`, `${repair.testFreq || '_________'}`]
+              ],
+              widths: [`*`, `*`, `*`, `*`, `*`]
+            },
+            margin: [0, 10, 0, 5]
+          },
+          {
+            table: {
+              // Your table data
+              headerRows: 1,
+              body: [
+                // Header row
+                [`Parts Used`, `| Repair Hours: ${repair.repHours}`],
+                // Data rows
+                [
+                  {
+                    ul: [
+                      ...repair.partsUsed.map(part => ({ text: part || '_________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ ' }))
+
+                    ]
+                  },
+                  ''
+                ],
+
+              ],
+              widths: [`70%`, `30%`]
+            },
+            layout: this.edgeAndHeaderBorders
+          },
+          {
+            table: {
+              body: [
+                ['Remarks'],
+                [`${repair.remarks}`]
+              ],
+              widths: [`*`]
+            },
+            margin: [0, 10, 0, 5]
+
+          },
+          {
+            table: {
+              body: [
+                [`PO Text:`, `Sales Order Text:`],
+                [`Radio Repair: ${radio?.make} ${radio?.model} Serial NO: ${radio?.serialNumber} with ${concatAccArr}. Repair Tag: ${repair.repairTag}`, `Service Labor to Repair: ${radio?.make} ${radio?.model} Serial NO: ${radio?.serialNumber}. Repair Tag # ${repair.repairTag}`]
+              ]
+            }
+          },
+          {
+            table: {
+              body: [
+                [`Technician _______________`, `License # _______________`, `Date _______________`]
+              ],
+              widths: [`*`,`*`,`*`],
+
+            },
+            margin: [0, 10, 0, 5],
+            layout: `noBorders`
+
           }
+
         ],
       }
     ];
@@ -197,7 +384,8 @@ export class PdfService {
         lineHeight: 1
       },
       layout: {
-        edgeBordersLayout: this.edgeBordersLayout
+        edgeBordersLayout: this.edgeBordersLayout,
+        edgeAndHeaderBorders: this.edgeAndHeaderBorders
       }
     }
   };
