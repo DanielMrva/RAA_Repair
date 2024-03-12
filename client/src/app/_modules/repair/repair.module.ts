@@ -11,6 +11,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+
+
 // import { MatSelectModule } from '@angular/material/select';
 // import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // import { MatFormFieldModule } from '@angular/material/form-field';
@@ -52,6 +55,7 @@ import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-re
     // MatFormFieldModule,
     MatAutocompleteModule,
     MatFormFieldModule,
+    NgbAccordionModule,
     StoreModule.forFeature('repair', repairReducer),
     EffectsModule.forFeature([RepairEffects])
   ]

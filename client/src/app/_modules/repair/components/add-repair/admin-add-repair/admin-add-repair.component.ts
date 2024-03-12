@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
+import { Repair, RepairFormFields } from '@app/graphql/schemas';
 import { Store } from '@ngrx/store';
 import { addRepair } from '@app/_store/_repair-store/repair.actions';
 import { selectLocationNames, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
@@ -31,12 +32,12 @@ export class AdminAddRepairComponent implements OnInit {
     radioMake: new FormControl<string>(''),
     radioSerial: new FormControl<string>(''),
     radioLocation: new FormControl<string>(''),
-    dateReceived: new FormControl<string>(''),
+    dateReceived: new FormControl<Date>(new Date()),
     endUserPO: new FormControl<string>(''),
     raaPO: new FormControl<string>(''),
-    dateSentTech: new FormControl<string>(''),
-    dateRecTech: new FormControl<string>(''),
-    dateSentEU: new FormControl<string>(''),
+    dateSentTech: new FormControl<Date>(new Date()),
+    dateRecTech: new FormControl<Date>(new Date()),
+    dateSentEU: new FormControl<Date>(new Date()),
     techInvNum: new FormControl<string>(''),
     raaInvNum: new FormControl<string>(''),
     symptoms: new FormArray( [new FormControl<string>('', { nonNullable: true})] ),
@@ -124,6 +125,12 @@ export class AdminAddRepairComponent implements OnInit {
       }
   }
 
+  submitRepair(submittedRepair: RepairFormFields): void {
+
+    this.store.dispatch(addRepair({ submittedRepair: submittedRepair }))
+
+  };
+
   ngOnInit(): void {
 
     this.store.dispatch(loadLocationNames());
@@ -165,64 +172,38 @@ export class AdminAddRepairComponent implements OnInit {
 
     console.log(this.adminRepairForm.value);
 
+    const submittedRepair: RepairFormFields = {
+      radioID: this.adminRepairForm.value.radioID ?? '',
+      radioMake: this.adminRepairForm.value.radioMake ?? '',
+      radioSerial: this.adminRepairForm.value.radioSerial ?? '',
+      radioLocation: this.adminRepairForm.value.radioLocation ?? '',
+      dateReceived: this.adminRepairForm.value.dateReceived ?? new Date(),
+      endUserPO: this.adminRepairForm.value.endUserPO  ?? '',
+      raaPO: this.adminRepairForm.value.raaPO  ?? '',
+      dateSentTech: this.adminRepairForm.value.dateSentTech ?? new Date(),
+      dateRecTech: this.adminRepairForm.value.dateRecTech ?? new Date(),
+      dateSentEU: this.adminRepairForm.value.dateSentEU ?? new Date(),
+      techInvNum: this.adminRepairForm.value.techInvNum ?? '',
+      raaInvNum: this.adminRepairForm.value.raaInvNum ?? '',
+      symptoms: Array.isArray(this.adminRepairForm.value.symptoms) ? this.adminRepairForm.value.symptoms : [''],
+      testFreq: this.adminRepairForm.value.testFreq ?? '',
+      incRxSens: this.adminRepairForm.value.incRxSens ?? '',
+      incFreqErr: this.adminRepairForm.value.incFreqErr ?? '',
+      incMod: this.adminRepairForm.value.incMod ?? '',
+      incPowerOut: this.adminRepairForm.value.incPowerOut ?? '',
+      outRxSens: this.adminRepairForm.value.outRxSens ?? '',
+      outFreqErr: this.adminRepairForm.value.outFreqErr ?? '',
+      outMod: this.adminRepairForm.value.outMod  ?? '',
+      outPowerOut: this.adminRepairForm.value.outPowerOut ?? '',
+      accessories: Array.isArray(this.adminRepairForm.value.accessories) ? this.adminRepairForm.value.accessories : [''],
+      workPerformed: Array.isArray(this.adminRepairForm.value.workPerformed) ? this.adminRepairForm.value.workPerformed : [''],
+      repHours: this.adminRepairForm.value.repHours  ?? 0,
+      partsUsed: Array.isArray(this.adminRepairForm.value.partsUsed) ? this.adminRepairForm.value.partsUsed : [''],
+      remarks: this.adminRepairForm.value.remarks ?? '',
+    }
 
-    const radioID = this.adminRepairForm.value.radioID ?? '';
-    const radioMake = this.adminRepairForm.value.radioMake ?? '';
-    const radioSerial = this.adminRepairForm.value.radioSerial ?? '';
-    const radioLocation = this.adminRepairForm.value.radioLocation ?? '';
-    const dateReceived = this.adminRepairForm.value.dateReceived ?? '';
-    const endUserPO = this.adminRepairForm.value.endUserPO  ?? '';
-    const raaPO = this.adminRepairForm.value.raaPO  ?? '';
-    const dateSentTech = this.adminRepairForm.value.dateSentTech ?? '';
-    const dateRecTech = this.adminRepairForm.value.dateRecTech ?? '';
-    const dateSentEU = this.adminRepairForm.value.dateSentEU ?? '';
-    const techInvNum = this.adminRepairForm.value.techInvNum ?? '';
-    const raaInvNum = this.adminRepairForm.value.raaInvNum ?? '';
-    const symptoms = Array.isArray(this.adminRepairForm.value.symptoms) ? this.adminRepairForm.value.symptoms : ['']; 
-    const testFreq = this.adminRepairForm.value.testFreq ?? '';
-    const incRxSens = this.adminRepairForm.value.incRxSens ?? '';
-    const incFreqErr = this.adminRepairForm.value.incFreqErr ?? '';
-    const incMod = this.adminRepairForm.value.incMod ?? '';
-    const incPowerOut = this.adminRepairForm.value.incPowerOut ?? '';
-    const outRxSens = this.adminRepairForm.value.outRxSens ?? '';
-    const outFreqErr = this.adminRepairForm.value.outFreqErr ?? '';
-    const outMod = this.adminRepairForm.value.outMod  ?? '';
-    const outPowerOut = this.adminRepairForm.value.outPowerOut ?? '';
-    const accessories = Array.isArray(this.adminRepairForm.value.accessories) ? this.adminRepairForm.value.accessories : [''];
-    const workPerformed = Array.isArray(this.adminRepairForm.value.workPerformed) ? this.adminRepairForm.value.workPerformed : ['']; 
-    const repHours = this.adminRepairForm.value.repHours  ?? 0;
-    const partsUsed = Array.isArray(this.adminRepairForm.value.partsUsed) ? this.adminRepairForm.value.partsUsed : [''];
-    const remarks = this.adminRepairForm.value.remarks ?? '';
 
-    this.store.dispatch(addRepair({
-      radioID,
-      radioMake,
-      radioSerial,
-      radioLocation,
-      dateReceived,
-      endUserPO,
-      raaPO,
-      dateSentTech,
-      dateRecTech,
-      dateSentEU,
-      techInvNum,
-      raaInvNum,
-      symptoms,
-      testFreq,
-      incRxSens,
-      incFreqErr,
-      incMod,
-      incPowerOut,
-      outRxSens,
-      outFreqErr,
-      outMod,
-      outPowerOut,
-      accessories,
-      workPerformed,
-      repHours,
-      partsUsed,
-      remarks
-    }))
+    this.submitRepair(submittedRepair)
 
   };
 

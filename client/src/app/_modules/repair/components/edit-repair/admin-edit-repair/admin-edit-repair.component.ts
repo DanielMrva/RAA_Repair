@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
-import { Organization, Radio, Repair, UpdateRepairFields } from '@app/graphql/schemas/typeInterfaces';
+import { Organization, Radio, Repair, RepairFormFields } from '@app/graphql/schemas/typeInterfaces';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { editRepair, loadOneRepair } from '@app/_store/_repair-store/repair.actions';
@@ -48,7 +48,7 @@ export class AdminEditRepairComponent implements OnInit {
   filteredLocNames$!: Observable<string[]>;
 
   orgForm = new FormGroup({
-      selectedOrgControl: new FormControl<string>('')
+    selectedOrgControl: new FormControl<string>('')
 
   })
 
@@ -199,7 +199,7 @@ export class AdminEditRepairComponent implements OnInit {
   };
 
 
-  updateRepair(updateRepair: UpdateRepairFields): void {
+  updateRepair(updateRepair: RepairFormFields): void {
 
     this.oneRepair$.subscribe((repair: Repair | null) => {
       if (repair) {
@@ -222,7 +222,7 @@ export class AdminEditRepairComponent implements OnInit {
       }
     })
 
-    const submittedRepair: UpdateRepairFields = {
+    const submittedRepair: RepairFormFields = {
       radioID: this.repairForm.value.radioID ?? '',
       radioMake: this.repairForm.value.radioMake ?? '',
       radioSerial: this.repairForm.value.radioSerial ?? '',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { QUERY_SINGLEREPAIR, ALL_REPAIRS, ADD_REPAIR, Edit_Repair } from '@app/graphql/schemas';
-import { Repair } from '@app/graphql/schemas/typeInterfaces';
+import { RepairFormFields, Repair } from '@app/graphql/schemas/typeInterfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -25,66 +25,10 @@ export class RepairService {
     });
   }
 
-  addRepair(
-    radioID: string,
-    radioMake: string,
-    radioSerial: string,
-    radioLocation: string,
-    dateReceived: string,
-    endUserPO: string,
-    raaPO: string,
-    dateSentTech: string,
-    dateRecTech: string,
-    dateSentEU: string,
-    techInvNum: string,
-    raaInvNum: string,
-    symptoms: string[],
-    testFreq: string,
-    incRxSens: string,
-    incFreqErr: string,
-    incMod: string,
-    incPowerOut: string,
-    outRxSens: string,
-    outFreqErr: string,
-    outMod: string,
-    outPowerOut: string,
-    accessories: string[],
-    workPerformed: string[],
-    repHours: number,
-    partsUsed: string[],
-    remarks: string,
-  ) {
+  addRepair( addRepairFields: RepairFormFields ) {
     return this.apollo.mutate<{addRepair: Repair}> ({
       mutation: ADD_REPAIR,
-      variables: {
-        radioID,
-        radioMake,
-        radioSerial,
-        radioLocation,
-        dateReceived,
-        endUserPO,
-        raaPO,
-        dateSentTech,
-        dateRecTech,
-        dateSentEU,
-        techInvNum,
-        raaInvNum,
-        symptoms,
-        testFreq,
-        incRxSens,
-        incFreqErr,
-        incMod,
-        incPowerOut,
-        outRxSens,
-        outFreqErr,
-        outMod,
-        outPowerOut,
-        accessories,
-        workPerformed,
-        repHours,
-        partsUsed,
-        remarks
-        }
+      variables: { addRepairFields }
     })
   }
 

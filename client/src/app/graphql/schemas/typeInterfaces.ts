@@ -132,6 +132,37 @@ export type AdminRadioFields = {
     radioType: string
 }
 
+export type RepairFormFields = {
+    radioID: string,
+    radioMake: string,
+    radioSerial: string,
+    radioLocation: string,
+    dateReceived: Date,
+    endUserPO: string,
+    raaPO: string,
+    repairTag?: number,
+    dateSentTech: Date,
+    dateRecTech: Date,
+    dateSentEU: Date,
+    techInvNum: string,
+    raaInvNum: string,
+    symptoms: string[],
+    testFreq: string,
+    incRxSens: string,
+    incFreqErr: string,
+    incMod: string,
+    incPowerOut: string,
+    outRxSens: string,
+    outFreqErr: string,
+    outMod: string,
+    outPowerOut: string,
+    accessories: string[],
+    workPerformed: string[],
+    repHours: number,
+    partsUsed: string[],
+    remarks: string
+}
+
 export type UpdateRepairFields = {
     radioID: string,
     radioMake: string,

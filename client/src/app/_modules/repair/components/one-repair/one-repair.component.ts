@@ -46,7 +46,7 @@ export class OneRepairComponent implements OnInit{
         const repairID = params['id'];
         this.loadRepair(repairID)
       });
-  }
+  };  
 
   loadRepair(repairID: string): void {
     this.store.dispatch(loadOneRepair({repairID: repairID}));

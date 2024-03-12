@@ -1,0 +1,11 @@
+.warning {
+  background-color: yellow; /* Highlight background */
+  color: red; /* Text color */
+  font-weight: bold;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #495057;
+    background-color: #e9ecef;
+    box-shadow: inset 
+}  

@@ -10,6 +10,7 @@ import { of, from } from "rxjs";
 import { switchMap, map, catchError, mergeMap } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
+import { RepairFormFields } from "@app/graphql/schemas";
 
 @Injectable()
 export class RepairEffects {
@@ -72,63 +73,9 @@ export class RepairEffects {
     addRepair$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RepairActions.addRepair),
-            switchMap(({
-                radioID,
-                radioMake,
-                radioSerial,
-                radioLocation,
-                dateReceived,
-                endUserPO,
-                raaPO,
-                dateSentTech,
-                dateRecTech,
-                dateSentEU,
-                techInvNum,
-                raaInvNum,
-                symptoms,
-                testFreq,
-                incRxSens,
-                incFreqErr,
-                incMod,
-                incPowerOut,
-                outRxSens,
-                outFreqErr,
-                outMod,
-                outPowerOut,
-                accessories,
-                workPerformed,
-                repHours,
-                partsUsed,
-                remarks
-            }) =>
+            switchMap(({ submittedRepair }) =>
                 from(this.repairService.addRepair(
-                    radioID,
-                    radioMake,
-                    radioSerial,
-                    radioLocation,
-                    dateReceived,
-                    endUserPO,
-                    raaPO,
-                    dateSentTech,
-                    dateRecTech,
-                    dateSentEU,
-                    techInvNum,
-                    raaInvNum,
-                    symptoms,
-                    testFreq,
-                    incRxSens,
-                    incFreqErr,
-                    incMod,
-                    incPowerOut,
-                    outRxSens,
-                    outFreqErr,
-                    outMod,
-                    outPowerOut,
-                    accessories,
-                    workPerformed,
-                    repHours,
-                    partsUsed,
-                    remarks
+                    submittedRepair
                 )).pipe(
                     map(({ data }) => RepairActions.addRepairSuccess({ repair: data?.addRepair })),
 
