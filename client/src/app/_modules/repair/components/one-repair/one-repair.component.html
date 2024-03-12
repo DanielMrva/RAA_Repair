@@ -84,7 +84,6 @@
                             <strong>Date Sent to Tech:</strong> {{repair.dateSentTech | date: 'MMM d, y'}} <br>
                             <strong>Date Rec from Tech:</strong> {{repair.dateRecTech | date: 'MMM d, y'}} <br>
                             <strong>Date Sent to End User:</strong> {{repair.dateSentEU | date: 'MMM d, y'}} <br>
-
                           </p>
                         </div>
                       </div>
@@ -114,8 +113,17 @@
                         <div class="card-body">
                           <!-- <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5> -->
                           <p class="card-text">
-
+                            <strong>RAA Invoice:</strong> {{repair.raaInvNum}} <br>
+                            <strong>RAA PO:</strong> {{repair.raaPO}} <br>
+                            <strong>End User PO:</strong> {{repair.endUserPO}} <br>
+                            <strong>Accessories:</strong>
                           </p>
+                          <ul>
+                            <ng-container *ngFor="let acc of repair.accessories">
+                              <li>{{acc}}</li>
+                            </ng-container>
+                                
+                          </ul>
                         </div>
                       </div>
                     </ng-template>
@@ -141,10 +149,14 @@
                     <ng-template>
                       <div class="card">
                         <div class="card-body">
-                          <!-- <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5> -->
                           <p class="card-text">
-
+                            <strong>Symptoms:</strong>
                           </p>
+                          <ul>
+                            <ng-container *ngFor="let sym of repair.symptoms">
+                              <li>{{sym}}</li>
+                            </ng-container>
+                          </ul>
                         </div>
                       </div>
                     </ng-template>
@@ -167,10 +179,86 @@
                     <ng-template>
                       <div class="card">
                         <div class="card-body">
-                          <!-- <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5> -->
                           <p class="card-text">
-
+                            <strong>Test Frequency:</strong> {{repair.testFreq}}<br>
+                            <strong>Diagnositcs:</strong> <br>
                           </p>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">
+                                  Attribute
+                                </th>
+                                <th scope="col">
+                                  In
+                                </th>
+                                <th scope="col">
+                                  Out
+                                </th>
+                                <th scope="col">
+                                  Unit
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  RX Sensitivity
+                                </td>
+                                <td>
+                                  {{repair.incRxSens}}
+                                </td>
+                                <td>
+                                  {{repair.outRxSens}}
+                                </td>
+                                <td>
+                                  uV
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Freq Err
+                                </td>
+                                <td>
+                                  {{repair.incFreqErr}}
+                                </td>
+                                <td>
+                                  {{repair.outFreqErr}}
+                                </td>
+                                <td>
+                                  Hz
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Modulation
+                                </td>
+                                <td>
+                                  {{repair.incMod}}
+                                </td>
+                                <td>
+                                  {{repair.outMod}}
+                                </td>
+                                <td>
+                                  KHz
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Power Output
+                                </td>
+                                <td>
+                                  {{repair.incPowerOut}}
+                                </td>
+                                <td>
+                                  {{repair.outPowerOut}}
+                                </td>
+                                <td>
+                                  Watts
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                       </div>
                     </ng-template>
@@ -196,9 +284,27 @@
                     <ng-template>
                       <div class="card">
                         <div class="card-body">
-                          <!-- <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5> -->
                           <p class="card-text">
-
+                            <strong>Tech Invoice:</strong> {{repair.techInvNum}}<br>
+                            <strong>Repair Hours:</strong> {{repair.repHours}} <br>
+                            <strong>Work Performed:</strong><br>
+                          </p>
+                          <ul>
+                            <ng-container *ngFor="let work of repair.workPerformed">
+                              <li>{{work}}</li>
+                            </ng-container>
+                          </ul>
+                          <p>
+                            <strong>Parts Used:</strong><br>
+                          </p>
+                          <ul>
+                            <ng-container *ngFor="let part of repair.partsUsed">
+                              <li>{{part}}</li>
+                            </ng-container>
+                          </ul>
+                          <p>
+                            <strong>Remarks:</strong><br>
+                            {{repair.remarks}}
                           </p>
                         </div>
                       </div>
