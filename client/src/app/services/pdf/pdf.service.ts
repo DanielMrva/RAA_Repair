@@ -52,14 +52,21 @@ export class PdfService {
 
   }
 
+  private minHeightTable = {
+    myCustomLayout: {
+      // Other layout properties...
+      paddingBottom: function() { return 30; }, // Adjust padding as needed
+    }
+  }
+
   formatRepairForPdf(repair: Repair, radio?: Radio, location?: Location): any {
 
 
-    const fDateSold = radio?.dateSold ? new Date(parseInt(radio.dateSold)).toLocaleDateString() : `__________________`;
-    const fDateRec = repair.dateReceived ? new Date(parseInt(repair.dateReceived)).toLocaleDateString() : `__________________`;
-    const fDateSentTech = repair.dateSentTech ? new Date(parseInt(repair.dateSentTech)).toLocaleDateString() : `__________________`;
-    const fDateRecTech = repair.dateRecTech ? new Date(parseInt(repair.dateRecTech)).toLocaleDateString() : `__________________`;
-    const fDateSentEU = repair.dateSentEU ? new Date(parseInt(repair.dateSentEU)).toLocaleDateString() : `__________________`;
+    const fDateSold = radio?.dateSold ? new Date(parseInt(radio.dateSold)).toLocaleDateString() : ` `;
+    const fDateRec = repair.dateReceived ? new Date(parseInt(repair.dateReceived)).toLocaleDateString() : ` `;
+    const fDateSentTech = repair.dateSentTech ? new Date(parseInt(repair.dateSentTech)).toLocaleDateString() : ` `;
+    const fDateRecTech = repair.dateRecTech ? new Date(parseInt(repair.dateRecTech)).toLocaleDateString() : ` `;
+    const fDateSentEU = repair.dateSentEU ? new Date(parseInt(repair.dateSentEU)).toLocaleDateString() : ` `;
 
     const warrantyDate = radio?.warranty ? new Date(parseInt(radio?.warranty)).getTime() : new Date(0).getTime();
     const currentDate = Date.now();
@@ -92,7 +99,7 @@ export class PdfService {
                     // Sub-header: Timeline
                     text: 'Timeline:',
                     style: 'subheader',
-                    margin: [0, 10, 0, 5]
+                    margin: [0, 5, 0, 5]
                   },
                   {
                     table: {
@@ -110,7 +117,7 @@ export class PdfService {
                     // Sub-header: PO/Tracking
                     text: 'PO Tracking:',
                     style: 'subheader',
-                    margin: [0, 10, 0, 5]
+                    margin: [0, 5, 0, 5]
                   },
                   {
                     table: {
@@ -126,7 +133,7 @@ export class PdfService {
                     // Sub-header: Invoicing
                     text: 'Invoicing:',
                     style: 'subheader',
-                    margin: [0, 10, 0, 5]
+                    margin: [0, 5, 0, 5]
                   },
                   {
                     table: {
@@ -141,7 +148,7 @@ export class PdfService {
                     // Sub-Header: Radio Details
                     text: 'Radio Details:',
                     style: 'subheader',
-                    margin: [0, 10, 0, 5]
+                    margin: [0, 5, 0, 5]
                   },
                   {
                     table: {
@@ -187,7 +194,7 @@ export class PdfService {
                     // Sub-header "Customer" before the second table
                     text: 'Customer:',
                     style: 'subheader',
-                    margin: [0, 10, 0, 5]
+                    margin: [0, 5, 0, 5]
                   },
                   // Second table (Bar) TODO: Change to RAA
                   {
@@ -208,7 +215,7 @@ export class PdfService {
                     // Sub-header "End User" before the third table
                     text: 'End User:',
                     style: 'subheader',
-                    margin: [0, 10, 0, 5] // Top and bottom margin
+                    margin: [0, 5, 0, 5] // Top and bottom margin
                   },
                   // Third table (Baz) TODO: Confirm with client that end user should be a Location as currently described in DB structure.
                   {
@@ -243,11 +250,11 @@ export class PdfService {
                             // Sub-header "Symptoms"
                             text: 'Symptoms:',
                             style: 'subheader',
-                            margin: [0, 10, 0, 5] // Top and bottom margin
+                            margin: [0, 5, 0, 5] // Top and bottom margin
                           },
                           {
                             ul: [
-                              ...repair.symptoms.map(symptom => ({ text: symptom || '_________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ ' }))
+                              ...repair.symptoms.map(symptom => ({ text: symptom || '____________ \n____________ \n____________' }))
 
                             ]
                           },
@@ -267,11 +274,11 @@ export class PdfService {
                             // Sub-header "Accessories"
                             text: 'Accessories:',
                             style: 'subheader',
-                            margin: [0, 10, 0, 5] // Top and bottom margin
+                            margin: [0, 5, 0, 5] // Top and bottom margin
                           },
                           {
                             ul: [
-                              ...repair.accessories.map(accessory => ({ text: accessory || '_________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ ' }))
+                              ...repair.accessories.map(accessory => ({ text: accessory || '____________ \n____________ \n____________' }))
 
                             ]
                           },
@@ -293,14 +300,14 @@ export class PdfService {
             table: {
               body: [
                 [`Attribute`, `In`, `Out`, `Unit`, `Test Freq`],
-                [`RX Sensitivity`, `${repair.incRxSens || '_________'}`, `${repair.outRxSens || '_________'}`, `uV`, `${repair.testFreq || '_________'}`],
-                [`Freq Err`, `${repair.incFreqErr || '_________'}`, `${repair.outFreqErr || '_________'}`, `Hz`, `${repair.testFreq || '_________'}`],
-                [`Modulation`, `${repair.incMod || '_________'}`, `${repair.outMod || '_________'}`, `KHz`, `${repair.testFreq || '_________'}`],
-                [`Power Output`, `${repair.incPowerOut || '_________'}`, `${repair.outPowerOut || '_________'}`, `Watts`, `${repair.testFreq || '_________'}`]
+                [`RX Sensitivity`, `${repair.incRxSens}`, `${repair.outRxSens}`, `uV`, `${repair.testFreq}`],
+                [`Freq Err`, `${repair.incFreqErr}`, `${repair.outFreqErr}`, `Hz`, `${repair.testFreq}`],
+                [`Modulation`, `${repair.incMod}`, `${repair.outMod}`, `KHz`, `${repair.testFreq}`],
+                [`Power Output`, `${repair.incPowerOut}`, `${repair.outPowerOut}`, `Watts`, `${repair.testFreq}`]
               ],
               widths: [`*`, `*`, `*`, `*`, `*`]
             },
-            margin: [0, 10, 0, 5]
+            margin: [0, 5, 0, 5]
           },
           {
             table: {
@@ -313,7 +320,7 @@ export class PdfService {
                 [
                   {
                     ul: [
-                      ...repair.partsUsed.map(part => ({ text: part || '_________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ \n _________________________________ ' }))
+                      ...repair.partsUsed.map(part => ({ text: part || '________________________________________________________ \n________________________________________________________ \n________________________________________________________' }))
 
                     ]
                   },
@@ -321,7 +328,7 @@ export class PdfService {
                 ],
 
               ],
-              widths: [`70%`, `30%`]
+              widths: [`80%`, `20%`]
             },
             layout: this.edgeAndHeaderBorders
           },
@@ -329,11 +336,12 @@ export class PdfService {
             table: {
               body: [
                 ['Remarks'],
-                [`${repair.remarks}`]
+                [`${repair.remarks || `\n \n`}`]
               ],
               widths: [`*`]
             },
-            margin: [0, 10, 0, 5]
+            layout: this.minHeightTable,
+            margin: [0, 5, 0, 5]
 
           },
           {
@@ -352,7 +360,7 @@ export class PdfService {
               widths: [`*`,`*`,`*`],
 
             },
-            margin: [0, 10, 0, 5],
+            margin: [0, 5, 0, 5],
             layout: `noBorders`
 
           }
@@ -365,27 +373,30 @@ export class PdfService {
       content,
       styles: {
         header: {
-          fontSize: 18,
+          fontSize: 14,
           bold: true,
           lineHeight: 1.75
         },
         subHeader: {
-          fontSize: 14,
+          fontSize: 10,
           bold: true,
           lineHeight: 1.5
         },
         bodyTable: {
+          fontSize: 9,
           margin: [0, 0, 0, 20]
         }
 
       },
       defaultStyle: {
+        fonstSize: 9,
         columnGap: 15,
         lineHeight: 1
       },
       layout: {
         edgeBordersLayout: this.edgeBordersLayout,
-        edgeAndHeaderBorders: this.edgeAndHeaderBorders
+        edgeAndHeaderBorders: this.edgeAndHeaderBorders,
+        minHeightTable: this.minHeightTable
       }
     }
   };

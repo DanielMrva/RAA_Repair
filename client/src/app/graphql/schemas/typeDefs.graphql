@@ -9,7 +9,7 @@ type User {
 
 type Repair {
     _id: ID!
-    radioID: String!
+    radioID: String
     radioMake: String
     radioSerial: String
     radioLocation: String
@@ -124,9 +124,11 @@ type Mutation {
     ): User
 
     addRepair(
-            radioID: String!,
+            radioID: String,
+            radioMake: String,
+            radioSerial: String,
             radioLocation: String,
-            dateReceived: String!,
+            dateReceived: String,
             endUserPO: String,
             raaPO: String,
             repairTag: Int,

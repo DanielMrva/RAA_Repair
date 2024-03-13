@@ -53,12 +53,6 @@ const resolvers = {
         orgNames: async () => {
             return Organization.find();
         },
-        // org: async (parent, { orgId }) => {
-        //     return Organization.findById({ _id: orgId }).populate(["users", "radios"]);
-        // },
-        // allOrgs: async () => {
-        //     return Organization.find().populate(["users", "radios"])
-        // },
         org: async (parent, { orgId }) => {
             return Organization.findById({ _id: orgId }).populate(
                 [
@@ -171,6 +165,8 @@ const resolvers = {
             parent,
             {
                 radioID,
+                radioMake,
+                radioSerial,
                 radioLocation,
                 dateReceived,
                 endUserPO,
@@ -200,6 +196,7 @@ const resolvers = {
         ) => {
 
             try {
+
                 const radio = await Radio.findOne({ _id: radioID });
 
 
@@ -213,7 +210,7 @@ const resolvers = {
                 }
 
                 const highestRepair = await Repair.find({}).sort({ repairTag: -1 }).limit(1);
-                console.log(highestRepair)
+                // console.log(highestRepair)
 
                 const highestRepairTag = highestRepair[0].repairTag;
                 console.log(`HRT: ${highestRepairTag}`);
@@ -223,6 +220,8 @@ const resolvers = {
 
                 const repair = await Repair.create({
                     radioID,
+                    radioMake,
+                    radioSerial,
                     radioLocation,
                     dateReceived,
                     endUserPO,
@@ -326,11 +325,6 @@ const resolvers = {
                     refurb,
                     radioType
                 });
-
-                // await Organization.findOneAndUpdate(
-                //     { orgName: orgName },
-                //     { $addToSet: { radios: newRadio._id } }
-                // );
 
                 await Location.findOneAndUpdate(
                     { locationName: locationName },

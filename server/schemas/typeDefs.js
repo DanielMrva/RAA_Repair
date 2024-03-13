@@ -202,8 +202,8 @@ const typeDefs = `#graphql
             radioID: String
             radioMake: String
             radioSerial: String
-            radioLocation: String!
-            dateReceived: String!
+            radioLocation: String
+            dateReceived: String
             endUserPO: String
             raaPO: String
             repairTag: Int

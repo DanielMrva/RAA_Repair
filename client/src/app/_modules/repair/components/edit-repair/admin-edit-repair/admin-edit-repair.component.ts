@@ -9,8 +9,8 @@ import { selectOneRepair, repairErrorSelector, repairLoadingSelector } from '@ap
 import { selectLocationNames, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
 import { selectOrgName, selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
 import { selectOneRadio, selectOneRadioOrg } from '@app/_store/_radio-store/radio.selectors';
-import { loadSerialRadio } from '@app/_store/_radio-store/radio.actions';
-import { loadLocationNames } from '@app/_store/_location-store/location.actions';
+import { loadOneRadio, loadSerialRadio } from '@app/_store/_radio-store/radio.actions';
+import { loadLocationByName, loadLocationNames } from '@app/_store/_location-store/location.actions';
 import { Observable, combineLatest, of } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators'
 import { Location } from '@app/graphql/schemas';
@@ -253,6 +253,7 @@ export class AdminEditRepairComponent implements OnInit {
       remarks: this.repairForm.value.remarks ?? '',
     };
 
+
     this.updateRepair(submittedRepair);
   }
 
@@ -289,7 +290,9 @@ export class AdminEditRepairComponent implements OnInit {
       partsUsed: [],
       remarks: ''
 
-    })
+    });
+
+    this.repairForm.get('radioID')?.disable();
 
     this.activatedRoute.params.subscribe((params: Params) => {
       this.repairID = params['id'];
@@ -301,7 +304,9 @@ export class AdminEditRepairComponent implements OnInit {
     // this.oneRepair$.subscribe((repair: Repair | null) => {
     //   if (repair) {
     //     this.radioID = repair.radioID;
-    //     this.store.dispatch(loadSerialRadio({ serialNumber: this.radioID }));
+        
+    //     this.store.dispatch(loadOneRadio({ radioID: this.radioID }));
+    //     this.store.dispatch(loadLocationByName({ locationName: repair.radioLocation }));
     //   }
     // });
 

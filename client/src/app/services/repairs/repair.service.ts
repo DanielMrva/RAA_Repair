@@ -28,7 +28,7 @@ export class RepairService {
   addRepair( addRepairFields: RepairFormFields ) {
     return this.apollo.mutate<{addRepair: Repair}> ({
       mutation: ADD_REPAIR,
-      variables: { addRepairFields }
+      variables: addRepairFields
     })
   }
 
