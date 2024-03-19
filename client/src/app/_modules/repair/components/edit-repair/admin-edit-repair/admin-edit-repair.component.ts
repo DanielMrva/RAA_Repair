@@ -47,10 +47,7 @@ export class AdminEditRepairComponent implements OnInit {
   locNameOptions: string[] = [];
   filteredLocNames$!: Observable<string[]>;
 
-  orgForm = new FormGroup({
-    selectedOrgControl: new FormControl<string>('')
 
-  })
 
 
   repairForm = new FormGroup({
@@ -104,11 +101,6 @@ export class AdminEditRepairComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>
   ) {
-  }
-
-  onOrgSelectionChange(org: string): void {
-    // Update the form control value with the selected organization
-    this.orgForm.controls.selectedOrgControl?.setValue(org);
   }
 
 
