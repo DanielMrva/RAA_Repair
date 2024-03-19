@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { LOCATION_NAMES, Location, UpdateLocationFields } from '@app/graphql/schemas';
+import { QUERY_LOCATIONS, QUERY_SINGLELOCATION, ORG_LOCATIONS, LOCATION_BY_NAME, LOCATION_NAMES, Location, UpdateLocationFields } from '@app/graphql/schemas';
 import { ADD_LOCATION, EDIT_LOCATION } from '@app/graphql/schemas/mutations';
-import { QUERY_LOCATIONS, QUERY_SINGLELOCATION, ORG_LOCATIONS } from '@app/graphql/schemas';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +18,15 @@ export class LocationService {
       }
     }) 
   };
+
+  queryLocationByName(locationName: string) {
+    return this.apollo.watchQuery<{locationByName: Location}> ({
+      query: LOCATION_BY_NAME,
+      variables: {
+        locationName
+      }
+    })
+  }
 
   allLocations() {
     return this.apollo.watchQuery<{allLocations: Location[]}> ({

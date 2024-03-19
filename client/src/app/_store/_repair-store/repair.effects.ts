@@ -1,13 +1,16 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as RepairActions from "./repair.actions";
+import { loadOneRadio} from "../_radio-store/radio.actions";
+import { loadLocationByName } from "../_location-store/location.actions";
 import { Router } from "@angular/router";
 import { RepairService } from "@app/services/repairs/repair.service";
 import { ToastService } from "@app/services/toast/toast.service";
 import { of, from } from "rxjs";
-import { switchMap, map, catchError } from "rxjs/operators";
+import { switchMap, map, catchError, mergeMap } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
+import { RepairFormFields } from "@app/graphql/schemas";
 
 @Injectable()
 export class RepairEffects {
@@ -19,18 +22,39 @@ export class RepairEffects {
         private router: Router
     ) { }
 
-    loadOneRepair$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(RepairActions.loadOneRepair),
-            switchMap(({ repairId }) =>
-                from(this.repairService.querySingleRepair(repairId)).pipe(
-                    map(({ data }) => RepairActions.loadOneRepairSuccess({ repair: data.repair })),
+    // loadOneRepair$ = createEffect(() =>
+    //     this.actions$.pipe(
+    //         ofType(RepairActions.loadOneRepair),
+    //         switchMap(({ repairID }) =>
+    //             from(this.repairService.querySingleRepair(repairID)).pipe(
+    //                 map(({ data }) => 
+    //                     RepairActions.loadOneRepairSuccess({ repair: data.repair })),
 
-                    catchError((error) => of(RepairActions.loadOneRepairFailure({ error })))
-                )
-            )
+
+    //                     catchError((error) => of(RepairActions.loadOneRepairFailure({ error }))
+    //                 )
+    //             )
+    //         )
+    //     )
+    // );
+
+    loadOneRepair$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RepairActions.loadOneRepair),
+      switchMap(({ repairID }) =>
+        this.repairService.querySingleRepair(repairID).pipe(
+          switchMap(({ data }) => {
+            return [
+                RepairActions.loadOneRepairSuccess({repair: data.repair}),
+                ...(data.repair.radioID ? [loadOneRadio({ radioID: data.repair.radioID})] : []),
+                ...(data.repair.radioLocation ? [loadLocationByName({ locationName: data.repair.radioLocation})] : [])
+            ];
+          }),
+          catchError((error) => of(RepairActions.loadOneRepairFailure({ error })))
         )
-    );
+      )
+    )
+  );
 
     loadAllRepairs$ = createEffect(() =>
         this.actions$.pipe(
@@ -49,59 +73,9 @@ export class RepairEffects {
     addRepair$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RepairActions.addRepair),
-            switchMap(({
-                radioSerial,
-                radioLocation,
-                dateReceived,
-                endUserPO,
-                raaPO,
-                dateSentTech,
-                dateRecTech,
-                dateSentEU,
-                techInvNum,
-                raaInvNum,
-                symptoms,
-                testFreq,
-                incRxSens,
-                incFreqErr,
-                incMod,
-                incPowerOut,
-                outRxSens,
-                outFreqErr,
-                outMod,
-                outPowerOut,
-                accessories,
-                workPerformed,
-                repHours,
-                partsUsed,
-                remarks
-            }) =>
+            switchMap(({ submittedRepair }) =>
                 from(this.repairService.addRepair(
-                    radioSerial,
-                    radioLocation,
-                    dateReceived,
-                    endUserPO,
-                    raaPO,
-                    dateSentTech,
-                    dateRecTech,
-                    dateSentEU,
-                    techInvNum,
-                    raaInvNum,
-                    symptoms,
-                    testFreq,
-                    incRxSens,
-                    incFreqErr,
-                    incMod,
-                    incPowerOut,
-                    outRxSens,
-                    outFreqErr,
-                    outMod,
-                    outPowerOut,
-                    accessories,
-                    workPerformed,
-                    repHours,
-                    partsUsed,
-                    remarks
+                    submittedRepair
                 )).pipe(
                     map(({ data }) => RepairActions.addRepairSuccess({ repair: data?.addRepair })),
 

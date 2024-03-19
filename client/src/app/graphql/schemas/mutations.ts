@@ -58,9 +58,11 @@ export const VALIDATE_ACCESS = gql`
 
 export const ADD_REPAIR = gql `
     mutation addRepair(
-        $radioSerial: String!
+        $radioID: String
+        $radioMake: String
+        $radioSerial: String
         $radioLocation: String
-        $dateReceived: String!
+        $dateReceived: String
         $endUserPO: String
         $raaPO: String
         $repairTag: Int
@@ -86,8 +88,10 @@ export const ADD_REPAIR = gql `
         $remarks: String
     ) {
         addRepair(
+            radioID: $radioID,
+            radioMake: $radioMake,
             radioSerial: $radioSerial,
-            radioLocation: $radioLocation
+            radioLocation: $radioLocation,
             dateReceived: $dateReceived,
             endUserPO: $endUserPO,
             raaPO: $raaPO,
@@ -113,8 +117,9 @@ export const ADD_REPAIR = gql `
             partsUsed: $partsUsed,
             remarks: $remarks
         ) {
-            
                 _id
+                radioID
+                radioMake
                 radioSerial
                 radioLocation
                 dateReceived
@@ -202,6 +207,8 @@ export const Edit_Repair = gql`
     mutation editRepair($id: ID!, $updates: UpdateRepairInput) {
         editRepair(_id: $id, updates: $updates) {
             _id
+            radioID
+            radioMake
             radioSerial
             radioLocation
             dateReceived

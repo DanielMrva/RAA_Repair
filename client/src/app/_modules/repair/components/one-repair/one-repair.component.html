@@ -1,4 +1,5 @@
-<div *ngIf="isLoading$ | async; else loadedData">
+<div *ngIf="repairIsLoading$ || radioIsLoading$ || locationIsLoading$ | async; else loadedData"
+  class="text-center my-5">
   <h2>Loading...</h2>
 </div>
 
@@ -6,229 +7,333 @@
 
 <ng-template #loadedData>
 
-  <div *ngIf="repairError$ | async as error">{{ error }}</div>
+  <div *ngIf="repairError$ | async as error" class="alert alert-danger">{{ error }}</div>
+  <div *ngIf="radioError$ | async as error" class="alert alert-danger">{{ error }}</div>
+  <div *ngIf="locationError$ | async as error" class="alert alert-danger">{{ error }}</div>
 
-  <div *ngIf="oneRepair$ | async as repair; else noRepairFound" class="container">
 
-    <div class="row">
-      <!-- TODO: I'd like a button to go to the associated radio, probably the best way to do that would be a one-radio [routerLink] with a query param of radioSerial?... -->
-      <!-- <a class="col-2" [routerLink]="['one-radio', ]"><i class="bi bi-arrow-90deg-left"></i></a> -->
-      <h2 class="text-center col-12">Repair {{repair.repairTag}} Details</h2>
-      <button (click)="generatePDF()" class="btn btn-primary">
-        Generate PDF
-      </button>
+  <ng-container *ngIf="oneRepair$ | async as repair; else noRepairFound">
+    <ng-container *ngIf="oneRadio$ | async as radio">
+      <ng-container *ngIf="oneLocation$ | async as location; else noLocationFound">
 
 
 
+        <div class="container my-4">
+          <section id="header-section">
 
-      <div class="row">
-        <h5 class="col-12 text-center">Timeline</h5>
-      </div>
-      <div class="row">
-        <div class="col">
-          <h6 class="row">Date Received: </h6>
-          <p class="row">{{repair.dateReceived | date: 'MMM d, y'}}</p>
+            <div class="text-center mb-4">
+              <h2>Repair {{repair.repairTag}} Details</h2>
+              <button (click)="generatePDF()" class="btn btn-primary my-2">
+                Generate PDF
+              </button>
+              <h4>Repair for Radio: <a [routerLink]="['/one-radio/', radio._id]"
+                  class="text-decoration-none">{{radio.make}} {{radio.serialNumber}}</a> At
+                {{location.locationName}}</h4>
+            </div>
+
+            <div class="accordion" id="radioAccordion" ngbAccordion>
+              <div ngbAccordionItem [collapsed]="true" class="accordion-item">
+                <h2 ngbAccordionHeader class="accordion-header" id="radioHeading">
+                  <button ngbAccordionButton class="accorion-button">
+                    Radio: {{radio.make}} - {{radio.model}} - {{radio.serialNumber}}
+                    Details
+                  </button>
+                </h2>
+                <div ngbAccordionCollapse class="accordion-collapse" aria-labelledby="timelineHeading">
+                  <div ngbAccordionBody class="accordion-body">
+                    <ng-template>
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5>
+                          <p class="card-text">
+                            <strong>Make:</strong> {{radio.make}}<br>
+                            <strong>Model:</strong> {{radio.model}}<br>
+                            <strong>Serial Number:</strong> {{radio.serialNumber}}<br>
+                            <strong>Date Sold:</strong> {{radio.dateSold | date:'mediumDate'}}<br>
+                            <strong>Date Entered</strong> {{radio.dateEntered | date: 'mediumDate'}}<br>
+                            <strong>Warranty:</strong> {{radio.warranty | date: 'mediumDate'}}<br>
+                            <strong>Refurbished:</strong> {{radio.refurb ? 'Yes': 'No'}}
+                          </p>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section>
+
+          <section id="timelineSection">
+
+            <div class="accordion" id="timelineAccordion" ngbAccordion>
+              <div ngbAccordionItem [collapsed]="true" class="accordion-item">
+                <h2 ngbAccordionHeader class="accordionHeading" id="timelineHeading">
+                  <button ngbAccordionButton class="accordion-button" aria-controls="timelineContent"> Timeline
+                  </button>
+                </h2>
+                <div ngbAccordionCollapse id="poContent" class="accordion-collapse" aria-labelledby="poHeading">
+                  <div ngbAccordionBody class="accordion-body">
+                    <ng-template>
+                      <div class="card">
+                        <div class="card-body">
+                          <!-- <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5> -->
+                          <p class="card-text">
+                            <strong>Date Sold:</strong> {{radio.dateSold | date: 'MMM d, y'}} <br>
+                            <strong>Date Received:</strong> {{repair.dateReceived | date: 'MMM d, y'}} <br>
+                            <strong>Date Sent to Tech:</strong> {{repair.dateSentTech | date: 'MMM d, y'}} <br>
+                            <strong>Date Rec from Tech:</strong> {{repair.dateRecTech | date: 'MMM d, y'}} <br>
+                            <strong>Date Sent to End User:</strong> {{repair.dateSentEU | date: 'MMM d, y'}} <br>
+                          </p>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </section>
+
+
+
+          <section id="poTrackingSection">
+
+            <div class="accordion" id="poAccordion" ngbAccordion>
+              <div ngbAccordionItem [collapsed]="true" class="accordion-item">
+                <h2 ngbAccordionHeader class="accordionHeading" id="poHeading">
+                  <button ngbAccordionButton class="accordion-button" aria-controls="poContent"> PO / Inventory Tracking
+                  </button>
+                </h2>
+                <div ngbAccordionCollapse id="poContent" class="accordion-collapse" aria-labelledby="poHeading">
+                  <div ngbAccordionBody class="accordion-body">
+                    <ng-template>
+                      <div class="card">
+                        <div class="card-body">
+                          <!-- <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5> -->
+                          <p class="card-text">
+                            <strong>RAA Invoice:</strong> {{repair.raaInvNum}} <br>
+                            <strong>RAA PO:</strong> {{repair.raaPO}} <br>
+                            <strong>End User PO:</strong> {{repair.endUserPO}} <br>
+                            <strong>Accessories:</strong>
+                          </p>
+                          <ul>
+                            <ng-container *ngFor="let acc of repair.accessories">
+                              <li>{{acc}}</li>
+                            </ng-container>
+                                
+                          </ul>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+          </section>
+
+          <section id="symptomsAndDiagnosticsSection">
+
+            <div class="accordion" id="symptomsAccordion" ngbAccordion>
+              <div ngbAccordionItem [collapsed]="true" class="accordion-item">
+                <h2 ngbAccordionHeader class="accordion-header" id="symptomsHeading" aria-controls="symptomsContent">
+                  <button ngbAccordionButton class="accordion-button"> Symptoms </button>
+                </h2>
+                <div ngbAccordionCollapse id="symptomsContent" class="accordion-collapse"
+                  aria-labledBy="symptomsHeading">
+                  <div ngbAccordionBody class="accordion-body">
+                    <ng-template>
+                      <div class="card">
+                        <div class="card-body">
+                          <p class="card-text">
+                            <strong>Symptoms:</strong>
+                          </p>
+                          <ul>
+                            <ng-container *ngFor="let sym of repair.symptoms">
+                              <li>{{sym}}</li>
+                            </ng-container>
+                          </ul>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="accordion" id="diagnosticsAccordion" ngbAccordion>
+              <div ngbAccordionItem [collapsed]="true" class="accordion-item">
+                <h2 ngbAccordionHeader class="accordion-header" id="diagnosticsHeading"
+                  aria-controls="diagnosticsContent">
+                  <button ngbAccordionButton class="accordion-button"> Diagnostics </button>
+                </h2>
+                <div ngbAccordionCollapse id="diagnosticsContent" class="accordion-collapse"
+                  aria-labledBy="diagnosticsHeading">
+                  <div ngbAccordionBody class="accordion-body">
+                    <ng-template>
+                      <div class="card">
+                        <div class="card-body">
+                          <p class="card-text">
+                            <strong>Test Frequency:</strong> {{repair.testFreq}}<br>
+                            <strong>Diagnositcs:</strong> <br>
+                          </p>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">
+                                  Attribute
+                                </th>
+                                <th scope="col">
+                                  In
+                                </th>
+                                <th scope="col">
+                                  Out
+                                </th>
+                                <th scope="col">
+                                  Unit
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  RX Sensitivity
+                                </td>
+                                <td>
+                                  {{repair.incRxSens}}
+                                </td>
+                                <td>
+                                  {{repair.outRxSens}}
+                                </td>
+                                <td>
+                                  uV
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Freq Err
+                                </td>
+                                <td>
+                                  {{repair.incFreqErr}}
+                                </td>
+                                <td>
+                                  {{repair.outFreqErr}}
+                                </td>
+                                <td>
+                                  Hz
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Modulation
+                                </td>
+                                <td>
+                                  {{repair.incMod}}
+                                </td>
+                                <td>
+                                  {{repair.outMod}}
+                                </td>
+                                <td>
+                                  KHz
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Power Output
+                                </td>
+                                <td>
+                                  {{repair.incPowerOut}}
+                                </td>
+                                <td>
+                                  {{repair.outPowerOut}}
+                                </td>
+                                <td>
+                                  Watts
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </section>
+
+          <section id="workDetailsSection">
+
+            <div class="accordion" id="workDetailsAccordion" ngbAccordion>
+              <div ngbAccordionItem [collapsed]="true" class="accordion-item">
+                <h2 ngbAccordionHeader class="accordion-header" id="workDetailsHeading"
+                  aria-controls="workDetailsContent">
+                  <button ngbAccordionButton class="accordion-button"> Work Performed </button>
+                </h2>
+                <div ngbAccordionCollapse id="workDetailsContent" class="accordion-collapse"
+                  aria-labledBy="workDetailsHeading">
+                  <div ngbAccordionBody class="accordion-body">
+                    <ng-template>
+                      <div class="card">
+                        <div class="card-body">
+                          <p class="card-text">
+                            <strong>Tech Invoice:</strong> {{repair.techInvNum}}<br>
+                            <strong>Repair Hours:</strong> {{repair.repHours}} <br>
+                            <strong>Work Performed:</strong><br>
+                          </p>
+                          <ul>
+                            <ng-container *ngFor="let work of repair.workPerformed">
+                              <li>{{work}}</li>
+                            </ng-container>
+                          </ul>
+                          <p>
+                            <strong>Parts Used:</strong><br>
+                          </p>
+                          <ul>
+                            <ng-container *ngFor="let part of repair.partsUsed">
+                              <li>{{part}}</li>
+                            </ng-container>
+                          </ul>
+                          <p>
+                            <strong>Remarks:</strong><br>
+                            {{repair.remarks}}
+                          </p>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </section>
+
         </div>
-        <div class="col">
-          <h6 class="row">Date Sent Tech: </h6>
-          <p class="row">{{repair.dateSentTech | date: 'MMM d, y'}}</p>
-        </div>
-        <div class="col">
-          <h6 class="row">Date Received from Tech: </h6>
-          <p class="row">{{repair.dateRecTech | date: 'MMM d, y'}}</p>
-        </div>
-        <div class="col">
-          <h6 class="row">Date Sent End User: </h6>
-          <p class="row">{{repair.dateSentEU | date: 'MMM d, y'}}</p>
-        </div>
-      </div>
 
 
-
-      <div class="row">
-        <h5 class="col-12 text-center">Inventory / PO Tracking</h5>
-      </div>
-      <div class="row">
-
-
-
-        <div class="col">
-          <h6 class="row">RAA Invoice: </h6>
-          <p class="row">{{repair.raaInvNum}}</p>
-        </div>
-
-        <div class="col">
-          <h6 class="row">RAA PO: </h6>
-          <p class="row">{{repair.raaPO}}</p>
-        </div>
-
-        <div class="col">
-          <h6 class="row">End User PO: </h6>
-          <p class="row">{{repair.endUserPO}}</p>
-        </div>
-
-
-
-      </div>
-
-      <div class="row">
-
-        <div class="col">
-          <h6 class="row">Radio Serial: </h6>
-          <p class="row">{{repair.radioSerial}}</p>
-        </div>
-
-        <div class="col">
-          <h6 class="row">Accessories: </h6>
-          <ul class="row">
-            <ng-container *ngFor="let acc of repair.accessories">
-              <li>{{acc}}</li>
-            </ng-container>
-          </ul>
-        </div>
-      </div>
-
-      <div class="row">
-        <h5 class="col-12 text-center">Symptoms and Diagnositcs</h5>
-      </div>
-      <div class="row">
-        <div class="col-4">
-          <h6 class="row">Symptoms: </h6>
-          <ul class="row">
-            <ng-container *ngFor="let sym of repair.symptoms">
-              <li>{{sym}}</li>
-            </ng-container>
-          </ul>
-        </div>
-
-        <div class="col-8">
-          <h6 class="row">Diagnostics: </h6>
-          <div class="col">
-            <h6 class="row">Test Frequency</h6>
-            <p class="row">{{repair.testFreq}}</p>
-          </div>
-          <div class="row">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">
-                    Attribute
-                  </th>
-                  <th scope="col">
-                    In
-                  </th>
-                  <th scope="col">
-                    Out
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    RX Sensitivity
-                  </td>
-                  <td>
-                    {{repair.incRxSens}}
-                  </td>
-                  <td>
-                    {{repair.outRxSens}}
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Freq Err
-                  </td>
-                  <td>
-                    {{repair.incFreqErr}}
-                  </td>
-                  <td>
-                    {{repair.outFreqErr}}
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Modulation
-                  </td>
-                  <td>
-                    {{repair.incMod}}
-                  </td>
-                  <td>
-                    {{repair.outMod}}
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    Power Output
-                  </td>
-                  <td>
-                    {{repair.incPowerOut}}
-                  </td>
-                  <td>
-                    {{repair.outPowerOut}}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="row">
-        <h5 class="col-12 text-center">Work Details</h5>
-      </div>
-      <div class="row">
-
-        <div class="col">
-          <h6 class="row">Tech Invoice Number: </h6>
-          <p class="row">{{repair.techInvNum}}</p>
-        </div>
-
-        <div class="col">
-          <h6 class="row">Repair Hours: </h6>
-          <p class="row">{{repair.repHours}}</p>
-        </div>
-
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <h6 class="row">Work Performed</h6>
-          <ul class="row">
-            <ng-container *ngFor="let work of repair.workPerformed">
-              <li>{{work}}</li>
-            </ng-container>
-          </ul>
-        </div>
-
-        <div class="col">
-          <h6 class="row">Parts Used</h6>
-          <ul class="row">
-            <ng-container *ngFor="let part of repair.partsUsed">
-              <li>{{part}}</li>
-            </ng-container>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <h6 class="row">Remarks: </h6>
-          <p class="row">{{repair.remarks}}</p>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
+      </ng-container>
+    </ng-container>
+  </ng-container>
 
 </ng-template>
 
 <ng-template #noRepairFound>
-  <div class="container">
+  <div class="container text-center my-5">
     <h2>No Repair Found</h2>
-    <!-- You can add additional content or messages here for when no radio is found -->
+  </div>
+</ng-template>
+
+<ng-template #noLocationFound>
+  <div class="container text-center my-5">
+    <h2>No Location Found</h2>
   </div>
 </ng-template>

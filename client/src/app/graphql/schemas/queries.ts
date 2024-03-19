@@ -59,8 +59,8 @@ export const QUERY_SINGLERADIO = gql`
     ${RADIO_FIELDS_FRAGMENT}
     ${SERVICE_RECORD_FRAGMENT}
 
-    query radio($radioId: String!) {
-        radio(radioId: $radioId) {
+    query radio($radioID: String!) {
+        radio(radioID: $radioID) {
             ... RadioFieldsFragment
         }
     }
@@ -88,8 +88,8 @@ export const ALL_REPAIRS = gql`
 
 export const QUERY_SINGLEREPAIR = gql`
     ${SERVICE_RECORD_FRAGMENT}
-    query repair($repairId: String!) {
-        repair(repairId: $repairId) {
+    query repair($repairID: String!) {
+        repair(repairID: $repairID) {
             ... ServiceRecordFragment
         }
     }
@@ -152,6 +152,17 @@ export const QUERY_SINGLELOCATION = gql`
     ${SERVICE_RECORD_FRAGMENT}
     query location($locationId: String!) {
         location(locationId: $locationId) {
+            ... LocationFieldsFragment
+        }
+    }
+`
+
+export const LOCATION_BY_NAME = gql`
+    ${LOCATION_FIELDS_FRAGMENT}
+    ${RADIO_FIELDS_FRAGMENT}
+    ${SERVICE_RECORD_FRAGMENT}
+    query locationByName($locationName: String!) {
+        locationByName(locationName: $locationName) {
             ... LocationFieldsFragment
         }
     }

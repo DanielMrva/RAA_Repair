@@ -32,17 +32,17 @@ const resolvers = {
         allRadios: async () => {
             return Radio.find().populate(["serviceRecord"]);
         },
-        radio: async (parent, { radioId }) => {
-            return Radio.findById({ _id: radioId }).populate(["serviceRecord"]);
+        radio: async (parent, { radioID }) => {
+            return Radio.findById({ _id: radioID }).populate(["serviceRecord"]);
         },
-        serialRadio: async (parent, { serialNumber }) => {
-            return Radio.findOne({ serialNumber: serialNumber });
+        serialRadio: async (parent, { serialNumber, make }) => {
+            return Radio.findOne({ $and: [{ serialNumber: serialNumber }, { make: make }] });
         },
         allRepairs: async () => {
             return Repair.find();
         },
-        repair: async (parent, { repairId }) => {
-            return Repair.findById({ _id: repairId });
+        repair: async (parent, { repairID }) => {
+            return Repair.findById({ _id: repairID });
         },
         orgRadios: async (parent, { orgName }) => {
             return Radio.find({ orgName: orgName }).populate(["serviceRecord"]);
@@ -53,12 +53,6 @@ const resolvers = {
         orgNames: async () => {
             return Organization.find();
         },
-        // org: async (parent, { orgId }) => {
-        //     return Organization.findById({ _id: orgId }).populate(["users", "radios"]);
-        // },
-        // allOrgs: async () => {
-        //     return Organization.find().populate(["users", "radios"])
-        // },
         org: async (parent, { orgId }) => {
             return Organization.findById({ _id: orgId }).populate(
                 [
@@ -94,6 +88,14 @@ const resolvers = {
                 populate: {
                     path: "serviceRecord",
                 },
+            });
+        },
+        locationByName: async (parent, { locationName } ) => {
+            return Location.findOne( { locationName: locationName}).populate({
+                path: "radios",
+                populate: {
+                    path: "serviceRecord"
+                }
             });
         },
         orgLocations: async(parent, { orgName }) => {
@@ -162,6 +164,8 @@ const resolvers = {
         addRepair: async (
             parent,
             {
+                radioID,
+                radioMake,
                 radioSerial,
                 radioLocation,
                 dateReceived,
@@ -192,20 +196,21 @@ const resolvers = {
         ) => {
 
             try {
-                const radio = await Radio.findOne({ serialNumber: radioSerial });
+
+                const radio = await Radio.findOne({ _id: radioID });
 
 
                 if (!radio) {
                     throw new GraphQLError('Radio not found', {
                         extensions: {
                             code: 'RADIO_NOT_FOUND',
-                            argumentName: 'radioSerial'
+                            argumentName: 'radioID'
                         }
                     });
                 }
 
                 const highestRepair = await Repair.find({}).sort({ repairTag: -1 }).limit(1);
-                console.log(highestRepair)
+                // console.log(highestRepair)
 
                 const highestRepairTag = highestRepair[0].repairTag;
                 console.log(`HRT: ${highestRepairTag}`);
@@ -214,6 +219,8 @@ const resolvers = {
 
 
                 const repair = await Repair.create({
+                    radioID,
+                    radioMake,
                     radioSerial,
                     radioLocation,
                     dateReceived,
@@ -244,7 +251,7 @@ const resolvers = {
 
 
                 await Radio.findOneAndUpdate(
-                    { serialNumber: repair.radioSerial },
+                    { _id: repair.radioID },
                     { $addToSet: { serviceRecord: repair._id } }
                 )
 
@@ -318,11 +325,6 @@ const resolvers = {
                     refurb,
                     radioType
                 });
-
-                // await Organization.findOneAndUpdate(
-                //     { orgName: orgName },
-                //     { $addToSet: { radios: newRadio._id } }
-                // );
 
                 await Location.findOneAndUpdate(
                     { locationName: locationName },

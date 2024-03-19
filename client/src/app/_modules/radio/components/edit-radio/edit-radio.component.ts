@@ -36,7 +36,7 @@ export class EditRadioComponent implements OnInit{
   locNameOptions: string[] = [];
   filteredLocNames$!: Observable<string[]>;
 
-  radioId!: string;
+  radioID!: string;
 
   editRadioForm = new FormGroup({
     orgName: new FormControl<string>(''),
@@ -68,7 +68,7 @@ export class EditRadioComponent implements OnInit{
 
   loadRadio(id: string): void {
 
-    this.store.dispatch(loadOneRadio({radioId: id}))
+    this.store.dispatch(loadOneRadio({radioID: id}))
   };
 
   populateForm() {
@@ -110,11 +110,11 @@ export class EditRadioComponent implements OnInit{
 
     this.oneRadio$.subscribe((radio: Radio | null) => {
       if (radio) {
-        this.radioId = radio._id
+        this.radioID = radio._id
       }
     })
 
-    this.store.dispatch(editRadio({id: this.radioId, updates: updateRadio}))
+    this.store.dispatch(editRadio({id: this.radioID, updates: updateRadio}))
   }
 
   onSubmit() {
@@ -207,8 +207,8 @@ export class EditRadioComponent implements OnInit{
     })
 
     this.activatedRoute.params.subscribe((params: Params) => {
-      this.radioId = params['id'];
-      this.loadRadio(this.radioId);
+      this.radioID = params['id'];
+      this.loadRadio(this.radioID);
     })
 
     this.populateForm();

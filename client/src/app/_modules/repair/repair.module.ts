@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -9,6 +10,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
+
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 // import { MatSelectModule } from '@angular/material/select';
 // import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -23,6 +29,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RepairEffects } from '@app/_store/_repair-store/repair.effects';
 import { repairReducer } from '@app/_store/_repair-store/repair.reducers';
+import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-repair/admin-edit-repair.component';
 
 
 
@@ -32,15 +39,19 @@ import { repairReducer } from '@app/_store/_repair-store/repair.reducers';
     AddRepairComponent,
     OneRepairComponent,
     EditRepairComponent,
-    AdminAddRepairComponent
+    AdminAddRepairComponent,
+    AdminEditRepairComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     ReactiveFormsModule,
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
+    MatIconModule,
+    MatDialogModule,
     // BrowserAnimationsModule,
     MatRadioModule,
     // MatSelectModule,
@@ -48,6 +59,7 @@ import { repairReducer } from '@app/_store/_repair-store/repair.reducers';
     // MatFormFieldModule,
     MatAutocompleteModule,
     MatFormFieldModule,
+    NgbAccordionModule,
     StoreModule.forFeature('repair', repairReducer),
     EffectsModule.forFeature([RepairEffects])
   ]

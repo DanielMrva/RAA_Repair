@@ -20,13 +20,13 @@ export class OneRadioComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      const radioId = params['id'];
-      this.loadRadio(radioId)
+      const radioID = params['id'];
+      this.loadRadio(radioID)
     });
   }
 
-  loadRadio(radioId: string): void {
-    this.radioService.querySingleRadio(radioId).valueChanges
+  loadRadio(radioID: string): void {
+    this.radioService.querySingleRadio(radioID).valueChanges
     .subscribe(({ data }) => {
       this.radio = data.radio;
     });

@@ -4,9 +4,15 @@ const { Schema, model } = require("mongoose");
 
 
 const repairSchema = new Schema({
-    radioSerial: {
+    radioID: {
         type: String,
-        required: true
+        // required: true
+    },
+    radioMake: {
+        type: String,
+    },
+    radioSerial: {
+        type: String
     },
     radioLocation: {
         type: String

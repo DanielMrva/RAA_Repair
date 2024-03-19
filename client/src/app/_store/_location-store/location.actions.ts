@@ -16,6 +16,21 @@ export const loadOneLocationFailure = createAction(
     props<{ error: string}>()
 );
 
+export const loadLocationByName = createAction(
+    '[Location Page] Load Location By Name',
+    props<{ locationName: string}>()
+);
+
+export const loadLocationByNameSuccess = createAction(
+    '[Location Service] Load Location By Name Successs',
+    props<{ location: Location}>()
+);
+
+export const loadLocationByNameFailure = createAction(
+    '[Location Service] Load Location By Name Failure',
+    props<{ error: string}>()
+);
+
 export const loadAllLocations = createAction('[Location Reports Page] Load All Locations');
 
 export const loadAllLocationsSuccess = createAction(

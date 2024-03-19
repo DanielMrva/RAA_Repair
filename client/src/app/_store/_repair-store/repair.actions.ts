@@ -1,9 +1,9 @@
 import { createAction, props } from "@ngrx/store";
-import { Repair, UpdateRepairFields } from "@app/graphql/schemas";
+import { Repair, RepairFormFields } from "@app/graphql/schemas";
 
 export const loadOneRepair = createAction(
     '[Repair Page] Load One Repair',
-    props<{ repairId: string }>()
+    props<{ repairID: string }>()
 );
 
 export const loadOneRepairSuccess = createAction(
@@ -30,33 +30,7 @@ export const loadAllRepairsFailure = createAction(
 
 export const addRepair = createAction(
     '[Add Repair Page] Add Repair',
-    props<{
-        radioSerial: string,
-        radioLocation: string,
-        dateReceived: string,
-        endUserPO: string,
-        raaPO: string,
-        dateSentTech: string,
-        dateRecTech: string,
-        dateSentEU: string,
-        techInvNum: string,
-        raaInvNum: string,
-        symptoms: string[],
-        testFreq: string,
-        incRxSens: string,
-        incFreqErr: string,
-        incMod: string,
-        incPowerOut: string,
-        outRxSens: string,
-        outFreqErr: string,
-        outMod: string,
-        outPowerOut: string,
-        accessories: string[],
-        workPerformed: string[],
-        repHours: number,
-        partsUsed: string[],
-        remarks: string,
-    }>()
+    props<{ submittedRepair: RepairFormFields }>()
 );
 
 export const addRepairSuccess = createAction(
@@ -72,7 +46,7 @@ export const addRepairFailure = createAction(
 export const editRepair = createAction(
     '[Edit Repair Page] Edit Repair',
     props<{ id: string,
-            updates: UpdateRepairFields
+            updates: RepairFormFields
     }>()
 );
 

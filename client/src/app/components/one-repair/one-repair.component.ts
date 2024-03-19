@@ -18,13 +18,13 @@ export class OneRepairComponent implements OnInit {
 
   ngOnInit(): void {
       this.route.params.subscribe((params) => {
-        const repairId = params['id'];
-        this.loadRepair(repairId)
+        const repairID = params['id'];
+        this.loadRepair(repairID)
       });
   }
 
-  loadRepair(repairId: string): void {
-    this.repairService.querySingleRepair(repairId)
+  loadRepair(repairID: string): void {
+    this.repairService.querySingleRepair(repairID)
     .subscribe(({ data }) => {
       this.repair = data.repair;
     });

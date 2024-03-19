@@ -48,7 +48,7 @@ const routes: Routes = [
     canActivate: [authGuard, roleGuard]
   },
   {
-    path: 'submit/:serialNumber?',
+    path: 'submit/:radioID?',
     component: AdminAddRepairComponent,
     pathMatch: 'full',
     data: {
