@@ -43,6 +43,7 @@ import { UserDashboardComponent } from './components/dashboard/dashboards/user-d
 import { TechDashboardComponent } from './components/dashboard/dashboards/tech-dashboard/tech-dashboard.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { AuthEffects } from './_store/_auth-store/auth.effects';
+import { OrgLocationSelectorComponent } from './_components/utilComponents/org-location-selector/org-location-selector.component';
 
 @NgModule({
     declarations: [
@@ -55,7 +56,8 @@ import { AuthEffects } from './_store/_auth-store/auth.effects';
         DashboardComponent,
         AdminDashboardComponent,
         UserDashboardComponent,
-        TechDashboardComponent
+        TechDashboardComponent,
+        OrgLocationSelectorComponent
     ],
     imports: [
         BrowserModule,
