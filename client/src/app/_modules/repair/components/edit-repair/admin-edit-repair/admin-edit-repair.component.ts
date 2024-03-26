@@ -1,20 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
-import { Organization, Radio, Repair, RepairFormFields } from '@app/graphql/schemas/typeInterfaces';
+import { Repair, RepairFormFields } from '@app/graphql/schemas/typeInterfaces';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { editRepair, loadOneRepair } from '@app/_store/_repair-store/repair.actions';
 import { selectOneRepair, repairErrorSelector, repairLoadingSelector } from '@app/_store/_repair-store/repair.selectors';
-import { selectLocationNames, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
-import { selectOrgName, selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
-import { selectOneRadio, selectOneRadioOrg } from '@app/_store/_radio-store/radio.selectors';
-import { loadOneRadio, loadSerialRadio } from '@app/_store/_radio-store/radio.actions';
-import { loadLocationByName, loadLocationNames } from '@app/_store/_location-store/location.actions';
-import { Observable, combineLatest, of } from 'rxjs';
-import { filter, map, startWith } from 'rxjs/operators'
-import { Location } from '@app/graphql/schemas';
-import { orgErrorSelector, orgLoadingSelector, selectOrgNames } from '@app/_store/_org-store/org.selectors';
+import { radioErrorSelector, radioLoadingSelector, selectOneRadio } from '@app/_store/_radio-store/radio.selectors';
+import { loadOneRadio } from '@app/_store/_radio-store/radio.actions';
+
 
 
 @Component({
@@ -24,31 +18,20 @@ import { orgErrorSelector, orgLoadingSelector, selectOrgNames } from '@app/_stor
 })
 export class AdminEditRepairComponent implements OnInit {
 
+  initialOrgName: string | null = null;
+
+  oneRadio$ = this.store.select(selectOneRadio);
+  radioError$ = this.store.select(radioErrorSelector);
+  radioIsLoading$ = this.store.select(radioLoadingSelector);
+
+  filteredLocationNames: string[] = []
+
   isLoading$ = this.store.select(repairLoadingSelector);
   repairError$ = this.store.select(repairErrorSelector);
   oneRepair$ = this.store.select(selectOneRepair);
 
   repairID!: string;
   repairTag!: number;
-  radioID!: string;
-
-  orgNames$ = this.store.select(selectOrgNames);
-  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-  orgNameError$ = this.store.select(orgErrorSelector);
-  orgNameOptions: string[] = [];
-  filteredOrgNames$!: Observable<string[]>;
-  selectedOrg$: Observable<string | null> = of('');
-
-  parentRadio$ = this.store.select(selectOneRadio);
-
-  locationNames$ = this.store.select(selectLocationNames);
-  isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
-  locationNameError$ = this.store.select(locationErrorSelector);
-  locNameOptions: string[] = [];
-  filteredLocNames$!: Observable<string[]>;
-
-
-
 
   repairForm = new FormGroup({
     radioID: new FormControl<string>(''),
@@ -78,6 +61,7 @@ export class AdminEditRepairComponent implements OnInit {
     repHours: new FormControl<number>(0),
     partsUsed: new FormArray([]),
     remarks: new FormControl<string>(''),
+    orgName: new FormControl<string>('')
   });
 
   get symptomsArray(): FormArray {
@@ -135,7 +119,6 @@ export class AdminEditRepairComponent implements OnInit {
           outPowerOut: repair.outPowerOut,
           repHours: repair.repHours,
           remarks: repair.remarks
-
         });
 
         repair.symptoms.forEach(symptom => {
@@ -251,8 +234,6 @@ export class AdminEditRepairComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.store.dispatch(loadLocationNames());
-
     this.repairForm.patchValue({
       radioID: '',
       radioMake: '',
@@ -286,66 +267,33 @@ export class AdminEditRepairComponent implements OnInit {
 
     this.repairForm.get('radioID')?.disable();
 
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.repairID = params['id'];
-      this.loadRepair(this.repairID);
-    });
-
-    this.populateForm();
-
-    // this.oneRepair$.subscribe((repair: Repair | null) => {
-    //   if (repair) {
-    //     this.radioID = repair.radioID;
-        
-    //     this.store.dispatch(loadOneRadio({ radioID: this.radioID }));
-    //     this.store.dispatch(loadLocationByName({ locationName: repair.radioLocation }));
-    //   }
-    // });
-
-    this.filteredOrgNames$ = this.selectedOrg$.pipe(
-      startWith(''),
-      map(value => this._filterOrgs(value || ''))
-    )
-
-    this.filteredLocNames$ = combineLatest([
-      this.repairForm.controls.radioLocation.valueChanges.pipe(startWith('')),
-      this.selectedOrg$.pipe(startWith('')),
-      this.locationNames$,
-    ]).pipe(
-      map(([locName, orgName, locations]) => this._filterLocs(locName, orgName, locations))
-    );
-
-  };
-
-  private _filterOrgs(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    let orgOptions: string[] = []
-
-    this.orgNames$.subscribe((orgList: Organization[] | []) => {
-      if (orgList.length > 0) {
-        orgOptions = orgList.map(org => org.orgName)
+    this.activatedRoute.paramMap.subscribe(params => {
+      const repairID = params.get('id');
+      if (repairID) {
+        this.loadRepair(repairID);
+        this.oneRepair$.subscribe(repair => {
+          if (repair) {
+            this.store.dispatch(loadOneRadio({radioID: repair.radioID}));
+          }
+          this.oneRadio$.subscribe(radio => {
+            if(radio) {
+              this.initialOrgName = radio.orgName;
+            }
+          })
+        })
       }
     })
 
-    return orgOptions.filter(option => option.toLowerCase().includes(filterValue))
+    this.populateForm();
 
+  };
+
+  handleOrgNameSelected(orgName: string): void {
+    this.repairForm.patchValue({ orgName });
   }
 
-
-  private _filterLocs(locValue: string | null, orgValue: string | null, locations: Location[]): string[] {
-    const filteredLocValue = (locValue || '').toLowerCase();
-    const filteredOrgValue = (orgValue || '').toLowerCase();
-
-    let locOptions: string[] = [];
-
-    locations.forEach((loc) => {
-      if (loc.locationName.toLowerCase().includes(filteredLocValue) && loc.orgName.toLowerCase() === filteredOrgValue) {
-        locOptions.push(loc.locationName);
-      }
-    });
-
-    return locOptions;
+  handleFilteredLocations(locations: string[]): void {
+    this.filteredLocationNames = locations;
   }
 
 }

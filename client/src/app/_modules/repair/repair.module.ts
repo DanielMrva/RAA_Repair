@@ -25,6 +25,8 @@ import { OneRepairComponent } from './components/one-repair/one-repair.component
 import { EditRepairComponent } from './components/edit-repair/edit-repair.component';
 import { AdminAddRepairComponent } from './components/add-repair/admin-add-repair/admin-add-repair.component';
 
+import { OrgLocationSelectorComponent } from '@app/_components/utilComponents/org-location-selector/org-location-selector.component';
+
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RepairEffects } from '@app/_store/_repair-store/repair.effects';
@@ -41,6 +43,7 @@ import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-re
     EditRepairComponent,
     AdminAddRepairComponent,
     AdminEditRepairComponent,
+    OrgLocationSelectorComponent
   ],
   imports: [
     CommonModule,

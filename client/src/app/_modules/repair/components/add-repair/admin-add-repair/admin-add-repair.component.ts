@@ -1,20 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
-import { Organization, Radio, Repair, RepairFormFields, Location } from '@app/graphql/schemas';
+import { RepairFormFields } from '@app/graphql/schemas';
 import { Store } from '@ngrx/store';
 import { addRepair } from '@app/_store/_repair-store/repair.actions';
-import { selectLocationNames, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
-import { loadLocationNames } from '@app/_store/_location-store/location.actions';
-import { Observable, combineLatest, BehaviorSubject, merge, withLatestFrom, first, of } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
+import { withLatestFrom, first, of } from 'rxjs';
 import { loadOneRadio } from '@app/_store/_radio-store/radio.actions';
 import { radioErrorSelector, radioLoadingSelector, selectOneRadio } from '@app/_store/_radio-store/radio.selectors';
-import { loadOrgNames } from '@app/_store/_org-store/org.actions';
-import { orgErrorSelector, orgLoadingSelector, selectOrgNames } from '@app/_store/_org-store/org.selectors';
 import { MatDialogModule } from '@angular/material/dialog';
-import { FilterService } from '@app/services/utilityServices/filter.service';
 
 @Component({
   selector: 'app-admin-add-repair',
@@ -23,23 +17,14 @@ import { FilterService } from '@app/services/utilityServices/filter.service';
 })
 export class AdminAddRepairComponent implements OnInit {
 
-  private orgNameSubject = new BehaviorSubject<string | null>(null);
+  initialOrgName: string | null = null;
 
   oneRadio$ = this.store.select(selectOneRadio);
   radioError$ = this.store.select(radioErrorSelector);
   radioIsLoading$ = this.store.select(radioLoadingSelector);
 
-  orgNames$ = this.store.select(selectOrgNames);
-  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-  orgNameError$ = this.store.select(orgErrorSelector);
-  orgNameOptions: string[] = [];
-  filteredOrgNames$!: Observable<string[]>;
 
-  locationNames$ = this.store.select(selectLocationNames);
-  isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
-  locationNameError$ = this.store.select(locationErrorSelector);
-  locNameOptions: string[] = [];
-  filteredLocNames$!: Observable<string[]>;
+  filteredLocationNames: string[] = [];
 
   adminRepairForm = new FormGroup({
     radioID: new FormControl<string>(''),
@@ -95,7 +80,6 @@ export class AdminAddRepairComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>,
     private matDialog: MatDialogModule,
-    private filterService: FilterService
   ) { }
 
   addSymptom() {
@@ -154,8 +138,8 @@ export class AdminAddRepairComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadOrgNames());
-    this.store.dispatch(loadLocationNames());
+    // this.store.dispatch(loadOrgNames());
+    // this.store.dispatch(loadLocationNames());
 
     this.activatedRoute.paramMap.subscribe(params => {
       const radioID = params.get('radioID');
@@ -165,38 +149,25 @@ export class AdminAddRepairComponent implements OnInit {
         this.oneRadio$.subscribe(radio => {
           if (radio) {
             this.adminRepairForm.patchValue({
-              orgName: radio.orgName,
+              radioID: radio._id,
               radioSerial: radio.serialNumber,
               radioMake: radio.make
             });
-            this.orgNameSubject.next(radio.orgName);
+            this.initialOrgName = radio.orgName;
           }
         });
       }
     });
 
-
-    
-
-    this.filteredOrgNames$ = this.adminRepairForm.controls.orgName.valueChanges.pipe(
-      startWith(''),
-      switchMap(value => 
-        this.filterService.filterOrgs(value ?? '', this.orgNames$)
-      )
-    );
-
-    this.filteredLocNames$ = combineLatest([
-      this.adminRepairForm.controls.radioLocation.valueChanges.pipe(startWith('')),
-      merge(
-        this.orgNameSubject.asObservable(),
-        this.adminRepairForm.controls.orgName.valueChanges
-      ).pipe(startWith(null)),
-      this.locationNames$,
-    ]).pipe(
-      map(([locName, orgName, locations]) => this.filterService.filteredLocs(locName, orgName, locations))
-    );
-
   };
+
+  handleOrgNameSelected(orgName: string): void {
+    this.adminRepairForm.patchValue({ orgName });
+  }
+
+  handleFilteredLocations(locations: string[]): void {
+    this.filteredLocationNames = locations;
+  }
 
   onSubmit() {
 
@@ -244,43 +215,6 @@ export class AdminAddRepairComponent implements OnInit {
         this.submitRepair(submittedRepair)
       };
     });
-
-    // if(this.adminRepairForm.value.radioLocation) {
-
-    // }
-
-    // const submittedRepair: RepairFormFields = {
-    //   radioID: this.adminRepairForm.value.radioID ?? '',
-    //   radioMake: this.adminRepairForm.value.radioMake ?? '',
-    //   radioSerial: this.adminRepairForm.value.radioSerial ?? '',
-    //   radioLocation: this.adminRepairForm.value.radioLocation ?? '',
-    //   dateReceived: this.adminRepairForm.value.dateReceived ?? new Date(),
-    //   endUserPO: this.adminRepairForm.value.endUserPO ?? '',
-    //   raaPO: this.adminRepairForm.value.raaPO ?? '',
-    //   dateSentTech: this.adminRepairForm.value.dateSentTech ?? new Date(),
-    //   dateRecTech: this.adminRepairForm.value.dateRecTech ?? new Date(),
-    //   dateSentEU: this.adminRepairForm.value.dateSentEU ?? new Date(),
-    //   techInvNum: this.adminRepairForm.value.techInvNum ?? '',
-    //   raaInvNum: this.adminRepairForm.value.raaInvNum ?? '',
-    //   symptoms: Array.isArray(this.adminRepairForm.value.symptoms) ? this.adminRepairForm.value.symptoms : [''],
-    //   testFreq: this.adminRepairForm.value.testFreq ?? '',
-    //   incRxSens: this.adminRepairForm.value.incRxSens ?? '',
-    //   incFreqErr: this.adminRepairForm.value.incFreqErr ?? '',
-    //   incMod: this.adminRepairForm.value.incMod ?? '',
-    //   incPowerOut: this.adminRepairForm.value.incPowerOut ?? '',
-    //   outRxSens: this.adminRepairForm.value.outRxSens ?? '',
-    //   outFreqErr: this.adminRepairForm.value.outFreqErr ?? '',
-    //   outMod: this.adminRepairForm.value.outMod ?? '',
-    //   outPowerOut: this.adminRepairForm.value.outPowerOut ?? '',
-    //   accessories: Array.isArray(this.adminRepairForm.value.accessories) ? this.adminRepairForm.value.accessories : [''],
-    //   workPerformed: Array.isArray(this.adminRepairForm.value.workPerformed) ? this.adminRepairForm.value.workPerformed : [''],
-    //   repHours: this.adminRepairForm.value.repHours ?? 0,
-    //   partsUsed: Array.isArray(this.adminRepairForm.value.partsUsed) ? this.adminRepairForm.value.partsUsed : [''],
-    //   remarks: this.adminRepairForm.value.remarks ?? '',
-    // }
-
-
-    // this.submitRepair(submittedRepair)
 
   };
 
