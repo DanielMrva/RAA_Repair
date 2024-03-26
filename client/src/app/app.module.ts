@@ -7,6 +7,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // import { MatRadioModule } from '@angular/material/radio';
 // import { MatSelectModule } from '@angular/material/select';
 // import { MatInputModule } from '@angular/material/input';
@@ -43,7 +46,6 @@ import { UserDashboardComponent } from './components/dashboard/dashboards/user-d
 import { TechDashboardComponent } from './components/dashboard/dashboards/tech-dashboard/tech-dashboard.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { AuthEffects } from './_store/_auth-store/auth.effects';
-import { OrgLocationSelectorComponent } from './_components/utilComponents/org-location-selector/org-location-selector.component';
 
 @NgModule({
     declarations: [
@@ -57,7 +59,6 @@ import { OrgLocationSelectorComponent } from './_components/utilComponents/org-l
         AdminDashboardComponent,
         UserDashboardComponent,
         TechDashboardComponent,
-        OrgLocationSelectorComponent
     ],
     imports: [
         BrowserModule,
@@ -70,6 +71,9 @@ import { OrgLocationSelectorComponent } from './_components/utilComponents/org-l
         GraphQLModule,
         NgbModule,
         MatDatepickerModule,
+        MatAutocompleteModule,
+        MatFormFieldModule,
+        MatOptionModule,
         // MatInputModule,
         MatNativeDateModule,
         BrowserAnimationsModule,

@@ -14,51 +14,32 @@
 
             <h2 class="col-12 text-center">Edit Repair Ticket</h2>
 
-            <form [formGroup]="orgForm">
-                <mat-form-field class="form-group col-4">
-                    <mat-label for="selectedOrgControl">
-                        Organization:
-                    </mat-label>
-                    <input  type="text"
-                            placeholder="Organization"
-                            aria-label="Organizaiton"
-                            matInput
-                            [formControl]="orgForm.controls.selectedOrgControl"
-                            [matAutocomplete]="orgAuto"
-                    >
-                    <mat-autocomplete 
-                    autoActiveFirstOption
-                    #orgAuto="matAutocomplete">
-                        <mat-option *ngFor="let option of filteredOrgNames$ | async" [value]="option">
-                            {{option}}
-                        </mat-option>
-
-                    </mat-autocomplete>
-
-                </mat-form-field>
-            </form>            
-
             <form [formGroup]="repairForm" (ngSubmit)="onSubmit()" class="row">
 
                 <!-- Radio Location Section -->
 
-
-
-
                 <section class="row" id="radioLocation">
                     <h4 class="col-12 text-center">Service Location</h4>
+
+                    <div class="form-group col-4">
+                        <app-org-location-selector class="form-group col-4" [initialOrgName]="initialOrgName"
+                            (orgNameSelected)="handleOrgNameSelected($event)"
+                            (filteredLocations)="handleFilteredLocations($event)">
+                        </app-org-location-selector>
+                    </div>
 
                     <mat-form-field class="form-group col-8">
                         <mat-label for="radioLocation">
                             Location:
                         </mat-label>
-                        <input type="text" placeholder="Location" aria-label="Location" matInput
-                            [formControl]="repairForm.controls.radioLocation" [matAutocomplete]="locAuto">
+                        <input type="text" placeholder="Location" 
+                        aria-label="Location" matInput
+                        [formControl]="repairForm.controls.radioLocation" 
+                        [matAutocomplete]="locAuto">
                         <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
-                            <mat-option *ngFor="let locOption of filteredLocNames$ | async" [value]="locOption">
+                            <mat-option *ngFor="let locOption of filteredLocationNames" [value]="locOption">
                                 {{locOption}}
                             </mat-option>
-
                         </mat-autocomplete>
 
                     </mat-form-field>

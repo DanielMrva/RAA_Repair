@@ -1,12 +1,10 @@
-<div *ngIf="radioIsLoading$ || isLoadingLocationNames$ || isLoadingOrgNames$ | async; else loadedData">
+<div *ngIf="radioIsLoading$ | async; else loadedData">
     <h2>Loading...</h2>
 </div>
 
 <ng-template #loadedData>
 
     <div *ngIf="radioError$ | async as radioError">{{ radioError }}</div>
-    <div *ngIf="orgNameError$ | async as orgError">{{ orgError }}</div>
-    <div *ngIf="locationNameError$ | async as locationError">{{ locationError }}</div>
 
 
 
@@ -20,20 +18,14 @@
                 <section class="row" id="radioLocation">
                     <h4 class="col-12 text-center">Service Location</h4>
 
-                    <mat-form-field class="form-group col-4">
-                        <mat-label for="orgName">
-                            Organization:
-                        </mat-label>
-                        <input type="text" placeholder="Organization" aria-label="Organizaiton" matInput
-                            [formControl]="adminRepairForm.controls.orgName" [matAutocomplete]="orgAuto">
-                        <mat-autocomplete autoActiveFirstOption #orgAuto="matAutocomplete">
-                            <mat-option *ngFor="let option of filteredOrgNames$ | async" [value]="option">
-                                {{option}}
-                            </mat-option>
-
-                        </mat-autocomplete>
-
-                    </mat-form-field>
+                    <div class="form-group col-4">
+                        <app-org-location-selector
+                            class="form-group col-4"
+                            [initialOrgName]="initialOrgName"
+                            (orgNameSelected)="handleOrgNameSelected($event)"
+                            (filteredLocations)="handleFilteredLocations($event)">
+                        </app-org-location-selector>
+                    </div>
 
                     <mat-form-field class="form-group col-8">
                         <mat-label for="radioLocation">
@@ -42,7 +34,7 @@
                         <input type="text" placeholder="Location" aria-label="Location" matInput
                             [formControl]="adminRepairForm.controls.radioLocation" [matAutocomplete]="locAuto">
                         <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
-                            <mat-option *ngFor="let locOption of filteredLocNames$ | async" [value]="locOption">
+                            <mat-option *ngFor="let locOption of filteredLocationNames" [value]="locOption">
                                 {{locOption}}
                             </mat-option>
 
@@ -244,7 +236,8 @@
 
                     <mat-form-field class="form-group col-6">
                         <mat-label>Repair Hours:</mat-label>
-                        <input type="number" matInput id="repHours" formControlName="repHours" placeholder="Repair Hours">
+                        <input type="number" matInput id="repHours" formControlName="repHours"
+                            placeholder="Repair Hours">
                     </mat-form-field>
 
                     <div formArrayName="workPerformed" class="col-6">

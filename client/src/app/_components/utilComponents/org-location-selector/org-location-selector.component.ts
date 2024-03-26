@@ -1,61 +1,85 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
-// import { FilterService } from '@app/services/utilityServices/filter.service';
-import { FilterService}
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import { FilterService } from '@app/services/utilityServices/filter.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
-import { loadOrgNames, loadLocationNames } from '@app/_store/actions';
-import { selectOrgNames, selectLocationNames } from '@app/_store/selectors';
+import { loadLocationNames} from '@app/_store/_location-store/location.actions';
+import { selectLocationNames } from '@app/_store/_location-store/location.selectors';
+import { loadOrgNames} from '@app/_store/_org-store/org.actions';
+import { selectOrgNames } from '@app/_store/_org-store/org.selectors';
+import { Location, Organization } from '@app/graphql/schemas/typeInterfaces';
+
 
 @Component({
   selector: 'app-org-location-selector',
   templateUrl: './org-location-selector.component.html',
-  styleUrls: ['./org-location-selector.component.scss']
+  styleUrls: ['./org-location-selector.component.css']
 })
 export class OrgLocationSelectorComponent implements OnInit {
+  @Input() initialOrgName: string | null = null;
   @Output() orgNameSelected = new EventEmitter<string>();
   @Output() filteredLocations = new EventEmitter<string[]>();
 
-  orgNames$: Observable<string[]>;
-  locationNames$: Observable<Location[]>;
-  filteredOrgNames$: Observable<string[]>;
-  filteredLocNames$: Observable<string[]>;
+  orgNames$!: Observable<string[]>;
+  locationNames$!: Observable<Location[]>;
 
-  selectorForm: FormGroup = new FormGroup({
-    orgName: new FormControl(''),
-    radioLocation: new FormControl(''),
-  });
+  filteredOrgNames$!: Observable<string[]>;
+  filteredLocNames$!: Observable<string[]>;
 
-  constructor(private filterService: FilterService, private store: Store<AppState>) {}
+  orgNameControl = new FormControl<string>('');
+
+  constructor(
+    private filterService: FilterService, 
+    private store: Store<AppState>
+    ) {}
 
   ngOnInit(): void {
     this.store.dispatch(loadOrgNames());
-    this.orgNames$ = this.store.select(selectOrgNames);
+    this.store.dispatch(loadLocationNames());
+
+    this.orgNames$ = this.store.select(selectOrgNames).pipe(
+      map(orgs => orgs.map(org => org.orgName))
+    );
     this.locationNames$ = this.store.select(selectLocationNames);
 
-    this.filteredOrgNames$ = this.selectorForm.controls.orgName.valueChanges.pipe(
-      startWith(''),
-      switchMap(value => this.filterService.filterOrgs(value, this.orgNames$))
-    );
+      // Pre-select orgName if initialOrgName is provided
+      if (this.initialOrgName) {
+        this.orgNameControl.setValue(this.initialOrgName);
+      }
+  
+      // Emit orgName on selection change
+      this.orgNameControl.valueChanges.pipe(
+        startWith(this.initialOrgName || ',')
+      ).subscribe(value => {
+        const nonNullable = value ?? '';
+        this.orgNameSelected.emit(nonNullable);
+        this.filterLocations(nonNullable);
+      })
+  
+      // Initial filtering if initialOrgName is provided
+      this.filterLocations(this.initialOrgName || '');
 
-    this.filteredLocNames$ = combineLatest([
-      this.selectorForm.controls.radioLocation.valueChanges.pipe(startWith('')),
-      this.selectorForm.controls.orgName.valueChanges,
-      this.locationNames$,
-    ]).pipe(
-      map(([locName, orgName, locations]) => this.filterService.filteredLocs(locName, orgName, locations))
-    );
+      this.filteredOrgNames$ = this.orgNameControl.valueChanges.pipe(
+        startWith(''),
+        switchMap(value => 
+          this.filterService.filterOrgs(value ?? '', this.orgNames$)
+        )
+      );
 
-    // Emit the selected orgName for parent components
-    this.selectorForm.controls.orgName.valueChanges.subscribe(orgName => {
-      this.orgNameSelected.emit(orgName);
-    });
+    }
 
-    // Emit the filtered location names for parent components
-    this.filteredLocNames$.subscribe(locations => {
-      this.filteredLocations.emit(locations);
-    });
-  }
+    private filterLocations(orgName: string): void {
+      // Assuming filteredLocs correctly returns Observable<string[]>
+      this.locationNames$.pipe(
+        switchMap(locations => this.filterService.filteredLocs('', orgName, locations)),
+        tap(filteredLocations => {
+          // Make sure filteredLocations is string[]
+          this.filteredLocations.emit(filteredLocations); // filteredLocations should already be string[]
+        })
+      ).subscribe();
+    }
+    
+  
 }
