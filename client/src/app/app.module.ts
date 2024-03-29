@@ -46,6 +46,7 @@ import { UserDashboardComponent } from './components/dashboard/dashboards/user-d
 import { TechDashboardComponent } from './components/dashboard/dashboards/tech-dashboard/tech-dashboard.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { AuthEffects } from './_store/_auth-store/auth.effects';
+import { LocationMismatchDialogComponent } from './_components/utilComponents/location-mismatch-dialog/location-mismatch-dialog.component';
 
 @NgModule({
     declarations: [
@@ -59,6 +60,7 @@ import { AuthEffects } from './_store/_auth-store/auth.effects';
         AdminDashboardComponent,
         UserDashboardComponent,
         TechDashboardComponent,
+        LocationMismatchDialogComponent,
     ],
     imports: [
         BrowserModule,

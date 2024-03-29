@@ -9,6 +9,8 @@ import { withLatestFrom, first, of } from 'rxjs';
 import { loadOneRadio } from '@app/_store/_radio-store/radio.actions';
 import { radioErrorSelector, radioLoadingSelector, selectOneRadio } from '@app/_store/_radio-store/radio.selectors';
 import { MatDialogModule } from '@angular/material/dialog';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LocationMismatchDialogComponent } from '@app/_components/utilComponents/location-mismatch-dialog/location-mismatch-dialog.component';
 
 @Component({
   selector: 'app-admin-add-repair',
@@ -80,6 +82,7 @@ export class AdminAddRepairComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>,
     private matDialog: MatDialogModule,
+    private modalService: NgbModal
   ) { }
 
   addSymptom() {
@@ -135,6 +138,10 @@ export class AdminAddRepairComponent implements OnInit {
 
   openMismatchDialog(newLocation: string, oldLocation: string) {
     console.log(`mismatch between ${newLocation} and ${oldLocation}`)
+    const modalRef = this.modalService.open(LocationMismatchDialogComponent);
+    modalRef.componentInstance.newLocation = newLocation;
+    modalRef.componentInstance.oldLocation = oldLocation;
+    modalRef.componentInstance.radioID = this.adminRepairForm.value.radioID;
   }
 
   ngOnInit(): void {

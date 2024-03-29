@@ -24,7 +24,7 @@ export class AdminEditRepairComponent implements OnInit {
   radioError$ = this.store.select(radioErrorSelector);
   radioIsLoading$ = this.store.select(radioLoadingSelector);
 
-  filteredLocationNames: string[] = []
+  filteredLocationNames: string[] = [];
 
   isLoading$ = this.store.select(repairLoadingSelector);
   repairError$ = this.store.select(repairErrorSelector);
