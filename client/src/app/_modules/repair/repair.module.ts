@@ -12,6 +12,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -63,6 +64,7 @@ import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-re
     MatAutocompleteModule,
     MatFormFieldModule,
     NgbAccordionModule,
+    NgbModalModule,
     StoreModule.forFeature('repair', repairReducer),
     EffectsModule.forFeature([RepairEffects])
   ]

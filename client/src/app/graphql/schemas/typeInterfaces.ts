@@ -164,74 +164,74 @@ export type RepairFormFields = {
 }
 
 export type UpdateRepairFields = {
-    radioID: string,
-    radioMake: string,
-    radioSerial: string,
-    radioLocation: string,
-    dateReceived: Date,
-    endUserPO: string,
-    raaPO: string,
-    repairTag: number,
-    dateSentTech: Date,
-    dateRecTech: Date,
-    dateSentEU: Date,
-    techInvNum: string,
-    raaInvNum: string,
-    symptoms: string[],
-    testFreq: string,
-    incRxSens: string,
-    incFreqErr: string,
-    incMod: string,
-    incPowerOut: string,
-    outRxSens: string,
-    outFreqErr: string,
-    outMod: string,
-    outPowerOut: string,
-    accessories: string[],
-    workPerformed: string[],
-    repHours: number,
-    partsUsed: string[],
-    remarks: string
+    radioID?: string,
+    radioMake?: string,
+    radioSerial?: string,
+    radioLocation?: string,
+    dateReceived?: Date,
+    endUserPO?: string,
+    raaPO?: string,
+    repairTag?: number,
+    dateSentTech?: Date,
+    dateRecTech?: Date,
+    dateSentEU?: Date,
+    techInvNum?: string,
+    raaInvNum?: string,
+    symptoms?: string[],
+    testFreq?: string,
+    incRxSens?: string,
+    incFreqErr?: string,
+    incMod?: string,
+    incPowerOut?: string,
+    outRxSens?: string,
+    outFreqErr?: string,
+    outMod?: string,
+    outPowerOut?: string,
+    accessories?: string[],
+    workPerformed?: string[],
+    repHours?: number,
+    partsUsed?: string[],
+    remarks?: string
 }
 
 export type UpdateRadioFields = {
-    orgName: string,
-    locationName: string,
-    dateSold: Date,
-    dateEntered: Date,
-    inventoryNumber: string,
-    make: string,
-    model: string,
-    progChannels: string,
-    notes: string[],
-    serialNumber: string,
-    warranty: Date,
-    refurb: boolean,
-    radioType: string    
+    orgName?: string,
+    locationName?: string,
+    dateSold?: Date,
+    dateEntered?: Date,
+    inventoryNumber?: string,
+    make?: string,
+    model?: string,
+    progChannels?: string,
+    notes?: string[],
+    serialNumber?: string,
+    warranty?: Date,
+    refurb?: boolean,
+    radioType?: string    
 }
 
 export type UpdateUserFields = {
-    username: string,
-    email: string,
-    accessLevel: string,
-    orgName: string
+    username?: string,
+    email?: string,
+    accessLevel?: string,
+    orgName?: string
 }
 
 export type UpdateLocationFields = {
-    locationName: string,
-    orgName: string,
-    street: string,
-    city: string,
-    state: string,
-    zip: string,
-    country: string,
-    phone: string,
-    contactEmail: string,
-    primaryContact: string,
+    locationName?: string,
+    orgName?: string,
+    street?: string,
+    city?: string,
+    state?: string,
+    zip?: string,
+    country?: string,
+    phone?: string,
+    contactEmail?: string,
+    primaryContact?: string,
 }
 
 export type UpdateOrgFields = {
-    orgName: string
+    orgName?: string
 }
 
 export type TableSearchParams = {
