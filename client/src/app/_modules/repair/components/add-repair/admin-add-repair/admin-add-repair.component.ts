@@ -8,9 +8,7 @@ import { addRepair } from '@app/_store/_repair-store/repair.actions';
 import { withLatestFrom, first, of } from 'rxjs';
 import { loadOneRadio } from '@app/_store/_radio-store/radio.actions';
 import { radioErrorSelector, radioLoadingSelector, selectOneRadio } from '@app/_store/_radio-store/radio.selectors';
-import { MatDialogModule } from '@angular/material/dialog';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LocationMismatchDialogComponent } from '@app/_components/utilComponents/location-mismatch-dialog/location-mismatch-dialog.component';
+import { MismatchModalService } from '@app/services/modal/mismatch-modal.service';
 
 @Component({
   selector: 'app-admin-add-repair',
@@ -81,8 +79,7 @@ export class AdminAddRepairComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>,
-    private matDialog: MatDialogModule,
-    private modalService: NgbModal
+    private mismatchModalService: MismatchModalService,
   ) { }
 
   addSymptom() {
@@ -129,24 +126,8 @@ export class AdminAddRepairComponent implements OnInit {
     }
   };
 
-  submitRepair(submittedRepair: RepairFormFields): void {
-
-
-    this.store.dispatch(addRepair({ submittedRepair: submittedRepair }))
-
-  };
-
-  openMismatchDialog(newLocation: string, oldLocation: string) {
-    console.log(`mismatch between ${newLocation} and ${oldLocation}`)
-    const modalRef = this.modalService.open(LocationMismatchDialogComponent);
-    modalRef.componentInstance.newLocation = newLocation;
-    modalRef.componentInstance.oldLocation = oldLocation;
-    modalRef.componentInstance.radioID = this.adminRepairForm.value.radioID;
-  }
 
   ngOnInit(): void {
-    // this.store.dispatch(loadOrgNames());
-    // this.store.dispatch(loadLocationNames());
 
     this.activatedRoute.paramMap.subscribe(params => {
       const radioID = params.get('radioID');
@@ -170,11 +151,52 @@ export class AdminAddRepairComponent implements OnInit {
 
   handleOrgNameSelected(orgName: string): void {
     this.adminRepairForm.patchValue({ orgName });
-  }
+  };
 
   handleFilteredLocations(locations: string[]): void {
     this.filteredLocationNames = locations;
-  }
+  };
+
+  submitRepair(): void {
+
+    const submittedRepair: RepairFormFields = {
+      radioID: this.adminRepairForm.value.radioID ?? '',
+      radioMake: this.adminRepairForm.value.radioMake ?? '',
+      radioSerial: this.adminRepairForm.value.radioSerial ?? '',
+      radioLocation: this.adminRepairForm.value.radioLocation ?? '',
+      dateReceived: this.adminRepairForm.value.dateReceived ?? new Date(),
+      endUserPO: this.adminRepairForm.value.endUserPO ?? '',
+      raaPO: this.adminRepairForm.value.raaPO ?? '',
+      dateSentTech: this.adminRepairForm.value.dateSentTech ?? new Date(),
+      dateRecTech: this.adminRepairForm.value.dateRecTech ?? new Date(),
+      dateSentEU: this.adminRepairForm.value.dateSentEU ?? new Date(),
+      techInvNum: this.adminRepairForm.value.techInvNum ?? '',
+      raaInvNum: this.adminRepairForm.value.raaInvNum ?? '',
+      symptoms: Array.isArray(this.adminRepairForm.value.symptoms) ? this.adminRepairForm.value.symptoms : [''],
+      testFreq: this.adminRepairForm.value.testFreq ?? '',
+      incRxSens: this.adminRepairForm.value.incRxSens ?? '',
+      incFreqErr: this.adminRepairForm.value.incFreqErr ?? '',
+      incMod: this.adminRepairForm.value.incMod ?? '',
+      incPowerOut: this.adminRepairForm.value.incPowerOut ?? '',
+      outRxSens: this.adminRepairForm.value.outRxSens ?? '',
+      outFreqErr: this.adminRepairForm.value.outFreqErr ?? '',
+      outMod: this.adminRepairForm.value.outMod ?? '',
+      outPowerOut: this.adminRepairForm.value.outPowerOut ?? '',
+      accessories: Array.isArray(this.adminRepairForm.value.accessories) ? this.adminRepairForm.value.accessories : [''],
+      workPerformed: Array.isArray(this.adminRepairForm.value.workPerformed) ? this.adminRepairForm.value.workPerformed : [''],
+      repHours: this.adminRepairForm.value.repHours ?? 0,
+      partsUsed: Array.isArray(this.adminRepairForm.value.partsUsed) ? this.adminRepairForm.value.partsUsed : [''],
+      remarks: this.adminRepairForm.value.remarks ?? '',
+    }
+
+    console.log(`sumbitRepair with radioID: ${submittedRepair.radioID}`)
+
+
+
+    this.store.dispatch(addRepair({ submittedRepair: submittedRepair }))
+
+  };
+
 
   onSubmit() {
 
@@ -185,42 +207,20 @@ export class AdminAddRepairComponent implements OnInit {
 
       const formRadioLocation = formValue.radioLocation || '';
       const oneRadioLocationName = oneRadio?.locationName || '';
+      const radioId = oneRadio?._id || '';
 
       if (formRadioLocation !== oneRadioLocationName) {
-        this.openMismatchDialog(formRadioLocation, oneRadioLocationName);
-      } else {
-        const submittedRepair: RepairFormFields = {
-          radioID: formValue.radioID ?? '',
-          radioMake: formValue.radioMake ?? '',
-          radioSerial: formValue.radioSerial ?? '',
-          radioLocation: formValue.radioLocation ?? '',
-          dateReceived: formValue.dateReceived ?? new Date(),
-          endUserPO: formValue.endUserPO ?? '',
-          raaPO: formValue.raaPO ?? '',
-          dateSentTech: formValue.dateSentTech ?? new Date(),
-          dateRecTech: formValue.dateRecTech ?? new Date(),
-          dateSentEU: formValue.dateSentEU ?? new Date(),
-          techInvNum: formValue.techInvNum ?? '',
-          raaInvNum: this.adminRepairForm.value.raaInvNum ?? '',
-          symptoms: Array.isArray(formValue.symptoms) ? formValue.symptoms : [''],
-          testFreq: formValue.testFreq ?? '',
-          incRxSens: formValue.incRxSens ?? '',
-          incFreqErr: formValue.incFreqErr ?? '',
-          incMod: formValue.incMod ?? '',
-          incPowerOut: formValue.incPowerOut ?? '',
-          outRxSens: formValue.outRxSens ?? '',
-          outFreqErr: formValue.outFreqErr ?? '',
-          outMod: formValue.outMod ?? '',
-          outPowerOut: formValue.outPowerOut ?? '',
-          accessories: Array.isArray(formValue.accessories) ? formValue.accessories : [''],
-          workPerformed: Array.isArray(formValue.workPerformed) ? formValue.workPerformed : [''],
-          repHours: formValue.repHours ?? 0,
-          partsUsed: Array.isArray(formValue.partsUsed) ? formValue.partsUsed : [''],
-          remarks: formValue.remarks ?? '',
-        }
 
-        this.submitRepair(submittedRepair)
-      };
+        console.log(`formRadioLocation: ${formRadioLocation}, oneRadioLocationName: ${oneRadioLocationName}, radioId: ${radioId}`)
+        this.mismatchModalService.openMismatchDialog(
+          formRadioLocation,
+          oneRadioLocationName,
+          radioId,
+          () => this.submitRepair()
+        )
+      } else {
+        this.submitRepair()
+      }
     });
 
   };

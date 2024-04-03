@@ -17,11 +17,25 @@ export class LocationMismatchDialogComponent {
 
   confirmUpdate() {
 
+    console.log('LMD.confirmUpdate()')
+
     const updates: UpdateRadioFields = {
       locationName: this.newLocation
     }
 
     this.store.dispatch(editRadio({id: this.radioID, updates}))
     this.activeModal.close('Update confirmed');
+  }
+
+  submitWithoutUpdate() {
+    console.log('LMD.submitWithoutUpdate()')
+
+    this.activeModal.close('submit');
+  }
+
+  cancel() {
+    console.log('LMD.cancel()')
+
+    this.activeModal.dismiss('cancel');
   }
 }

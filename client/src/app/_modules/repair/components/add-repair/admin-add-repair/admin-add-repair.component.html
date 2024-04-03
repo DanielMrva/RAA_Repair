@@ -13,6 +13,40 @@
         <div class="row">
             <h2 class="col-12 text-center">Add A New Repair Ticket</h2>
 
+            <section *ngIf="oneRadio$ | async as radio" class="col-12">
+                <div class="accordion" id="radioAccordion" ngbAccordion>
+                    <div ngbAccordionItem [collapsed]="true" class="accordion-item">
+                        <h2 ngbAccordionHeader class="accordion-header" id="radioHeading">
+                            <button ngbAccordionButton class="accorion-button">
+                              Radio: {{radio.make}} - {{radio.model}} - {{radio.serialNumber}} at {{radio.orgName}} - {{radio.locationName}}
+                            </button>
+                          </h2>
+                          <div ngbAccordionCollapse class="accordion-collapse" aria-labelledby="timelineHeading">
+                            <div ngbAccordionBody class="accordion-body">
+                              <ng-template>
+                                <div class="card">
+                                  <div class="card-body">
+                                    <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5>
+                                    <p class="card-text">
+                                      <strong>Radio Organization:</strong> {{radio.orgName}}<br>
+                                      <strong>Radio Location:</strong> {{radio.locationName}}<br>
+                                      <strong>Make & Model:</strong> {{radio.make}} - {{radio.model}}<br>
+                                      <strong>Serial Number:</strong> {{radio.serialNumber}}<br>
+                                      <strong>Warranty:</strong> {{radio.warranty | date: 'mediumDate'}}<br>
+                                      <strong>Refurbished:</strong> {{radio.refurb ? 'Yes': 'No'}}
+                                    </p>
+                                  </div>
+                                </div>
+                              </ng-template>
+                            </div>
+                          </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
             <form [formGroup]="adminRepairForm" (ngSubmit)="onSubmit()" class="row">
 
                 <section class="row" id="radioLocation">
