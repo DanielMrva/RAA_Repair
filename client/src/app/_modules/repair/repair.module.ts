@@ -27,6 +27,8 @@ import { EditRepairComponent } from './components/edit-repair/edit-repair.compon
 import { AdminAddRepairComponent } from './components/add-repair/admin-add-repair/admin-add-repair.component';
 
 import { OrgLocationSelectorComponent } from '@app/_components/utilComponents/org-location-selector/org-location-selector.component';
+import { PoTextButtonComponent } from '@app/_components/utilComponents/po-text-button/po-text-button.component';
+import { InvoiceTextButtonComponent } from '@app/_components/utilComponents/invoice-text-button/invoice-text-button.component';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -44,7 +46,9 @@ import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-re
     EditRepairComponent,
     AdminAddRepairComponent,
     AdminEditRepairComponent,
-    OrgLocationSelectorComponent
+    OrgLocationSelectorComponent,
+    PoTextButtonComponent,
+    InvoiceTextButtonComponent
   ],
   imports: [
     CommonModule,
