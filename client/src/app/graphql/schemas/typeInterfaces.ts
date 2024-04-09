@@ -242,3 +242,22 @@ export type TableSearchParams = {
 export type statusType = 'pending' | 'loading' | 'error' | 'success';
 
 export type accessLevels = 'admin' | 'user' | 'tech' | null;
+
+export type InvoiceTextAttributes = {
+    make: string,
+    model: string,
+    serialNumber: string,
+    repairTag: number
+}
+
+export type PoTextAttributes = {
+    make: string,
+    model: string,
+    serialNumber: string,
+    accessories: string[],
+    repairTag: number,
+    orgName: string,
+    locationName: string
+}
+
+

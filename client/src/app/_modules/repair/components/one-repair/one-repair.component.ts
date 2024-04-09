@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Repair, Radio, Location } from '@app/graphql/schemas/typeInterfaces';
+import { Repair, Radio, Location, PoTextAttributes, InvoiceTextAttributes } from '@app/graphql/schemas/typeInterfaces';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { loadOneRepair } from '@app/_store/_repair-store/repair.actions';
@@ -8,7 +8,8 @@ import { selectOneRepair, repairErrorSelector, repairLoadingSelector } from '@ap
 import { selectOneRadio, radioErrorSelector, radioLoadingSelector } from '@app/_store/_radio-store/radio.selectors';
 import { PdfService } from '@app/services/pdf/pdf.service';
 import { locationErrorSelector, locationLoadingSelector, selectOneLocation } from '@app/_store/_location-store/location.selectors';
-import { combineLatest, first } from 'rxjs';
+import { Observable, combineLatest, first } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-one-repair',
@@ -17,19 +18,22 @@ import { combineLatest, first } from 'rxjs';
 })
 export class OneRepairComponent implements OnInit{
 
-  oneRepair$ = this.store.select(selectOneRepair);
-  repairError$ = this.store.select(repairErrorSelector);
-  repairIsLoading$ = this.store.select(repairLoadingSelector);
+  oneRepair$: Observable<Repair | null>;
+  repairError$: Observable<any>;
+  repairIsLoading$: Observable<boolean>;
 
-  oneRadio$ = this.store.select(selectOneRadio);
-  radioError$ = this.store.select(radioErrorSelector);
-  radioIsLoading$ = this.store.select(radioLoadingSelector);
+  oneRadio$: Observable<Radio | null>;
+  radioError$: Observable<any>;
+  radioIsLoading$: Observable<boolean>;
 
-  oneLocation$ = this.store.select(selectOneLocation)
-  locationError$ = this.store.select(locationErrorSelector)
-  locationIsLoading$ = this.store.select(locationLoadingSelector);
-
+  oneLocation$: Observable<Location | null>;
+  locationError$: Observable<any>;
+  locationIsLoading$: Observable<boolean>
   
+
+
+  poText$: Observable<PoTextAttributes | undefined>;
+  invoiceText$: Observable<InvoiceTextAttributes | undefined>;  
 
   repair: Repair | undefined;
   radio: Radio | undefined;
@@ -39,18 +43,82 @@ export class OneRepairComponent implements OnInit{
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private pdfService: PdfService
-  ) {}
+  ) {
+
+    this.oneRepair$ = this.store.select(selectOneRepair);
+    this.repairError$ = this.store.select(repairErrorSelector);
+    this.repairIsLoading$ = this.store.select(repairLoadingSelector);
+  
+    this.oneRadio$ = this.store.select(selectOneRadio);
+    this.radioError$ = this.store.select(radioErrorSelector);
+    this.radioIsLoading$ = this.store.select(radioLoadingSelector);
+  
+    this.oneLocation$ = this.store.select(selectOneLocation)
+    this.locationError$ = this.store.select(locationErrorSelector)
+    this.locationIsLoading$ = this.store.select(locationLoadingSelector);
+
+    this.poText$ = combineLatest([this.oneRepair$, this.oneRadio$]).pipe(
+      map(([repair, radio])=> repair && radio ? {
+        make: repair.radioMake,
+        model: radio.model,
+        serialNumber: repair.radioSerial,
+        accessories: repair.accessories,
+        repairTag: repair.repairTag,
+        orgName: radio.orgName,
+        locationName: repair.radioLocation
+      } : undefined) 
+    );
+
+    this.invoiceText$ = combineLatest([this.oneRepair$, this.oneRadio$]).pipe(
+      map(([repair, radio]) => repair && radio ? {
+        make: repair.radioMake,
+        model: radio.model,
+        serialNumber: repair.radioSerial,
+        repairTag: repair.repairTag
+      }: undefined)
+    );
+  
+  }
 
   ngOnInit(): void {
       this.route.params.subscribe((params) => {
         const repairID = params['id'];
-        this.loadRepair(repairID)
+        this.loadRepair(repairID);
+        // this.generateConcatText();
       });
   };  
 
   loadRepair(repairID: string): void {
     this.store.dispatch(loadOneRepair({repairID: repairID}));
   };
+
+  // generateConcatText(): void {
+
+  //   combineLatest([this.oneRepair$, this.oneRadio$]).pipe(
+  //     first()
+  //   ).subscribe(([repair, radio]) => {
+  //     if (repair && radio) {
+
+  //       this.poText = {
+  //         make: repair.radioMake,
+  //         model: radio.model,
+  //         serialNumber: repair.radioSerial,
+  //         accessories: repair.accessories,
+  //         repairTag: repair.repairTag,
+  //         orgName: radio.orgName,
+  //         locationName: repair.radioLocation
+  //       }
+
+  //       this.invoiceText = {
+  //         make: repair.radioMake,
+  //         model: radio.model,
+  //         serialNumber: repair.radioSerial,
+  //         repairTag: repair.repairTag
+  //       }
+
+  //     }
+  //   })
+  // };
 
   generatePDF() {
     combineLatest([this.oneRepair$, this.oneRadio$, this.oneLocation$]).pipe(
@@ -63,6 +131,6 @@ export class OneRepairComponent implements OnInit{
       }
 
     })
-  }
+  };
 }
 

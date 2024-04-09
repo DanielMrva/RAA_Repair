@@ -18,17 +18,30 @@
 
 
 
-        <div class="container my-4">
+        <div class="container">
           <section id="header-section">
 
-            <div class="text-center mb-4">
-              <h2>Repair {{repair.repairTag}} Details</h2>
-              <button (click)="generatePDF()" class="btn btn-primary my-2">
-                Generate PDF
-              </button>
-              <h4>Repair for Radio: <a [routerLink]="['/one-radio/', radio._id]"
+            <div class="text-center row">
+              <h2 class="col-12">Repair {{repair.repairTag}} Details</h2>
+
+              <div class="col-4">
+                <button (click)="generatePDF()" class="btn btn-primary w-100">
+                  Generate PDF
+                </button>
+              </div>
+
+              <div *ngIf="poText$ | async as poText" class="col-4">
+                <app-po-text-button *ngIf="poText" [purchaseOrderContent]="poText"></app-po-text-button>
+              </div>
+
+              <div *ngIf="invoiceText$ | async as invoiceText" class="col-4">
+                <app-invoice-text-button *ngIf="invoiceText" [invoiceContent]="invoiceText"></app-invoice-text-button>
+              </div>
+
+              <h4 class="col-12">Repair for Radio: <a [routerLink]="['/one-radio/', radio._id]"
                   class="text-decoration-none">{{radio.make}} {{radio.serialNumber}}</a> At
-                {{location.locationName}}</h4>
+                {{location.locationName}}
+              </h4>
             </div>
 
             <div class="accordion" id="radioAccordion" ngbAccordion>
