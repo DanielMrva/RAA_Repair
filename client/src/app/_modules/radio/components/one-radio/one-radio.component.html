@@ -16,12 +16,12 @@
         <h4 class="col-12 text-center">Timeline</h4>
 
         <div class="col-4">
-          <h6 class="row">Date Sold: </h6>
-          <p class="row">{{oneRadio.dateSold | date: 'MMM d, y'}}</p>
+          <h6 class="row">Date Purchased: </h6>
+          <p class="row">{{oneRadio.datePurchased | date: 'MMM d, y'}}</p>
         </div>
         <div class="col-4">
           <h6 class="row">Date Entered: </h6>
-          <p class="row">{{oneRadio.dateEntered  | date: 'MMM d, y'}}</p>
+          <p class="row">{{oneRadio.dateEntered | date: 'MMM d, y'}}</p>
         </div>
         <div class="col-4">
           <h6 class="row">Warranty: </h6>
@@ -84,7 +84,7 @@
           <h6 class="row">Programmed Channels: </h6>
           <p class="row">{{oneRadio.progChannels}}</p>
         </div>
-      
+
       </section>
 
       <section class="row" id="notes-section">
@@ -105,25 +105,30 @@
         <h4 class="col-12 text-center">Service Record: </h4>
 
         <ng-container *ngIf="oneRadio.serviceRecord.length > 0; else noService">
+          <ng-container *ngIf="oneRadio.serviceRecord.length >= 5">
+            <div class="text-center">
+              <p class="text-warning"><strong>This radio has been serviced {{oneRadio.serviceRecord.length}} times.</strong></p>
+            </div>
+          </ng-container>
 
           <div class="row">
             <table class="table">
               <thead>
                 <tr>
                   <th scope="col">
-                    
+
                   </th>
                   <th scope="col">
-                    Date Received
+                    Date of Service
                   </th>
                   <th scope="col">
-                    RAA Invoice #
+                    Repair Tag
                   </th>
                   <th scope="col">
-                    RAA PO #
+                    Work Performed
                   </th>
                   <th scope="col">
-                    End User PO #
+                    Parts Used
                   </th>
                 </tr>
               </thead>
@@ -132,21 +137,29 @@
                   <tr>
                     <th scope="row">{{i + 1}}</th>
                     <td>
-                      <ng-container *ngIf="!record.dateReceived; else beenReceived">
-                        <a [routerLink]="['/one-repair/', record._id]" >Radio Not Yet Received</a>
+                      <ng-container *ngIf="!record.dateSentTech; else beenSent">
+                        Radio Not Yet Sent to Tech
                       </ng-container>
-                      <ng-template #beenReceived>
-                        <a [routerLink]="['/one-repair/', record._id]" >{{record.dateReceived | date: 'MMM d, y'}}</a>
+                      <ng-template #beenSent>
+                        {{record.dateSentTech | date: 'MMM d, y'}}
                       </ng-template>
                     </td>
                     <td>
-                      {{record.raaInvNum}}
+                      <a [routerLink]="['/one-repair/', record._id]" >{{record.repairTag}}</a>
                     </td>
                     <td>
-                      {{record.raaPO}}
+                      <ul>
+                        <ng-container *ngFor="let work of record.workPerformed">
+                          <li>{{work}}</li>
+                        </ng-container>
+                      </ul>
                     </td>
                     <td>
-                      {{record.endUserPO}}
+                      <ul>
+                        <ng-container *ngFor="let part of record.partsUsed">
+                          <li>{{part}}</li>
+                        </ng-container>
+                      </ul>
                     </td>
                   </tr>
                 </ng-container>
@@ -171,9 +184,9 @@
 
 
       </section>
-          
+
     </div>
-    
+
   </div>
 
 </ng-template>
@@ -183,5 +196,3 @@
     <h2>No Radio Found</h2>
   </div>
 </ng-template>
-
-

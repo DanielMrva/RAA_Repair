@@ -41,7 +41,7 @@ export class EditRadioComponent implements OnInit {
     this.editRadioForm.patchValue({
       orgName: this.radio.orgName,
       location: this.radio.locationName,
-      dateSold: new Date(parseInt(this.radio.dateSold)),
+      datePurchased: new Date(parseInt(this.radio.datePurchased)),
       dateEntered: new Date(parseInt(this.radio.dateEntered)),
       inventoryNumber: this.radio.inventoryNumber,
       make: this.radio.make,
@@ -98,7 +98,7 @@ export class EditRadioComponent implements OnInit {
     const submittedRadio: UpdateRadioFields = {
       orgName: this.editRadioForm.value.orgName,
       locationName: this.editRadioForm.value.location,
-      dateSold: this.editRadioForm.value.dateSold,
+      datePurchased: this.editRadioForm.value.datePurchased,
       dateEntered: this.editRadioForm.value.dateEntered,
       inventoryNumber: this.editRadioForm.value.inventoryNumber,
       make: this.editRadioForm.value.make,
@@ -121,7 +121,7 @@ export class EditRadioComponent implements OnInit {
     this.editRadioForm = this.formBuilder.group({
       orgName: '',
       location: '',
-      dateSold: new FormControl(new Date()),
+      datePurchased: new FormControl(new Date()),
       dateEntered: new FormControl(new Date()),
       inventoryNumber: '',
       make: '',

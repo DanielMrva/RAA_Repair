@@ -24,7 +24,7 @@ export class RadioTableComponent implements OnInit, OnChanges{
 
   displayedColumns: string[] = [
     'locationName', 
-    'dateSold', 
+    'datePurchased', 
     'dateEntered', 
     'inventoryNumber', 
     'make', 

@@ -35,7 +35,7 @@ export class AdminAddRadioComponent implements OnInit{
   adminRadioForm = new FormGroup({
     orgName: new FormControl<string>(''),
     locationName: new FormControl<string>(''),
-    dateSold: new FormControl<string>(''),
+    datePurchased: new FormControl<string>(''),
     dateEntered: new FormControl<string>(''),
     inventoryNumber: new FormControl<string>(''),
     make: new FormControl<string>(''),
@@ -134,7 +134,7 @@ export class AdminAddRadioComponent implements OnInit{
 
     const orgName = this.adminRadioForm.value.orgName ?? '';
     const locationName = this.adminRadioForm.value.locationName ?? '';
-    const dateSold = this.adminRadioForm.value.dateSold ?? '';
+    const datePurchased = this.adminRadioForm.value.datePurchased ?? '';
     const dateEntered = this.adminRadioForm.value.dateEntered ?? '';
     const inventoryNumber = this.adminRadioForm.value.inventoryNumber ?? '';
     const make = this.adminRadioForm.value.make ?? '';
@@ -150,7 +150,7 @@ export class AdminAddRadioComponent implements OnInit{
       addRadio({
           orgName,
           locationName,
-          dateSold,
+          datePurchased,
           dateEntered,
           inventoryNumber,
           make,

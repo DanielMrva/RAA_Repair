@@ -48,7 +48,7 @@ export class RadioService {
   addRadio(
       orgName: string,
       locationName: string,
-      dateSold: string,
+      datePurchased: string,
       dateEntered: string,
       inventoryNumber: string,
       make: string,
@@ -65,7 +65,7 @@ export class RadioService {
         variables: {
           orgName,
           locationName,
-          dateSold,
+          datePurchased,
           dateEntered,
           inventoryNumber,
           make,

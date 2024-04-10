@@ -62,7 +62,7 @@ export class PdfService {
   formatRepairForPdf(repair: Repair, radio?: Radio, location?: Location): any {
 
 
-    const fDateSold = radio?.dateSold ? new Date(parseInt(radio.dateSold)).toLocaleDateString() : ` `;
+    const fdatePurchased = radio?.datePurchased ? new Date(parseInt(radio.datePurchased)).toLocaleDateString() : ` `;
     const fDateRec = repair.dateReceived ? new Date(parseInt(repair.dateReceived)).toLocaleDateString() : ` `;
     const fDateSentTech = repair.dateSentTech ? new Date(parseInt(repair.dateSentTech)).toLocaleDateString() : ` `;
     const fDateRecTech = repair.dateRecTech ? new Date(parseInt(repair.dateRecTech)).toLocaleDateString() : ` `;
@@ -105,7 +105,7 @@ export class PdfService {
                     table: {
                       widths: ['*', '*'],
                       body: [
-                        [`Date Sold:`, `${fDateSold}`],
+                        [`Date Purchased:`, `${fdatePurchased}`],
                         [`Date Received:`, `${fDateRec}`],
                         [`Date Sent to Tech:`, `${fDateSentTech}`],
                         [`Date Received from Tech:`, `${fDateRecTech}`],

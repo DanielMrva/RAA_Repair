@@ -155,7 +155,7 @@ export const ADD_RADIO = gql`
     mutation addRadio(
         $orgName: String!
         $locationName: String
-        $dateSold: String
+        $datePurchased: String
         $dateEntered: String
         $inventoryNumber: String!
         $make: String!
@@ -170,7 +170,7 @@ export const ADD_RADIO = gql`
         addRadio(
             orgName: $orgName,
             locationName: $locationName,
-            dateSold: $dateSold,
+            datePurchased: $datePurchased,
             dateEntered: $dateEntered,
             inventoryNumber: $inventoryNumber,
             make: $make,
@@ -185,7 +185,7 @@ export const ADD_RADIO = gql`
             _id
             orgName
             locationName
-            dateSold
+            datePurchased
             dateEntered
             inventoryNumber
             make
@@ -245,7 +245,7 @@ export const Edit_Radio = gql`
             _id
             orgName
             locationName
-            dateSold
+            datePurchased
             dateEntered
             inventoryNumber
             make
