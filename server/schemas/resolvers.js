@@ -277,7 +277,7 @@ const resolvers = {
             parent, {
                 orgName,
                 locationName,
-                dateSold,
+                datePurchased,
                 dateEntered,
                 inventoryNumber,
                 make,
@@ -312,7 +312,7 @@ const resolvers = {
                 const newRadio = await Radio.create({
                     orgName,
                     locationName,
-                    dateSold,
+                    datePurchased,
                     dateEntered,
                     inventoryNumber,
                     make,

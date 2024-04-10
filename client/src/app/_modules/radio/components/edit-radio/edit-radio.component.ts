@@ -41,7 +41,7 @@ export class EditRadioComponent implements OnInit{
   editRadioForm = new FormGroup({
     orgName: new FormControl<string>(''),
     locationName: new FormControl<string>(''),
-    dateSold: new FormControl<Date>(new Date()),
+    datePurchased: new FormControl<Date>(new Date()),
     dateEntered: new FormControl<Date>(new Date()),
     inventoryNumber: new FormControl<string>(''),
     make: new FormControl<string>(''),
@@ -78,7 +78,7 @@ export class EditRadioComponent implements OnInit{
       this.editRadioForm.patchValue({
           orgName: radio.orgName,
           locationName: radio.locationName,
-          dateSold: new Date(parseInt(radio.dateSold)),
+          datePurchased: new Date(parseInt(radio.datePurchased)),
           dateEntered: new Date(parseInt(radio.dateEntered)),
           inventoryNumber: radio.inventoryNumber,
           make: radio.make,
@@ -121,7 +121,7 @@ export class EditRadioComponent implements OnInit{
 
     const orgName = this.editRadioForm.value.orgName ?? '';
     const locationName = this.editRadioForm.value.locationName ?? '';
-    const dateSold = this.editRadioForm.value.dateSold ?? new Date();
+    const datePurchased = this.editRadioForm.value.datePurchased ?? new Date();
     const dateEntered = this.editRadioForm.value.dateEntered ?? new Date();
     const inventoryNumber = this.editRadioForm.value.inventoryNumber ?? '';
     const make = this.editRadioForm.value.make ?? '';
@@ -136,7 +136,7 @@ export class EditRadioComponent implements OnInit{
     const submittedRadio: UpdateRadioFields = {
       orgName: orgName,
       locationName: locationName,
-      dateSold: new Date(dateSold),
+      datePurchased: new Date(datePurchased),
       dateEntered: new Date(dateEntered),
       inventoryNumber: inventoryNumber,
       make: make,
@@ -193,7 +193,7 @@ export class EditRadioComponent implements OnInit{
     this.editRadioForm.patchValue({
       orgName: '',
       locationName: '',
-      dateSold: new Date(),
+      datePurchased: new Date(),
       dateEntered: new Date(),
       inventoryNumber: '',
       make: '',

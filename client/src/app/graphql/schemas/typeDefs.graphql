@@ -43,7 +43,7 @@ type Radio {
     _id: ID!
     orgName: String
     locationName: String
-    dateSold: String
+    datePurchased: String
     dateEntered: String
     inventoryNumber: String
     make: String
@@ -158,7 +158,7 @@ type Mutation {
         addRadio(
             orgName: String!
             location: String
-            dateSold: String
+            datePurchased: String
             dateEntered: String
             inventoryNumber: String!
             make: String!

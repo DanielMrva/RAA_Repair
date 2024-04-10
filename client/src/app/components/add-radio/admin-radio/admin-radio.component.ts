@@ -14,7 +14,7 @@ export class AdminRadioComponent implements OnInit {
   adminRadioForm = this.formBuilder.group({
     orgName: ['', [Validators.required]],
     location: '',
-    dateSold: '',
+    datePurchased: '',
     dateEntered: '',
     inventoryNumber: ['', [Validators.required]],
     make: ['', [Validators.required]],
@@ -73,7 +73,7 @@ export class AdminRadioComponent implements OnInit {
 
     const orgName = this.adminRadioForm.value.orgName ?? '';
     const location = this.adminRadioForm.value.location ?? '';
-    const dateSold = this.adminRadioForm.value.dateSold ?? '';
+    const datePurchased = this.adminRadioForm.value.datePurchased ?? '';
     const dateEntered = this.adminRadioForm.value.dateEntered ?? '';
     const inventoryNumber = this.adminRadioForm.value.inventoryNumber ?? '';
     const make = this.adminRadioForm.value.make ?? '';
@@ -88,7 +88,7 @@ export class AdminRadioComponent implements OnInit {
     this.radioService.addRadio(
       orgName,
       location,
-      dateSold,
+      datePurchased,
       dateEntered,
       inventoryNumber,
       make,

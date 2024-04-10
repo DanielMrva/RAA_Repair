@@ -3,3 +3,4 @@ node_modules
 
 server/seeding
 seeding/userSeeds.json
+.env

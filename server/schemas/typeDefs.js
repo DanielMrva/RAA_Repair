@@ -69,7 +69,7 @@ const typeDefs = `#graphql
         _id: ID!
         orgName: String
         locationName: String
-        dateSold: String
+        datePurchased: String
         dateEntered: String
         inventoryNumber: String
         make: String
@@ -142,7 +142,7 @@ const typeDefs = `#graphql
     input UpdateRadioInput {
         orgName: String
         locationName: String
-        dateSold: String
+        datePurchased: String
         dateEntered: String
         inventoryNumber: String
         make: String
@@ -232,7 +232,7 @@ const typeDefs = `#graphql
         addRadio(
             orgName: String!
             locationName: String
-            dateSold: String
+            datePurchased: String
             dateEntered: String
             inventoryNumber: String!
             make: String!

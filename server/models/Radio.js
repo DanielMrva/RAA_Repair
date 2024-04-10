@@ -10,7 +10,7 @@ const radioSchema = new Schema({
     locationName: {
         type: String
     },
-    dateSold: {
+    datePurchased: {
         type: Date,
         default: Date.now,
         // get: (timestamp) => dateFormat(timestamp),

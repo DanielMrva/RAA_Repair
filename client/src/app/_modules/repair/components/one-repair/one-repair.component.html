@@ -62,7 +62,7 @@
                             <strong>Make:</strong> {{radio.make}}<br>
                             <strong>Model:</strong> {{radio.model}}<br>
                             <strong>Serial Number:</strong> {{radio.serialNumber}}<br>
-                            <strong>Date Sold:</strong> {{radio.dateSold | date:'mediumDate'}}<br>
+                            <strong>Date Purchased:</strong> {{radio.datePurchased | date:'mediumDate'}}<br>
                             <strong>Date Entered</strong> {{radio.dateEntered | date: 'mediumDate'}}<br>
                             <strong>Warranty:</strong> {{radio.warranty | date: 'mediumDate'}}<br>
                             <strong>Refurbished:</strong> {{radio.refurb ? 'Yes': 'No'}}
@@ -92,7 +92,7 @@
                         <div class="card-body">
                           <!-- <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5> -->
                           <p class="card-text">
-                            <strong>Date Sold:</strong> {{radio.dateSold | date: 'MMM d, y'}} <br>
+                            <strong>Date Purchased:</strong> {{radio.datePurchased | date: 'MMM d, y'}} <br>
                             <strong>Date Received:</strong> {{repair.dateReceived | date: 'MMM d, y'}} <br>
                             <strong>Date Sent to Tech:</strong> {{repair.dateSentTech | date: 'MMM d, y'}} <br>
                             <strong>Date Rec from Tech:</strong> {{repair.dateRecTech | date: 'MMM d, y'}} <br>

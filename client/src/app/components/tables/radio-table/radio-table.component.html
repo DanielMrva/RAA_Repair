@@ -23,15 +23,15 @@
             </td>
         </ng-container>
     
-        <ng-container matColumnDef="dateSold">
+        <ng-container matColumnDef="datePurchased">
             <th
                 mat-header-cell
                 *matHeaderCellDef
             >
-                Date Sold
+                Date Purchased
             </th>
             <td mat-cell *matCellDef="let element">
-                {{ element.dateSold | date: 'MMM d, y'}}
+                {{ element.datePurchased | date: 'MMM d, y'}}
             </td>
         </ng-container>
     

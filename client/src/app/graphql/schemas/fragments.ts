@@ -5,7 +5,7 @@ export const RADIO_FIELDS_FRAGMENT = gql`
         _id
         orgName
         locationName
-        dateSold
+        datePurchased
         dateEntered
         inventoryNumber
         make
