@@ -180,6 +180,7 @@ export class PdfService {
                       body: [
                         [TECH_ADDRESS.locationName],
                         [TECH_ADDRESS.streetAddress],
+                        [TECH_ADDRESS.addressSuite],
                         [`${TECH_ADDRESS.city}, ${TECH_ADDRESS.state}, ${TECH_ADDRESS.zip}`],
                         [TECH_ADDRESS.phone],
                         [TECH_ADDRESS.email]
@@ -216,12 +217,12 @@ export class PdfService {
                     style: 'subheader',
                     margin: [0, 5, 0, 5] // Top and bottom margin
                   },
-                  // Third table (Baz) TODO: Confirm with client that end user should be a Location as currently described in DB structure.
                   {
                     table: {
                       body: [
                         [`${location?.locationName}`],
                         [`${location?.street}`],
+                        [`${location?.suite}`],
                         [`${location?.city}, ${location?.state} ${location?.zip}`],
                         [`${location?.phone}`],
                         [`${location?.contactEmail}`]

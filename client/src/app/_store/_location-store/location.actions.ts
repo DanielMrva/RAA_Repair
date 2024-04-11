@@ -64,6 +64,7 @@ export const addLocation = createAction(
         locationName: string
         orgName: string,
         street: string,
+        suite: string,
         city: string,
         state: string,
         zip: string,

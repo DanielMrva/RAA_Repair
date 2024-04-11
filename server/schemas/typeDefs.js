@@ -47,6 +47,7 @@ const typeDefs = `#graphql
         locationName: String
         orgName: String!
         street: String
+        suite: String
         city: String
         state: String
         zip: String
@@ -170,6 +171,7 @@ const typeDefs = `#graphql
         locationName: String
         orgName: String
         street: String
+        suite: String
         city: String
         state: String
         zip: String
@@ -253,6 +255,7 @@ const typeDefs = `#graphql
             locationName: String!
             orgName: String!
             street: String
+            suite: String
             city: String
             state: String
             zip: String

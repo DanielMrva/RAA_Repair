@@ -61,6 +61,7 @@ export const LOCATION_FIELDS_FRAGMENT = gql`
         locationName
         orgName
         street
+        suite
         city
         state
         zip
