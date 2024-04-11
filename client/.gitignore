@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 #Other Files
-src/app/utils
+src/app/utils/constants.ts
