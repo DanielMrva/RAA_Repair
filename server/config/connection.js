@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 
+const developmentMongoDBURI = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}/${process.env.DB_NAME}`;
+
 mongoose.connect(
-    process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/radio_referbish_DB',
+    process.env.MONGODB_URI || developmentMongoDBURI,
 );
 
 module.exports = mongoose.connection;

@@ -22,6 +22,7 @@ export class EditLocationComponent implements OnInit{
     locationName: new FormControl<string>(''),
     orgName: new FormControl<string>(''),
     street: new FormControl<string>(''),
+    suite: new FormControl<string>(''),
     city: new FormControl<string>(''),
     state: new FormControl<string>(''),
     zip: new FormControl<string>(''),
@@ -97,6 +98,7 @@ export class EditLocationComponent implements OnInit{
           locationName: location.locationName,
           orgName: location.orgName,
           street: location.street,
+          suite: location.suite,
           city: location.city,
           state: location.state,
           zip: location.zip,
@@ -126,6 +128,7 @@ export class EditLocationComponent implements OnInit{
     const locationName = this.editLocationForm.value.locationName ?? '';
     const orgName = this.editLocationForm.value.orgName ?? '';
     const street = this.editLocationForm.value.street ?? '';
+    const suite = this.editLocationForm.value.suite ?? '';
     const city = this.editLocationForm.value.city ?? '';
     const state = this.editLocationForm.value.state ?? '';
     const zip = this.editLocationForm.value.zip ?? '';
@@ -138,6 +141,7 @@ export class EditLocationComponent implements OnInit{
       locationName: locationName,
       orgName: orgName,
       street: street,
+      suite: suite,
       city: city,
       state: state,
       zip: zip,
@@ -157,6 +161,7 @@ export class EditLocationComponent implements OnInit{
       locationName: '',
       orgName: '',
       street: '',
+      suite: '',
       city: '',
       state: '',
       zip: '',

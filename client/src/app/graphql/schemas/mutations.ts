@@ -310,6 +310,7 @@ export const ADD_LOCATION = gql`
         $locationName: String!
         $orgName: String!
         $street: String
+        $suite: String
         $city: String
         $state: String
         $zip: String
@@ -322,6 +323,7 @@ export const ADD_LOCATION = gql`
             locationName: $locationName
             orgName: $orgName
             street: $street
+            suite: $suite
             city: $city 
             state: $state   
             zip: $zip   
@@ -334,6 +336,7 @@ export const ADD_LOCATION = gql`
             locationName
             orgName
             street
+            suite
             city
             state
             zip
@@ -352,6 +355,7 @@ export const EDIT_LOCATION = gql`
             locationName
             orgName
             street
+            suite
             city
             state
             zip

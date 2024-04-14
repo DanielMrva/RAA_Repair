@@ -29,6 +29,7 @@ export class AddLocationComponent implements OnInit{
     locationName: new FormControl<string>(''),
     orgName: new FormControl<string>(''),
     street: new FormControl<string>(''),
+    suite: new FormControl<string>(''),
     city: new FormControl<string>(''),
     state: new FormControl<string>(''),
     zip: new FormControl<string>(''),
@@ -92,6 +93,7 @@ export class AddLocationComponent implements OnInit{
     const locationName = this.locationForm.value.locationName ?? '';
     const orgName = this.locationForm.value.orgName ?? '';
     const street = this.locationForm.value.street ?? '';
+    const suite = this.locationForm.value.suite ?? '';
     const city = this.locationForm.value.city ?? '';
     const state = this.locationForm.value.state ?? '';
     const zip = this.locationForm.value.zip ?? '';
@@ -105,6 +107,7 @@ export class AddLocationComponent implements OnInit{
         locationName,
         orgName,
         street,
+        suite,
         city,
         state,
         zip,

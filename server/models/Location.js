@@ -17,6 +17,10 @@ const locationSchema = new Schema({
         type: String,
         trim: true
     },
+    suite: {
+        type: String,
+        trim: true
+    },
     city: {
         type: String,
         trim: true

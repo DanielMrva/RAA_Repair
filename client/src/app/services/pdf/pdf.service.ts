@@ -3,6 +3,7 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 import { Repair, Radio, Location } from '@app/graphql/schemas/typeInterfaces';
+import { TECH_ADDRESS, RAA_ADDRESS } from '@app/utils/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -174,16 +175,15 @@ export class PdfService {
                     style: 'header',
                     margin: [0, 0, 0, 10] // Bottom margin
                   },
-
-                  // First table (Foo) TODO: Change to MRS
                   {
                     table: {
                       body: [
-                        ['Foo'],
-                        ['123 Foo St'],
-                        ['Foo City, FS 12345'],
-                        ['123-456-7890'],
-                        ['foo@example.com']
+                        [TECH_ADDRESS.locationName],
+                        [TECH_ADDRESS.streetAddress],
+                        [TECH_ADDRESS.addressSuite],
+                        [`${TECH_ADDRESS.city}, ${TECH_ADDRESS.state}, ${TECH_ADDRESS.zip}`],
+                        [TECH_ADDRESS.phone],
+                        [TECH_ADDRESS.email]
                       ],
                       widths: [`*`]
 
@@ -196,15 +196,15 @@ export class PdfService {
                     style: 'subheader',
                     margin: [0, 5, 0, 5]
                   },
-                  // Second table (Bar) TODO: Change to RAA
                   {
                     table: {
                       body: [
-                        ['Bar'],
-                        ['456 Bar Lane'],
-                        ['Bar Town, BT 67890'],
-                        ['234-567-8901'],
-                        ['bar@example.net']
+                        [RAA_ADDRESS.locationName],
+                        [RAA_ADDRESS.streetAddress],
+                        [RAA_ADDRESS.addressSuite],
+                        [`${RAA_ADDRESS.city}, ${RAA_ADDRESS.state}, ${RAA_ADDRESS.zip}`],
+                        [RAA_ADDRESS.phone],
+                        [RAA_ADDRESS.email]
                       ],
                       widths: [`*`]
 
@@ -217,12 +217,12 @@ export class PdfService {
                     style: 'subheader',
                     margin: [0, 5, 0, 5] // Top and bottom margin
                   },
-                  // Third table (Baz) TODO: Confirm with client that end user should be a Location as currently described in DB structure.
                   {
                     table: {
                       body: [
                         [`${location?.locationName}`],
                         [`${location?.street}`],
+                        [`${location?.suite}`],
                         [`${location?.city}, ${location?.state} ${location?.zip}`],
                         [`${location?.phone}`],
                         [`${location?.contactEmail}`]
