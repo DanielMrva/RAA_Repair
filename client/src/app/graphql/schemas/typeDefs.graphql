@@ -62,6 +62,7 @@ type Location {
     locationName: String
     orgName: String!
     street: String
+    suite: String
     city: String
     state: String
     zip: String
@@ -179,6 +180,7 @@ type Mutation {
             locationName: String!
             orgName: String!
             street: String
+            suite: String
             city: String
             state: String
             zip: String

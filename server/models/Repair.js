@@ -33,7 +33,6 @@ const repairSchema = new Schema({
     },
     repairTag: {
         type: Number,
-        // TODO: Currently a "default" is set through the resolver layer.  Consider further research/testing/refactor to place this in the model layer. See line ~129 in resolvers.js
     },
     dateSentTech: {
         type: Date,
