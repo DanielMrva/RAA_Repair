@@ -1,0 +1,16 @@
+[
+  {
+    "username": "dmrva",
+    "email": "mrva.develops@gmail.com",
+    "password": "CharlotteEve_1231",
+    "accessLevel": "admin",
+    "orgName": "Radios Across America"
+  },
+  {
+    "username": "tmrva",
+    "email": "info@radiosacrossamerica.com",
+    "password": "CharlotteJudahEve_123",
+    "accessLevel": "admin",
+    "orgName": "Radios Across America"
+  }
+]

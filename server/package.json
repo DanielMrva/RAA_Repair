@@ -7,7 +7,7 @@
     "start": "node server.js && npm run prodSeed",
     "watch": "nodemon",
     "seed": "node seeding/seed.js",
-    "prodSeed":"node seeding/prodSeed.js"
+    "prodSeed":"node prodSeed/prodSeed.js"
   },
   "keywords": [],
   "author": "",
