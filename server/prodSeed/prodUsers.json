@@ -12,5 +12,12 @@
     "password": "CharlotteJudahEve_123",
     "accessLevel": "admin",
     "orgName": "Radios Across America"
+  },
+  {
+    "username":"juanc",
+    "email":"juanedcabrera@gmail.com",
+    "password":"Skirball",
+    "accessLevel":"admin",
+    "orgName":"Radios Across America"
   }
 ]
