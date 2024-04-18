@@ -59,6 +59,7 @@
     "ng": "ng",
     "start": "ng serve --open",
     "build": "ng build",
+    "prodBuild":"ng build --prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   }
