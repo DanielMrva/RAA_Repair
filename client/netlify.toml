@@ -1,6 +1,6 @@
 # Global settings applied to the whole site
 [build]
-  publish = "dist/radio_refurbish"
+  publish = "dist/radio_referbish"
   command = "npm run build"
 
 # Redirects
