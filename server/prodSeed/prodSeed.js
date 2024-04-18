@@ -2,8 +2,8 @@ const db = require('../config/connection');
 const { User, Organization, Radio, Repair, Location} = require('../models');
 const userSeeds = require('./prodUsers.json');
 const organizationSeeds = require('./prodOrgs.json');
-const radioSeeds = require('../seeding/radioSeeds.json');
-const repairSeeds = require('../seeding/repseeds.json');
+// const radioSeeds = require('../seeding/radioSeeds.json');
+// const repairSeeds = require('../seeding/repseeds.json');
 const locationSeeds = require('./prodLocations.json');
 
 db.once('open', async () => {
@@ -37,11 +37,11 @@ db.once('open', async () => {
         await Location.create(locationSeeds);
         console.log('Locs Created')
 
-        await Radio.create(radioSeeds);
-        console.log('Radios Created')
+        // await Radio.create(radioSeeds);
+        // console.log('Radios Created')
 
-        await Repair.create(repairSeeds);
-        console.log('Repairs Created')
+        // await Repair.create(repairSeeds);
+        // console.log('Repairs Created')
 
 
 

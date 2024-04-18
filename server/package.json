@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js && npm run prodSeed",
+    "start": "node server.js",
     "watch": "nodemon",
     "seed": "node seeding/seed.js",
     "prodSeed":"node prodSeed/prodSeed.js"
