@@ -22,7 +22,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@ng-bootstrap/ng-bootstrap": "^15.0.1",
+    "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "@ngrx/effects": "^17.2.0",
     "@ngrx/store": "^17.2.0",
     "@ngrx/store-devtools": "^17.2.0",

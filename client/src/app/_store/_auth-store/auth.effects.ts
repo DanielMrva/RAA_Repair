@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as AuthActions from "./auth.actions"
 import { of, from } from "rxjs";
-import { switchMap, map, mergeMap, catchError, tap } from "rxjs";
+import { switchMap, map, mergeMap, catchError, tap } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
 import { ToastService } from "@app/services/toast/toast.service";
