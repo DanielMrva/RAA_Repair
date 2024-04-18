@@ -60,6 +60,7 @@
     "start": "ng serve --open",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "postbuild": "cp src/_redirects dist/radio_referbish/"
   }
 }
