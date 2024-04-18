@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "radio_referbish:build:production"
+              "browserTarget": "radio_referbish:build:production"
             },
             "development": {
-              "buildTarget": "radio_referbish:build:development"
+              "browserTarget": "radio_referbish:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "radio_referbish:build"
+            "browserTarget": "radio_referbish:build"
           }
         },
         "test": {
