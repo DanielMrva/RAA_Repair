@@ -92,7 +92,7 @@ import { LocationMismatchDialogComponent } from './_components/utilComponents/lo
         ToastComponent,
         StoreModule.forRoot({}),
         EffectsModule.forRoot([AuthEffects]),
-        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() , connectInZone: true})
         
     ],
     providers: [ AuthService ],
