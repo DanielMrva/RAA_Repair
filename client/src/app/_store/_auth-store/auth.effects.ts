@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { createEffect, ofType, Actions } from "@ngrx/effects";
 import * as AuthActions from "./auth.actions"
 import { of, from } from "rxjs";
 import { switchMap, map, mergeMap, catchError, tap } from "rxjs/operators";
@@ -10,12 +10,13 @@ import { AuthService } from "@app/services/auth/auth.service";
 
 @Injectable()
 export class AuthEffects {
+
     constructor(
-        private actions$: Actions,
         private store: Store<AppState>,
         private toastService: ToastService,
-        private authService: AuthService
-    ) { }
+        private authService: AuthService,
+        private actions$: Actions
+    ) {}
 
     autoLogin$ = createEffect(() =>
         this.actions$.pipe(
@@ -49,18 +50,6 @@ export class AuthEffects {
         ),
         { dispatch: false }
     );
-
-//     saveAuthInfo$ = createEffect(() => 
-//     this.actions$.pipe(
-//         ofType(AuthActions.setAuthInfo),
-//         tap((authInfo) => {
-//             console.log('Save Auth Info Effect Triggered:', authInfo);
-//             localStorage.setItem('user', JSON.stringify(authInfo));
-//         })
-//     ),
-//     { dispatch: false }
-// );
-
 
 }
 

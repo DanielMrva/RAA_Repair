@@ -64,6 +64,8 @@ import { LocationMismatchDialogComponent } from './_components/utilComponents/lo
     ],
     imports: [
         BrowserModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([AuthEffects]),
         RouterModule,
         FontAwesomeModule,
         AppRoutingModule,
@@ -90,9 +92,7 @@ import { LocationMismatchDialogComponent } from './_components/utilComponents/lo
         RepairModule,
         LocationModule,
         ToastComponent,
-        StoreModule.forRoot({}),
-        EffectsModule.forRoot([AuthEffects]),
-        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() , connectInZone: true})
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode()})
         
     ],
     providers: [ AuthService ],
