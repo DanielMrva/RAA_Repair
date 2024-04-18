@@ -1,0 +1,11 @@
+# Global settings applied to the whole site
+[build]
+  publish = "dist/radio_refurbish"
+  command = "npm run build"
+
+# Redirects
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true  # Ensure that the rule takes precedence over other less specific rules
