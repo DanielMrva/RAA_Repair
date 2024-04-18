@@ -14,9 +14,19 @@ import { selectOneOrg, orgErrorSelector, orgLoadingSelector } from '@app/_store/
 })
 export class EditOrgComponent implements OnInit{
 
-  oneOrg$ = this.store.select(selectOneOrg);
-  isLoading$ = this.store.select(orgLoadingSelector);
-  error$ = this.store.select(orgErrorSelector);
+  oneOrg$
+  isLoading$
+  error$
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>
+  ) {
+
+    this.oneOrg$ = this.store.select(selectOneOrg);
+    this.isLoading$ = this.store.select(orgLoadingSelector);
+    this.error$ = this.store.select(orgErrorSelector);
+  }
 
   orgForm = new FormGroup({
     orgName: new FormControl<string>('', { nonNullable: true})
@@ -29,10 +39,7 @@ export class EditOrgComponent implements OnInit{
 
 
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>
-  ) {}
+
 
   loadOrg(id: string): void {
 

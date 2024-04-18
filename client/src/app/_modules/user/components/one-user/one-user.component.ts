@@ -16,15 +16,19 @@ export class OneUserComponent implements OnInit{
 
   user: User | undefined;
 
-  isLoading$ = this.store.select(userLoadingSelector);
-  userError$ = this.store.select(userErrorSelector);
-  oneUser$ = this.store.select(selectOneUser);
+  isLoading$
+  userError$
+  oneUser$
 
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
     private store: Store<AppState>
-  ) { }
+  ) {
+    this.isLoading$ = this.store.select(userLoadingSelector);
+    this.userError$ = this.store.select(userErrorSelector);
+    this.oneUser$ = this.store.select(selectOneUser);
+   }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {

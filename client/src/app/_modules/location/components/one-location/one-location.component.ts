@@ -12,20 +12,27 @@ import { selectOneLocation, locationErrorSelector, locationLoadingSelector } fro
 })
 export class OneLocationComponent implements OnInit {
 
-  isLoading$ = this.store.select(locationLoadingSelector);
-  locationError$ = this.store.select(locationErrorSelector);
-  oneLocation$ = this.store.select(selectOneLocation);
+  isLoading$
+  locationError$
+  oneLocation$
 
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>
-  ) { }
+  ) {
+      this.isLoading$ = this.store.select(locationLoadingSelector);
+      this.locationError$ = this.store.select(locationErrorSelector);
+      this.oneLocation$ = this.store.select(selectOneLocation);
+    }
+
+
+
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       const locationId = params['id'];
       console.log(locationId)
-      this.store.dispatch(loadOneLocation({locationId}));
+      this.store.dispatch(loadOneLocation({ locationId }));
     });
   }
 

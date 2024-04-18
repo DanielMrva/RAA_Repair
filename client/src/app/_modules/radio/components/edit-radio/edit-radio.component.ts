@@ -20,23 +20,48 @@ import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 })
 export class EditRadioComponent implements OnInit{
 
-  isLoading$ = this.store.select(radioLoadingSelector);
-  radioError$ = this.store.select(radioErrorSelector);
-  oneRadio$ = this.store.select(selectOneRadio);
+  isLoading$
+  radioError$
+  oneRadio$
 
-  orgNames$ = this.store.select(selectOrgNames);
-  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-  orgNameError$ = this.store.select(orgErrorSelector);
+  orgNames$
+  isLoadingOrgNames$
+  orgNameError$
+
+  locationNames$
+  isLoadingLocationNames$
+  locationNameError$
+
   orgNameOptions: string[] = [];
   filteredOrgNames$!: Observable<string[]>;
 
-  locationNames$ = this.store.select(selectLocationNames);
-  isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
-  locationNameError$ = this.store.select(locationErrorSelector);
+
   locNameOptions: string[] = [];
   filteredLocNames$!: Observable<string[]>;
 
   radioID!: string;
+
+      
+  constructor(
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>
+  ) {
+    this.isLoading$ = this.store.select(radioLoadingSelector);
+    this.radioError$ = this.store.select(radioErrorSelector);
+    this.oneRadio$ = this.store.select(selectOneRadio);
+  
+    this.orgNames$ = this.store.select(selectOrgNames);
+    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+    this.orgNameError$ = this.store.select(orgErrorSelector);
+
+    this.locationNames$ = this.store.select(selectLocationNames);
+    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
+    this.locationNameError$ = this.store.select(locationErrorSelector);
+   }
+
+
+
 
   editRadioForm = new FormGroup({
     orgName: new FormControl<string>(''),
@@ -59,12 +84,6 @@ export class EditRadioComponent implements OnInit{
   get notesArray(): FormArray {
     return this.editRadioForm.get('notes') as FormArray;
   }
-    
-  constructor(
-    private formBuilder: FormBuilder,
-    private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>
-  ) { }
 
   loadRadio(id: string): void {
 

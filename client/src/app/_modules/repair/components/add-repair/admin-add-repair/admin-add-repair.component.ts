@@ -17,14 +17,26 @@ import { MismatchModalService } from '@app/services/modal/mismatch-modal.service
 })
 export class AdminAddRepairComponent implements OnInit {
 
+  oneRadio$
+  radioError$
+  radioIsLoading$
+
   initialOrgName: string | null = null;
 
-  oneRadio$ = this.store.select(selectOneRadio);
-  radioError$ = this.store.select(radioErrorSelector);
-  radioIsLoading$ = this.store.select(radioLoadingSelector);
-
-
   filteredLocationNames: string[] = [];
+
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>,
+    private mismatchModalService: MismatchModalService,
+  ) { 
+      this.oneRadio$ = this.store.select(selectOneRadio);
+      this.radioError$ = this.store.select(radioErrorSelector);
+      this.radioIsLoading$ = this.store.select(radioLoadingSelector);
+    }
+
+
 
   adminRepairForm = new FormGroup({
     radioID: new FormControl<string>(''),
@@ -74,13 +86,6 @@ export class AdminAddRepairComponent implements OnInit {
   get partsUsedArray(): FormArray {
     return this.adminRepairForm.get('partsUsed') as FormArray;
   }
-
-
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>,
-    private mismatchModalService: MismatchModalService,
-  ) { }
 
   addSymptom() {
     this.symptomsArray.push(new FormControl<string>('', { nonNullable: true }));

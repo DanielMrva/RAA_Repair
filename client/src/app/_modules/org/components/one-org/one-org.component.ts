@@ -12,14 +12,22 @@ import { AppState } from '@app/_store/app.state';
 })
 export class OneOrgComponent implements OnInit{
 
-  isLoading$ = this.store.select(orgLoadingSelector);
-  orgError$ = this.store.select(orgErrorSelector);
-  oneOrg$ = this.store.select(selectOneOrg);
+  isLoading$
+  orgError$
+  oneOrg$
 
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>
-  ) { }
+  ) {
+      this.isLoading$ = this.store.select(orgLoadingSelector);
+      this.orgError$ = this.store.select(orgErrorSelector);
+      this.oneOrg$ = this.store.select(selectOneOrg);
+    }
+
+
+
+
 
 
   ngOnInit(): void {

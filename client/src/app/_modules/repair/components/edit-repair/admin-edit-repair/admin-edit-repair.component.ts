@@ -20,17 +20,33 @@ import { first, of, withLatestFrom } from 'rxjs';
 })
 export class AdminEditRepairComponent implements OnInit {
 
-  initialOrgName: string | null = null;
+  oneRadio$
+  radioError$
+  radioIsLoading$
+  isLoading$
+  repairError$
+  oneRepair$
 
-  oneRadio$ = this.store.select(selectOneRadio);
-  radioError$ = this.store.select(radioErrorSelector);
-  radioIsLoading$ = this.store.select(radioLoadingSelector);
+  constructor(
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>,
+    private mismatchModalService: MismatchModalService
+  ) {
+
+    this.oneRadio$ = this.store.select(selectOneRadio);
+    this.radioError$ = this.store.select(radioErrorSelector);
+    this.radioIsLoading$ = this.store.select(radioLoadingSelector);
+    this.isLoading$ = this.store.select(repairLoadingSelector);
+    this.repairError$ = this.store.select(repairErrorSelector);
+    this.oneRepair$ = this.store.select(selectOneRepair);
+
+    }
+
+  initialOrgName: string | null = null;
 
   filteredLocationNames: string[] = [];
 
-  isLoading$ = this.store.select(repairLoadingSelector);
-  repairError$ = this.store.select(repairErrorSelector);
-  oneRepair$ = this.store.select(selectOneRepair);
 
   repairID!: string;
   radioId!: string;
@@ -83,13 +99,7 @@ export class AdminEditRepairComponent implements OnInit {
     return this.repairForm.get('partsUsed') as FormArray;
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>,
-    private mismatchModalService: MismatchModalService
-  ) {
-  }
+
 
 
   loadRepair(id: string): void {

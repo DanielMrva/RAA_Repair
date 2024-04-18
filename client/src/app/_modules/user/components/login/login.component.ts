@@ -18,12 +18,26 @@ import { AppState } from '@app/_store/app.state';
 })
 export class LoginComponent implements OnInit{
 
-  loginForm = this.formBuilder.group({
-    username: '',
-    password: '',
-    email: '',
-    orgName: ''
-  })
+  loginForm
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private authService: AuthService,
+    private router: Router,
+    private apollo: Apollo,
+    private toastService: ToastService,
+    private store: Store<AppState>
+    ) {
+      this.loginForm = this.formBuilder.group({
+        username: '',
+        password: '',
+        email: '',
+        orgName: ''
+      })
+     }
+
+
   login: boolean = true;
 
   loginUserForm = new FormGroup({
@@ -34,15 +48,7 @@ export class LoginComponent implements OnInit{
   })
 
 
-  constructor(
-              private formBuilder: FormBuilder,
-              private userService: UserService,
-              private authService: AuthService,
-              private router: Router,
-              private apollo: Apollo,
-              private toastService: ToastService,
-              private store: Store<AppState>
-              ) { }
+
 
   ngOnInit(): void {
       

@@ -17,7 +17,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError.message}, ${networkError.name}, ${networkError.stack}`);
 });
 
-const uri = `${environment.apiBaseUri}/graphql`;
+const uri = `http://localhost:3001/graphql`
+// const uri = `${environment.apiBaseUri}/graphql`;
 
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   return {

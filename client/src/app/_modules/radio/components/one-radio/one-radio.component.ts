@@ -14,14 +14,18 @@ import { selectOneRadio, radioLoadingSelector, radioErrorSelector } from '@app/_
 })
 export class OneRadioComponent implements OnInit{
 
-  isLoading$ = this.store.select(radioLoadingSelector);
-  radioError$ = this.store.select(radioErrorSelector);
-  oneRadio$ = this.store.select(selectOneRadio);
+  isLoading$
+  radioError$
+  oneRadio$
 
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>
-  ) { }
+  ) { 
+      this.isLoading$ = this.store.select(radioLoadingSelector);
+      this.radioError$ = this.store.select(radioErrorSelector);
+      this.oneRadio$ = this.store.select(selectOneRadio);
+    }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {

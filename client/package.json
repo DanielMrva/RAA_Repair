@@ -58,7 +58,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
-    "build": "ng build",
+    "build": "ng build:prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "postbuild": "cp src/_redirects dist/radio_referbish/"

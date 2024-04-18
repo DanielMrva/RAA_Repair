@@ -16,13 +16,26 @@ import { selectLocationNames, locationErrorSelector, locationLoadingSelector } f
 })
 export class AddLocationComponent implements OnInit{
 
-  orgNames$ = this.store.select(selectOrgNames);
-  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-  orgNameError$ = this.store.select(orgErrorSelector);
+  orgNames$
+  isLoadingOrgNames$
+  orgNameError$
+  locationNames$
+  isLoadingLocationNames$
+  locationError$
 
-  locationNames$ = this.store.select(selectLocationNames);
-  isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
-  locationError$ = this.store.select(locationErrorSelector);
+  constructor(
+    private store: Store<AppState>
+  ) {
+    this.orgNames$ = this.store.select(selectOrgNames);
+    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+    this.orgNameError$ = this.store.select(orgErrorSelector);
+  
+    this.locationNames$ = this.store.select(selectLocationNames);
+    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
+    this.locationError$ = this.store.select(locationErrorSelector);
+  }
+
+
   locationList!: Location[];
 
   locationForm = new FormGroup({
@@ -41,9 +54,7 @@ export class AddLocationComponent implements OnInit{
 
   isSubmitted = false;
 
-  constructor(
-    private store: Store<AppState>
-  ) {}
+
 
   fieldValidCheck(field: string) {
     if (

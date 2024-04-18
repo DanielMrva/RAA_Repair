@@ -13,9 +13,19 @@ import { selectOrgNames, orgLoadingSelector, orgErrorSelector  } from '@app/_sto
 })
 export class AddOrgComponent implements OnInit {
 
-  orgNames$ = this.store.select(selectOrgNames);
-  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-  orgError$ = this.store.select(orgErrorSelector);
+  orgNames$
+  isLoadingOrgNames$
+  orgError$
+
+  constructor( 
+    private store: Store<AppState>
+  ){ 
+    this.orgNames$ = this.store.select(selectOrgNames);
+    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+    this.orgError$ = this.store.select(orgErrorSelector);
+  }
+
+
   orgList!: Organization[];
 
   orgForm = new FormGroup({
@@ -24,9 +34,7 @@ export class AddOrgComponent implements OnInit {
 
   isSubmitted = false;
 
-  constructor( 
-    private store: Store<AppState>
-  ){ }
+
 
   ngOnInit(): void {
     this.loadOrgNames();

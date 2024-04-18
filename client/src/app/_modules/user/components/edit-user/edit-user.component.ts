@@ -18,13 +18,14 @@ import { Observable, map, startWith } from 'rxjs';
 })
 export class EditUserComponent implements OnInit {
 
-  orgNames$ = this.store.select(selectOrgNames);
-  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-  orgNameError$ = this.store.select(orgErrorSelector);
+  orgNames$
+  isLoadingOrgNames$
+  orgNameError$
 
-  oneUser$ = this.store.select(selectOneUser);
-  isLoadingUser$ = this.store.select(userLoadingSelector);
-  userError$ = this.store.select(userErrorSelector);
+  oneUser$
+  isLoadingUser$
+  userError$
+
   userId!: string;
   filteredOrgName$!: Observable<Organization[] | null>;
 
@@ -40,7 +41,15 @@ export class EditUserComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>
 
-  ) { }
+  ) { 
+      this.orgNames$ = this.store.select(selectOrgNames);
+      this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+      this.orgNameError$ = this.store.select(orgErrorSelector);
+    
+      this.oneUser$ = this.store.select(selectOneUser);
+      this.isLoadingUser$ = this.store.select(userLoadingSelector);
+      this.userError$ = this.store.select(userErrorSelector);
+    }
 
   loadUser(id: string): void {
 

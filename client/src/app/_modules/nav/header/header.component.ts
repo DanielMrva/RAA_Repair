@@ -14,12 +14,12 @@ import { logoutUser } from '@app/_store/_user-store/user.actions';
 })
 export class HeaderComponent implements OnInit {
 
-  loggedUser$ = this.authService.loggedUser$;
+  loggedUser$
 
   userAccessLevel: string | null = null;
 
-  accessLevel$ = this.store.select(selectAccessLevel);
-  isAuthenticated$ = this.store.select(selectIsAuthenticated)
+  accessLevel$
+  isAuthenticated$
 
   
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
@@ -29,7 +29,13 @@ export class HeaderComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private store: Store<AppState>
-    ) {}
+    ) {
+      this.loggedUser$ = this.authService.loggedUser$;
+
+      this.accessLevel$ = this.store.select(selectAccessLevel);
+      this.isAuthenticated$ = this.store.select(selectIsAuthenticated)
+
+      }
 
   ngOnInit(): void {
 

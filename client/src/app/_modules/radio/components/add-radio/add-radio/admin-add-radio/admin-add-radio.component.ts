@@ -20,17 +20,35 @@ import { Location } from '@app/graphql/schemas';
 })
 export class AdminAddRadioComponent implements OnInit{
 
-  orgNames$ = this.store.select(selectOrgNames);
-  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-  orgNameError$ = this.store.select(orgErrorSelector);
+  orgNames$
+  isLoadingOrgNames$
+  orgNameError$
+
+  locationNames$
+  isLoadingLocationNames$
+  locationNameError$
+
   orgNameOptions: string[] = [];
   filteredOrgNames$!: Observable<string[]>;
 
-  locationNames$ = this.store.select(selectLocationNames);
-  isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
-  locationNameError$ = this.store.select(locationErrorSelector);
+
   locNameOptions: string[] = [];
   filteredLocNames$!: Observable<string[]>;
+
+  constructor(
+    private store: Store<AppState>
+  ) {
+    this.orgNames$ = this.store.select(selectOrgNames);
+    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+    this.orgNameError$ = this.store.select(orgErrorSelector);
+  
+    this.locationNames$ = this.store.select(selectLocationNames);
+    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
+    this.locationNameError$ = this.store.select(locationErrorSelector);
+   }
+
+
+
 
   adminRadioForm = new FormGroup({
     orgName: new FormControl<string>(''),
@@ -53,11 +71,6 @@ export class AdminAddRadioComponent implements OnInit{
   get notesArray(): FormArray {
     return this.adminRadioForm.get('notes') as FormArray;
   }
-
-  constructor(
-    private store: Store<AppState>
-  ) { }
-
   addNotes() {
     this.notesArray.push(new FormControl<string>('', { nonNullable: true}));
   }

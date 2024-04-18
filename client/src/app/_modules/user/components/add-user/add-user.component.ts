@@ -14,10 +14,19 @@ import { Observable, map, startWith } from 'rxjs';
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent implements OnInit {
+  orgNames$
+  isLoadingOrgNames$
+  orgNameError$
 
-  orgNames$ = this.store.select(selectOrgNames);
-  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-  orgNameError$ = this.store.select(orgErrorSelector);
+  constructor( 
+    private store: Store<AppState>
+  ){
+    this.orgNames$ = this.store.select(selectOrgNames);
+    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+    this.orgNameError$ = this.store.select(orgErrorSelector);
+   }
+
+
   filteredOrgName$!: Observable<Organization[] | null>;
 
   userForm = new FormGroup({
@@ -45,9 +54,7 @@ export class AddUserComponent implements OnInit {
       }
   }
 
-  constructor( 
-    private store: Store<AppState>
-  ){ }
+
 
   ngOnInit(): void {
     this.store.dispatch(loadOrgNames());

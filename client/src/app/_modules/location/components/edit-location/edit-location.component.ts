@@ -18,6 +18,30 @@ import { selectLocationNames, locationErrorSelector, locationLoadingSelector, se
 })
 export class EditLocationComponent implements OnInit{
 
+  orgNames$
+  isLoadingOrgNames$
+  orgNameError$
+
+  oneLocation$
+  locationNames$
+  isLoadingLocationNames$
+  locationError$
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>
+  ) { 
+    this.orgNames$ = this.store.select(selectOrgNames);
+    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+    this.orgNameError$ = this.store.select(orgErrorSelector);
+  
+    this.oneLocation$ = this.store.select(selectOneLocation);
+    this.locationNames$ = this.store.select(selectLocationNames);
+    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
+    this.locationError$ = this.store.select(locationErrorSelector);
+    }
+
   editLocationForm = new FormGroup({
     locationName: new FormControl<string>(''),
     orgName: new FormControl<string>(''),
@@ -34,23 +58,12 @@ export class EditLocationComponent implements OnInit{
 
   isSubmitted = false;
 
-  orgNames$ = this.store.select(selectOrgNames);
-  isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-  orgNameError$ = this.store.select(orgErrorSelector);
 
-  oneLocation$ = this.store.select(selectOneLocation);
-  locationNames$ = this.store.select(selectLocationNames);
-  isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
-  locationError$ = this.store.select(locationErrorSelector);
   locationList!: Location[];
 
   locationId!: string;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>
-  ) { }
+
 
   fieldValidCheck(field: string) {
     if (

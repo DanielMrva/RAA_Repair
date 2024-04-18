@@ -11,7 +11,7 @@ import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER } from '@app/u
 })
 export class AddRadioComponent {
 
-  userAccessLevel$ = this.store.select(selectAccessLevel);
+  userAccessLevel$
 
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
   TECH_ACCESS = ACCESS_LEVEL_TECH;
@@ -21,7 +21,8 @@ export class AddRadioComponent {
   constructor (
     private store: Store<AppState>
     ) {
-    
-  }
+      this.userAccessLevel$ = this.store.select(selectAccessLevel);
+
+    }
 
 }
