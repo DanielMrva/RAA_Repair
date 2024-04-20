@@ -2,9 +2,14 @@
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Users</a>
         <ul class="dropdown-menu">
-            <li><a [routerLink]="['/user-reports']" class="dropdown-item">User Reports</a></li>
-    
+            <li>
+                <a [routerLink]="['/user-reports']" class="dropdown-item">User Reports</a>
+            </li>
+            <li>
+                <a [routerLink]="['/add-user']" class="dropdown-item">Add User</a>
+            </li>
         </ul>
+
     </li>
     
     <li class="nav-item dropdown">
@@ -14,6 +19,25 @@
     
         </ul>
     </li>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Organizations</a>
+        <ul class="dropdown-menu">
+            <li>
+                <a [routerLink]="['/add-org']" class="dropdown-item">Add Organization</a>
+            </li>
+            <li>
+                <a [routerLink]="['/org-reports']" class="dropdown-item">Organization Reports</a>
+
+            </li>
+            <li>
+                <a [routerLink]="['/add-location']" class="dropdown-item">Add Location</a>
+            </li>
+    
+        </ul>
+    </li>
+
+
 
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Radios</a>

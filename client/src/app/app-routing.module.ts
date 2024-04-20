@@ -167,7 +167,7 @@ const routes: Routes = [
   {
     path: 'org-reports',
     component: AdminOrgReportsComponent,
-    outlet: 'dashboard',
+    // outlet: 'dashboard',
     data: {
       role: ['admin']
     },
