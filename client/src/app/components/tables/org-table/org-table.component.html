@@ -31,7 +31,7 @@
                 <ng-container *ngIf="element.locations">
                     <ng-container *ngFor="let location of element.locations; let i = index">
                         <li  *ngIf="i < 5">
-                            <a [routerLink]="['/one-location/', location.locationName]" >{{location.locationName}}</a>
+                            <a [routerLink]="['/one-location/', location._id]" >{{location.locationName}}</a>
                         </li>
                     </ng-container>
                 </ng-container>
