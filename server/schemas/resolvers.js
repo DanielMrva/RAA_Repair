@@ -1,5 +1,5 @@
 const { User, Organization, Radio, Repair, Location } = require('../models');
-const { unwrapResolverError } = require('@apollo/server/errors');
+const { unwrapResolverError, ApolloError } = require('@apollo/server/errors');
 const { signToken } = require('../utils/auth');
 const { sign } = require('jsonwebtoken');
 const mongoose = require('mongoose');
@@ -132,14 +132,17 @@ const resolvers = {
 
             if (!user) {
                 console.log('bad user', email);
-                throw unwrapResolverError(badAttempt);
+                // throw unwrapResolverError(badAttempt);
+                throw new ApolloError(badAttempt, "Unauthenticated")
             }
 
             const correctPassword = await user.isCorrectPassword(password);
 
             if (!correctPassword) {
                 console.log('bad password', user);
-                throw new unwrapResolverError(badAttempt);
+                throw new ApolloError(badAttempt, "Unauthenticated")
+
+                // throw new unwrapResolverError(badAttempt);
             }
 
             const token = signToken(user);
