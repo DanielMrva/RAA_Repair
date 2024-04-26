@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start:dev": "SET NODE_ENV=development & node server.js",
+    "start:prod": "SET NODE_ENV=production & node server.js",
     "watch": "nodemon",
     "seed": "node seeding/seed.js",
     "prodSeed":"node seeding/prodSeed/prodSeed.js"

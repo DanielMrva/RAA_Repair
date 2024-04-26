@@ -1,25 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, ValidatorFn } from '@angular/forms';
 import { Organization } from '@app/graphql/schemas';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { addOrg, loadOrgNames } from '@app/_store/_org-store/org.actions';
-import { selectOrgNames, orgLoadingSelector, orgErrorSelector  } from '@app/_store/_org-store/org.selectors';
+import { selectOrgNames, orgLoadingSelector, orgErrorSelector } from '@app/_store/_org-store/org.selectors';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-org',
   templateUrl: './add-org.component.html',
   styleUrls: ['./add-org.component.css']
 })
-export class AddOrgComponent implements OnInit {
+export class AddOrgComponent implements OnInit, OnDestroy {
+
+  private subscriptions = new Subscription();
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   orgNames$
   isLoadingOrgNames$
   orgError$
 
-  constructor( 
+  constructor(
     private store: Store<AppState>
-  ){ 
+  ) {
     this.orgNames$ = this.store.select(selectOrgNames);
     this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
     this.orgError$ = this.store.select(orgErrorSelector);
@@ -29,7 +36,7 @@ export class AddOrgComponent implements OnInit {
   orgList!: Organization[];
 
   orgForm = new FormGroup({
-    orgName: new FormControl<string>('', {nonNullable: true, validators: this.orgNameValidator().bind(this) })
+    orgName: new FormControl<string>('', { nonNullable: true, validators: this.orgNameValidator().bind(this) })
   })
 
   isSubmitted = false;
@@ -46,22 +53,27 @@ export class AddOrgComponent implements OnInit {
       this.orgForm.get(`${field}`)?.dirty ||
       this.orgForm.get(`${field}`)?.touched ||
       this.isSubmitted) {
-        return true
-      } else {
-        return false
-      }
+      return true
+    } else {
+      return false
+    }
   };
 
   loadOrgNames(): void {
     this.store.dispatch(loadOrgNames());
 
-    this.orgNames$.subscribe(( orgL: Organization[] | null) => {
-      if(orgL) {
-        this.orgList = orgL
-      } else {
-        this.orgList = [];
-      }
-    })
+    this.subscriptions.add(
+      this.orgNames$.subscribe((orgL: Organization[] | null) => {
+        if (orgL) {
+          this.orgList = orgL
+        } else {
+          this.orgList = [];
+        }
+      })
+    );
+
+
+
   };
 
   orgNameValidator(): ValidatorFn {
@@ -80,7 +92,7 @@ export class AddOrgComponent implements OnInit {
 
     const orgName = this.orgForm.value.orgName ?? '';
 
-    this.store.dispatch(addOrg({orgName: orgName}));
+    this.store.dispatch(addOrg({ orgName: orgName }));
 
   };
 

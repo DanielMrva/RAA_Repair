@@ -1,30 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
-import { Store} from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { addUser } from '@app/_store/_user-store/user.actions';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
 import { Organization } from '@app/graphql/schemas';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, Subscription, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.css']
 })
-export class AddUserComponent implements OnInit {
+export class AddUserComponent implements OnInit, OnDestroy {
+
+  private subscriptions = new Subscription();
+
   orgNames$
   isLoadingOrgNames$
   orgNameError$
 
-  constructor( 
+  constructor(
     private store: Store<AppState>
-  ){
+  ) {
     this.orgNames$ = this.store.select(selectOrgNames);
     this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
     this.orgNameError$ = this.store.select(orgErrorSelector);
-   }
+  }
 
 
   filteredOrgName$!: Observable<Organization[] | null>;
@@ -48,10 +51,10 @@ export class AddUserComponent implements OnInit {
       this.userForm.get(`${field}`)?.dirty ||
       this.userForm.get(`${field}`)?.touched ||
       this.isSubmitted) {
-        return true
-      } else {
-        return false
-      }
+      return true
+    } else {
+      return false
+    }
   }
 
 
@@ -69,15 +72,18 @@ export class AddUserComponent implements OnInit {
     const filterValue = value.toLowerCase();
     let orgList: Organization[] = [];
 
-    // Subscribe to orgNames$ and populate orgList when values are emitted
-    this.orgNames$.subscribe((orgs: Organization[] | null) => {
-      if (orgs) {
-        orgList = orgs.filter(org => org.orgName.toLowerCase().includes(filterValue));
-      }
-    });
+    this.subscriptions.add(
+      this.orgNames$.subscribe((orgs: Organization[] | null) => {
+        if (orgs) {
+          orgList = orgs.filter(org => org.orgName.toLowerCase().includes(filterValue));
+        }
+      })
+    );
+
+
 
     return orgList;
-  }
+  };
 
   displayOrgName(org: Organization): string {
     return org && org.orgName ? org.orgName : '';
@@ -102,6 +108,11 @@ export class AddUserComponent implements OnInit {
         accessLevel
       })
     )
-  }
+  };
+
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  };
 
 }
