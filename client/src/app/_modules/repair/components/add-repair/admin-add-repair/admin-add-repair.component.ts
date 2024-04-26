@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
-import { RepairFormFields } from '@app/graphql/schemas';
+import { RepairFormFields, UpdateRepairFields } from '@app/graphql/schemas';
 import { Store } from '@ngrx/store';
 import { addRepair } from '@app/_store/_repair-store/repair.actions';
-import { withLatestFrom, first, of } from 'rxjs';
+import { withLatestFrom, first, of, Subscription } from 'rxjs';
 import { loadOneRadio } from '@app/_store/_radio-store/radio.actions';
 import { radioErrorSelector, radioLoadingSelector, selectOneRadio } from '@app/_store/_radio-store/radio.selectors';
 import { MismatchModalService } from '@app/services/modal/mismatch-modal.service';
@@ -15,7 +15,10 @@ import { MismatchModalService } from '@app/services/modal/mismatch-modal.service
   templateUrl: './admin-add-repair.component.html',
   styleUrls: ['./admin-add-repair.component.css']
 })
-export class AdminAddRepairComponent implements OnInit {
+export class AdminAddRepairComponent implements OnInit, OnDestroy {
+
+  private subscriptions = new Subscription();
+
 
   oneRadio$
   radioError$
@@ -30,11 +33,11 @@ export class AdminAddRepairComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>,
     private mismatchModalService: MismatchModalService,
-  ) { 
-      this.oneRadio$ = this.store.select(selectOneRadio);
-      this.radioError$ = this.store.select(radioErrorSelector);
-      this.radioIsLoading$ = this.store.select(radioLoadingSelector);
-    }
+  ) {
+    this.oneRadio$ = this.store.select(selectOneRadio);
+    this.radioError$ = this.store.select(radioErrorSelector);
+    this.radioIsLoading$ = this.store.select(radioLoadingSelector);
+  }
 
 
 
@@ -134,24 +137,25 @@ export class AdminAddRepairComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activatedRoute.paramMap.subscribe(params => {
-      const radioID = params.get('radioID');
-      if (radioID) {
-        this.adminRepairForm.patchValue({ radioID: radioID });
-        this.store.dispatch(loadOneRadio({ radioID }));
-        this.oneRadio$.subscribe(radio => {
-          if (radio) {
-            this.adminRepairForm.patchValue({
-              radioID: radio._id,
-              radioSerial: radio.serialNumber,
-              radioMake: radio.make
-            });
-            this.initialOrgName = radio.orgName;
-          }
-        });
-      }
-    });
-
+    this.subscriptions.add(
+      this.activatedRoute.paramMap.subscribe(params => {
+        const radioID = params.get('radioID');
+        if (radioID) {
+          this.adminRepairForm.patchValue({ radioID: radioID });
+          this.store.dispatch(loadOneRadio({ radioID }));
+          this.oneRadio$.subscribe(radio => {
+            if (radio) {
+              this.adminRepairForm.patchValue({
+                radioID: radio._id,
+                radioSerial: radio.serialNumber,
+                radioMake: radio.make
+              });
+              this.initialOrgName = radio.orgName;
+            }
+          });
+        }
+      })
+    );
   };
 
   handleOrgNameSelected(orgName: string): void {
@@ -162,9 +166,9 @@ export class AdminAddRepairComponent implements OnInit {
     this.filteredLocationNames = locations;
   };
 
-  submitRepair(): void {
+  prepaireRepairData(): RepairFormFields {
 
-    const submittedRepair: RepairFormFields = {
+    return {
       radioID: this.adminRepairForm.value.radioID ?? '',
       radioMake: this.adminRepairForm.value.radioMake ?? '',
       radioSerial: this.adminRepairForm.value.radioSerial ?? '',
@@ -177,7 +181,7 @@ export class AdminAddRepairComponent implements OnInit {
       dateSentEU: this.adminRepairForm.value.dateSentEU ?? new Date(),
       techInvNum: this.adminRepairForm.value.techInvNum ?? '',
       raaInvNum: this.adminRepairForm.value.raaInvNum ?? '',
-      symptoms: Array.isArray(this.adminRepairForm.value.symptoms) ? this.adminRepairForm.value.symptoms : [''],
+      symptoms: Array.isArray(this.adminRepairForm.value.symptoms) ? this.adminRepairForm.value.symptoms.map(symptom => symptom ?? '') : [''],
       testFreq: this.adminRepairForm.value.testFreq ?? '',
       incRxSens: this.adminRepairForm.value.incRxSens ?? '',
       incFreqErr: this.adminRepairForm.value.incFreqErr ?? '',
@@ -187,12 +191,19 @@ export class AdminAddRepairComponent implements OnInit {
       outFreqErr: this.adminRepairForm.value.outFreqErr ?? '',
       outMod: this.adminRepairForm.value.outMod ?? '',
       outPowerOut: this.adminRepairForm.value.outPowerOut ?? '',
-      accessories: Array.isArray(this.adminRepairForm.value.accessories) ? this.adminRepairForm.value.accessories : [''],
-      workPerformed: Array.isArray(this.adminRepairForm.value.workPerformed) ? this.adminRepairForm.value.workPerformed : [''],
+      accessories: Array.isArray(this.adminRepairForm.value.accessories) ? this.adminRepairForm.value.accessories.map(a => a ?? '') : [''],
+      workPerformed: Array.isArray(this.adminRepairForm.value.workPerformed) ? this.adminRepairForm.value.workPerformed.map(wp => wp ?? '') : [''],
       repHours: this.adminRepairForm.value.repHours ?? 0,
-      partsUsed: Array.isArray(this.adminRepairForm.value.partsUsed) ? this.adminRepairForm.value.partsUsed : [''],
-      remarks: this.adminRepairForm.value.remarks ?? '',
+      partsUsed: Array.isArray(this.adminRepairForm.value.partsUsed) ? this.adminRepairForm.value.partsUsed.map(pu => pu ?? '') : [''],
+      remarks: this.adminRepairForm.value.remarks ?? ''
     }
+
+
+  }
+
+  submitRepair(): void {
+
+    const submittedRepair: RepairFormFields = this.prepaireRepairData();
 
     console.log(`sumbitRepair with radioID: ${submittedRepair.radioID}`)
 
@@ -202,32 +213,47 @@ export class AdminAddRepairComponent implements OnInit {
 
   };
 
+  handleSubmission(formValue: any, oneRadio: any): void {
+
+    const formRadioLocation = formValue.radioLocation || '';
+    const oneRadioLocationName = oneRadio?.locationName || '';
+    const radioId = oneRadio?._id || '';
+
+    if (formRadioLocation !== oneRadioLocationName) {
+
+      console.log(`formRadioLocation: ${formRadioLocation}, oneRadioLocationName: ${oneRadioLocationName}, radioId: ${radioId}`)
+      this.mismatchModalService.openMismatchDialog(
+        formRadioLocation,
+        oneRadioLocationName,
+        radioId,
+        () => this.submitRepair()
+      )
+    } else {
+      this.submitRepair()
+    }
+
+  }
 
   onSubmit() {
 
-    of(this.adminRepairForm.value).pipe(
-      withLatestFrom(this.oneRadio$),
-      first(),
-    ).subscribe(([formValue, oneRadio]) => {
+    this.subscriptions.add(
 
-      const formRadioLocation = formValue.radioLocation || '';
-      const oneRadioLocationName = oneRadio?.locationName || '';
-      const radioId = oneRadio?._id || '';
+      of(this.adminRepairForm.value).pipe(
+        withLatestFrom(this.oneRadio$),
+        first(),
+      ).subscribe(([formValue, oneRadio]) => {
 
-      if (formRadioLocation !== oneRadioLocationName) {
+        this.handleSubmission(formValue, oneRadio);
+      })
 
-        console.log(`formRadioLocation: ${formRadioLocation}, oneRadioLocationName: ${oneRadioLocationName}, radioId: ${radioId}`)
-        this.mismatchModalService.openMismatchDialog(
-          formRadioLocation,
-          oneRadioLocationName,
-          radioId,
-          () => this.submitRepair()
-        )
-      } else {
-        this.submitRepair()
-      }
-    });
+    );
 
+
+  };
+
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   };
 
 }

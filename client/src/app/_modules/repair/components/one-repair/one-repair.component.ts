@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Repair, Radio, Location, PoTextAttributes, InvoiceTextAttributes } from '@app/graphql/schemas/typeInterfaces';
 import { Store } from '@ngrx/store';
@@ -8,7 +8,7 @@ import { selectOneRepair, repairErrorSelector, repairLoadingSelector } from '@ap
 import { selectOneRadio, radioErrorSelector, radioLoadingSelector } from '@app/_store/_radio-store/radio.selectors';
 import { PdfService } from '@app/services/pdf/pdf.service';
 import { locationErrorSelector, locationLoadingSelector, selectOneLocation } from '@app/_store/_location-store/location.selectors';
-import { Observable, combineLatest, first } from 'rxjs';
+import { Observable, Subscription, combineLatest, first } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -16,7 +16,13 @@ import { map } from 'rxjs/operators';
   templateUrl: './one-repair.component.html',
   styleUrls: ['./one-repair.component.css']
 })
-export class OneRepairComponent implements OnInit{
+export class OneRepairComponent implements OnInit, OnDestroy{
+
+  private subscriptions = new Subscription();
+
+  ngOnDestroy(): void {
+      this.subscriptions.unsubscribe()
+  }
 
   oneRepair$: Observable<Repair | null>;
   repairError$: Observable<any>;
@@ -81,44 +87,20 @@ export class OneRepairComponent implements OnInit{
   }
 
   ngOnInit(): void {
+
+    this.subscriptions.add(
       this.route.params.subscribe((params) => {
         const repairID = params['id'];
         this.loadRepair(repairID);
         // this.generateConcatText();
-      });
+      })
+    );
+
   };  
 
   loadRepair(repairID: string): void {
     this.store.dispatch(loadOneRepair({repairID: repairID}));
   };
-
-  // generateConcatText(): void {
-
-  //   combineLatest([this.oneRepair$, this.oneRadio$]).pipe(
-  //     first()
-  //   ).subscribe(([repair, radio]) => {
-  //     if (repair && radio) {
-
-  //       this.poText = {
-  //         make: repair.radioMake,
-  //         model: radio.model,
-  //         serialNumber: repair.radioSerial,
-  //         accessories: repair.accessories,
-  //         repairTag: repair.repairTag,
-  //         orgName: radio.orgName,
-  //         locationName: repair.radioLocation
-  //       }
-
-  //       this.invoiceText = {
-  //         make: repair.radioMake,
-  //         model: radio.model,
-  //         serialNumber: repair.radioSerial,
-  //         repairTag: repair.repairTag
-  //       }
-
-  //     }
-  //   })
-  // };
 
   generatePDF() {
     combineLatest([this.oneRepair$, this.oneRadio$, this.oneLocation$]).pipe(

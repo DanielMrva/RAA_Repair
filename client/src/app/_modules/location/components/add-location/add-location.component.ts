@@ -1,20 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, ValidatorFn } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
-import { Location } from '@app/graphql/schemas';
+import { Location, UpdateLocationFields } from '@app/graphql/schemas';
 import { addLocation } from '@app/_store/_location-store/location.actions';
 import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { loadLocationNames } from '@app/_store/_location-store/location.actions';
 import { selectLocationNames, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-location',
   templateUrl: './add-location.component.html',
   styleUrls: ['./add-location.component.css']
 })
-export class AddLocationComponent implements OnInit{
+export class AddLocationComponent implements OnInit, OnDestroy {
+
+  private subscriptions = new Subscription();
 
   orgNames$
   isLoadingOrgNames$
@@ -29,7 +32,7 @@ export class AddLocationComponent implements OnInit{
     this.orgNames$ = this.store.select(selectOrgNames);
     this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
     this.orgNameError$ = this.store.select(orgErrorSelector);
-  
+
     this.locationNames$ = this.store.select(selectLocationNames);
     this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
     this.locationError$ = this.store.select(locationErrorSelector);
@@ -62,17 +65,17 @@ export class AddLocationComponent implements OnInit{
       this.locationForm.get(`${field}`)?.dirty ||
       this.locationForm.get(`${field}`)?.touched ||
       this.isSubmitted) {
-        return true
-      } else {
-        return false
-      }
+      return true
+    } else {
+      return false
+    }
   };
 
   locationNameValidator(): ValidatorFn {
     return (control) => {
       const input = control.value;
       if (this.locationList && this.locationList.some((loc) => loc.locationName === input)) {
-        return { locationNameExists: true}
+        return { locationNameExists: true }
       }
       return null;
     }
@@ -81,14 +84,14 @@ export class AddLocationComponent implements OnInit{
   loadLocationNames(): void {
     this.store.dispatch(loadLocationNames());
 
-    this.locationNames$.subscribe(( locL: Location[] | null ) => {
-      if(locL) {
+    this.locationNames$.subscribe((locL: Location[] | null) => {
+      if (locL) {
         this.locationList = locL
       } else {
         this.locationList = [];
       }
     })
-    
+
   };
 
   ngOnInit(): void {
@@ -96,6 +99,26 @@ export class AddLocationComponent implements OnInit{
     this.loadLocationNames();
 
   };
+
+  prepareLocationData(): UpdateLocationFields {
+
+    return {
+
+      locationName: this.locationForm.value.locationName ?? '',
+      orgName: this.locationForm.value.orgName ?? '',
+      street: this.locationForm.value.street ?? '',
+      suite: this.locationForm.value.suite ?? '',
+      city: this.locationForm.value.city ?? '',
+      state: this.locationForm.value.state ?? '',
+      zip: this.locationForm.value.zip ?? '',
+      country: this.locationForm.value.country ?? '',
+      phone: this.locationForm.value.phone ?? '',
+      contactEmail: this.locationForm.value.contactEmail ?? '',
+      primaryContact: this.locationForm.value.primaryContact ?? ''
+
+    }
+  };
+
 
   onSubmit() {
 
@@ -131,5 +154,10 @@ export class AddLocationComponent implements OnInit{
     )
 
 
-  }
+  };
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  };
+
 }

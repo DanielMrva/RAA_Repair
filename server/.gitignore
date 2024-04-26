@@ -1,5 +1,7 @@
 seeding
 seeding/userSeeds.json
 .env
+.env.production
+.env.development
 prodSeed
 prodSeed/prodUsers.json

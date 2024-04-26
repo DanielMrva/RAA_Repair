@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { User, UpdateUserFields, Organization } from '@app/graphql/schemas/typeInterfaces';
@@ -8,7 +8,7 @@ import { editUser, loadOneUser } from '@app/_store/_user-store/user.actions';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { selectOneUser, userErrorSelector, userLoadingSelector } from '@app/_store/_user-store/user.selectors';
 import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, Subscription, map, startWith } from 'rxjs';
 
 
 @Component({
@@ -16,7 +16,9 @@ import { Observable, map, startWith } from 'rxjs';
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.css']
 })
-export class EditUserComponent implements OnInit {
+export class EditUserComponent implements OnInit, OnDestroy {
+
+  private subscriptions = new Subscription();
 
   orgNames$
   isLoadingOrgNames$
@@ -41,15 +43,15 @@ export class EditUserComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>
 
-  ) { 
-      this.orgNames$ = this.store.select(selectOrgNames);
-      this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-      this.orgNameError$ = this.store.select(orgErrorSelector);
-    
-      this.oneUser$ = this.store.select(selectOneUser);
-      this.isLoadingUser$ = this.store.select(userLoadingSelector);
-      this.userError$ = this.store.select(userErrorSelector);
-    }
+  ) {
+    this.orgNames$ = this.store.select(selectOrgNames);
+    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+    this.orgNameError$ = this.store.select(orgErrorSelector);
+
+    this.oneUser$ = this.store.select(selectOneUser);
+    this.isLoadingUser$ = this.store.select(userLoadingSelector);
+    this.userError$ = this.store.select(userErrorSelector);
+  }
 
   loadUser(id: string): void {
 
@@ -63,26 +65,32 @@ export class EditUserComponent implements OnInit {
 
   populateForm() {
 
-    this.oneUser$.subscribe((user: User | null) => {
-      if (user) {
-        this.userForm.patchValue({
-          username: user.username,
-          email: user.email,
-          orgName: user.orgName,
-          accessLevel: user.accessLevel
-        })
-      }
-    })
+    this.subscriptions.add(
+
+      this.oneUser$.subscribe((user: User | null) => {
+        if (user) {
+          this.userForm.patchValue({
+            username: user.username,
+            email: user.email,
+            orgName: user.orgName,
+            accessLevel: user.accessLevel
+          })
+        }
+      })
+    );
+
+
   };
 
   updateUser(updateUser: UpdateUserFields): void {
 
-    this.oneUser$.subscribe((user: User | null) => {
-      if (user) {
-        this.userId = user._id
-      }
-    });
-
+    this.subscriptions.add(
+      this.oneUser$.subscribe((user: User | null) => {
+        if (user) {
+          this.userId = user._id
+        }
+      })
+    );
     this.store.dispatch(editUser({ id: this.userId, updates: updateUser }))
   }
 
@@ -112,16 +120,24 @@ export class EditUserComponent implements OnInit {
 
   };
 
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  };
+
   private _filter(value: string): Organization[] {
     const filterValue = value.toLowerCase();
     let orgList: Organization[] = [];
 
-    // Subscribe to orgNames$ and populate orgList when values are emitted
-    this.orgNames$.subscribe((orgs: Organization[] | null) => {
-      if (orgs) {
-        orgList = orgs.filter(org => org.orgName.toLowerCase().includes(filterValue));
-      }
-    });
+    this.subscriptions.add(
+
+      this.orgNames$.subscribe((orgs: Organization[] | null) => {
+        if (orgs) {
+          orgList = orgs.filter(org => org.orgName.toLowerCase().includes(filterValue));
+        }
+      })
+    );
+
 
     return orgList;
   }

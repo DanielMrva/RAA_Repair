@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormArray, FormGroup, FormControl, ValidatorFn } from '@angular/forms';
 import { Location, UpdateLocationFields } from '@app/graphql/schemas/typeInterfaces';
@@ -8,6 +8,7 @@ import { editLocation, loadOneLocation, loadLocationNames } from '@app/_store/_l
 import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { selectLocationNames, locationErrorSelector, locationLoadingSelector, selectOneLocation } from '@app/_store/_location-store/location.selectors';
+import { Subscription } from 'rxjs';
 
 
 
@@ -16,7 +17,9 @@ import { selectLocationNames, locationErrorSelector, locationLoadingSelector, se
   templateUrl: './edit-location.component.html',
   styleUrls: ['./edit-location.component.css']
 })
-export class EditLocationComponent implements OnInit{
+export class EditLocationComponent implements OnInit, OnDestroy {
+
+  private subscriptions = new Subscription();
 
   orgNames$
   isLoadingOrgNames$
@@ -27,20 +30,27 @@ export class EditLocationComponent implements OnInit{
   isLoadingLocationNames$
   locationError$
 
+  
+  isSubmitted = false;
+
+  locationList!: Location[];
+
+  locationId!: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>
-  ) { 
+  ) {
     this.orgNames$ = this.store.select(selectOrgNames);
     this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
     this.orgNameError$ = this.store.select(orgErrorSelector);
-  
+
     this.oneLocation$ = this.store.select(selectOneLocation);
     this.locationNames$ = this.store.select(selectLocationNames);
     this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
     this.locationError$ = this.store.select(locationErrorSelector);
-    }
+  }
 
   editLocationForm = new FormGroup({
     locationName: new FormControl<string>(''),
@@ -56,32 +66,23 @@ export class EditLocationComponent implements OnInit{
     primaryContact: new FormControl<string>('')
   });
 
-  isSubmitted = false;
-
-
-  locationList!: Location[];
-
-  locationId!: string;
-
-
-
   fieldValidCheck(field: string) {
     if (
       this.editLocationForm.get(`${field}`)?.invalid &&
       this.editLocationForm.get(`${field}`)?.dirty ||
       this.editLocationForm.get(`${field}`)?.touched ||
       this.isSubmitted) {
-        return true
-      } else {
-        return false
-      }
+      return true
+    } else {
+      return false
+    }
   };
 
   locationNameValidator(): ValidatorFn {
     return (control) => {
       const input = control.value;
       if (this.locationList && this.locationList.some((loc) => loc.locationName === input)) {
-        return { locationNameExists: true}
+        return { locationNameExists: true }
       }
       return null;
     }
@@ -90,79 +91,83 @@ export class EditLocationComponent implements OnInit{
   loadLocationNames(): void {
     this.store.dispatch(loadLocationNames());
 
-    this.locationNames$.subscribe(( locL: Location[] | null ) => {
-      if(locL) {
-        this.locationList = locL
-      } else {
-        this.locationList = [];
-      }
-    })
-    
+    this.subscriptions.add(
+      this.locationNames$.subscribe((locL: Location[] | null) => {
+        if (locL) {
+          this.locationList = locL
+        } else {
+          this.locationList = [];
+        }
+      })
+    );
   };
 
   loadLocation(id: string): void {
-    this.store.dispatch(loadOneLocation({locationId: id}))
+    this.store.dispatch(loadOneLocation({ locationId: id }))
   };
 
   populateForm() {
-    this.oneLocation$.subscribe((location: Location | null) => {
-      if(location) {
-        this.editLocationForm.patchValue({
-          locationName: location.locationName,
-          orgName: location.orgName,
-          street: location.street,
-          suite: location.suite,
-          city: location.city,
-          state: location.state,
-          zip: location.zip,
-          country: location.country,
-          phone: location.phone,
-          contactEmail: location.contactEmail,
-          primaryContact: location.primaryContact
-        })
-      }
-    })
+
+    this.subscriptions.add(
+      this.oneLocation$.subscribe((location: Location | null) => {
+        if (location) {
+          this.editLocationForm.patchValue({
+            locationName: location.locationName,
+            orgName: location.orgName,
+            street: location.street,
+            suite: location.suite,
+            city: location.city,
+            state: location.state,
+            zip: location.zip,
+            country: location.country,
+            phone: location.phone,
+            contactEmail: location.contactEmail,
+            primaryContact: location.primaryContact
+          })
+        }
+      })
+    );
+
+
   };
 
   updateLocation(updateLocation: UpdateLocationFields): void {
-    this.oneLocation$.subscribe((location: Location | null) => {
-      if(location) {
-        this.locationId = location._id
-      }
-    })
 
-    this.store.dispatch(editLocation({id: this.locationId, updates: updateLocation}))
-  }
+    this.subscriptions.add(
+      this.oneLocation$.subscribe((location: Location | null) => {
+        if (location) {
+          this.locationId = location._id
+        }
+      })
+    );
+
+    this.store.dispatch(editLocation({ id: this.locationId, updates: updateLocation }))
+  };
+
+  prepareLocationData(): UpdateLocationFields {
+
+    return {
+
+      locationName: this.editLocationForm.value.locationName ?? '',
+      orgName: this.editLocationForm.value.orgName ?? '',
+      street: this.editLocationForm.value.street ?? '',
+      suite: this.editLocationForm.value.suite ?? '',
+      city: this.editLocationForm.value.city ?? '',
+      state: this.editLocationForm.value.state ?? '',
+      zip: this.editLocationForm.value.zip ?? '',
+      country: this.editLocationForm.value.country ?? '',
+      phone: this.editLocationForm.value.phone ?? '',
+      contactEmail: this.editLocationForm.value.contactEmail ?? '',
+      primaryContact: this.editLocationForm.value.primaryContact ?? ''
+
+    }
+  };
+
+
 
   onSubmit() {
 
-    console.log(this.editLocationForm.value);
-
-    const locationName = this.editLocationForm.value.locationName ?? '';
-    const orgName = this.editLocationForm.value.orgName ?? '';
-    const street = this.editLocationForm.value.street ?? '';
-    const suite = this.editLocationForm.value.suite ?? '';
-    const city = this.editLocationForm.value.city ?? '';
-    const state = this.editLocationForm.value.state ?? '';
-    const zip = this.editLocationForm.value.zip ?? '';
-    const country = this.editLocationForm.value.country ?? '';
-    const phone = this.editLocationForm.value.phone ?? '';
-    const contactEmail = this.editLocationForm.value.contactEmail ?? '';
-    const primaryContact = this.editLocationForm.value.primaryContact ?? '';
-
-    const submittedLocation: UpdateLocationFields = {
-      locationName: locationName,
-      orgName: orgName,
-      street: street,
-      suite: suite,
-      city: city,
-      state: state,
-      zip: zip,
-      country: country,
-      phone: phone,
-      contactEmail: contactEmail,
-      primaryContact: primaryContact
-    }
+    const submittedLocation: UpdateLocationFields = this.prepareLocationData();
 
     this.updateLocation(submittedLocation);
 
@@ -170,29 +175,22 @@ export class EditLocationComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.editLocationForm.patchValue({
-      locationName: '',
-      orgName: '',
-      street: '',
-      suite: '',
-      city: '',
-      state: '',
-      zip: '',
-      country: '',
-      phone: '',
-      contactEmail: '',
-      primaryContact: '',
-    })
 
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.locationId = params['id'];
-      this.loadLocation(this.locationId)
-    })
-
+    this.subscriptions.add(
+      this.activatedRoute.params.subscribe((params: Params) => {
+        this.locationId = params['id'];
+        this.loadLocation(this.locationId)
+      })
+    );
+    
     this.populateForm();
 
     this.store.dispatch(loadOrgNames());
     this.loadLocationNames();
-  }
+  };
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  };
 
 }

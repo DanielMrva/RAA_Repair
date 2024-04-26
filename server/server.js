@@ -1,4 +1,10 @@
-const dotenv = require('dotenv').config();
+if (process.env.NODE_ENV == 'production') {
+    require('dotenv').config({path: '.env.production'});
+} else {
+    require ('dotenv').config({path: '.env.development'});
+}
+
+// const dotenv = require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const http = require('http');

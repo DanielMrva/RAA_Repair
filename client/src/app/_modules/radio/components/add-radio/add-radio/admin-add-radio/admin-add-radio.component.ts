@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
@@ -7,9 +7,9 @@ import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_stor
 import { selectLocationNames, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { loadLocationNames } from '@app/_store/_location-store/location.actions';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, Subscription, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators'
-import { Organization } from '@app/graphql/schemas';
+import { Organization, UpdateRadioFields } from '@app/graphql/schemas';
 import { Location } from '@app/graphql/schemas';
 
 
@@ -18,7 +18,9 @@ import { Location } from '@app/graphql/schemas';
   templateUrl: './admin-add-radio.component.html',
   styleUrls: ['./admin-add-radio.component.css']
 })
-export class AdminAddRadioComponent implements OnInit{
+export class AdminAddRadioComponent implements OnInit, OnDestroy{
+
+  private subscriptions = new Subscription();
 
   orgNames$
   isLoadingOrgNames$
@@ -139,7 +141,7 @@ export class AdminAddRadioComponent implements OnInit{
     });
   
     return locOptions;
-  }
+  };
 
   onSubmit() {
 
@@ -177,5 +179,9 @@ export class AdminAddRadioComponent implements OnInit{
         })
       
       )
-  }
+  };
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  };
 }
