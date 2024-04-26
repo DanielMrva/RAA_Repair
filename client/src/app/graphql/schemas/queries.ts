@@ -58,7 +58,6 @@ export const ALL_RADIOS = gql`
 export const QUERY_SINGLERADIO = gql`
     ${RADIO_FIELDS_FRAGMENT}
     ${SERVICE_RECORD_FRAGMENT}
-
     query radio($radioID: String!) {
         radio(radioID: $radioID) {
             ... RadioFieldsFragment
@@ -69,8 +68,8 @@ export const QUERY_SINGLERADIO = gql`
 export const QUERY_SERIALRADIO = gql`
     ${RADIO_FIELDS_FRAGMENT}
     ${SERVICE_RECORD_FRAGMENT}
-    query radio($serialNumber: String) {
-        radio(serialNumber: $serialNumber) {
+    query serialRadio($serialNumber: String!, $model: String!) {
+        serialRadio(serialNumber: $serialNumber, model: $model) {
             ... RadioFieldsFragment
         }
     }

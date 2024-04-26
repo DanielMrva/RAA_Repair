@@ -91,7 +91,7 @@ type Query {
     users: [User]
     allRadios: [Radio]
     radio(radioID: ID!): Radio
-    serialRadio(serialNumber: String!): Radio
+    serialRadio(serialNumber: String!, model: String!): Radio
     allRepairs: [Repair]
     repair(repairID: String!): Repair
     orgRadios(orgName: String!): [Radio]

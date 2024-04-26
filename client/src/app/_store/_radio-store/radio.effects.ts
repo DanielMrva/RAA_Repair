@@ -21,9 +21,9 @@ export class RadioEffects {
     loadSerialRadio$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RadioActions.loadSerialRadio),
-            switchMap(({ serialNumber }) =>
-                from(this.radioService.querySerialRadio(serialNumber).valueChanges).pipe(
-                    map(({ data }) => RadioActions.loadSerialRadioSuccess({ radio: data.radio })),
+            mergeMap(({ serialNumber, model }) =>
+                from(this.radioService.querySerialRadio(serialNumber, model).valueChanges).pipe(
+                    map(({ data }) => RadioActions.loadSerialRadioSuccess({ serialRadio: data.serialRadio })),
 
                     catchError((error) => of(RadioActions.loadSerialRadioFailure({ error })))
                 )

@@ -114,6 +114,14 @@ const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'one-radio/:serialNumber/:model',
+    component: OneRadioComponent,
+    data: {
+      role: ['admin, user']
+    },
+    canActivate: [authGuard]
+  },
+  {
     path: 'one-user/:id',
     component: OneUserComponent,
     data: {
@@ -145,7 +153,6 @@ const routes: Routes = [
     },
     canActivate: [authGuard, roleGuard]
   },
-
   {
     path: 'org-radio/:orgName',
     component: AdminRadioReportsComponent,
@@ -155,7 +162,7 @@ const routes: Routes = [
       role: ['admin']
     },
     canActivate: [authGuard, roleGuard]
-  },  
+  },
   {
     path: 'user-reports',
     component: AdminUserReportsComponent,

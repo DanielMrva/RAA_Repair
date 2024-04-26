@@ -61,7 +61,7 @@ import { LocationMismatchDialogComponent } from '@app/_components/utilComponents
         UserDashboardComponent,
         TechDashboardComponent,
         LocationMismatchDialogComponent,
-    ],
+        ],
     imports: [
         BrowserModule,
         StoreModule.forRoot({}),
