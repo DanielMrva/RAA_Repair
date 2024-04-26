@@ -3,12 +3,12 @@ import { Radio, UpdateRadioFields } from "@app/graphql/schemas";
 
 export const loadSerialRadio = createAction(
     '[Radio Page] Load Serial Radio',
-    props<{ serialNumber: string}>()
+    props<{ serialNumber: string, model: string}>()
 );
 
 export const loadSerialRadioSuccess = createAction(
     '[Radio Service] Load Serial Radio Successs',
-    props<{ radio: Radio}>()
+    props<{ serialRadio: Radio}>()
 );
 
 export const loadSerialRadioFailure = createAction(

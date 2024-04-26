@@ -25,6 +25,7 @@ export class AdminRadioReportsComponent implements OnInit {
     console.log(`ARR: constructor`)
   }
 
+  
 
   ngOnInit(): void {
 
@@ -36,7 +37,7 @@ export class AdminRadioReportsComponent implements OnInit {
         if (tempQueryParams) {
           console.log(`TQP: ${tempQueryParams}`)
 
-          this.queryParams.queryParams = tempQueryParams;
+          this.queryParams = { ...this.queryParams, queryParams: tempQueryParams}
           console.log(`ARC: queryParams Obj: ${this.queryParams.queryType},  ${this.queryParams.queryParams}`)
 
         } else {

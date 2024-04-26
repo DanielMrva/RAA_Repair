@@ -4,7 +4,7 @@ import { Radio, statusType } from '@app/graphql/schemas/typeInterfaces';
 import { AppState} from '@app/_store/app.state';
 import { RadioState } from '@app/_store/_radio-store/radio.reducers';
 import { Store } from '@ngrx/store';
-import { loadOneRadio} from '@app/_store/_radio-store/radio.actions';
+import { loadOneRadio, loadSerialRadio} from '@app/_store/_radio-store/radio.actions';
 import { selectOneRadio, radioLoadingSelector, radioErrorSelector } from '@app/_store/_radio-store/radio.selectors';
 import { Subscription } from 'rxjs';
 
@@ -34,10 +34,14 @@ export class OneRadioComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.route.params.subscribe((params) => {
-        const radioID = params['id'];
+      this.route.params.subscribe(params => {
+        const {id, serialNumber, model} = params;
 
-        this.loadRadio(radioID);
+        if (id) {
+          this.loadRadio(id);
+        } else if (serialNumber && model) {
+          this.loadSNRadio(serialNumber, model)
+        }
 
       })
     )
@@ -48,6 +52,10 @@ export class OneRadioComponent implements OnInit, OnDestroy {
     this.store.dispatch(loadOneRadio({radioID}));
 
   };
+
+  loadSNRadio(serialNumber: string, model: string): void {
+    this.store.dispatch(loadSerialRadio({serialNumber, model}));
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

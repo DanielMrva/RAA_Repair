@@ -27,9 +27,9 @@ export const radioReducer = createReducer(
         error: null,
     })),
 
-    on(RadioActions.loadSerialRadioSuccess, (state, { radio }) => ({
+    on(RadioActions.loadSerialRadioSuccess, (state, { serialRadio }) => ({
         ...state,
-        oneRadio: radio as Radio,
+        oneRadio: serialRadio as Radio,
         isLoading: false,
         error: null,
     })),

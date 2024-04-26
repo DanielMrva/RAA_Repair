@@ -43,28 +43,14 @@
         <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Radios</a>
         <ul class="dropdown-menu">
             <li><a [routerLink]="['/add-radio']" class="dropdown-item">Add Radio</a></li>
-            <!-- <li class="input-group">
-                <input id="orgName" type="text" formControlName="orgName" class="form-control dropdown-item" placeholder="Org Radios">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon" (click)="navigateOrgRadios()"><i class="bi bi-arrow-bar-right"></i></button>
-            </li> -->
 
             <li>
-                <form [formGroup]="orgRadiosForm" (ngSubmit)="navigateOrgRadios()">
-                    <div class="form-group input-group">
-                        <input
-                            type="text"
-                            id="orgName"
-                            formControlName="orgName"
-                            class="form-control dropdown-item"
-                            placeholder="Org Radios"
-                        >
-                        <button class="btn btn-outline-secondary" type="submit" id="button-addon"><i class="bi bi-arrow-bar-right"></i></button>
-
-                    </div>
-
-                </form>
+                <app-org-radios-navigator></app-org-radios-navigator>
             </li>
     
+            <li>
+                <app-radio-sn-mnk-navigator></app-radio-sn-mnk-navigator>
+            </li>
         </ul>
     </li>
 </ul>

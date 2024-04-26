@@ -7,6 +7,8 @@ import { HeaderComponent } from './header/header.component';
 import { AdminNavComponent } from './admin-nav/admin-nav.component';
 import { UserNavComponent } from './user-nav/user-nav.component';
 import { TechNavComponent } from './tech-nav/tech-nav.component';
+import { OrgRadiosNavigatorComponent } from '@app/_components/utilComponents/org-radios-navigator/org-radios-navigator.component';
+import { RadioSnMNkNavigatorComponent } from '@app/_components/utilComponents/radio-sn-mnk-navigator/radio-sn-mnk-navigator.component';
 import { AuthService } from '@app/services/auth/auth.service';
 
 import { StoreModule } from '@ngrx/store';
@@ -17,7 +19,9 @@ import { authReducer } from '@app/_store/_auth-store/auth.reducers';
     HeaderComponent,
     AdminNavComponent,
     UserNavComponent,
-    TechNavComponent
+    TechNavComponent,
+    OrgRadiosNavigatorComponent,
+    RadioSnMNkNavigatorComponent
   ],
   imports: [
     CommonModule,
