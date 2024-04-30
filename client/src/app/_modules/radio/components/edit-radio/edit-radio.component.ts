@@ -30,7 +30,7 @@ export class EditRadioComponent implements OnInit, OnDestroy {
     this.orgNames$.subscribe((orgList: Organization[] | []) => {
       if (orgList.length > 0) {
         orgOptions = orgList.map(org => org.orgName)
-      } 
+      }
     })
 
     return orgOptions.filter(option => option.toLowerCase().includes(filterValue))
@@ -40,15 +40,15 @@ export class EditRadioComponent implements OnInit, OnDestroy {
   private _filterLocs(locValue: string | null, orgValue: string | null, locations: Location[]): string[] {
     const filteredLocValue = (locValue || '').toLowerCase();
     const filteredOrgValue = (orgValue || '').toLowerCase();
-  
+
     let locOptions: string[] = [];
-  
+
     locations.forEach((loc) => {
       if (loc.locationName.toLowerCase().includes(filteredLocValue) && loc.orgName.toLowerCase() === filteredOrgValue) {
         locOptions.push(loc.locationName);
       }
     });
-  
+
     return locOptions;
   }
 
@@ -73,7 +73,7 @@ export class EditRadioComponent implements OnInit, OnDestroy {
 
   radioID!: string;
 
-      
+
   constructor(
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
@@ -82,7 +82,7 @@ export class EditRadioComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.store.select(radioLoadingSelector);
     this.radioError$ = this.store.select(radioErrorSelector);
     this.oneRadio$ = this.store.select(selectOneRadio);
-  
+
     this.orgNames$ = this.store.select(selectOrgNames);
     this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
     this.orgNameError$ = this.store.select(orgErrorSelector);
@@ -90,9 +90,9 @@ export class EditRadioComponent implements OnInit, OnDestroy {
     this.locationNames$ = this.store.select(selectLocationNames);
     this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
     this.locationNameError$ = this.store.select(locationErrorSelector);
-   }
+  }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
 
     this.store.dispatch(loadOrgNames());
     this.store.dispatch(loadLocationNames())
@@ -137,7 +137,7 @@ export class EditRadioComponent implements OnInit, OnDestroy {
       map(([locName, orgName, locations]) => this._filterLocs(locName, orgName, locations))
     );
 
-      
+
   };
 
 
@@ -158,7 +158,8 @@ export class EditRadioComponent implements OnInit, OnDestroy {
     warranty: new FormControl<Date>(new Date()),
     refurb: new FormControl<boolean>(false, { nonNullable: true }),
     radioType: new FormControl<string>(''),
-  })
+    otherType: new FormControl<string>('')
+  });
 
 
 
@@ -168,7 +169,7 @@ export class EditRadioComponent implements OnInit, OnDestroy {
 
   loadRadio(id: string): void {
 
-    this.store.dispatch(loadOneRadio({radioID: id}))
+    this.store.dispatch(loadOneRadio({ radioID: id }))
   };
 
   populateForm() {
@@ -177,7 +178,17 @@ export class EditRadioComponent implements OnInit, OnDestroy {
 
       this.oneRadio$.subscribe((radio: Radio | null) => {
         if (radio) {
-        this.editRadioForm.patchValue({
+
+          const predefinedTypes = ['mobile', 'handheld', 'base station', 'other'];
+          let radioType = radio.radioType;
+          let otherType = '';
+
+          if (!predefinedTypes.includes(radio.radioType.toLowerCase())) {
+            radioType = 'other';
+            otherType = radio.radioType;
+          }
+
+          this.editRadioForm.patchValue({
             orgName: radio.orgName,
             locationName: radio.locationName,
             datePurchased: new Date(parseInt(radio.datePurchased)),
@@ -189,23 +200,24 @@ export class EditRadioComponent implements OnInit, OnDestroy {
             serialNumber: radio.serialNumber,
             warranty: new Date(parseInt(radio.warranty)),
             refurb: radio.refurb,
-            radioType: radio.radioType
+            radioType: radioType,
+            otherType: otherType
           });
-  
+
           radio.notes.forEach(note => {
             (this.editRadioForm.get('notes') as FormArray).push(this.formBuilder.control(note));
           });
-  
+
         }
       })
-  
+
 
     );
 
   };
 
   addNotes() {
-    this.notesArray.push(new FormControl<string>('', { nonNullable: true}));
+    this.notesArray.push(new FormControl<string>('', { nonNullable: true }));
   };
 
   removeNote(index: number) {
@@ -216,7 +228,7 @@ export class EditRadioComponent implements OnInit, OnDestroy {
 
 
 
-    this.store.dispatch(editRadio({id: this.radioID, updates: updateRadio}))
+    this.store.dispatch(editRadio({ id: this.radioID, updates: updateRadio }))
   };
 
   prepareRadioData(): UpdateRadioFields {
@@ -231,22 +243,29 @@ export class EditRadioComponent implements OnInit, OnDestroy {
 
     )
 
+    let radioType
+    if (this.editRadioForm.value.radioType === "other") {
+      radioType = this.editRadioForm.value.otherType ?? '';
+    } else {
+      radioType = this.editRadioForm.value.radioType ?? '';
+    }
+
     return {
 
-      
-    orgName: this.editRadioForm.value.orgName ?? '',
-    locationName: this.editRadioForm.value.locationName ?? '',
-    datePurchased: this.editRadioForm.value.datePurchased ?? new Date(),
-    dateEntered: this.editRadioForm.value.dateEntered ?? new Date(),
-    inventoryNumber: this.editRadioForm.value.inventoryNumber ?? '',
-    make: this.editRadioForm.value.make ?? '',
-    model: this.editRadioForm.value.model ?? '',
-    progChannels: this.editRadioForm.value.progChannels ?? '',
-    notes: Array.isArray(this.editRadioForm.value.notes) ? this.editRadioForm.value.notes.map(note => note ?? '') : [''],    
-    serialNumber: this.editRadioForm.value.serialNumber ?? '',
-    warranty: this.editRadioForm.value.warranty ?? new Date(),
-    refurb: this.editRadioForm.value.refurb ?? false,
-    radioType: this.editRadioForm.value.radioType ?? '',
+
+      orgName: this.editRadioForm.value.orgName ?? '',
+      locationName: this.editRadioForm.value.locationName ?? '',
+      datePurchased: this.editRadioForm.value.datePurchased ?? new Date(),
+      dateEntered: this.editRadioForm.value.dateEntered ?? new Date(),
+      inventoryNumber: this.editRadioForm.value.inventoryNumber ?? '',
+      make: this.editRadioForm.value.make ?? '',
+      model: this.editRadioForm.value.model ?? '',
+      progChannels: this.editRadioForm.value.progChannels ?? '',
+      notes: Array.isArray(this.editRadioForm.value.notes) ? this.editRadioForm.value.notes.map(note => note ?? '') : [''],
+      serialNumber: this.editRadioForm.value.serialNumber ?? '',
+      warranty: this.editRadioForm.value.warranty ?? new Date(),
+      refurb: this.editRadioForm.value.refurb ?? false,
+      radioType: radioType,
 
     }
 
@@ -259,7 +278,7 @@ export class EditRadioComponent implements OnInit, OnDestroy {
 
     this.updateRadio(submittedRadio);
   };
-  
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   };
