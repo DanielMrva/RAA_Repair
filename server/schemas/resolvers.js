@@ -400,8 +400,6 @@ const resolvers = {
             
         ) => {
 
-            console.log(locationName, orgName, street, suite, city, country, state, zip, phone, contactEmail)
-
             try {
                 const existingLocation = await Location.findOne(
                     {
@@ -432,8 +430,6 @@ const resolvers = {
                     contactEmail,
                     primaryContact
                 });
-
-                console.log(newLocation._id, newLocation.locationName, newLocation.orgName)
 
                 await Organization.findOneAndUpdate(
                     {orgName: newLocation.orgName},
