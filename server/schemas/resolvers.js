@@ -431,7 +431,7 @@ const resolvers = {
                     primaryContact
                 });
 
-                await Organization.findByIdAndUpdate(
+                await Organization.findOneAndUpdate(
                     {orgName: newLocation.orgName},
                     { $addToSet: {locations: newLocation._id} }
                 );
@@ -440,6 +440,7 @@ const resolvers = {
             }
 
             catch(error) {
+                console.error(error);
                 throw new GraphQLError('Failed to submit location', {
                     extensions: {
                         code: 'SUBMIT_LOCATION_ERROR'
