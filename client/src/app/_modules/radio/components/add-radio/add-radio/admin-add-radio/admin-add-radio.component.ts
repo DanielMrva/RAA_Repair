@@ -66,6 +66,7 @@ export class AdminAddRadioComponent implements OnInit, OnDestroy{
     warranty: new FormControl<string>(''),
     refurb: new FormControl<boolean>(false, { nonNullable: true }),
     radioType: new FormControl<string>(''),
+    otherType: new FormControl<string>('')
   })
 
   isSubmitted = false;
@@ -159,7 +160,12 @@ export class AdminAddRadioComponent implements OnInit, OnDestroy{
     const serialNumber = this.adminRadioForm.value.serialNumber ?? '';
     const warranty = this.adminRadioForm.value.warranty ?? '';
     const refurb = this.adminRadioForm.value.refurb ?? false;
-    const radioType = this.adminRadioForm.value.radioType ?? '';
+    let radioType
+    if (this.adminRadioForm.value.radioType === "other") {
+      radioType = this.adminRadioForm.value.otherType ?? '';
+    } else {
+      radioType = this.adminRadioForm.value.radioType ?? '';
+    }
 
     this.store.dispatch(
       addRadio({
