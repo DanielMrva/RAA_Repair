@@ -56,6 +56,7 @@ export class LocationService {
     contactEmail: string,
     primaryContact: string
   ) {
+    console.log(locationName, orgName, street, suite, city, state, zip, country, phone, contactEmail, primaryContact)
     return this.apollo.mutate<{addLocation: Location}> ({
       mutation: ADD_LOCATION,
       variables: {

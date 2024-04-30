@@ -283,7 +283,7 @@ export const EDIT_ORG = gql`
             users {
                 _id
             }
-            radios {
+            locations {
                 _id
             }
         }
@@ -298,7 +298,7 @@ export const ADD_ORG = gql`
             users {
                 _id
             }
-            radios {
+            locations {
                 _id
             }
         }
@@ -344,6 +344,9 @@ export const ADD_LOCATION = gql`
             phone
             contactEmail
             primaryContact
+            radios {
+                _id
+            }
         }
     }
 `
