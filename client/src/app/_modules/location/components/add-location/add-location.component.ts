@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormControl, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormControl, ValidatorFn, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
 import { Location, UpdateLocationFields } from '@app/graphql/schemas';
@@ -42,8 +42,8 @@ export class AddLocationComponent implements OnInit, OnDestroy {
   locationList!: Location[];
 
   locationForm = new FormGroup({
-    locationName: new FormControl<string>(''),
-    orgName: new FormControl<string>(''),
+    locationName: new FormControl<string>('', Validators.required),
+    orgName: new FormControl<string>('', {validators: [Validators.required]}),
     street: new FormControl<string>(''),
     suite: new FormControl<string>(''),
     city: new FormControl<string>(''),
@@ -72,31 +72,39 @@ export class AddLocationComponent implements OnInit, OnDestroy {
   };
 
   locationNameValidator(): ValidatorFn {
-    return (control) => {
+    return (control: AbstractControl): ValidationErrors | null => {
       const input = control.value;
-      if (this.locationList && this.locationList.some((loc) => loc.locationName === input)) {
-        return { locationNameExists: true }
+      const currentOrg = this.locationForm.get('orgName')?.value;
+      if (this.locationList && this.locationList.some(loc => loc.locationName === input && loc.orgName === currentOrg)) {
+        return { locationNameExists: true };
       }
       return null;
-    }
+    };
   };
-
+  
   loadLocationNames(): void {
     this.store.dispatch(loadLocationNames());
-
-    this.locationNames$.subscribe((locL: Location[] | null) => {
-      if (locL) {
-        this.locationList = locL
-      } else {
-        this.locationList = [];
-      }
-    })
-
+    this.subscriptions.add(
+      this.locationNames$.subscribe(locL => {
+        this.locationList = locL || [];
+      })
+    );
   };
+  
 
   ngOnInit(): void {
     this.store.dispatch(loadOrgNames())
     this.loadLocationNames();
+
+    this.subscriptions.add(
+      this.locationForm.get('orgName')!.valueChanges.subscribe(() => {
+        this.locationForm.get('locationName')!.setValidators([
+          Validators.required,
+          this.locationNameValidator()
+        ]);
+        this.locationForm.get('locationName')!.updateValueAndValidity(); // Ensure validators are recalculated
+      })
+    );
 
   };
 

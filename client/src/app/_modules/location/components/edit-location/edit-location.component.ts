@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { FormBuilder, FormArray, FormGroup, FormControl, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormArray, FormGroup, FormControl, ValidatorFn, AbstractControl, ValidationErrors, Validators } from '@angular/forms';
 import { Location, UpdateLocationFields } from '@app/graphql/schemas/typeInterfaces';
 import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
@@ -53,8 +53,8 @@ export class EditLocationComponent implements OnInit, OnDestroy {
   }
 
   editLocationForm = new FormGroup({
-    locationName: new FormControl<string>(''),
-    orgName: new FormControl<string>(''),
+    locationName: new FormControl<string>('', Validators.required),
+    orgName: new FormControl<string>('', Validators.required),
     street: new FormControl<string>(''),
     suite: new FormControl<string>(''),
     city: new FormControl<string>(''),
@@ -79,13 +79,14 @@ export class EditLocationComponent implements OnInit, OnDestroy {
   };
 
   locationNameValidator(): ValidatorFn {
-    return (control) => {
+    return (control: AbstractControl): ValidationErrors | null => {
       const input = control.value;
-      if (this.locationList && this.locationList.some((loc) => loc.locationName === input)) {
-        return { locationNameExists: true }
+      const currentOrg = this.editLocationForm.get('orgName')?.value;
+      if (this.locationList && this.locationList.some(loc => loc.locationName === input && loc.orgName === currentOrg)) {
+        return { locationNameExists: true };
       }
       return null;
-    }
+    };
   };
 
   loadLocationNames(): void {
@@ -184,6 +185,16 @@ export class EditLocationComponent implements OnInit, OnDestroy {
     );
     
     this.populateForm();
+
+    this.subscriptions.add(
+      this.editLocationForm.get('orgName')!.valueChanges.subscribe(() => {
+        this.editLocationForm.get('locationName')!.setValidators([
+          Validators.required,
+          this.locationNameValidator()
+        ]);
+        this.editLocationForm.get('locationName')!.updateValueAndValidity(); // Ensure validators are recalculated
+      })
+    );
 
     this.store.dispatch(loadOrgNames());
     this.loadLocationNames();
