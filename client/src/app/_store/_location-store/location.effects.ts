@@ -173,7 +173,7 @@ export class LocationEffects {
                 this.toastService.show('Location edited successfully!', {
                     delay: 3000
                 }),
-                    this.router.navigate(['one-Location', location?._id])
+                    this.router.navigate(['one-location', location?._id])
             })
         ),
         { dispatch: false }
