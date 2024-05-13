@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { QUERY_SERIALRADIO, QUERY_SINGLERADIO, ALL_RADIOS, ORG_RADIOS, ADD_RADIO, Edit_Radio } from '@app/graphql/schemas';
+import { QUERY_SERIALRADIO, QUERY_SINGLERADIO, ALL_RADIOS, ORG_RADIOS, ADD_RADIO, Edit_Radio, QUERY_LIKE_SERIALRADIO, LIKE_ORG_RADIOS } from '@app/graphql/schemas';
 import { Radio } from '@app/graphql/schemas/typeInterfaces';
 
 @Injectable({
@@ -19,6 +19,15 @@ export class RadioService {
     });
   }
 
+  queryLikeSerialRadio(serialNumber: string, model: string) {
+    return this.apollo.watchQuery<{likeSerialRadio: Radio[]}> ({
+      query: QUERY_LIKE_SERIALRADIO,
+      variables: {
+        serialNumber, model
+      }
+    })
+  }
+
   querySingleRadio(radioID: string) {
     return this.apollo.watchQuery<{radio: Radio}>({
       query: QUERY_SINGLERADIO,
@@ -30,7 +39,7 @@ export class RadioService {
 
   allRadios() {
     console.log('all radios in service')
-    return this.apollo.watchQuery<{radios: Radio[]}>({
+    return this.apollo.watchQuery<{allRadios: Radio[]}>({
       query: ALL_RADIOS
     });
   }
@@ -39,6 +48,15 @@ export class RadioService {
     console.log('org radios in service')
     return this.apollo.watchQuery<{orgRadios: Radio[]}>({
       query: ORG_RADIOS,
+      variables: {
+        orgName
+      }
+    })
+  }
+
+  likeOrgRadios(orgName: string) {
+    return this.apollo.watchQuery<{likeOrgRadios: Radio[]}>({
+      query: LIKE_ORG_RADIOS,
       variables: {
         orgName
       }

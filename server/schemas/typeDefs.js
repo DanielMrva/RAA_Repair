@@ -94,10 +94,12 @@ const typeDefs = `#graphql
         user(userId: ID!): User
         allRadios: [Radio]
         radio(radioID: String!): Radio
-        serialRadio(serialNumber: String!, model: String!): Radio 
+        serialRadio(serialNumber: String!, model: String!): Radio
+        likeSerialRadio(serialNumber: String!, model: String!): [Radio] 
         allRepairs: [Repair]
         repair(repairID: String!): Repair
         orgRadios(orgName: String!): [Radio]
+        likeOrgRadios(orgName: String!): [Radio]
         orgUsers(orgName: String!): [User]
         orgNames: [Organization]
         org(orgId: ID!): Organization

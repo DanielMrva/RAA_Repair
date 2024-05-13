@@ -38,6 +38,15 @@ const resolvers = {
         serialRadio: async (parent, { serialNumber, model }) => {
             return Radio.findOne({ $and: [{ serialNumber: serialNumber }, { model: model }] }).populate(["serviceRecord"]);
         },
+        likeSerialRadio: async (parent, { serialNumber, model}) => {
+            return Radio.find({
+                $and: [
+                    { serialNumber: { $regex: new RegExp(serialNumber, 'i') } },
+                    { model: { $regex: new RegExp(model, 'i') } }
+                ]
+            }).populate("serviceRecord")
+
+        },
         allRepairs: async () => {
             return Repair.find();
         },
@@ -46,6 +55,17 @@ const resolvers = {
         },
         orgRadios: async (parent, { orgName }) => {
             return Radio.find({ orgName: orgName }).populate(["serviceRecord"]);
+        },
+        likeOrgRadios: async (parent, { orgName }) => {
+
+            function delay(ms) {
+                return new Promise((resolve) => setTimeout(resolve,ms))
+            }
+
+            await delay(3000)
+            return Radio.find({
+                orgName: { $regex: new RegExp(orgName, 'i') }
+            }).populate("serviceRecord")
         },
         orgUsers: async (parent, { orgName }) => {
             return User.find({ orgName: orgName });

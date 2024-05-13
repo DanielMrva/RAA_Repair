@@ -16,6 +16,21 @@ export const loadSerialRadioFailure = createAction(
     props<{ error: string}>()
 );
 
+export const loadLikeSerialRadio = createAction(
+    '[Radio Page] Load Like Serial Radio',
+    props<{ serialNumber: string, model: string}>()
+);
+
+export const loadLikeSerialRadioSuccess = createAction(
+    '[Radio Service] Load Like Serial Radio Successs',
+    props<{ serialRadio: Radio[]}>()
+);
+
+export const loadLikeSerialRadioFailure = createAction(
+    '[Radio Service] Load Like Serial Radio Failure',
+    props<{ error: string}>()
+);
+
 export const loadOneRadio = createAction(
     '[Radio Page] Load One Radio',
     props<{ radioID: string}>()
@@ -55,6 +70,21 @@ export const loadOrgRadiosSuccess = createAction(
 
 export const loadOrgRadiosFailure = createAction(
     '[Radio Service] Load Org Radios Failure',
+    props<{ error: string}>()
+);
+
+export const loadLikeOrgRadios = createAction(
+    '[Org Radios Page] Load Like Org Radios',
+    props<{ orgName: string}>()
+);
+
+export const loadLikeOrgRadiosSuccess = createAction(
+    '[Radio Service] Load Like Org Radios Successs',
+    props<{ radios: Radio[]}>()
+);
+
+export const loadLikeOrgRadiosFailure = createAction(
+    '[Radio Service] Load Like Org Radios Failure',
     props<{ error: string}>()
 );
 
