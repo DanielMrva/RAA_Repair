@@ -30,6 +30,7 @@ import { EditLocationComponent } from './_modules/location/components/edit-locat
 
 import { roleGuard } from './guards/role-guard';
 import { authGuard } from './guards/auth-guard';
+import { RadioResultsTableComponent } from './_modules/radio/components/radio-results-table/radio-results-table.component';
 
 
 const routes: Routes = [
@@ -164,6 +165,36 @@ const routes: Routes = [
     canActivate: [authGuard, roleGuard]
   },
   {
+    path: 'radio-results',
+    component: RadioResultsTableComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      role: ['admin']
+    },
+  },
+  {
+    path: 'radio-results/:orgName',
+    component: RadioResultsTableComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      role: ['admin']
+    },
+  },
+  {
+    path: 'radio-results/:serialNumber/:model',
+    component: RadioResultsTableComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      role: ['admin']
+    },
+  },
+  {
     path: 'user-reports',
     component: AdminUserReportsComponent,
     data: {
@@ -232,7 +263,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    onSameUrlNavigation: 'reload'
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

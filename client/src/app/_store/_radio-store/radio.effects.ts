@@ -31,6 +31,19 @@ export class RadioEffects {
         )
     );
 
+    loadLikeSerialRadio$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RadioActions.loadLikeSerialRadio),
+            mergeMap(({ serialNumber, model }) =>
+                from(this.radioService.queryLikeSerialRadio(serialNumber, model).valueChanges).pipe(
+                    map(({ data }) => RadioActions.loadLikeSerialRadioSuccess({ serialRadio: data.likeSerialRadio })),
+
+                    catchError((error) => of(RadioActions.loadLikeSerialRadioFailure({ error })))
+                )
+            )
+        )
+    );
+
     loadOneRadio$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RadioActions.loadOneRadio),
@@ -56,7 +69,7 @@ export class RadioEffects {
             ofType(RadioActions.loadAllRadios),
             switchMap(() =>
                 from(this.radioService.allRadios().valueChanges).pipe(
-                    map(({ data }) => RadioActions.loadAllRadiosSuccess({ radios: data.radios })),
+                    map(({ data }) => RadioActions.loadAllRadiosSuccess({ radios: data.allRadios })),
 
                     catchError((error) => of(RadioActions.loadAllRadiosFailure({ error })))
 
@@ -73,6 +86,19 @@ export class RadioEffects {
                     map(({ data }) => RadioActions.loadOrgRadiosSuccess({ radios: data.orgRadios })),
 
                     catchError((error) => of(RadioActions.loadOrgRadiosFailure({ error })))
+                )
+            )
+        )
+    );
+
+    loadLikeOrgRadios$ = createEffect(() => 
+        this.actions$.pipe(
+            ofType(RadioActions.loadLikeOrgRadios),
+            switchMap(( { orgName }) => 
+                from(this.radioService.likeOrgRadios(orgName).valueChanges).pipe(
+                    map(({ data }) => RadioActions.loadLikeOrgRadiosSuccess({ radios: data.likeOrgRadios})),
+
+                    catchError((error) => of(RadioActions.loadLikeOrgRadiosFailure({ error })))
                 )
             )
         )

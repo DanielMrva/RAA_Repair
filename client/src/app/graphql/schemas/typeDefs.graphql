@@ -92,9 +92,11 @@ type Query {
     allRadios: [Radio]
     radio(radioID: ID!): Radio
     serialRadio(serialNumber: String!, model: String!): Radio
+    likeSerialRadio(serialNumber: String!, model: String!): [Radio]
     allRepairs: [Repair]
     repair(repairID: String!): Repair
     orgRadios(orgName: String!): [Radio]
+    likeOrgRadios(orgName: String!): [Radio]
     orgUsers(orgName: String!): [User]
     orgNames: [Organization]
     org: Organization

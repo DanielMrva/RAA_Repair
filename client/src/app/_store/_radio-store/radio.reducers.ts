@@ -23,6 +23,7 @@ export const radioReducer = createReducer(
 
     on(RadioActions.loadSerialRadio, (state) => ({
         ...state,
+        radios: [],
         isLoading: true,
         error: null,
     })),
@@ -35,6 +36,26 @@ export const radioReducer = createReducer(
     })),
 
     on(RadioActions.loadSerialRadioFailure, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error
+    })),
+
+    on(RadioActions.loadLikeSerialRadio, (state) => ({
+        ...state,
+        radios: [],
+        isLoading: true,
+        error: null,
+    })),
+
+    on(RadioActions.loadLikeSerialRadioSuccess, (state, { serialRadio }) => ({
+        ...state,
+        radios: serialRadio as Radio[],
+        isLoading: false,
+        error: null,
+    })),
+
+    on(RadioActions.loadLikeSerialRadioFailure, (state, { error }) => ({
         ...state,
         isLoading: false,
         error: error
@@ -63,6 +84,7 @@ export const radioReducer = createReducer(
 
     on(RadioActions.loadAllRadios, (state) => ({
         ...state,
+        radios: [],
         isLoading: true,
         error: null,
     })),
@@ -82,6 +104,7 @@ export const radioReducer = createReducer(
 
     on(RadioActions.loadOrgRadios, (state) => ({
         ...state,
+        radios: [],
         isLoading: true,
         error: null,
     })),
@@ -94,6 +117,26 @@ export const radioReducer = createReducer(
     })),
 
     on(RadioActions.loadOrgRadiosFailure, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error
+    })),
+
+    on(RadioActions.loadLikeOrgRadios, (state) => ({
+        ...state,
+        radios: [],
+        isLoading: true,
+        error: null,
+    })),
+
+    on(RadioActions.loadLikeOrgRadiosSuccess, (state, { radios }) => ({
+        ...state,
+        radios: radios as Radio[],
+        isLoading: false,
+        error: null,
+    })),
+
+    on(RadioActions.loadLikeOrgRadiosFailure, (state, { error }) => ({
         ...state,
         isLoading: false,
         error: error

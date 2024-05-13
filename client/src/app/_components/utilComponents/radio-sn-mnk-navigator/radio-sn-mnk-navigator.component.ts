@@ -22,13 +22,17 @@ export class RadioSnMNkNavigatorComponent {
     if (this.radioForm.valid) {
       const { serialNumber, model } = this.radioForm.value;
 
-      this.router.navigate(['/one-radio', serialNumber, model]);
+      this.router.navigate(['/radio-results', serialNumber, model]);
+      this.radioForm.patchValue({
+        serialNumber: '',
+        model: ''
+      });
     }
-  }
+  };
 
   ngOnInit(): void {
 
       
-  }
+  };
 
 }

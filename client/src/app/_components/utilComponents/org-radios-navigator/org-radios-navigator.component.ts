@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { AppState } from '@app/_store/app.state';
+import { loadLikeOrgRadios } from '@app/_store/_radio-store/radio.actions';
 
 @Component({
   selector: 'app-org-radios-navigator',
@@ -15,16 +18,19 @@ export class OrgRadiosNavigatorComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private store: Store<AppState>
   ) { }
 
   navigateToOrgRadio() {
     const orgName = this.orgForm.get('orgName')?.value || 'raa';
-    this.router.navigate(['/org-radio', orgName]);
-  }
+    this.router.navigate(['/radio-results', orgName]);
+    this.orgForm.patchValue({orgName: ''});
+  };
+  
 
   ngOnInit(): void {
 
       
-  }
+  };
 }

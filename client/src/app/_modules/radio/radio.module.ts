@@ -12,6 +12,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 import { AddRadioComponent } from './components/add-radio/add-radio/add-radio.component';
 import { AdminAddRadioComponent } from './components/add-radio/add-radio/admin-add-radio/admin-add-radio.component';
@@ -21,7 +23,8 @@ import { EditRadioComponent } from './components/edit-radio/edit-radio.component
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RadioEffects } from '@app/_store/_radio-store/radio.effects';
-import { radioReducer } from '@app/_store/_radio-store/radio.reducers'
+import { radioReducer } from '@app/_store/_radio-store/radio.reducers';
+import { RadioResultsTableComponent } from './components/radio-results-table/radio-results-table.component'
 
 
 
@@ -40,6 +43,8 @@ import { radioReducer } from '@app/_store/_radio-store/radio.reducers'
     MatProgressSpinnerModule,
     MatAutocompleteModule,
     MatFormFieldModule,
+    MatTableModule,
+    MatSortModule,
     StoreModule.forFeature('radio', radioReducer),
     EffectsModule.forFeature([RadioEffects])
   ],
@@ -48,6 +53,7 @@ import { radioReducer } from '@app/_store/_radio-store/radio.reducers'
     AdminAddRadioComponent,
     OneRadioComponent,
     EditRadioComponent,
+    RadioResultsTableComponent,
   ],
 })
 export class RadioModule { }

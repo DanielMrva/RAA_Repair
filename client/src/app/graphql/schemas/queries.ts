@@ -75,6 +75,16 @@ export const QUERY_SERIALRADIO = gql`
     }
 `
 
+export const QUERY_LIKE_SERIALRADIO = gql`
+    ${RADIO_FIELDS_FRAGMENT}
+    ${SERVICE_RECORD_FRAGMENT}
+    query likeSerialRadio($serialNumber: String!, $model: String!) {
+        likeSerialRadio(serialNumber: $serialNumber, model: $model) {
+            ...RadioFieldsFragment
+        }
+    }
+`
+
 
 export const ALL_REPAIRS = gql`
     ${SERVICE_RECORD_FRAGMENT}
@@ -100,6 +110,16 @@ export const ORG_RADIOS = gql`
     query orgRadios($orgName: String!) {
         orgRadios(orgName: $orgName) {
         ... RadioFieldsFragment
+        }
+    }
+`
+
+export const LIKE_ORG_RADIOS = gql`
+    ${RADIO_FIELDS_FRAGMENT}
+    ${SERVICE_RECORD_FRAGMENT}
+    query likeOrgRadios($orgName: String!) {
+        likeOrgRadios(orgName: $orgName) {
+            ... RadioFieldsFragment
         }
     }
 `

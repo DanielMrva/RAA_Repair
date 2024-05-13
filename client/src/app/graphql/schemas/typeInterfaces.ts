@@ -112,7 +112,6 @@ export type LoginVariables = {
 export type LimitedRecord = {
     _id: string,
     dateReceived: string,
-
 }
 
 export type AdminRadioFields = {
