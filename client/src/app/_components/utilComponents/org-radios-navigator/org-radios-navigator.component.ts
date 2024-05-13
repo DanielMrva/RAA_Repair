@@ -18,8 +18,6 @@ export class OrgRadiosNavigatorComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private formBuilder: FormBuilder,
-    private store: Store<AppState>
   ) { }
 
   navigateToOrgRadio() {
