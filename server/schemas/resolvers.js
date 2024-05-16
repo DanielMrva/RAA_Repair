@@ -38,7 +38,7 @@ const resolvers = {
         serialRadio: async (parent, { serialNumber, model }) => {
             return Radio.findOne({ $and: [{ serialNumber: serialNumber }, { model: model }] }).populate(["serviceRecord"]);
         },
-        likeSerialRadio: async (parent, { serialNumber, model}) => {
+        likeSerialRadio: async (parent, { serialNumber, model }) => {
             return Radio.find({
                 $and: [
                     { serialNumber: { $regex: new RegExp(serialNumber, 'i') } },
@@ -59,7 +59,7 @@ const resolvers = {
         likeOrgRadios: async (parent, { orgName }) => {
 
             function delay(ms) {
-                return new Promise((resolve) => setTimeout(resolve,ms))
+                return new Promise((resolve) => setTimeout(resolve, ms))
             }
 
             await delay(3000)
@@ -102,7 +102,7 @@ const resolvers = {
                 },
             });
         },
-        location: async (parent, { locationId } ) => {
+        location: async (parent, { locationId }) => {
             return Location.findById({ _id: locationId }).populate({
                 path: "radios",
                 populate: {
@@ -110,16 +110,16 @@ const resolvers = {
                 },
             });
         },
-        locationByName: async (parent, { locationName } ) => {
-            return Location.findOne( { locationName: locationName}).populate({
+        locationByName: async (parent, { locationName }) => {
+            return Location.findOne({ locationName: locationName }).populate({
                 path: "radios",
                 populate: {
                     path: "serviceRecord"
                 }
             });
         },
-        orgLocations: async(parent, { orgName }) => {
-            return Location.find({ orgName: orgName}).populate({
+        orgLocations: async (parent, { orgName }) => {
+            return Location.find({ orgName: orgName }).populate({
                 path: "radios",
                 populate: {
                     path: "serviceRecord",
@@ -217,11 +217,8 @@ const resolvers = {
                 remarks
             }
         ) => {
-
             try {
-
                 const radio = await Radio.findOne({ _id: radioID });
-
 
                 if (!radio) {
                     throw new GraphQLError('Radio not found', {
@@ -233,13 +230,13 @@ const resolvers = {
                 }
 
                 const highestRepair = await Repair.find({}).sort({ repairTag: -1 }).limit(1);
-                // console.log(highestRepair)
 
-                const highestRepairTag = highestRepair[0].repairTag;
-                console.log(`HRT: ${highestRepairTag}`);
-                const newRepairTag = (highestRepairTag + 1);
-
-
+                let newRepairTag;
+                if (highestRepair.length === 0) {
+                    newRepairTag = 1;
+                } else {
+                    newRepairTag = highestRepair[0].repairTag + 1;
+                }
 
                 const repair = await Repair.create({
                     radioID,
@@ -272,27 +269,22 @@ const resolvers = {
                     remarks
                 });
 
-
                 await Radio.findOneAndUpdate(
                     { _id: repair.radioID },
                     { $addToSet: { serviceRecord: repair._id } }
-                )
+                );
 
                 return repair;
 
             } catch (error) {
-
-
-                console.error('Error submitting repair:', error)
-
+                console.error('Error submitting repair:', error);
 
                 throw new GraphQLError('Failed to submit repair', {
                     extensions: {
                         code: 'SUBMIT_REPAIR_ERROR'
                     }
-                })
+                });
             }
-
         },
         // End Add Repair
 
@@ -401,9 +393,9 @@ const resolvers = {
             }
         },
         // End Add Org
-        
+
         addLocation: async (
-            parent, 
+            parent,
             {
                 locationName,
                 orgName,
@@ -417,7 +409,7 @@ const resolvers = {
                 contactEmail,
                 primaryContact
             }
-            
+
         ) => {
 
             try {
@@ -452,14 +444,14 @@ const resolvers = {
                 });
 
                 await Organization.findOneAndUpdate(
-                    {orgName: newLocation.orgName},
-                    { $addToSet: {locations: newLocation._id} }
+                    { orgName: newLocation.orgName },
+                    { $addToSet: { locations: newLocation._id } }
                 );
 
                 return newLocation;
             }
 
-            catch(error) {
+            catch (error) {
                 console.error(error);
                 throw new GraphQLError('Failed to submit location', {
                     extensions: {
@@ -589,7 +581,7 @@ const resolvers = {
         },
         // End Edit Org
 
-        editLocation: async(parent, { _id, updates } ) => {
+        editLocation: async (parent, { _id, updates }) => {
             try {
 
                 const oldLocation = await Location.findById({ _id });
