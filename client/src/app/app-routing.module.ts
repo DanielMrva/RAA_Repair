@@ -150,7 +150,7 @@ const routes: Routes = [
     path: 'edit-location/:id',
     component: EditLocationComponent,
     data: {
-      role: ['admin', 'user']
+      role: ['admin']
     },
     canActivate: [authGuard, roleGuard]
   },

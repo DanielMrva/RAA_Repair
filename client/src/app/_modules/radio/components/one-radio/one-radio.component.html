@@ -9,7 +9,8 @@
   <div *ngIf="oneRadio$ | async as oneRadio; else noRadioFound" class="container">
 
     <div class="row">
-      <h2 class="col-12 text-center">Radio Details</h2>
+      <h2 class="col-12 text-center">Radio Details <a [routerLink]="['/edit-radio', oneRadio._id]">EDIT</a>
+      </h2>
 
       <section class="row" id="timeline-section">
 
@@ -73,10 +74,10 @@
         <div class="col-4">
           <h6 class="row">Refurb:</h6>
           <ng-container *ngIf="oneRadio.refurb">
-            <p class="row"> <i class="bi bi-check"></i> </p>
+            <p class="row"><b>Y</b></p>
           </ng-container>
           <ng-container *ngIf="!oneRadio.refurb">
-            <p class="row"> <i class="bi bi-x-lg"></i> </p>
+            <p class="row"><b>N</b></p>
           </ng-container>
         </div>
 
