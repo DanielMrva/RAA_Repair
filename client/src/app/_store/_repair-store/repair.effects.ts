@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
+import * as RadioActions from "@app/_store/_radio-store/radio.actions"
 import * as RepairActions from "./repair.actions";
-import { loadOneRadio} from "../_radio-store/radio.actions";
+import { loadOneRadio } from "../_radio-store/radio.actions";
 import { loadLocationByName } from "../_location-store/location.actions";
 import { Router } from "@angular/router";
 import { RepairService } from "@app/services/repairs/repair.service";
@@ -39,22 +40,22 @@ export class RepairEffects {
     // );
 
     loadOneRepair$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(RepairActions.loadOneRepair),
-      switchMap(({ repairID }) =>
-        this.repairService.querySingleRepair(repairID).pipe(
-          switchMap(({ data }) => {
-            return [
-                RepairActions.loadOneRepairSuccess({repair: data.repair}),
-                ...(data.repair.radioID ? [loadOneRadio({ radioID: data.repair.radioID})] : []),
-                ...(data.repair.radioLocation ? [loadLocationByName({ locationName: data.repair.radioLocation})] : [])
-            ];
-          }),
-          catchError((error) => of(RepairActions.loadOneRepairFailure({ error })))
+        this.actions$.pipe(
+            ofType(RepairActions.loadOneRepair),
+            switchMap(({ repairID }) =>
+                this.repairService.querySingleRepair(repairID).pipe(
+                    switchMap(({ data }) => {
+                        return [
+                            RepairActions.loadOneRepairSuccess({ repair: data.repair }),
+                            ...(data.repair.radioID ? [loadOneRadio({ radioID: data.repair.radioID })] : []),
+                            ...(data.repair.radioLocation ? [loadLocationByName({ locationName: data.repair.radioLocation })] : [])
+                        ];
+                    }),
+                    catchError((error) => of(RepairActions.loadOneRepairFailure({ error })))
+                )
+            )
         )
-      )
-    )
-  );
+    );
 
     loadAllRepairs$ = createEffect(() =>
         this.actions$.pipe(
@@ -89,13 +90,18 @@ export class RepairEffects {
         this.actions$.pipe(
             ofType(RepairActions.addRepairSuccess),
             map(({ repair }) => {
-                this.toastService.show('Repair added succesfully!', {
-                    delay: 3000
-                }),
-                    this.router.navigate(['one-repair', repair?._id])
+                this.toastService.show('Repair added successfully!', { delay: 3000 });
+                this.router.navigate(['one-repair', repair?._id]);
+
+                // Check if repair.radioID exists before dispatching the action
+                if (repair?.radioID) {
+                    return RadioActions.loadOneRadio({ radioID: repair.radioID });
+                } else {
+                    // Return a no-op action if repair.radioID is undefined
+                    return { type: 'NO_OP' };
+                }
             })
-        ),
-        { dispatch: false }
+        )
     );
 
     addRepairFailure$ = createEffect(() =>
