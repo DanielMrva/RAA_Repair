@@ -14,9 +14,11 @@ export class InvoiceTextButtonComponent {
   @Input() invoiceContent!: InvoiceTextAttributes;
 
   concatInvoiceText(): string {
-    const { make, model, serialNumber, repairTag} = this.invoiceContent;
+    const { make, model, serialNumber, repairTag, workPerformed} = this.invoiceContent;
 
-    return `Service Labor to Repair: ${make}, ${model}, Serial NO: ${serialNumber}, Repair Tag: ${repairTag}`
+    const workPerformedString = workPerformed.join(', ')
+
+    return `Service Labor to Repair: ${make}, ${model}, Serial NO: ${serialNumber}, Repair Tag: ${repairTag}, Work Performed: ${workPerformedString}`
   };
 
   copyInvoiceTextToClipboard() {

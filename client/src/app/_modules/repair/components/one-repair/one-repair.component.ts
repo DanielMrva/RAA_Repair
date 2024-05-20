@@ -80,7 +80,8 @@ export class OneRepairComponent implements OnInit, OnDestroy{
         make: repair.radioMake,
         model: radio.model,
         serialNumber: repair.radioSerial,
-        repairTag: repair.repairTag
+        repairTag: repair.repairTag,
+        workPerformed: repair.workPerformed
       }: undefined)
     );
   

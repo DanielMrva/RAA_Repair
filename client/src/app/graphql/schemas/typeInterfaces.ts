@@ -248,7 +248,8 @@ export type InvoiceTextAttributes = {
     make: string,
     model: string,
     serialNumber: string,
-    repairTag: number
+    repairTag: number,
+    workPerformed: string[]
 }
 
 export type PoTextAttributes = {
