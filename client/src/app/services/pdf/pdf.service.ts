@@ -50,18 +50,13 @@ export class PdfService {
     vLineColor: function (i: number, node: any) {
       return 'black'; // Color for vertical lines
     },
-
-  }
+  };
 
   private minHeightTable = {
-    myCustomLayout: {
-      // Other layout properties...
-      paddingBottom: function() { return 30; }, // Adjust padding as needed
-    }
-  }
+    paddingBottom: function () { return 30; }, // Adjust padding as needed
+  };
 
   formatRepairForPdf(repair: Repair, radio?: Radio, location?: Location): any {
-
 
     const fdatePurchased = radio?.datePurchased ? new Date(parseInt(radio.datePurchased)).toLocaleDateString() : ` `;
     const fDateRec = repair.dateReceived ? new Date(parseInt(repair.dateReceived)).toLocaleDateString() : ` `;
@@ -71,110 +66,27 @@ export class PdfService {
 
     const warrantyDate = radio?.warranty ? new Date(parseInt(radio?.warranty)).getTime() : new Date(0).getTime();
     const currentDate = Date.now();
-
-    // TODO: Some Grace Period logic, in case we want that in the future.
-    // const gracePeriod = 24 * 60 * 60 * 1000;
-    // const underWarrantyWithGrace = (warrantyDate + gracePeriod ) > currentDate ? "Yes" : "No"
-
     const underWarranty = warrantyDate > currentDate ? "Yes" : "No";
 
-    let accessoriesArray = repair.accessories
-    let concatAccArr = ''
-
-    if (accessoriesArray && accessoriesArray.length > 0) {
-      concatAccArr = accessoriesArray.join(', ');
-    }
-
     const content = [
-
       {
         stack: [
-
           {
-            columns: [
-              {
-                width: '70%',
-                minHeight: 505,
-                stack: [
-                  {
-                    // Sub-header: Timeline
-                    text: 'Timeline:',
-                    style: 'subheader',
-                    margin: [0, 5, 0, 5]
-                  },
-                  {
-                    table: {
-                      widths: ['*', '*'],
-                      body: [
-                        [`Date Purchased:`, `${fdatePurchased}`],
-                        [`Date Received:`, `${fDateRec}`],
-                        [`Date Sent to Tech:`, `${fDateSentTech}`],
-                        [`Date Received from Tech:`, `${fDateRecTech}`],
-                        [`Date Sent to End User:`, `${fDateSentEU}`],
-                      ]
-                    }
-                  },
-                  {
-                    // Sub-header: PO/Tracking
-                    text: 'PO Tracking:',
-                    style: 'subheader',
-                    margin: [0, 5, 0, 5]
-                  },
-                  {
-                    table: {
-                      widths: ['*', '*'],
-                      body: [
-                        [`End User PO:`, `${repair.endUserPO}`],
-                        [`Customer PO:`, `${repair.raaPO}`],
-                        [`Control ID:`, `${repair.repairTag}`],
-                      ]
-                    }
-                  },
-                  {
-                    // Sub-header: Invoicing
-                    text: 'Invoicing:',
-                    style: 'subheader',
-                    margin: [0, 5, 0, 5]
-                  },
-                  {
-                    table: {
-                      widths: ['*', '*'],
-                      body: [
-                        [`RAA Invoice Number:`, `${repair.raaInvNum}`],
-                        [`Tech Invoice Number:`, `${repair.techInvNum}`],
-                      ]
-                    }
-                  },
-                  {
-                    // Sub-Header: Radio Details
-                    text: 'Radio Details:',
-                    style: 'subheader',
-                    margin: [0, 5, 0, 5]
-                  },
-                  {
-                    table: {
-                      widths: [`*`, `*`],
-                      body: [
-                        [`Radio Manufacturer:`, `${radio?.make}`],
-                        [`Model`, `${radio?.model}`],
-                        [`Serial Number:`, `${radio?.serialNumber}`],
-                        [`Under Warranty:`, `${underWarranty}`]
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                // Right column (30% width)
-                width: '30%',
-                minHeight: 505,
-                stack: [
-                  {
-                    // Header for the right column
-                    text: `Repair Tag # ${repair.repairTag}`,
-                    style: 'header',
-                    margin: [0, 0, 0, 10] // Bottom margin
-                  },
+            // Header for the Repair Tag
+            text: `Repair Tag # ${repair.repairTag}`,
+            style: 'header',
+            margin: [0, 0, 0, 7] // Bottom margin
+          },
+          {
+            // Addresses table
+            table: {
+              body: [
+                [
+                  { text: 'Technician:', alignment: 'center', bold: true },
+                  { text: 'Customer:', alignment: 'center', bold: true },
+                  { text: 'End User:', alignment: 'center', bold: true }
+                ],
+                [
                   {
                     table: {
                       body: [
@@ -185,16 +97,10 @@ export class PdfService {
                         [TECH_ADDRESS.phone],
                         [TECH_ADDRESS.email]
                       ],
-                      widths: [`*`]
-
+                      widths: ['*']
                     },
-                    layout: this.edgeBordersLayout,
-                  },
-                  {
-                    // Sub-header "Customer" before the second table
-                    text: 'Customer:',
-                    style: 'subheader',
-                    margin: [0, 5, 0, 5]
+                    layout: 'noBorders',
+                    margin: [0, 0, 10, 0] // Right margin
                   },
                   {
                     table: {
@@ -206,166 +112,221 @@ export class PdfService {
                         [RAA_ADDRESS.phone],
                         [RAA_ADDRESS.email]
                       ],
-                      widths: [`*`]
-
+                      widths: ['*']
                     },
-                    layout: this.edgeBordersLayout,
-                  },
-                  {
-                    // Sub-header "End User" before the third table
-                    text: 'End User:',
-                    style: 'subheader',
-                    margin: [0, 5, 0, 5] // Top and bottom margin
+                    layout: 'noBorders',
+                    margin: [0, 0, 10, 0] // Right margin
                   },
                   {
                     table: {
                       body: [
                         [`${location?.locationName}`],
                         [`${location?.street}`],
-                        [`${location?.suite}`],
+                        [`${location?.suite ? location.suite : ''}`],
                         [`${location?.city}, ${location?.state} ${location?.zip}`],
                         [`${location?.phone}`],
                         [`${location?.contactEmail}`]
                       ],
-                      widths: [`*`]
-
+                      widths: ['*']
                     },
-                    layout: this.edgeBordersLayout,
+                    layout: 'noBorders'
                   }
                 ]
-              }
-            ],
-            minHeight: 505,
-            margin: [0, 0, 0, 10]
+              ],
+              widths: ['33%', '33%', '33%'],
+              margin: [0, 0, 0, 7] // Bottom margin
+            }
+          },
+          {
+            // Sub-header: Radio Details
+            text: 'Radio Details:',
+            style: 'subheader',
+            margin: [0, 3, 0, 3]
+          },
+          {
+            table: {
+              widths: ['*', '*', '*', '*'],
+              body: [
+                [{ text: 'Radio Manufacturer:', bold: true }, `${radio?.make}`, { text: 'Model:', bold: true }, `${radio?.model}`],
+                [{ text: 'Serial Number:', bold: true }, `${radio?.serialNumber}`, { text: 'Under Warranty:', bold: true }, `${underWarranty}`],
+              ]
+            },
+            margin: [0, 0, 0, 7] // Bottom margin
+          },
+          {
+            // Sub-header: Timeline
+            text: 'Timeline:',
+            style: 'subheader',
+            margin: [0, 3, 0, 3]
+          },
+          {
+            table: {
+              widths: ['*', '*', '*', '*'],
+              body: [
+                [{ text: 'Date Purchased:', bold: true }, `${fdatePurchased}`, { text: 'Date Received:', bold: true }, `${fDateRec}`],
+                [{ text: 'Date Sent to Tech:', bold: true }, `${fDateSentTech}`, { text: 'Date Received from Tech:', bold: true }, `${fDateRecTech}`],
+                [{ text: 'Date Sent to End User:', bold: true }, `${fDateSentEU}`, '', '']
+              ]
+            },
+            margin: [0, 0, 0, 7] // Bottom margin
+          },
+          {
+            // Sub-header: PO Tracking
+            text: 'PO Tracking:',
+            style: 'subheader',
+            margin: [0, 3, 0, 3]
+          },
+          {
+            table: {
+              widths: ['*', '*', '*', '*', '*', '*'],
+              body: [
+                [{ text: 'End User PO:', bold: true }, `${repair.endUserPO}`, { text: 'Customer PO:', bold: true }, `${repair.raaPO}`, { text: 'Control ID:', bold: true }, `${repair.repairTag}`],
+              ]
+            },
+            margin: [0, 0, 0, 7] // Bottom margin
+          },
+          {
+            // Sub-header: Invoicing
+            text: 'Invoicing:',
+            style: 'subheader',
+            margin: [0, 3, 0, 3]
+          },
+          {
+            table: {
+              widths: ['*', '*', '*', '*'],
+              body: [
+                [{ text: 'RAA Invoice Number:', bold: true }, `${repair.raaInvNum}`, { text: 'Tech Invoice Number:', bold: true }, `${repair.techInvNum}`],
+              ]
+            },
+            margin: [0, 0, 0, 7] // Bottom margin
           },
           {
             table: {
               body: [
                 [
                   {
-                    table: {
-                      body: [
-                        [
-                          {
-                            // Sub-header "Symptoms"
-                            text: 'Symptoms:',
-                            style: 'subheader',
-                            margin: [0, 5, 0, 5] // Top and bottom margin
-                          },
-                          {
-                            ul: [
-                              ...repair.symptoms.map(symptom => ({ text: symptom || '____________ \n____________ \n____________' }))
-
-                            ]
-                          },
-
-                        ]
-                      ],
-                      widths: [`*`, `*`],
-                    },
-                    layout: 'noBorders',
+                    // Sub-header "Symptoms"
+                    text: 'Symptoms:',
+                    style: 'subheader',
+                    margin: [0, 3, 0, 3] // Top and bottom margin
                   },
                   {
-                    table: {
-
-                      body: [
-                        [
-                          {
-                            // Sub-header "Accessories"
-                            text: 'Accessories:',
-                            style: 'subheader',
-                            margin: [0, 5, 0, 5] // Top and bottom margin
-                          },
-                          {
-                            ul: [
-                              ...repair.accessories.map(accessory => ({ text: accessory || '____________ \n____________ \n____________' }))
-
-                            ]
-                          },
-                        ]
-                      ],
-                      widths: [`*`, `*`],
-                    },
-                    layout: 'noBorders',
+                    ul: [
+                      ...repair.symptoms.map(symptom => ({ text: symptom || '____________ \n____________ \n____________' }))
+                    ]
                   }
-                ],
-
-
+                ]
               ],
-              widths: [`*`, `*`]
-
-            }
+              widths: ['15%', '85%'],
+            },
+            margin: [0, 0, 0, 7]
           },
           {
             table: {
               body: [
-                [`Attribute`, `In`, `Out`, `Unit`, `Test Freq`],
-                [`RX Sensitivity`, `${repair.incRxSens}`, `${repair.outRxSens}`, `uV`, `${repair.testFreq}`],
-                [`Freq Err`, `${repair.incFreqErr}`, `${repair.outFreqErr}`, `Hz`, `${repair.testFreq}`],
-                [`Modulation`, `${repair.incMod}`, `${repair.outMod}`, `KHz`, `${repair.testFreq}`],
-                [`Power Output`, `${repair.incPowerOut}`, `${repair.outPowerOut}`, `Watts`, `${repair.testFreq}`]
+                [
+                  {
+                    // Sub-header "Accessories"
+                    text: 'Accessories:',
+                    style: 'subheader',
+                    margin: [0, 3, 0, 3] // Top and bottom margin
+                  },
+                  {
+                    ul: [
+                      ...repair.accessories.map(accessory => ({ text: accessory || '____________ \n____________ \n____________' }))
+                    ]
+                  }
+                ]
               ],
-              widths: [`*`, `*`, `*`, `*`, `*`]
+              widths: ['15%', '85%'],
             },
-            margin: [0, 5, 0, 5]
+            margin: [0, 0, 0, 7]
+
           },
           {
             table: {
-              // Your table data
+              body: [
+                [{ text: 'Attribute', bold: true }, { text: 'IN', bold: true }, { text: 'OUT', bold: true }, { text: 'Unit', bold: true }, { text: 'Test Freq', bold: true },],
+                [{ text: 'RX Sensitivity', bold: true }, `${repair.incRxSens}`, `${repair.outRxSens}`, 'uV', `${repair.testFreq}`],
+                [{ text: 'Freq Err', bold: true }, `${repair.incFreqErr}`, `${repair.outFreqErr}`, 'Hz', `${repair.testFreq}`],
+                [{ text: 'Modulation', bold: true }, `${repair.incMod}`, `${repair.outMod}`, 'KHz', `${repair.testFreq}`],
+                [{ text: 'Power Output', bold: true }, `${repair.incPowerOut}`, `${repair.outPowerOut}`, 'Watts', `${repair.testFreq}`]
+              ],
+              widths: ['*', '*', '*', '*', '*'],
+            },
+            margin: [0, 3, 0, 3] // Top and bottom margin
+
+          },
+          {
+            table: {
+              body: [
+                [
+                  {
+                    // Sub-header "Work Performed"
+                    text: 'Work Performed:',
+                    style: 'subheader',
+                    margin: [0, 3, 0, 3] // Top and bottom margin
+                  },
+                  {
+                    ul: [
+                      ...repair.workPerformed.map(work => ({ text: work || '____________ \n____________ \n____________' }))
+                    ]
+                  }
+                ]
+              ],
+              widths: ['15%', '85%'],
+            },
+            margin: [0, 0, 0, 7]
+
+          },
+
+          {
+            table: {
               headerRows: 1,
               body: [
                 // Header row
-                [`Parts Used`, `| Repair Hours: ${repair.repHours}`],
+                [{ text: 'Parts Used', bold: true }, { text: `Repair Hours: ${repair.repHours}`, bold: true }],
                 // Data rows
                 [
                   {
                     ul: [
                       ...repair.partsUsed.map(part => ({ text: part || '________________________________________________________ \n________________________________________________________ \n________________________________________________________' }))
-
                     ]
                   },
                   ''
-                ],
-
+                ]
               ],
-              widths: [`80%`, `20%`]
+              widths: ['80%', '20%'],
+              layout: this.edgeAndHeaderBorders
             },
-            layout: this.edgeAndHeaderBorders
+            margin: [0, 3, 0, 3] // Top and bottom margin
+
+          },
+
+          {
+            table: {
+              body: [
+                [{ text: 'Remarks', bold: true }],
+                [`${repair.remarks || '\n \n'}`]
+              ],
+              widths: ['*'],
+              layout: this.minHeightTable,
+            },
+            margin: [0, 3, 0, 3] // Top and bottom margin
+
           },
           {
             table: {
               body: [
-                ['Remarks'],
-                [`${repair.remarks || `\n \n`}`]
+                ['Technician _______________', 'License # _______________', 'Date _______________']
               ],
-              widths: [`*`]
+              widths: ['*', '*', '*'],
+              layout: 'noBorders',
             },
-            layout: this.minHeightTable,
-            margin: [0, 5, 0, 5]
-
-          },
-          {
-            table: {
-              body: [
-                [`PO Text:`, `Sales Order Text:`],
-                [`Radio Repair: ${radio?.make} ${radio?.model} Serial NO: ${radio?.serialNumber} with ${concatAccArr}. Repair Tag: ${repair.repairTag}`, `Service Labor to Repair: ${radio?.make} ${radio?.model} Serial NO: ${radio?.serialNumber}. Repair Tag # ${repair.repairTag}`]
-              ]
-            }
-          },
-          {
-            table: {
-              body: [
-                [`Technician _______________`, `License # _______________`, `Date _______________`]
-              ],
-              widths: [`*`,`*`,`*`],
-
-            },
-            margin: [0, 5, 0, 5],
-            layout: `noBorders`
+            margin: [0, 3, 0, 3] // Top and bottom margin
 
           }
-
-        ],
+        ]
       }
     ];
 
@@ -373,23 +334,22 @@ export class PdfService {
       content,
       styles: {
         header: {
-          fontSize: 14,
-          bold: true,
-          lineHeight: 1.75
-        },
-        subHeader: {
-          fontSize: 10,
+          fontSize: 12,
           bold: true,
           lineHeight: 1.5
         },
-        bodyTable: {
+        subheader: {
           fontSize: 9,
-          margin: [0, 0, 0, 20]
+          bold: true,
+          lineHeight: 1.25
+        },
+        bodyTable: {
+          fontSize: 8,
+          margin: [0, 0, 0, 15]
         }
-
       },
       defaultStyle: {
-        fonstSize: 9,
+        fontSize: 8,
         columnGap: 15,
         lineHeight: 1
       },
@@ -398,12 +358,11 @@ export class PdfService {
         edgeAndHeaderBorders: this.edgeAndHeaderBorders,
         minHeightTable: this.minHeightTable
       }
-    }
-  };
+    };
+  }
 
   repairPDFGen(repairDef: any): void {
-
-    pdfMake.createPdf(repairDef).open()
+    pdfMake.createPdf(repairDef).open();
   }
 
   constructor() { }
