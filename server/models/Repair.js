@@ -17,12 +17,12 @@ const repairSchema = new Schema({
     radioLocation: {
         type: String
     },
-    dateReceived: {
-        type: Date,
-        default: Date.now,
-        // get: (timestamp) => dateFormat(timestamp),
-        // Admin
-    }, 
+    // dateReceived: {
+    //     type: Date,
+    //     default: Date.now,
+    //     // get: (timestamp) => dateFormat(timestamp),
+    //     // Admin
+    // }, 
     endUserPO: {
         type: String,
         // Admin
@@ -34,21 +34,41 @@ const repairSchema = new Schema({
     repairTag: {
         type: Number,
     },
-    dateSentTech: {
+    repairStatus: {
+        type: String,
+    },
+    dateRepairAdded: {
+        type: Date,
+        default: Date.now
+    },
+    dateSentEuRaa: {
+        type: Date,
+        default: Date.now
+        // NOTE: All of these dates flow From --> To, regardless if they are sent or rec.
+    },
+    dateRecEuRaa: {
+        type: Date,
+        default: Date.now
+        // Legacy: dateReceived
+    },    
+    dateSentRaaTech: {
         type: Date,
         default: Date.now,
+        // Legacy: dateSentTech
         // get: (timestamp) => dateFormat(timestamp),
         // Admin
     },
-    dateRecTech: {
+    dateRecTechRaa: {
         type: Date,
         default: Date.now,
+        // Legacy: dateRecTech
         // get: (timestamp) => dateFormat(timestamp),
         // Tech
     },
-    dateSentEU: {
+    dateSentRaaEu: {
         type: Date,
         default: Date.now,
+        // Legacy: dateSentEU
         // get: (timestamp) => dateFormat(timestamp),
         // Admin
     },

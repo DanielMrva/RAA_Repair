@@ -56,19 +56,22 @@ export const VALIDATE_ACCESS = gql`
     }
 `
 
-export const ADD_REPAIR = gql `
+export const ADD_REPAIR = gql`
     mutation addRepair(
         $radioID: String
         $radioMake: String
         $radioSerial: String
         $radioLocation: String
-        $dateReceived: String
         $endUserPO: String
         $raaPO: String
         $repairTag: Int
-        $dateSentTech: String
-        $dateRecTech: String
-        $dateSentEU: String
+        $repairStatus: String
+        $dateRepairAdded: String
+        $dateSentEuRaa: String
+        $dateRecEuRaa: String
+        $dateSentRaaTech: String
+        $dateRecTechRaa: String
+        $dateSentRaaEu: String
         $techInvNum: String
         $raaInvNum: String
         $symptoms: [String]
@@ -92,13 +95,16 @@ export const ADD_REPAIR = gql `
             radioMake: $radioMake,
             radioSerial: $radioSerial,
             radioLocation: $radioLocation,
-            dateReceived: $dateReceived,
             endUserPO: $endUserPO,
             raaPO: $raaPO,
             repairTag: $repairTag,
-            dateSentTech: $dateSentTech,
-            dateRecTech: $dateRecTech,
-            dateSentEU: $dateSentEU,
+            repairStatus: $repairStatus,
+            dateRepairAdded: $dateRepairAdded
+            dateSentEuRaa: $dateSentEuRaa
+            dateRecEuRaa: $dateRecEuRaa
+            dateSentRaaTech: $dateSentRaaTech
+            dateRecTechRaa: $dateRecTechRaa
+            dateSentRaaEu: $dateSentRaaEu
             techInvNum: $techInvNum,
             raaInvNum: $raaInvNum,
             symptoms: $symptoms,
@@ -117,35 +123,38 @@ export const ADD_REPAIR = gql `
             partsUsed: $partsUsed,
             remarks: $remarks
         ) {
-                _id
-                radioID
-                radioMake
-                radioSerial
-                radioLocation
-                dateReceived
-                endUserPO
-                raaPO
-                repairTag
-                dateSentTech
-                dateRecTech
-                dateSentEU
-                techInvNum
-                raaInvNum
-                symptoms
-                testFreq
-                incRxSens
-                incFreqErr
-                incMod
-                incPowerOut
-                outRxSens
-                outFreqErr
-                outMod
-                outPowerOut
-                accessories
-                workPerformed
-                repHours
-                partsUsed
-                remarks
+            _id
+            radioID
+            radioMake
+            radioSerial
+            radioLocation
+            endUserPO
+            raaPO
+            repairTag
+            repairStatus
+            dateRepairAdded
+            dateSentEuRaa
+            dateRecEuRaa
+            dateSentRaaTech
+            dateRecTechRaa
+            dateSentRaaEu
+            techInvNum
+            raaInvNum
+            symptoms
+            testFreq
+            incRxSens
+            incFreqErr
+            incMod
+            incPowerOut
+            outRxSens
+            outFreqErr
+            outMod
+            outPowerOut
+            accessories
+            workPerformed
+            repHours
+            partsUsed
+            remarks
         }
     }
 
@@ -203,7 +212,7 @@ export const ADD_RADIO = gql`
     }
 `
 
-export const Edit_Repair = gql`
+export const EDIT_REPAIR = gql`
     mutation editRepair($id: ID!, $updates: UpdateRepairInput) {
         editRepair(_id: $id, updates: $updates) {
             _id
@@ -211,13 +220,16 @@ export const Edit_Repair = gql`
             radioMake
             radioSerial
             radioLocation
-            dateReceived
             endUserPO
             raaPO
             repairTag
-            dateSentTech
-            dateRecTech
-            dateSentEU
+            repairStatus
+            dateRepairAdded
+            dateSentEuRaa
+            dateRecEuRaa
+            dateSentRaaTech
+            dateRecTechRaa
+            dateSentRaaEu
             techInvNum
             raaInvNum
             symptoms

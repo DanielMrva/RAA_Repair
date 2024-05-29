@@ -12,6 +12,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
@@ -35,6 +37,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { RepairEffects } from '@app/_store/_repair-store/repair.effects';
 import { repairReducer } from '@app/_store/_repair-store/repair.reducers';
 import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-repair/admin-edit-repair.component';
+import { RepairResultsTableComponent } from './components/repair-results-table/repair-results-table.component';
 
 
 
@@ -48,7 +51,8 @@ import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-re
     AdminEditRepairComponent,
     OrgLocationSelectorComponent,
     PoTextButtonComponent,
-    InvoiceTextButtonComponent
+    InvoiceTextButtonComponent,
+    RepairResultsTableComponent
   ],
   imports: [
     CommonModule,
@@ -67,6 +71,8 @@ import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-re
     // MatFormFieldModule,
     MatAutocompleteModule,
     MatFormFieldModule,
+    MatTableModule,
+    MatSortModule,
     NgbAccordionModule,
     NgbModalModule,
     StoreModule.forFeature('repair', repairReducer),

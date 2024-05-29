@@ -209,4 +209,13 @@ export const LOCATION_NAMES = gql`
     }
 `
 
+export const ORG_REPAIRS = gql`
+    ${SERVICE_RECORD_FRAGMENT}
+    query orgRepairs($orgName: String!) {
+        orgRepairs(orgName: $orgName) {
+            ... SERVICE_RECORD_FRAGMENT
+        }
+    }
+`
+
 

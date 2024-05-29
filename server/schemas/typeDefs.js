@@ -16,13 +16,16 @@ const typeDefs = `#graphql
         radioMake: String
         radioSerial: String
         radioLocation: String
-        dateReceived: String
         endUserPO: String
         raaPO: String
         repairTag: Int
-        dateSentTech: String
-        dateRecTech: String
-        dateSentEU: String
+        repairStatus: String
+        dateRepairAdded: String
+        dateSentEuRaa: String
+        dateRecEuRaa: String
+        dateSentRaaTech: String
+        dateRecTechRaa: String
+        dateSentRaaEu: String
         techInvNum: String
         raaInvNum: String
         symptoms: [String]
@@ -109,37 +112,41 @@ const typeDefs = `#graphql
         locationByName(locationName: String!): Location
         orgLocations(orgName: String!): [Location]
         locationNames: [Location]
+        orgRepairs(orgName: String!): [Repair]
     }
 
     input UpdateRepairInput {
-            radioID: String
-            radioMake: String
-            radioSerial: String
-            radioLocation: String
-            dateReceived: String
-            endUserPO: String
-            raaPO: String
-            repairTag: Int
-            dateSentTech: String
-            dateRecTech: String
-            dateSentEU: String
-            techInvNum: String
-            raaInvNum: String
-            symptoms: [String]
-            testFreq: String
-            incRxSens: String
-            incFreqErr: String
-            incMod: String
-            incPowerOut: String
-            outRxSens: String
-            outFreqErr: String
-            outMod: String
-            outPowerOut: String
-            accessories: [String]
-            workPerformed: [String]
-            repHours: Float
-            partsUsed: [String]
-            remarks: String
+        radioID: String
+        radioMake: String
+        radioSerial: String
+        radioLocation: String
+        endUserPO: String
+        raaPO: String
+        repairTag: Int
+        repairStatus: String
+        dateRepairAdded: String
+        dateSentEuRaa: String
+        dateRecEuRaa: String
+        dateSentRaaTech: String
+        dateRecTechRaa: String
+        dateSentRaaEu: String
+        techInvNum: String
+        raaInvNum: String
+        symptoms: [String]
+        testFreq: String
+        incRxSens: String
+        incFreqErr: String
+        incMod: String
+        incPowerOut: String
+        outRxSens: String
+        outFreqErr: String
+        outMod: String
+        outPowerOut: String
+        accessories: [String]
+        workPerformed: [String]
+        repHours: Float
+        partsUsed: [String]
+        remarks: String
     }
 
     input UpdateRadioInput {
@@ -203,17 +210,21 @@ const typeDefs = `#graphql
         ): User
 
         addRepair(
+            _id: ID!
             radioID: String
             radioMake: String
             radioSerial: String
             radioLocation: String
-            dateReceived: String
             endUserPO: String
             raaPO: String
             repairTag: Int
-            dateSentTech: String
-            dateRecTech: String
-            dateSentEU: String
+            repairStatus: String
+            dateRepairAdded: String
+            dateSentEuRaa: String
+            dateRecEuRaa: String
+            dateSentRaaTech: String
+            dateRecTechRaa: String
+            dateSentRaaEu: String
             techInvNum: String
             raaInvNum: String
             symptoms: [String]
