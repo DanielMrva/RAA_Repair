@@ -19,7 +19,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 
-// import { MatSelectModule } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 // import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // import { MatFormFieldModule } from '@angular/material/form-field';
 
@@ -38,6 +38,7 @@ import { RepairEffects } from '@app/_store/_repair-store/repair.effects';
 import { repairReducer } from '@app/_store/_repair-store/repair.reducers';
 import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-repair/admin-edit-repair.component';
 import { RepairResultsTableComponent } from './components/repair-results-table/repair-results-table.component';
+import { RepairStatusDropdownComponent } from '@app/_components/utilComponents/repair-status-dropdown/repair-status-dropdown.component';
 
 
 
@@ -52,7 +53,8 @@ import { RepairResultsTableComponent } from './components/repair-results-table/r
     OrgLocationSelectorComponent,
     PoTextButtonComponent,
     InvoiceTextButtonComponent,
-    RepairResultsTableComponent
+    RepairResultsTableComponent,
+    RepairStatusDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -66,7 +68,7 @@ import { RepairResultsTableComponent } from './components/repair-results-table/r
     MatDialogModule,
     // BrowserAnimationsModule,
     MatRadioModule,
-    // MatSelectModule,
+    MatSelectModule,
     // MatProgressSpinnerModule,
     // MatFormFieldModule,
     MatAutocompleteModule,

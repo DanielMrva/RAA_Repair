@@ -11,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // import { MatRadioModule } from '@angular/material/radio';
-// import { MatSelectModule } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 // import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -47,6 +47,7 @@ import { TechDashboardComponent } from '@app/components/dashboard/dashboards/tec
 import { ToastComponent } from '@app/components/toast/toast.component';
 import { AuthEffects } from '@app/_store/_auth-store/auth.effects';
 import { LocationMismatchDialogComponent } from '@app/_components/utilComponents/location-mismatch-dialog/location-mismatch-dialog.component';
+// import { RepairStatusDropdownComponent } from '@app/_components/utilComponents/repair-status-dropdown/repair-status-dropdown.component';
 
 @NgModule({
     declarations: [
@@ -61,6 +62,7 @@ import { LocationMismatchDialogComponent } from '@app/_components/utilComponents
         UserDashboardComponent,
         TechDashboardComponent,
         LocationMismatchDialogComponent,
+        // RepairStatusDropdownComponent,
         ],
     imports: [
         BrowserModule,
@@ -82,7 +84,7 @@ import { LocationMismatchDialogComponent } from '@app/_components/utilComponents
         MatNativeDateModule,
         BrowserAnimationsModule,
         // MatRadioModule,
-        // MatSelectModule,
+        MatSelectModule,
         MatProgressSpinnerModule,
         NavModule,
         TableModule,

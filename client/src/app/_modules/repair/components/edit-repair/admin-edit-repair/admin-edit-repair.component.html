@@ -76,6 +76,10 @@
                 <section class="row" id="timeline">
                     <h4 class="col-12 text-center">Timeline</h4>
 
+                    <div class="form-group col-6">
+                        <app-repair-status-dropdown formControlName="repairStatus"></app-repair-status-dropdown>
+                    </div>
+
                     <mat-form-field class="form-group col-6">
                         <mat-label>Repair Added</mat-label>
                         <input matInput [matDatepicker]="dateRepairAddedPicker" formControlName="dateRepairAdded">

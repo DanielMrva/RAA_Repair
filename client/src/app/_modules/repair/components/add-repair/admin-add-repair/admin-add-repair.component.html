@@ -16,7 +16,8 @@
                     <div ngbAccordionItem [collapsed]="true" class="accordion-item">
                         <h2 ngbAccordionHeader class="accordion-header" id="radioHeading">
                             <button ngbAccordionButton class="accordion-button">
-                              Radio: {{radio.make}} - {{radio.model}} - {{radio.serialNumber}} at {{radio.orgName}} - {{radio.locationName}}
+                                Radio: {{radio.make}} - {{radio.model}} - {{radio.serialNumber}} at {{radio.orgName}} -
+                                {{radio.locationName}}
                             </button>
                         </h2>
                         <div ngbAccordionCollapse class="accordion-collapse" aria-labelledby="radioHeading">
@@ -48,9 +49,7 @@
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-4">
-                        <app-org-location-selector
-                            class="form-group col-4"
-                            [initialOrgName]="initialOrgName"
+                        <app-org-location-selector class="form-group col-4" [initialOrgName]="initialOrgName"
                             (orgNameSelected)="handleOrgNameSelected($event)"
                             (filteredLocations)="handleFilteredLocations($event)">
                         </app-org-location-selector>
@@ -72,6 +71,11 @@
 
                 <section class="row" id="timeline">
                     <h4 class="col-12 text-center">Timeline</h4>
+
+                    <div class="form-group col-6">
+                        <app-repair-status-dropdown formControlName="repairStatus"></app-repair-status-dropdown>
+                    </div>
+
 
                     <mat-form-field class="form-group col-6">
                         <mat-label>Repair Added</mat-label>
