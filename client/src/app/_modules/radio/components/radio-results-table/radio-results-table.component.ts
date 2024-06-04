@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
-import { radioLoadingSelector, radioErrorSelector, selectRadios, selectAllRadios } from '@app/_store/_radio-store/radio.selectors';
+import { radioLoadingSelector, radioErrorSelector, selectAllRadios } from '@app/_store/_radio-store/radio.selectors';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { loadAllRadios, loadLikeOrgRadios, loadLikeSerialRadio } from '@app/_store/_radio-store/radio.actions';
@@ -57,22 +57,31 @@ export class RadioResultsTableComponent implements OnInit, OnDestroy {
         this.dataSource.data = radios;
       })
     );
-      // Any additional initialization logic, such as dispatching store actions to load data
       this.subscriptions.add(
         this.route.params.subscribe(params => {
           const orgName = params['orgName'];
           const serialNumber = params['serialNumber'];
           const model = params['model'];
   
-          if (orgName) {
-            // Dispatch action to fetch radios by organization
-            this.store.dispatch(loadLikeOrgRadios({ orgName }));
-          } else if (serialNumber || model) {
-            // Dispatch action to fetch radios by serial number and model
-            this.store.dispatch(loadLikeSerialRadio({ serialNumber, model }));
-          } else {
-            this.store.dispatch(loadAllRadios());
+          const condition = orgName ? 'orgName' : (serialNumber || model) ? 'serialOrModel' : 'default';
+
+          switch (condition) {
+            case 'orgName':
+              // Dispatch action to fetch radios by organization
+              this.store.dispatch(loadLikeOrgRadios({ orgName }));
+              break;
+          
+            case 'serialOrModel':
+              // Dispatch action to fetch radios by serial number and model
+              this.store.dispatch(loadLikeSerialRadio({ serialNumber, model }));
+              break;
+          
+            default:
+              // Dispatch action to fetch all radios
+              this.store.dispatch(loadAllRadios());
+              break;
           }
+          
         })
       );
   };

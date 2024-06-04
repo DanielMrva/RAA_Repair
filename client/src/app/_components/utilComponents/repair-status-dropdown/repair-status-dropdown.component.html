@@ -1,0 +1,16 @@
+<mat-form-field appearance="fill">
+    <mat-label>Repair Status</mat-label>
+    <mat-select [value]="selectedStatus" (selectionChange)="onStatusChange($event)">
+      <mat-option *ngFor="let status of statuses" [value]="status">
+        {{ status }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <ng-container *ngIf="selectedStatus === 'Sent to RAA via Other (Specify)'">
+    <mat-form-field appearance="fill">
+      <mat-label>Other Shipping Method</mat-label>
+      <input matInput [(ngModel)]="otherShippingMethod" (input)="onOtherShippingMethodChange($event)">
+    </mat-form-field>
+  </ng-container>
+  

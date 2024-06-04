@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatTableModule } from '@angular/material/table';
 
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { OneUserComponent } from './components/one-user/one-user.component';
@@ -17,6 +18,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from '@app/_store/_user-store/user.effects';
 import { userReducer } from '@app/_store/_user-store/user.reducers';
 import { authReducer } from '@app/_store/_auth-store/auth.reducers';
+import { UserResultsTableComponent } from './components/user-results-table/user-results-table.component';
 
 
 
@@ -26,6 +28,7 @@ import { authReducer } from '@app/_store/_auth-store/auth.reducers';
     OneUserComponent,
     AddUserComponent,
     LoginComponent,
+    UserResultsTableComponent,
   ],
   imports: [
     CommonModule,
@@ -37,6 +40,7 @@ import { authReducer } from '@app/_store/_auth-store/auth.reducers';
     // MatNativeDateModule,
     // BrowserAnimationsModule,
     // MatRadioModule,
+    MatTableModule,
     MatSelectModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,

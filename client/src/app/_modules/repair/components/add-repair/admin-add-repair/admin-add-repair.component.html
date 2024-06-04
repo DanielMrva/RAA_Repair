@@ -6,8 +6,6 @@
 
     <div *ngIf="radioError$ | async as radioError">{{ radioError }}</div>
 
-
-
     <div class="container">
 
         <div class="row">
@@ -17,35 +15,33 @@
                 <div class="accordion" id="radioAccordion" ngbAccordion>
                     <div ngbAccordionItem [collapsed]="true" class="accordion-item">
                         <h2 ngbAccordionHeader class="accordion-header" id="radioHeading">
-                            <button ngbAccordionButton class="accorion-button">
-                              Radio: {{radio.make}} - {{radio.model}} - {{radio.serialNumber}} at {{radio.orgName}} - {{radio.locationName}}
+                            <button ngbAccordionButton class="accordion-button">
+                                Radio: {{radio.make}} - {{radio.model}} - {{radio.serialNumber}} at {{radio.orgName}} -
+                                {{radio.locationName}}
                             </button>
-                          </h2>
-                          <div ngbAccordionCollapse class="accordion-collapse" aria-labelledby="timelineHeading">
+                        </h2>
+                        <div ngbAccordionCollapse class="accordion-collapse" aria-labelledby="radioHeading">
                             <div ngbAccordionBody class="accordion-body">
-                              <ng-template>
-                                <div class="card">
-                                  <div class="card-body">
-                                    <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5>
-                                    <p class="card-text">
-                                      <strong>Radio Organization:</strong> {{radio.orgName}}<br>
-                                      <strong>Radio Location:</strong> {{radio.locationName}}<br>
-                                      <strong>Make & Model:</strong> {{radio.make}} - {{radio.model}}<br>
-                                      <strong>Serial Number:</strong> {{radio.serialNumber}}<br>
-                                      <strong>Warranty:</strong> {{radio.warranty | date: 'mediumDate'}}<br>
-                                      <strong>Refurbished:</strong> {{radio.refurb ? 'Yes': 'No'}}
-                                    </p>
-                                  </div>
-                                </div>
-                              </ng-template>
+                                <ng-template>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5>
+                                            <p class="card-text">
+                                                <strong>Radio Organization:</strong> {{radio.orgName}}<br>
+                                                <strong>Radio Location:</strong> {{radio.locationName}}<br>
+                                                <strong>Make & Model:</strong> {{radio.make}} - {{radio.model}}<br>
+                                                <strong>Serial Number:</strong> {{radio.serialNumber}}<br>
+                                                <strong>Warranty:</strong> {{radio.warranty | date: 'mediumDate'}}<br>
+                                                <strong>Refurbished:</strong> {{radio.refurb ? 'Yes' : 'No'}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </ng-template>
                             </div>
-                          </div>
+                        </div>
                     </div>
-
                 </div>
-
             </section>
-
 
             <form [formGroup]="adminRepairForm" (ngSubmit)="onSubmit()" class="row">
 
@@ -53,9 +49,7 @@
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-4">
-                        <app-org-location-selector
-                            class="form-group col-4"
-                            [initialOrgName]="initialOrgName"
+                        <app-org-location-selector class="form-group col-4" [initialOrgName]="initialOrgName"
                             (orgNameSelected)="handleOrgNameSelected($event)"
                             (filteredLocations)="handleFilteredLocations($event)">
                         </app-org-location-selector>
@@ -71,50 +65,62 @@
                             <mat-option *ngFor="let locOption of filteredLocationNames" [value]="locOption">
                                 {{locOption}}
                             </mat-option>
-
                         </mat-autocomplete>
-
                     </mat-form-field>
-
                 </section>
 
                 <section class="row" id="timeline">
                     <h4 class="col-12 text-center">Timeline</h4>
 
+                    <div class="form-group col-6">
+                        <app-repair-status-dropdown formControlName="repairStatus"></app-repair-status-dropdown>
+                    </div>
+
                     <mat-form-field class="form-group col-6">
-                        <mat-label>Date Received</mat-label>
-                        <input matInput [matDatepicker]="dateReceivedPicker" formControlName="dateReceived">
-                        <mat-datepicker-toggle matSuffix [for]="dateReceivedPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateReceivedPicker></mat-datepicker>
+                        <mat-label>Repair Added</mat-label>
+                        <input matInput [matDatepicker]="dateRepairAddedPicker" formControlName="dateRepairAdded">
+                        <mat-datepicker-toggle matSuffix [for]="dateRepairAddedPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateRepairAddedPicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="form-group col-6">
+                        <mat-label>Date Sent From Customer</mat-label>
+                        <input matInput [matDatepicker]="dateSentEuRaaPicker" formControlName="dateSentEuRaa">
+                        <mat-datepicker-toggle matSuffix [for]="dateSentEuRaaPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateSentEuRaaPicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="form-group col-6">
+                        <mat-label>Date Received From Customer</mat-label>
+                        <input matInput [matDatepicker]="dateRecEuRaaPicker" formControlName="dateRecEuRaa">
+                        <mat-datepicker-toggle matSuffix [for]="dateRecEuRaaPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateRecEuRaaPicker></mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="form-group col-6">
                         <mat-label>Date Sent to Tech</mat-label>
-                        <input matInput [matDatepicker]="dateSentTechPicker" formControlName="dateSentTech">
-                        <mat-datepicker-toggle matSuffix [for]="dateSentTechPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateSentTechPicker></mat-datepicker>
+                        <input matInput [matDatepicker]="dateSentRaaTechPicker" formControlName="dateSentRaaTech">
+                        <mat-datepicker-toggle matSuffix [for]="dateSentRaaTechPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateSentRaaTechPicker></mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="form-group col-6">
-                        <mat-label>Date Received From Tech</mat-label>
-                        <input matInput [matDatepicker]="dateReceivedTechPicker" formControlName="dateRecTech">
-                        <mat-datepicker-toggle matSuffix [for]="dateReceivedTechPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateReceivedTechPicker></mat-datepicker>
+                        <mat-label>Date Received by Tech</mat-label>
+                        <input matInput [matDatepicker]="dateRecTechRaaPicker" formControlName="dateRecTechRaa">
+                        <mat-datepicker-toggle matSuffix [for]="dateRecTechRaaPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateRecTechRaaPicker></mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="form-group col-6">
-                        <mat-label>Date Sent to End User</mat-label>
-                        <input matInput [matDatepicker]="dateSentEUPicker" formControlName="dateSentEU">
-                        <mat-datepicker-toggle matSuffix [for]="dateSentEUPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateSentEUPicker></mat-datepicker>
+                        <mat-label>Date Sent to Customer</mat-label>
+                        <input matInput [matDatepicker]="dateSentRaaEuPicker" formControlName="dateSentRaaEu">
+                        <mat-datepicker-toggle matSuffix [for]="dateSentRaaEuPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateSentRaaEuPicker></mat-datepicker>
                     </mat-form-field>
-
-
                 </section>
 
                 <section class="row" id="inventory-po">
-
-                    <h4 class="col-12 text-center">Inventory / PO </h4>
+                    <h4 class="col-12 text-center">Inventory / PO</h4>
 
                     <mat-form-field class="form-group col-4">
                         <mat-label>RAA PO:</mat-label>
@@ -130,30 +136,10 @@
                         <mat-label>RAA Invoice:</mat-label>
                         <input matInput id="raaInvNum" formControlName="raaInvNum" placeholder="RAA Invoice">
                     </mat-form-field>
-
-                    <!-- TODO: RadioID field grows with additional accessories boxes, change to limit height. -->
-
-                    <mat-form-field class="form-group col-4 radio-field">
-                        <mat-label>Radio Serial:</mat-label>
-                        <input matInput id="radioSerial" formControlName="radioSerial" placeholder="Radio Serial">
-                    </mat-form-field>
-
-                    <div formArrayName="accessories" class="col-8">
-                        <mat-form-field *ngFor="let accessory of accessoriesArray.controls; let i = index"
-                            class="full-width-input">
-                            <input matInput [formControlName]="i" placeholder="Accessory">
-                            <mat-icon matSuffix class="remove-icon" *ngIf="accessoriesArray.length > 1"
-                                (click)="removeAccessory(i)" aria-label="remove acccessory">remove_circle</mat-icon>
-                            <mat-icon matSuffix class="add-icon" (click)="addAccessory()"
-                                aria-lable="add accessory">add_circle</mat-icon>
-                        </mat-form-field>
-                    </div>
-
-
                 </section>
 
-                <section class="row" id="symptom-diagnoistics">
-                    <h4 class="col-12 text-center">Symptoms & Diagnositcs</h4>
+                <section class="row" id="symptom-diagnostics">
+                    <h4 class="col-12 text-center">Symptoms & Diagnostics</h4>
 
                     <div formArrayName="symptoms" class="col-6">
                         <mat-form-field *ngFor="let sym of symptomsArray.controls; let j = index"
@@ -162,14 +148,12 @@
                             <mat-icon matSuffix class="remove-icon" *ngIf="symptomsArray.length > 1"
                                 (click)="removeSymptom(j)" aria-label="remove symptom">remove_circle</mat-icon>
                             <mat-icon matSuffix class="add-icon" (click)="addSymptom()"
-                                aria-lable="add symptom">add_circle</mat-icon>
-
+                                aria-label="add symptom">add_circle</mat-icon>
                         </mat-form-field>
                     </div>
 
                     <div class="col-6">
                         <div class="row">
-
                             <mat-form-field class="form-group col-12">
                                 <mat-label>Test Frequency:</mat-label>
                                 <input matInput id="testFreq" formControlName="testFreq" placeholder="Test Frequency">
@@ -254,10 +238,8 @@
                                     Watts
                                 </p>
                             </div>
-
                         </div>
                     </div>
-
                 </section>
 
                 <section class="row" id="work">
@@ -282,8 +264,7 @@
                                 (click)="removeWorkPerformed(k)"
                                 aria-label="remove work performed">remove_circle</mat-icon>
                             <mat-icon matSuffix class="add-icon" (click)="addWorkPerformed()"
-                                aria-lable="add work performed">add_circle</mat-icon>
-
+                                aria-label="add work performed">add_circle</mat-icon>
                         </mat-form-field>
                     </div>
 
@@ -294,8 +275,7 @@
                             <mat-icon matSuffix class="remove-icon" *ngIf="partsUsedArray.length > 1"
                                 (click)="removePartsUsed(l)" aria-label="remove parts used">remove_circle</mat-icon>
                             <mat-icon matSuffix class="add-icon" (click)="addPartsUsed()"
-                                aria-lable="add parts used">add_circle</mat-icon>
-
+                                aria-label="add parts used">add_circle</mat-icon>
                         </mat-form-field>
                     </div>
 
@@ -303,8 +283,6 @@
                         <mat-label>Remarks:</mat-label>
                         <input matInput id="remarks" formControlName="remarks" placeholder="Remarks">
                     </mat-form-field>
-
-
                 </section>
 
                 <div class="col-12 d-flex justify-content-center">
@@ -312,9 +290,6 @@
                 </div>
 
             </form>
-
         </div>
-
-
     </div>
 </ng-template>

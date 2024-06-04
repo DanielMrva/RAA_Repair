@@ -2,16 +2,11 @@
     <h2>Loading...</h2>
 </div>
 
-
 <ng-template #loadedData>
-
     <div *ngIf="repairError$ | async as error">{{ error }}</div>
 
-
     <div *ngIf="oneRepair$ | async as repair; else noRepairFound" class="container">
-
         <div class="row">
-
             <h2 class="col-12 text-center">Edit Repair Ticket</h2>
 
             <ng-template *ngIf="radioError$ as radioError">
@@ -22,45 +17,42 @@
                 <div class="accordion" id="radioAccordion" ngbAccordion>
                     <div ngbAccordionItem [collapsed]="true" class="accordion-item">
                         <h2 ngbAccordionHeader class="accordion-header" id="radioHeading">
-                            <button ngbAccordionButton class="accorion-button">
+                            <button ngbAccordionButton class="accordion-button">
                               Radio: {{radio.make}} - {{radio.model}} - {{radio.serialNumber}} at {{radio.orgName}} - {{radio.locationName}}
                             </button>
-                          </h2>
-                          <div ngbAccordionCollapse class="accordion-collapse" aria-labelledby="timelineHeading">
+                        </h2>
+                        <div ngbAccordionCollapse class="accordion-collapse" aria-labelledby="radioHeading">
                             <div ngbAccordionBody class="accordion-body">
-                              <ng-template>
-                                <div class="card">
-                                  <div class="card-body">
-                                    <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5>
-                                    <p class="card-text">
-                                      <strong>Radio Organization:</strong> {{radio.orgName}}<br>
-                                      <strong>Radio Location:</strong> {{radio.locationName}}<br>
-                                      <strong>Make & Model:</strong> {{radio.make}} - {{radio.model}}<br>
-                                      <strong>Serial Number:</strong> {{radio.serialNumber}}<br>
-                                      <strong>Warranty:</strong> {{radio.warranty | date: 'mediumDate'}}<br>
-                                      <strong>Refurbished:</strong> {{radio.refurb ? 'Yes': 'No'}}
-                                    </p>
-                                  </div>
-                                </div>
-                              </ng-template>
+                                <ng-template>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5>
+                                            <p class="card-text">
+                                                <strong>Radio Organization:</strong> {{radio.orgName}}<br>
+                                                <strong>Radio Location:</strong> {{radio.locationName}}<br>
+                                                <strong>Make & Model:</strong> {{radio.make}} - {{radio.model}}<br>
+                                                <strong>Serial Number:</strong> {{radio.serialNumber}}<br>
+                                                <strong>Warranty:</strong> {{radio.warranty | date: 'mediumDate'}}<br>
+                                                <strong>Refurbished:</strong> {{radio.refurb ? 'Yes' : 'No'}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </ng-template>
                             </div>
-                          </div>
+                        </div>
                     </div>
-
                 </div>
-
             </section>
 
-
             <form [formGroup]="repairForm" (ngSubmit)="onSubmit()" class="row">
-
                 <!-- Radio Location Section -->
-
                 <section class="row" id="radioLocation">
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-4">
-                        <app-org-location-selector class="form-group col-4" [initialOrgName]="initialOrgName"
+                        <app-org-location-selector
+                            class="form-group col-4"
+                            [initialOrgName]="initialOrgName"
                             (orgNameSelected)="handleOrgNameSelected($event)"
                             (filteredLocations)="handleFilteredLocations($event)">
                         </app-org-location-selector>
@@ -70,255 +62,222 @@
                         <mat-label for="radioLocation">
                             Location:
                         </mat-label>
-                        <input type="text" placeholder="Location" 
-                        aria-label="Location" matInput
-                        [formControl]="repairForm.controls.radioLocation" 
-                        [matAutocomplete]="locAuto">
+                        <input type="text" placeholder="Location" aria-label="Location" matInput
+                            [formControl]="repairForm.controls.radioLocation" [matAutocomplete]="locAuto">
                         <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
                             <mat-option *ngFor="let locOption of filteredLocationNames" [value]="locOption">
                                 {{locOption}}
                             </mat-option>
                         </mat-autocomplete>
-
                     </mat-form-field>
-
                 </section>
 
                 <!-- Form Timeline Section -->
-
                 <section class="row" id="timeline">
                     <h4 class="col-12 text-center">Timeline</h4>
 
+                    <div class="form-group col-6">
+                        <app-repair-status-dropdown formControlName="repairStatus"></app-repair-status-dropdown>
+                    </div>
+
                     <mat-form-field class="form-group col-6">
-                        <mat-label>Date Received</mat-label>
-                        <input matInput [matDatepicker]="dateReceivedPicker" formControlName="dateReceived">
-                        <mat-datepicker-toggle matSuffix [for]="dateReceivedPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateReceivedPicker></mat-datepicker>
+                        <mat-label>Repair Added</mat-label>
+                        <input matInput [matDatepicker]="dateRepairAddedPicker" formControlName="dateRepairAdded">
+                        <mat-datepicker-toggle matSuffix [for]="dateRepairAddedPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateRepairAddedPicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="form-group col-6">
+                        <mat-label>Date Sent From Customer</mat-label>
+                        <input matInput [matDatepicker]="dateSentEuRaaPicker" formControlName="dateSentEuRaa">
+                        <mat-datepicker-toggle matSuffix [for]="dateSentEuRaaPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateSentEuRaaPicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="form-group col-6">
+                        <mat-label>Date Received From Customer</mat-label>
+                        <input matInput [matDatepicker]="dateRecEuRaaPicker" formControlName="dateRecEuRaa">
+                        <mat-datepicker-toggle matSuffix [for]="dateRecEuRaaPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateRecEuRaaPicker></mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="form-group col-6">
                         <mat-label>Date Sent to Tech</mat-label>
-                        <input matInput [matDatepicker]="dateSentTechPicker" formControlName="dateSentTech">
-                        <mat-datepicker-toggle matSuffix [for]="dateSentTechPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateSentTechPicker></mat-datepicker>
+                        <input matInput [matDatepicker]="dateSentRaaTechPicker" formControlName="dateSentRaaTech">
+                        <mat-datepicker-toggle matSuffix [for]="dateSentRaaTechPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateSentRaaTechPicker></mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="form-group col-6">
-                        <mat-label>Date Received From Tech</mat-label>
-                        <input matInput [matDatepicker]="dateReceivedTechPicker" formControlName="dateRecTech">
-                        <mat-datepicker-toggle matSuffix [for]="dateReceivedTechPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateReceivedTechPicker></mat-datepicker>
+                        <mat-label>Date Received by Tech</mat-label>
+                        <input matInput [matDatepicker]="dateRecTechRaaPicker" formControlName="dateRecTechRaa">
+                        <mat-datepicker-toggle matSuffix [for]="dateRecTechRaaPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateRecTechRaaPicker></mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="form-group col-6">
-                        <mat-label>Date Sent to End User</mat-label>
-                        <input matInput [matDatepicker]="dateSentEUPicker" formControlName="dateSentEU">
-                        <mat-datepicker-toggle matSuffix [for]="dateSentEUPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateSentEUPicker></mat-datepicker>
+                        <mat-label>Date Sent to Customer</mat-label>
+                        <input matInput [matDatepicker]="dateSentRaaEuPicker" formControlName="dateSentRaaEu">
+                        <mat-datepicker-toggle matSuffix [for]="dateSentRaaEuPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dateSentRaaEuPicker></mat-datepicker>
                     </mat-form-field>
-
-
                 </section>
 
                 <!-- Inventory & PO Section -->
-
                 <section class="row" id="inventory-po">
                     <h4 class="col-12 text-center">Inventory / PO</h4>
 
-                    <div class="form-group col-4">
-                        <label for="raaPO">RAA PO:</label>
-                        <input type="text" id="raaPO" formControlName="raaPO" class="form-control">
-                    </div>
+                    <mat-form-field class="form-group col-4">
+                        <mat-label>RAA PO:</mat-label>
+                        <input matInput id="raaPO" formControlName="raaPO" placeholder="RAA PO">
+                    </mat-form-field>
 
-                    <div class="form-group col-4">
-                        <label for="endUserPO">End User PO:</label>
-                        <input type="text" id="endUserPO" formControlName="endUserPO" class="form-control">
-                    </div>
+                    <mat-form-field class="form-group col-4">
+                        <mat-label>End User PO:</mat-label>
+                        <input matInput id="endUserPO" formControlName="endUserPO" placeholder="End User PO">
+                    </mat-form-field>
 
-                    <div class="form-group col-4">
-                        <label for="raaInvNum">RAA Invoice: </label>
-                        <input type="text" id="raaInvNum" formControlName="raaInvNum" placeholder="RAA Invoice"
-                            class="form-control" />
-                    </div>
-
-                    <div class="form-group col-4">
-                        <label for="radioID">Radio ID:</label>
-                        <input type="text" id="radioID" formControlName="radioID" placeholder="Radio ID"
-                            class="form-control" />
-                    </div>
-
-                    <div class="form-group col-8">
-                        <label for="accessories">Accessories: </label>
-                        <div formArrayName="accessories">
-                            <div *ngFor="let acccessory of accessoriesArray.controls let j = index;">
-                                <div class="input-group mb-3">
-
-                                    <input type="text" [formControlName]="j" class="form-control" />
-                                    <button *ngIf="accessoriesArray.length > 1" type="button" class="btn btn-danger"
-                                        (click)="removeAccessory(j)"><i class="bi bi-trash-fill"></i></button>
-                                </div>
-
-                            </div>
-                        </div>
-                        <button type="button" (click)="addAccessory()" class="btn btn-primary"><i
-                                class="bi bi-plus-circle"></i></button>
-                    </div>
-
-
-
+                    <mat-form-field class="form-group col-4">
+                        <mat-label>RAA Invoice:</mat-label>
+                        <input matInput id="raaInvNum" formControlName="raaInvNum" placeholder="RAA Invoice">
+                    </mat-form-field>
                 </section>
 
-                <!-- Symptoms and Diagnoistics Section -->
-
+                <!-- Symptoms and Diagnostics Section -->
                 <section class="row" id="symptoms-diagnostics">
-                    <h4 class="col-12 text-center">Symptoms & Diagnoistics</h4>
+                    <h4 class="col-12 text-center">Symptoms & Diagnostics</h4>
 
-                    <div class="form-group col-6">
-                        <label for="symptoms">Symptoms: </label>
-                        <div formArrayName="symptoms">
-                            <div *ngFor="let symptom of symptomsArray.controls; let i = index;">
-                                <div class="input-group">
-                                    <input type="text" [formControlName]="i" class="form-control" />
-                                    <button *ngIf="symptomsArray.length > 1" type="button" class="btn btn-danger"
-                                        (click)="removeSymptom(i)"><i class="bi bi-trash-fill"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" (click)="addSymptom()" class="btn btn-primary"><i
-                                class="bi bi-plus-circle"></i></button>
+                    <div formArrayName="symptoms" class="col-6">
+                        <mat-form-field *ngFor="let sym of symptomsArray.controls; let j = index"
+                            class="full-width-input">
+                            <input matInput [formControlName]="j" placeholder="Symptom">
+                            <mat-icon matSuffix class="remove-icon" *ngIf="symptomsArray.length > 1"
+                                (click)="removeSymptom(j)" aria-label="remove symptom">remove_circle</mat-icon>
+                            <mat-icon matSuffix class="add-icon" (click)="addSymptom()"
+                                aria-label="add symptom">add_circle</mat-icon>
+                        </mat-form-field>
                     </div>
 
                     <div class="col-6">
                         <div class="row">
-                            <div class="form-group col-12">
-                                <label for="testFreq">Test Frequency:</label>
-                                <input type="text" id="testFreq" formControlName="testFreq" class="form-control">
-                            </div>
-                        </div>
+                            <mat-form-field class="form-group col-12">
+                                <mat-label>Test Frequency:</mat-label>
+                                <input matInput id="testFreq" formControlName="testFreq" placeholder="Test Frequency">
+                            </mat-form-field>
 
-                        <div class="row">
-                            <h5 class="col-5">
-                                Incoming:
-                            </h5>
-                            <h5 class="col-5">
-                                Outgoing:
-                            </h5>
-                            <h5 class="col-2 text-center">
-                                Unit:
-                            </h5>
+                            <h5 class="col-5">Incoming:</h5>
+                            <h5 class="col-5">Outgoing:</h5>
+                            <h5 class="col-2 text-center">Unit:</h5>
 
-                            <div class="form-group col-5">
-                                <label for="incRxSens">Inc RX Sensitivity:</label>
-                                <input type="text" id="incRxSens" formControlName="incRxSens" class="form-control">
-                            </div>
-                            <div class="form-group col-5">
-                                <label for="outRxSens">Out RX Sensitivity:</label>
-                                <input type="text" id="outRxSens" formControlName="outRxSens" class="form-control">
-                            </div>
+                            <mat-form-field class="form-group col-5">
+                                <mat-label>Inc RX Sensitivity:</mat-label>
+                                <input matInput id="incRxSens" formControlName="incRxSens"
+                                    placeholder="Inc RX Sensitivity">
+                            </mat-form-field>
+
+                            <mat-form-field class="form-group col-5">
+                                <mat-label>Out RX Sensitivity:</mat-label>
+                                <input matInput id="outRxSens" formControlName="outRxSens"
+                                    placeholder="Out RX Sensitivity">
+                            </mat-form-field>
+
                             <div class="col-2">
-                                <p class="text-center">
-                                    uV
-                                </p>
+                                <p class="text-center">uV</p>
                             </div>
 
-                            <div class="form-group col-5">
-                                <label for="incFreqErr">Inc Frequency Error:</label>
-                                <input type="text" id="incFreqErr" formControlName="incFreqErr" class="form-control">
-                            </div>
-                            <div class="form-group col-5">
-                                <label for="outFreqErr">Out Frequency Error:</label>
-                                <input type="text" id="outFreqErr" formControlName="outFreqErr" class="form-control">
-                            </div>
+                            <mat-form-field class="form-group col-5">
+                                <mat-label>Inc Frequency Error:</mat-label>
+                                <input matInput id="incFreqErr" formControlName="incFreqErr"
+                                    placeholder="Inc Frequency Error">
+                            </mat-form-field>
+
+                            <mat-form-field class="form-group col-5">
+                                <mat-label>Out Frequency Error:</mat-label>
+                                <input matInput id="outFreqErr" formControlName="outFreqErr"
+                                    placeholder="Out Frequency Error">
+                            </mat-form-field>
+
                             <div class="col-2">
-                                <p class="text-center">
-                                    Hz
-                                </p>
+                                <p class="text-center">Hz</p>
                             </div>
 
-                            <div class="form-group col-5">
-                                <label for="incMod">Inc Modulation:</label>
-                                <input type="text" id="incMod" formControlName="incMod" class="form-control">
-                            </div>
-                            <div class="form-group col-5">
-                                <label for="outMod">Out Modulation:</label>
-                                <input type="text" id="outMod" formControlName="outMod" class="form-control">
-                            </div>
+                            <mat-form-field class="form-group col-5">
+                                <mat-label>Inc Modulation:</mat-label>
+                                <input matInput id="incMod" formControlName="incMod" placeholder="Inc Modulation">
+                            </mat-form-field>
+
+                            <mat-form-field class="form-group col-5">
+                                <mat-label>Out Modulation:</mat-label>
+                                <input matInput id="outMod" formControlName="outMod" placeholder="Out Modulation">
+                            </mat-form-field>
+
                             <div class="col-2">
-                                <p class="text-center">
-                                    KHz
-                                </p>
+                                <p class="text-center">KHz</p>
                             </div>
 
-                            <div class="form-group col-5">
-                                <label for="incPowerOut">Inc Power Output:</label>
-                                <input type="text" id="incPowerOut" formControlName="incPowerOut" class="form-control">
-                            </div>
-                            <div class="form-group col-5">
-                                <label for="outPowerOut">Out Power Output:</label>
-                                <input type="text" id="outPowerOut" formControlName="outPowerOut" class="form-control">
-                            </div>
+                            <mat-form-field class="form-group col-5">
+                                <mat-label>Inc Power Output:</mat-label>
+                                <input matInput id="incPowerOut" formControlName="incPowerOut"
+                                    placeholder="Inc Power Output">
+                            </mat-form-field>
+
+                            <mat-form-field class="form-group col-5">
+                                <mat-label>Out Power Output:</mat-label>
+                                <input matInput id="outPowerOut" formControlName="outPowerOut"
+                                    placeholder="Out Power Output">
+                            </mat-form-field>
+
                             <div class="col-2">
-                                <p class="text-center">
-                                    Watts
-                                </p>
+                                <p class="text-center">Watts</p>
                             </div>
                         </div>
                     </div>
-
                 </section>
-
 
                 <section class="row" id="work">
-
                     <h4 class="col-12 text-center">Work Report</h4>
 
-                    <div class="form-group col-6">
-                        <label for="techInvNum">Tech Invoice Number:</label>
-                        <input type="text" id="techInvNum" formControlName="techInvNum" class="form-control">
+                    <mat-form-field class="form-group col-6">
+                        <mat-label>Tech Invoice Number:</mat-label>
+                        <input matInput id="techInvNum" formControlName="techInvNum" placeholder="Tech Invoice Number">
+                    </mat-form-field>
+
+                    <mat-form-field class="form-group col-6">
+                        <mat-label>Repair Hours:</mat-label>
+                        <input type="number" matInput id="repHours" formControlName="repHours" placeholder="Repair Hours">
+                    </mat-form-field>
+
+                    <div formArrayName="workPerformed" class="col-6">
+                        <mat-form-field *ngFor="let work of workPerformedArray.controls; let k = index"
+                            class="full-width-input">
+                            <input matInput [formControlName]="k" placeholder="Work Performed">
+                            <mat-icon matSuffix class="remove-icon" *ngIf="workPerformedArray.length > 1"
+                                (click)="removeWorkPerformed(k)"
+                                aria-label="remove work performed">remove_circle</mat-icon>
+                            <mat-icon matSuffix class="add-icon" (click)="addWorkPerformed()"
+                                aria-label="add work performed">add_circle</mat-icon>
+                        </mat-form-field>
                     </div>
 
-                    <div class="form-group col-6">
-                        <label for="repHours">Repair Hours:</label>
-                        <input type="number" id="repHours" formControlName="repHours" class="form-control">
+                    <div formArrayName="partsUsed" class="col-6">
+                        <mat-form-field *ngFor="let part of partsUsedArray.controls; let l = index"
+                            class="full-width-input">
+                            <input matInput [formControlName]="l" placeholder="Parts Used">
+                            <mat-icon matSuffix class="remove-icon" *ngIf="partsUsedArray.length > 1"
+                                (click)="removePartsUsed(l)" aria-label="remove parts used">remove_circle</mat-icon>
+                            <mat-icon matSuffix class="add-icon" (click)="addPartsUsed()"
+                                aria-label="add parts used">add_circle</mat-icon>
+                        </mat-form-field>
                     </div>
 
-
-                    <div class="form-group col-6">
-                        <label for="workPerformed">Work Performed: </label>
-                        <div formArrayName="workPerformed">
-                            <div *ngFor="let work of workPerformedArray.controls; let k = index;">
-                                <div class="input-group">
-                                    <input type="text" [formControlName]="k" class="form-control" />
-                                    <button *ngIf="workPerformedArray.length > 1" type="button" class="btn btn-danger"
-                                        (click)="removeWorkPerformed(k)"><i class="bi bi-trash-fill"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" (click)="addWorkPerformed()" class="btn btn-primary"><i
-                                class="bi bi-plus-circle"></i></button>
-                    </div>
-
-                    <div class="form-group col-6">
-                        <label for="partsUsed">Parts Used: </label>
-                        <div formArrayName="partsUsed">
-                            <div *ngFor="let part of partsUsedArray.controls; let l = index;">
-                                <div class="input-group">
-                                    <input type="text" [formControlName]="l" class="form-control" />
-                                    <button *ngIf="partsUsedArray.length > 1" type="button" class="btn btn-danger"
-                                        (click)="removePartsUsed(l)"><i class="bi bi-trash-fill"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" (click)="addPartsUsed()" class="btn btn-primary"><i
-                                class="bi bi-plus-circle"></i></button>
-                    </div>
-                    <div class="form-group col-12">
-                        <label for="remarks">Remarks:</label>
-                        <input type="text" id="remarks" formControlName="remarks" class="form-control">
-                    </div>
+                    <mat-form-field class="form-group col-12">
+                        <mat-label>Remarks:</mat-label>
+                        <input matInput id="remarks" formControlName="remarks" placeholder="Remarks">
+                    </mat-form-field>
                 </section>
+
                 <div class="col-12 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary text-center">Submit</button>
                 </div>
             </form>
         </div>

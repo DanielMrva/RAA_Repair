@@ -37,59 +37,29 @@
                 <h4 class="col-12 text-center">Tracking</h4>
 
                 <mat-form-field class="form-group col-4">
-                    <mat-label for="orgName">
-                        Organization:
-                    </mat-label>
-                    <input  type="text"
-                            placeholder="Organization"
-                            aria-label="Organizaiton"
-                            matInput
-                            [formControl]="adminRadioForm.controls.orgName"
-                            [matAutocomplete]="orgAuto"
-                    >
-                    <mat-autocomplete 
-                    autoActiveFirstOption
-                    #orgAuto="matAutocomplete">
+                    <mat-label>Organization</mat-label>
+                    <input matInput placeholder="Organization" aria-label="Organization" formControlName="orgName" [matAutocomplete]="orgAuto">
+                    <mat-autocomplete autoActiveFirstOption #orgAuto="matAutocomplete">
                         <mat-option *ngFor="let option of filteredOrgNames$ | async" [value]="option">
                             {{option}}
                         </mat-option>
-
                     </mat-autocomplete>
-
                 </mat-form-field>
 
                 <mat-form-field class="form-group col-4">
-                    <mat-label for="locationName">
-                        Location:
-                    </mat-label>
-                    <input  type="text"
-                            placeholder="Location"
-                            aria-label="Location"
-                            matInput
-                            [formControl]="adminRadioForm.controls.locationName"
-                            [matAutocomplete]="locAuto"
-                    >
-                    <mat-autocomplete 
-                    autoActiveFirstOption
-                    #locAuto="matAutocomplete">
+                    <mat-label>Location</mat-label>
+                    <input matInput placeholder="Location" aria-label="Location" formControlName="locationName" [matAutocomplete]="locAuto">
+                    <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
                         <mat-option *ngFor="let locOption of filteredLocNames$ | async" [value]="locOption">
                             {{locOption}}
                         </mat-option>
-
                     </mat-autocomplete>
-
                 </mat-form-field>
 
-                <!-- <div class="form-group col-4">
-                    <label for="locationName">Location:</label>
-                    <input type="text" id="locationName" formControlName="locationName" class="form-control">
-                </div> -->
-
-                <div class="form-group col-4">
-                    <label for="inventoryNumber">Inventory Number:</label>
-                    <input type="text" id="inventoryNumber" formControlName="inventoryNumber" class="form-control"
-                        [class.invalid]="fieldValidCheck('inventoryNumber')">
-                </div>
+                <mat-form-field class="form-group col-4">
+                    <mat-label>Inventory Number</mat-label>
+                    <input matInput placeholder="Inventory Number" formControlName="inventoryNumber" [class.invalid]="fieldValidCheck('inventoryNumber')">
+                </mat-form-field>
 
             </section>
 
@@ -97,56 +67,48 @@
 
                 <h4 class="col-12 text-center">Radio Details</h4>
 
-                <div class="form-group col-4">
-                    <label for="make">Make:</label>
-                    <input type="text" id="make" formControlName="make" class="form-control"
-                        [class.invalid]="fieldValidCheck('make')">
-                </div>
+                <mat-form-field class="form-group col-4">
+                    <mat-label>Make</mat-label>
+                    <input matInput placeholder="Make" formControlName="make" [class.invalid]="fieldValidCheck('make')">
+                </mat-form-field>
 
-                <div class="form-group col-4">
-                    <label for="model">Model:</label>
-                    <input type="text" id="model" formControlName="model" class="form-control"
-                        [class.invalid]="fieldValidCheck('model')">
-                </div>
+                <mat-form-field class="form-group col-4">
+                    <mat-label>Model</mat-label>
+                    <input matInput placeholder="Model" formControlName="model" [class.invalid]="fieldValidCheck('model')">
+                </mat-form-field>
 
-                <div class="form-group col-4">
-                    <label for="serialNumber">Serial Number:</label>
-                    <input type="text" id="serialNumber" formControlName="serialNumber" class="form-control"
-                        [class.invalid]="fieldValidCheck('serialNumber')">
-                </div>
+                <mat-form-field class="form-group col-4">
+                    <mat-label>Serial Number</mat-label>
+                    <input matInput placeholder="Serial Number" formControlName="serialNumber" [class.invalid]="fieldValidCheck('serialNumber')">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="form-group col-6">
+                    <mat-label>Radio Type</mat-label>
+                    <mat-select formControlName="radioType">
+                        <mat-option value="mobile">Mobile</mat-option>
+                        <mat-option value="handheld">Handheld</mat-option>
+                        <mat-option value="base station">Base Station</mat-option>
+                        <mat-option value="other">Other</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="adminRadioForm.get('radioType')?.value === 'other'" appearance="fill" class="form-group col-6">
+                    <mat-label>Specify Other</mat-label>
+                    <input matInput formControlName="otherType">
+                </mat-form-field>
 
                 <div class="form-group col-6">
-                    <div class="row">
-                        <mat-form-field appearance="fill" class="col-12">
-                            <mat-label>Radio Type</mat-label>
-                            <mat-select formControlName="radioType">
-                                <mat-option value="mobile">Mobile</mat-option>
-                                <mat-option value="handheld">Handheld</mat-option>
-                                <mat-option value="base station">Base Station</mat-option>
-                                <mat-option value="other">Other</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <!-- Text box shown only if 'Other' is selected -->
-                        <mat-form-field *ngIf="adminRadioForm.get('radioType')?.value === 'other'" appearance="fill" class="col-12">
-                            <mat-label>Specify Other</mat-label>
-                            <input matInput formControlName="otherType">
-                        </mat-form-field>
-                    </div>
+                    <label>Refurb:</label>
+                    <mat-radio-group formControlName="refurb">
+                        <mat-radio-button [value]="true">Yes</mat-radio-button>
+                        <mat-radio-button [value]="false">No</mat-radio-button>
+                    </mat-radio-group>
                 </div>
 
-                <div class="col-6">
-                    <div class="form-group">
-                        <label>Refurb:</label>
-                        <mat-radio-group formControlName="refurb">
-                            <mat-radio-button [value]="true">Yes</mat-radio-button>
-                            <mat-radio-button [value]="false">No</mat-radio-button>
-                        </mat-radio-group>
-                    </div>
-                    <div class="form-group">
-                        <label for="progChannels">Programmed Channels:</label>
-                        <input type="text" id="progChannels" formControlName="progChannels" class="form-control">
-                    </div>
-                </div>
+                <mat-form-field class="form-group col-6">
+                    <mat-label>Programmed Channels</mat-label>
+                    <input matInput placeholder="Programmed Channels" formControlName="progChannels">
+                </mat-form-field>
 
             </section>
 
@@ -154,28 +116,25 @@
                 <h4 class="col-12 text-center">Notes: </h4>
 
                 <div class="form-group col-12">
-                    <label for="notes">Notes:</label>
+                    <mat-label>Notes</mat-label>
                     <div formArrayName="notes">
                         <div *ngFor="let note of notesArray.controls; let i = index" class="input-group mb-2">
-                            <input type="text" [formControlName]="i" class="form-control">
-                            <div class="input-group-append">
-                                <button *ngIf="notesArray.length > 1" type="button" class="btn btn-danger"
-                                    (click)="removeNotes(i)">
-                                    <i class="bi bi-trash-fill"></i>
-                                </button>
-                            </div>
+                            <mat-form-field class="form-group col-12">
+                                <input matInput placeholder="Note" [formControlName]="i">
+                            </mat-form-field>
+                            <button *ngIf="notesArray.length > 1" type="button" class="btn btn-danger" (click)="removeNotes(i)">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
                         </div>
-                        <button type="button" class="btn btn-primary" (click)="addNotes()"><i
-                                class="bi bi-plus-circle"></i></button>
+                        <button type="button" class="btn btn-primary" (click)="addNotes()"><i class="bi bi-plus-circle"></i></button>
                     </div>
                 </div>
 
             </section>
 
             <div class="col-12 d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary text-center">Submit</button>
             </div>
-
 
         </form>
     </div>

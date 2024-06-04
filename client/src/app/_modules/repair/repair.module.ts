@@ -12,12 +12,14 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 
-// import { MatSelectModule } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 // import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // import { MatFormFieldModule } from '@angular/material/form-field';
 
@@ -35,6 +37,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { RepairEffects } from '@app/_store/_repair-store/repair.effects';
 import { repairReducer } from '@app/_store/_repair-store/repair.reducers';
 import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-repair/admin-edit-repair.component';
+import { RepairResultsTableComponent } from './components/repair-results-table/repair-results-table.component';
+import { RepairStatusDropdownComponent } from '@app/_components/utilComponents/repair-status-dropdown/repair-status-dropdown.component';
 
 
 
@@ -48,7 +52,9 @@ import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-re
     AdminEditRepairComponent,
     OrgLocationSelectorComponent,
     PoTextButtonComponent,
-    InvoiceTextButtonComponent
+    InvoiceTextButtonComponent,
+    RepairResultsTableComponent,
+    RepairStatusDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -62,11 +68,13 @@ import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-re
     MatDialogModule,
     // BrowserAnimationsModule,
     MatRadioModule,
-    // MatSelectModule,
+    MatSelectModule,
     // MatProgressSpinnerModule,
     // MatFormFieldModule,
     MatAutocompleteModule,
     MatFormFieldModule,
+    MatTableModule,
+    MatSortModule,
     NgbAccordionModule,
     NgbModalModule,
     StoreModule.forFeature('repair', repairReducer),

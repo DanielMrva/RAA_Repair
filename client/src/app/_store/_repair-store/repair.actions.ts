@@ -16,6 +16,21 @@ export const loadOneRepairFailure = createAction(
     props<{ error: string}>()
 );
 
+export const loadOrgRepairs = createAction(
+    '[Repair Results Page] Load Org Repairs',
+    props<{ orgName: string }>()
+);
+
+export const loadOrgRepairsSuccess = createAction(
+    '[Repair Service] Load Org Repairs Successs',
+    props<{ repairs: Repair[]}>()
+);
+
+export const loadOrgRepairsFailure = createAction(
+    '[Repair Service] Load Org Repairs Failure',
+    props<{ error: string}>()
+);
+
 export const loadAllRepairs = createAction('[Repair Reports Page] Load All Repairs');
 
 export const loadAllRepairsSuccess = createAction(

@@ -13,6 +13,21 @@ export const loadAllOrgsFailure = createAction(
     props<{ error: string}>()
 );
 
+export const loadLikeOrgs = createAction(
+    '[Org Results Page] Load Like Orgs',
+    props<{ orgName: string}>()
+);
+
+export const loadLikeOrgsSuccess = createAction(
+    '[Org Service] Load Like Orgs Success',
+    props<{ organizations: Organization[] }>()    
+);
+
+export const loadLikeOrgsFailure = createAction(
+    '[Org Service] Load All Orgs Failure',
+    props<{ error: string}>()
+);
+
 export const loadOneOrg = createAction(
     '[Org Page] Load One Org',
     props<{ orgId: string}>()

@@ -7,8 +7,8 @@
     "start:dev": "SET NODE_ENV=development & node server.js",
     "start:prod": "SET NODE_ENV=production & node server.js",
     "watch": "nodemon",
-    "seed": "node seeding/seed.js",
-    "prodSeed":"node seeding/prodSeed/prodSeed.js"
+    "seed": "SET NODE_ENV=development & node seeding/seed.js",
+    "prodSeed": "SET NODE_ENV=production & node seeding/prodSeed/prodSeed.js"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +27,7 @@
     "mongoose": "^6.9.1"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.0"
   }
 }

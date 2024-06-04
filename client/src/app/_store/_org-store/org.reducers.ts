@@ -1,22 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 // imports of actions
-import {
-    loadAllOrgs,
-    loadAllOrgsSuccess,
-    loadAllOrgsFailure,
-    loadOneOrg,
-    loadOneOrgSuccess,
-    loadOneOrgFailure,
-    editOrg,
-    editOrgSuccess,
-    editOrgFailure,
-    addOrg,
-    addOrgSuccess,
-    addOrgFailure,
-    loadOrgNames,
-    loadOrgNamesSuccess,
-    loadOrgNamesFailure
-} from "./org.actions";
+import * as OrgActions from "./org.actions";
 import { Organization, statusType } from "@app/graphql/schemas";
 
 export interface OrgState {
@@ -39,98 +23,117 @@ export const orgReducer = createReducer(
 
     initialState,
 
-    on(loadAllOrgs, state => ({ 
+    on(OrgActions.loadAllOrgs, state => ({ 
         ...state, 
         isLoading: true,
         error: null 
     })),
 
-    on(loadAllOrgsSuccess, (state, { organizations }) => ({
+    on(OrgActions.loadAllOrgsSuccess, (state, { organizations }) => ({
         ...state,
         organizations: organizations as Organization[],
         isLoading: false,
         error: null
     })),
 
-    on(loadAllOrgsFailure, (state, { error }) => ({
+    on(OrgActions.loadAllOrgsFailure, (state, { error }) => ({
         ...state,
         isLoading: false,
         error: error
     })),
 
-    on(loadOneOrg, (state) => ({
-        ...state,
-        isLoading: true,
-        error: null,
-
-    })),
-
-    on(loadOneOrgSuccess, (state, { organization }) => ({
-        ...state,
-        oneOrganization: organization as Organization,
-        isLoading: false,
-        error: null,
-    })),
-
-    on(loadOneOrgFailure, (state, { error }) => ({
-        ...state,
-        isLoading: false,
-        error: error
-    })),
-
-    on(editOrg, (state) => ({
+    on(OrgActions.loadLikeOrgs, state => ({
         ...state,
         isLoading: true,
         error: null
     })),
 
-    on(editOrgSuccess, (state, { organization }) => ({
+    on(OrgActions.loadLikeOrgsSuccess, (state, { organizations }) => ({
         ...state,
-        oneOrganization: organization as Organization,
+        organizations: organizations as Organization[],
         isLoading: false,
         error: null
     })),
 
-    on(editOrgFailure, (state, { error }) => ({
+    on(OrgActions.loadLikeOrgsFailure, (state, { error }) => ({
         ...state,
         isLoading: false,
         error: error
     })),
 
-    on(addOrg, (state) => ({
+    on(OrgActions.loadOneOrg, (state) => ({
         ...state,
         isLoading: true,
         error: null,
 
     })),
 
-    on(addOrgSuccess, (state, { organization }) => ({
+    on(OrgActions.loadOneOrgSuccess, (state, { organization }) => ({
         ...state,
         oneOrganization: organization as Organization,
         isLoading: false,
         error: null,
     })),
 
-    on(addOrgFailure, (state, { error }) => ({
+    on(OrgActions.loadOneOrgFailure, (state, { error }) => ({
         ...state,
         isLoading: false,
         error: error
     })),
 
-    on(loadOrgNames, state => ({ 
+    on(OrgActions.editOrg, (state) => ({
+        ...state,
+        isLoading: true,
+        error: null
+    })),
+
+    on(OrgActions.editOrgSuccess, (state, { organization }) => ({
+        ...state,
+        oneOrganization: organization as Organization,
+        isLoading: false,
+        error: null
+    })),
+
+    on(OrgActions.editOrgFailure, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error
+    })),
+
+    on(OrgActions.addOrg, (state) => ({
+        ...state,
+        isLoading: true,
+        error: null,
+
+    })),
+
+    on(OrgActions.addOrgSuccess, (state, { organization }) => ({
+        ...state,
+        oneOrganization: organization as Organization,
+        isLoading: false,
+        error: null,
+    })),
+
+    on(OrgActions.addOrgFailure, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error
+    })),
+
+    on(OrgActions.loadOrgNames, state => ({ 
         ...state, 
         isLoading: true, 
         error: null 
     })),
 
-    on(loadOrgNamesSuccess, (state, { organizations }) => ({
+    on(OrgActions.loadOrgNamesSuccess, (state, { organizations }) => ({
         ...state,
         orgNames: organizations as Organization[],
         isLoading: false,
         error: null
     })),
 
-    on(loadOrgNamesFailure, (state, { error }) => ({
+    on(OrgActions.loadOrgNamesFailure, (state, { error }) => ({
         ...state,
         isLoading: false,
         error: error

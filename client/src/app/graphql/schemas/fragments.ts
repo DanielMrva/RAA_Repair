@@ -29,12 +29,16 @@ export const SERVICE_RECORD_FRAGMENT = gql`
         radioMake
         radioSerial
         radioLocation
-        dateReceived
         endUserPO
         raaPO
         repairTag
-        dateSentTech
-        dateRecTech
+        repairStatus
+        dateRepairAdded
+        dateSentEuRaa
+        dateRecEuRaa
+        dateSentRaaTech
+        dateRecTechRaa
+        dateSentRaaEu
         techInvNum
         raaInvNum
         symptoms

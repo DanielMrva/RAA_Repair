@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as LocationActions from "./location.actions";
+import { loadAllOrgs } from "../_org-store/org.actions";
 import { Router } from "@angular/router";
 import { LocationService } from "@app/services/location/location.service";
 import { ToastService } from "@app/services/toast/toast.service";
 import { of, from } from "rxjs";
-import { switchMap, map, catchError, mergeMap } from "rxjs/operators";
+import { switchMap, map, catchError, mergeMap, tap } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
 
@@ -127,14 +128,16 @@ export class LocationEffects {
     addLocationSuccess$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LocationActions.addLocationSuccess),
-            map(({ location }) => {
-                this.toastService.show('Location added successfully!', {
-                    delay: 3000
-                }),
-                    this.router.navigate(['one-location', location?._id])
-            })
+            tap(({ location }) => {
+                this.toastService.show('Location added successfully!', { delay: 3000 });
+                this.router.navigate(['one-location', location?._id]);
+            }),
+            switchMap(() => [
+                loadAllOrgs(),  // Refetch all orgs to ensure data freshness
+            ])
         ),
-        { dispatch: false }
+        { dispatch: true }
+
     );
 
     addLocationFailure$ = createEffect(() =>
@@ -169,14 +172,15 @@ export class LocationEffects {
     editLocationSuccess$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LocationActions.editLocationSuccess),
-            map(({ location }) => {
-                this.toastService.show('Location edited successfully!', {
-                    delay: 3000
-                }),
-                    this.router.navigate(['one-location', location?._id])
-            })
+            tap(({ location }) => {
+                this.toastService.show('Location edited successfully!', { delay: 3000 });
+                this.router.navigate(['one-locaiton', location?._id]);
+            }),
+            switchMap(() => [
+                loadAllOrgs(),  // Refetch all orgs to ensure data freshness
+            ])
         ),
-        { dispatch: false }
+        { dispatch: true }
     );
 
     editLocationFailure$ = createEffect(() =>

@@ -1,25 +1,145 @@
 type User {
-    _id: ID!
-    username: String!
-    email: String!
-    password: String!
-    accessLevel: String
-    orgName: String!
+  _id: ID!
+  username: String!
+  email: String!
+  password: String!
+  accessLevel: String
+  orgName: String!
 }
 
 type Repair {
-    _id: ID!
+  _id: ID!
+  radioID: String
+  radioMake: String
+  radioSerial: String
+  radioLocation: String
+  endUserPO: String
+  raaPO: String
+  repairTag: Int
+  repairStatus: String
+  dateRepairAdded: String
+  dateSentEuRaa: String
+  dateRecEuRaa: String
+  dateSentRaaTech: String
+  dateRecTechRaa: String
+  dateSentRaaEu: String
+  techInvNum: String
+  raaInvNum: String
+  symptoms: [String]
+  testFreq: String
+  incRxSens: String
+  incFreqErr: String
+  incMod: String
+  incPowerOut: String
+  outRxSens: String
+  outFreqErr: String
+  outMod: String
+  outPowerOut: String
+  accessories: [String]
+  workPerformed: [String]
+  repHours: Float
+  partsUsed: [String]
+  remarks: String
+}
+
+type Radio {
+  _id: ID!
+  orgName: String
+  locationName: String
+  datePurchased: String
+  dateEntered: String
+  inventoryNumber: String
+  make: String
+  model: String
+  progChannels: String
+  notes: [String]
+  serialNumber: String
+  serviceRecord: [Repair]
+  warranty: String
+  refurb: Boolean
+  radioType: String
+}
+
+type Location {
+  _id: ID!
+  locationName: String
+  orgName: String!
+  street: String
+  suite: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  phone: String
+  contactEmail: String
+  primaryContact: String
+  radios: [Radio]
+}
+
+type Organization {
+  _id: ID!
+  orgName: String
+  locations: [Location]
+  # radios: [Radio]
+  users: [User]
+}
+
+type Auth {
+  token: ID!
+  user: User!
+}
+
+type Query {
+  user(userId: ID!): User
+  users: [User]
+  allRadios: [Radio]
+  radio(radioID: ID!): Radio
+  serialRadio(serialNumber: String!, model: String!): Radio
+  likeSerialRadio(serialNumber: String!, model: String!): [Radio]
+  allRepairs: [Repair]
+  repair(repairID: String!): Repair
+  orgRadios(orgName: String!): [Radio]
+  likeOrgRadios(orgName: String!): [Radio]
+  orgUsers(orgName: String!): [User]
+  orgNames: [Organization]
+  org: Organization
+  allOrgs: [Organization]
+  allLocations: [Location]
+  location(locationId: String!): Location
+  locationByName(locationName: String!): Location
+  orgLocations(orgName: String!): [Location]
+  locationNames: [Location]
+  orgRepairs(orgName: String!): [Repair]
+
+}
+
+type Mutation {
+  addUser(
+    username: String!
+    email: String!
+    password: String!
+    orgName: String!
+  ): Auth
+
+  login(email: String!, password: String!): Auth
+
+  validateAccess(username: String!, accessLevel: String!): User
+
+  addRepair(
     radioID: String
     radioMake: String
     radioSerial: String
     radioLocation: String
-    dateReceived: String
     endUserPO: String
     raaPO: String
     repairTag: Int
-    dateSentTech: String
-    dateRecTech: String
-    dateSentEU: String
+    repairStatus: String
+    dateRepairAdded: String
+    dateSentEuRaa: String
+    dateRecEuRaa: String
+    dateSentRaaTech: String
+    dateRecTechRaa: String
+    dateSentRaaEu: String
     techInvNum: String
     raaInvNum: String
     symptoms: [String]
@@ -37,29 +157,28 @@ type Repair {
     repHours: Float
     partsUsed: [String]
     remarks: String
-}
+  ): Repair
 
-type Radio {
-    _id: ID!
-    orgName: String
-    locationName: String
+  addRadio(
+    orgName: String!
+    location: String
     datePurchased: String
     dateEntered: String
-    inventoryNumber: String
-    make: String
+    inventoryNumber: String!
+    make: String!
     model: String
     progChannels: String
     notes: [String]
     serialNumber: String
-    serviceRecord: [Repair]
     warranty: String
-    refurb: Boolean,
+    refurb: Boolean
     radioType: String
-}
+  ): Radio
 
-type Location {
-    _id: ID!
-    locationName: String
+  addOrg(orgName: String): Organization
+
+  addLocation(
+    locationName: String!
     orgName: String!
     street: String
     suite: String
@@ -70,150 +189,15 @@ type Location {
     phone: String
     contactEmail: String
     primaryContact: String
-    radios: [Radio]
-}
+  ): Location
 
-type Organization {
-    _id: ID!
-    orgName: String
-    locations: [Location]
-    # radios: [Radio]
-    users: [User]
-}
+  editRepair(_id: ID!, updates: UpdateRepairInput): Repair
 
-type Auth {
-    token: ID!
-    user: User!
-}
+  editRadio(_id: ID!, updates: UpdateRadioInput): Radio
 
-type Query {
-    user(userId: ID!): User
-    users: [User]
-    allRadios: [Radio]
-    radio(radioID: ID!): Radio
-    serialRadio(serialNumber: String!, model: String!): Radio
-    likeSerialRadio(serialNumber: String!, model: String!): [Radio]
-    allRepairs: [Repair]
-    repair(repairID: String!): Repair
-    orgRadios(orgName: String!): [Radio]
-    likeOrgRadios(orgName: String!): [Radio]
-    orgUsers(orgName: String!): [User]
-    orgNames: [Organization]
-    org: Organization
-    allOrgs: [Organization]
-    allLocations: [Location]
-    location(locationId: String!): Location
-    locationByName(locationName: String!): Location
-    orgLocations(orgName: String!): [Location]
-    locationNames: [Location]
-}
+  editUser(_id: ID!, updates: UpdateUserInput): User
 
-type Mutation {
-    addUser(
-        username: String!
-        email: String!
-        password: String!
-        orgName: String!
-    ): Auth
+  editOrg(_id: ID!, updates: UpdateOrgInput): Organization
 
-    login(
-        email: String!
-        password: String!
-    ): Auth
-
-    validateAccess(
-        username: String!
-        accessLevel: String!
-    ): User
-
-    addRepair(
-            radioID: String,
-            radioMake: String,
-            radioSerial: String,
-            radioLocation: String,
-            dateReceived: String,
-            endUserPO: String,
-            raaPO: String,
-            repairTag: Int,
-            dateSentTech: String,
-            dateRecTech: String,
-            dateSentEU: String,
-            techInvNum: String,
-            raaInvNum: String,
-            symptoms: [String],
-            testFreq: String,
-            incRxSens: String,
-            incFreqErr: String,
-            incMod: String,
-            incPowerOut: String,
-            outRxSens: String,
-            outFreqErr: String,
-            outMod: String,
-            outPowerOut: String,
-            accessories: [String],
-            workPerformed: [String],
-            repHours: Float,
-            partsUsed: [String],
-            remarks: String
-        
-        ): Repair
-
-        addRadio(
-            orgName: String!
-            location: String
-            datePurchased: String
-            dateEntered: String
-            inventoryNumber: String!
-            make: String!
-            model: String
-            progChannels: String
-            notes: [String]
-            serialNumber: String
-            warranty: String
-            refurb: Boolean,
-            radioType: String
-        ): Radio
-
-        addOrg(
-            orgName: String
-        ): Organization
-
-        addLocation(
-            locationName: String!
-            orgName: String!
-            street: String
-            suite: String
-            city: String
-            state: String
-            zip: String
-            country: String
-            phone: String
-            contactEmail: String
-            primaryContact: String
-        ): Location
-
-        editRepair(
-            _id: ID!
-            updates: UpdateRepairInput
-        ): Repair
-
-        editRadio(
-            _id: ID!
-            updates: UpdateRadioInput
-        ): Radio
-
-        editUser(
-            _id: ID!
-            updates: UpdateUserInput
-        ): User
-
-        editOrg(
-            _id: ID!
-            updates: UpdateOrgInput
-        ): Organization
-
-        editLocation(
-            _id: ID!
-            updates: UpdateLocationInput
-        ): Location
+  editLocation(_id: ID!, updates: UpdateLocationInput): Location
 }

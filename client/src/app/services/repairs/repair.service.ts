@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { QUERY_SINGLEREPAIR, ALL_REPAIRS, ADD_REPAIR, Edit_Repair } from '@app/graphql/schemas';
+import { QUERY_SINGLEREPAIR, ALL_REPAIRS, ADD_REPAIR, EDIT_REPAIR, ORG_REPAIRS } from '@app/graphql/schemas';
 import { RepairFormFields, Repair } from '@app/graphql/schemas/typeInterfaces';
 
 @Injectable({
@@ -25,6 +25,15 @@ export class RepairService {
     });
   }
 
+  orgRepairs(orgName: string) {
+    return this.apollo.query<{orgRepairs: Repair[]}>({
+      query: ORG_REPAIRS,
+      variables: {
+        orgName
+      }
+    })
+  }
+
   addRepair( addRepairFields: RepairFormFields ) {
     return this.apollo.mutate<{addRepair: Repair}> ({
       mutation: ADD_REPAIR,
@@ -34,11 +43,13 @@ export class RepairService {
 
   editRepair(id: string, updates: any) {
     return this.apollo.mutate<{editRepair: Repair}> ({
-        mutation: Edit_Repair,
+        mutation: EDIT_REPAIR,
         variables: {id, updates}
       })
 
-    }
+  }
+
+
 }
 
 

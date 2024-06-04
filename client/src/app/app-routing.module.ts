@@ -4,9 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 // component imports
 import { HomeComponent } from '@app/components/home/home.component';
-import { AdminRadioReportsComponent } from '@app/components/admin-radio-reports/admin-radio-reports.component';
-import { AdminUserReportsComponent } from '@app/components/admin-user-reports/admin-user-reports.component';
-import { AdminOrgReportsComponent } from '@app/components/admin-org-reports/admin-org-reports.component';
 import { DashboardComponent } from '@app/components/dashboard/dashboard.component';
 
 
@@ -31,6 +28,9 @@ import { EditLocationComponent } from './_modules/location/components/edit-locat
 import { roleGuard } from './guards/role-guard';
 import { authGuard } from './guards/auth-guard';
 import { RadioResultsTableComponent } from './_modules/radio/components/radio-results-table/radio-results-table.component';
+import { OrgResultsTableComponent } from './_modules/org/components/org-results-table/org-results-table.component';
+import { LocationResultsTableComponent } from './_modules/location/components/location-results-table/location-results-table.component';
+import { UserResultsTableComponent } from './_modules/user/components/user-results-table/user-results-table.component';
 
 
 const routes: Routes = [
@@ -118,7 +118,7 @@ const routes: Routes = [
     path: 'one-radio/:serialNumber/:model',
     component: OneRadioComponent,
     data: {
-      role: ['admin, user']
+      role: ['admin', 'user']
     },
     canActivate: [authGuard]
   },
@@ -155,16 +155,6 @@ const routes: Routes = [
     canActivate: [authGuard, roleGuard]
   },
   {
-    path: 'org-radio/:orgName',
-    component: AdminRadioReportsComponent,
-    pathMatch: 'full',
-    runGuardsAndResolvers: 'always',
-    data: {
-      role: ['admin']
-    },
-    canActivate: [authGuard, roleGuard]
-  },
-  {
     path: 'radio-results',
     component: RadioResultsTableComponent,
     pathMatch: 'full',
@@ -195,21 +185,60 @@ const routes: Routes = [
     },
   },
   {
-    path: 'user-reports',
-    component: AdminUserReportsComponent,
+    path: 'user-results',
+    component: UserResultsTableComponent,
     data: {
       role: ['admin']
     },
     canActivate: [authGuard, roleGuard]
   },
   {
-    path: 'org-reports',
-    component: AdminOrgReportsComponent,
-    // outlet: 'dashboard',
+    path: 'user-results/:orgName',
+    component: UserResultsTableComponent,
     data: {
       role: ['admin']
     },
     canActivate: [authGuard, roleGuard]
+  },
+  {
+    path: 'org-results',
+    component: OrgResultsTableComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      role: ['admin']
+    },
+  },
+  {
+    path: 'org-results/:orgName',
+    component: OrgResultsTableComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      role: ['admin']
+    },
+  },
+  {
+    path: 'location-results',
+    component: LocationResultsTableComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      role: ['admin']
+    },
+  },
+  {
+    path: 'location-results/:orgName',
+    component: LocationResultsTableComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      role: ['admin']
+    },
   },
   {
     path: 'edit-repair/:id',

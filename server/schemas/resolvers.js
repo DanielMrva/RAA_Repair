@@ -4,6 +4,7 @@ const { signToken } = require('../utils/auth');
 const { sign } = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { GraphQLError, graphql } = require('graphql');
+const { populate } = require('../models/Location');
 
 // TODO: Add Resolver Error Handling Per:
 
@@ -56,13 +57,22 @@ const resolvers = {
         orgRadios: async (parent, { orgName }) => {
             return Radio.find({ orgName: orgName }).populate(["serviceRecord"]);
         },
+        orgRepairs: async (parent, { orgName }) => {
+            // Find all radios with the given orgName, using regExp
+            const radios = await Radio.find({ orgName: { $regex: new RegExp(orgName, 'i') } }).select('_id');
+            const radioIds = radios.map(radio => radio._id);
+
+            // Find all repairs with radioID in the found radios' IDs
+            const repairs = await Repair.find({ radioID: { $in: radioIds } });
+
+            return repairs;
+        },
+        // serviceRecord: async (radio) => {
+        //     // Find all repairs with the given radioID
+        //     return await Repair.find({ radioID: radio._id });
+        // },
         likeOrgRadios: async (parent, { orgName }) => {
 
-            function delay(ms) {
-                return new Promise((resolve) => setTimeout(resolve, ms))
-            }
-
-            await delay(3000)
             return Radio.find({
                 orgName: { $regex: new RegExp(orgName, 'i') }
             }).populate("serviceRecord")
@@ -119,7 +129,7 @@ const resolvers = {
             });
         },
         orgLocations: async (parent, { orgName }) => {
-            return Location.find({ orgName: orgName }).populate({
+            return Location.find({ orgName: { $regex: new RegExp(orgName, 'i') } }).populate({
                 path: "radios",
                 populate: {
                     path: "serviceRecord",
@@ -129,6 +139,17 @@ const resolvers = {
         locationNames: async () => {
             return Location.find();
         },
+        likeOrg: async (parent, { orgName }) => {
+            return Organization.find({ orgName: { $regex: new RegExp(orgName, 'i') } }).populate({
+                path: "locations",
+                populate: {
+                    path: "radios",
+                    populate: {
+                        path: "serviceRecord"
+                    }
+                }
+            })
+        }
 
     },
     Mutation: {
@@ -191,13 +212,16 @@ const resolvers = {
                 radioMake,
                 radioSerial,
                 radioLocation,
-                dateReceived,
                 endUserPO,
                 raaPO,
                 repairTag,
-                dateSentTech,
-                dateRecTech,
-                dateSentEU,
+                repairStatus,
+                dateRepairAdded,
+                dateSentEuRaa,
+                dateRecEuRaa,
+                dateSentRaaTech,
+                dateRecTechRaa,
+                dateSentRaaEu,
                 techInvNum,
                 raaInvNum,
                 symptoms,
@@ -243,13 +267,16 @@ const resolvers = {
                     radioMake,
                     radioSerial,
                     radioLocation,
-                    dateReceived,
                     endUserPO,
                     raaPO,
                     repairTag: newRepairTag,
-                    dateSentTech,
-                    dateRecTech,
-                    dateSentEU,
+                    repairStatus,
+                    dateRepairAdded,
+                    dateSentEuRaa,
+                    dateRecEuRaa,
+                    dateSentRaaTech,
+                    dateRecTechRaa,
+                    dateSentRaaEu,
                     techInvNum,
                     raaInvNum,
                     symptoms,

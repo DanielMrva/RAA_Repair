@@ -120,7 +120,7 @@
 
                   </th>
                   <th scope="col">
-                    Date of Service
+                    Date Sent to RAA
                   </th>
                   <th scope="col">
                     Repair Tag
@@ -138,11 +138,11 @@
                   <tr>
                     <th scope="row">{{i + 1}}</th>
                     <td>
-                      <ng-container *ngIf="!record.dateSentTech; else beenSent">
+                      <ng-container *ngIf="!record.dateSentEuRaa; else beenSent">
                         Radio Not Yet Sent to Tech
                       </ng-container>
                       <ng-template #beenSent>
-                        {{record.dateSentTech | date: 'MMM d, y'}}
+                        {{record.dateSentRaaTech | date: 'MMM d, y'}}
                       </ng-template>
                     </td>
                     <td>

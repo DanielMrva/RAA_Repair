@@ -155,6 +155,19 @@ export const QUERY_ORGS = gql`
     }
 `
 
+export const QUERY_LIKE_ORGNAME = gql`
+    ${ORG_FIELDS_FRAGMENT}
+    ${USER_FIELDS_FRAGMENT}
+    ${LOCATION_FIELDS_FRAGMENT}
+    ${RADIO_FIELDS_FRAGMENT}
+    ${SERVICE_RECORD_FRAGMENT}
+    query likeOrgName {
+        likeOrg {
+            ...OrgFieldsFragment
+        }
+    }
+`
+
 export const QUERY_LOCATIONS = gql`
     ${LOCATION_FIELDS_FRAGMENT}
     ${RADIO_FIELDS_FRAGMENT}
@@ -205,6 +218,15 @@ export const LOCATION_NAMES = gql`
             _id
             locationName
             orgName
+        }
+    }
+`
+
+export const ORG_REPAIRS = gql`
+    ${SERVICE_RECORD_FRAGMENT}
+    query orgRepairs($orgName: String!) {
+        orgRepairs(orgName: $orgName) {
+            ... SERVICE_RECORD_FRAGMENT
         }
     }
 `
