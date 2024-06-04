@@ -1,0 +1,54 @@
+<div *ngIf="isLoading$ | async; else loadedData">
+    <h2>Loading...</h2>
+</div>
+
+<ng-template #loadedData>
+    <div *ngIf="locationError$ | async as error">{{ error }}</div>
+
+    <table class="table" mat-table [dataSource]="dataSource">
+        <!-- Location Name Column -->
+        <ng-container matColumnDef="locationName">
+            <th mat-header-cell *matHeaderCellDef>Location</th>
+            <td mat-cell *matCellDef="let element">{{ element.locationName }}</td>
+        </ng-container>
+
+        <!-- Organization Name Column -->
+        <ng-container matColumnDef="orgName">
+            <th mat-header-cell *matHeaderCellDef>Organization</th>
+            <td mat-cell *matCellDef="let element">{{ element.orgName }}</td>
+        </ng-container>
+
+        <!-- Address Column -->
+        <ng-container matColumnDef="address">
+            <th mat-header-cell *matHeaderCellDef>Address</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.street }}, {{ element.city }}, {{ element.state }} {{ element.zip }}, {{ element.country }}
+                <br />
+                <a [href]="'tel:' + element.phone">{{ element.phone }}</a>
+            </td>
+        </ng-container>
+
+        <!-- Primary Contact Column -->
+        <ng-container matColumnDef="primaryContact">
+            <th mat-header-cell *matHeaderCellDef>Primary Contact</th>
+            <td mat-cell *matCellDef="let element">
+                <a [href]="'mailto:' + element.contactEmail">{{ element.primaryContact }}</a>
+            </td>
+        </ng-container>
+
+        <!-- Radios Column -->
+        <ng-container matColumnDef="radios">
+            <th mat-header-cell *matHeaderCellDef>Radios</th>
+            <td mat-cell *matCellDef="let element">
+                <ul>
+                    <li *ngFor="let radio of element.radios">
+                        <a [routerLink]="['/one-radio', radio._id]">{{ radio.serialNumber }}</a>
+                    </li>
+                </ul>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+</ng-template>

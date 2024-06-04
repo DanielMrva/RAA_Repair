@@ -68,7 +68,10 @@ export const loadOneUserFailure = createAction(
     props<{ error: string}>()
 );
 
-export const loadOrgUsers = createAction('[Org User Reports Page] Load Org Users');
+export const loadOrgUsers = createAction(
+    '[Org User Reports Page] Load Org Users',
+    props<{orgName: string}>()
+);
 
 export const loadOrgUsersSuccess = createAction(
     '[User Service] Load Org Users Success',

@@ -59,10 +59,10 @@ export class PdfService {
   formatRepairForPdf(repair: Repair, radio?: Radio, location?: Location): any {
 
     const fdatePurchased = radio?.datePurchased ? new Date(parseInt(radio.datePurchased)).toLocaleDateString() : ` `;
-    const fDateRec = repair.dateReceived ? new Date(parseInt(repair.dateReceived)).toLocaleDateString() : ` `;
-    const fDateSentTech = repair.dateSentTech ? new Date(parseInt(repair.dateSentTech)).toLocaleDateString() : ` `;
-    const fDateRecTech = repair.dateRecTech ? new Date(parseInt(repair.dateRecTech)).toLocaleDateString() : ` `;
-    const fDateSentEU = repair.dateSentEU ? new Date(parseInt(repair.dateSentEU)).toLocaleDateString() : ` `;
+    const fDateRec = repair.dateRecEuRaa ? new Date(parseInt(repair.dateRecEuRaa)).toLocaleDateString() : ` `;
+    const fDateSentTech = repair.dateSentRaaTech ? new Date(parseInt(repair.dateSentRaaTech)).toLocaleDateString() : ` `;
+    const fDateRecTech = repair.dateRecTechRaa ? new Date(parseInt(repair.dateRecTechRaa)).toLocaleDateString() : ` `;
+    const fDateSentEU = repair.dateSentRaaEu ? new Date(parseInt(repair.dateSentRaaEu)).toLocaleDateString() : ` `;
 
     const warrantyDate = radio?.warranty ? new Date(parseInt(radio?.warranty)).getTime() : new Date(0).getTime();
     const currentDate = Date.now();

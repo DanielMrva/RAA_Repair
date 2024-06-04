@@ -91,7 +91,7 @@ export const locationReducer = createReducer(
 
     on(LocationActions.loadOrgLocationsSuccess, (state, { locations }) => ({
         ...state,
-        Locations: locations as Location[],
+        locations: locations as Location[],
         isLoading: false,
         error: null,
     })),

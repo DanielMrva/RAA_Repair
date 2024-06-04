@@ -23,7 +23,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from '@app/app-routing.module';
 
 import { AuthService } from '@app/services/auth/auth.service';
-import { TableModule } from '@app/modules/tableModule/table/table.module';
+// import { TableModule } from '@app/modules/tableModule/table/table.module';
 import { NavModule } from '@app/_modules/nav/nav.module';
 import { UserModule } from '@app/_modules/user/user.module';
 import { OrgModule } from '@app/_modules/org/org.module';
@@ -35,9 +35,8 @@ import { LocationModule } from '@app/_modules/location/location.module';
 import { AppComponent } from '@app/app.component';
 // import { LoginComponent } from '@app/components/login/login.component';
 import { HomeComponent } from '@app/components/home/home.component';
-import { AdminOrgReportsComponent } from '@app/components/admin-org-reports/admin-org-reports.component';
-import { AdminRadioReportsComponent } from '@app/components/admin-radio-reports/admin-radio-reports.component';
-import { AdminUserReportsComponent } from '@app/components/admin-user-reports/admin-user-reports.component';
+// import { AdminRadioReportsComponent } from '@app/components/admin-radio-reports/admin-radio-reports.component';
+// import { AdminUserReportsComponent } from '@app/components/admin-user-reports/admin-user-reports.component';
 
 
 import { DashboardComponent } from '@app/components/dashboard/dashboard.component';
@@ -54,9 +53,8 @@ import { LocationMismatchDialogComponent } from '@app/_components/utilComponents
         AppComponent,
         HomeComponent,
         // LoginComponent,
-        AdminOrgReportsComponent,
-        AdminRadioReportsComponent,
-        AdminUserReportsComponent,
+        // AdminRadioReportsComponent,
+        // AdminUserReportsComponent,
         DashboardComponent,
         AdminDashboardComponent,
         UserDashboardComponent,
@@ -87,7 +85,6 @@ import { LocationMismatchDialogComponent } from '@app/_components/utilComponents
         MatSelectModule,
         MatProgressSpinnerModule,
         NavModule,
-        TableModule,
         UserModule,
         RadioModule,
         OrgModule,

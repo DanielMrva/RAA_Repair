@@ -2,13 +2,9 @@
   <h2>Loading...</h2>
 </div>
 
-
-
-
 <ng-template #loadedData>
 
   <div *ngIf="radioError$ | async as error">{{ error }}</div>
-
 
   <div *ngIf="oneRadio$ | async as radio; else noRadioFound" class="container">
 
@@ -51,53 +47,32 @@
 
           <h4 class="col-12 text-center">Tracking</h4>
 
-          <!-- <div class="form-group col-4">
-            <label for="make">Organization:</label>
-            <input type="text" id="orgName" formControlName="orgName" class="form-control">
-          </div>
-
-          <div class="form-group col-4">
-            <label for="locationName">Location:</label>
-            <input type="text" id="locationName" formControlName="locationName" class="form-control">
-          </div> -->
-
           <mat-form-field class="form-group col-4">
-            <mat-label for="orgName">
-              Organization:
-            </mat-label>
-            <input type="text" placeholder="Organization" aria-label="Organizaiton" matInput
-              [formControl]="editRadioForm.controls.orgName" [matAutocomplete]="orgAuto">
+            <mat-label>Organization</mat-label>
+            <input matInput placeholder="Organization" aria-label="Organization" formControlName="orgName"
+              [matAutocomplete]="orgAuto">
             <mat-autocomplete autoActiveFirstOption #orgAuto="matAutocomplete">
               <mat-option *ngFor="let option of filteredOrgNames$ | async" [value]="option">
                 {{option}}
               </mat-option>
-
             </mat-autocomplete>
-
           </mat-form-field>
 
           <mat-form-field class="form-group col-4">
-            <mat-label for="locationName">
-              Location:
-            </mat-label>
-            <input type="text" placeholder="Location" aria-label="Location" matInput
-              [formControl]="editRadioForm.controls.locationName" [matAutocomplete]="locAuto">
+            <mat-label>Location</mat-label>
+            <input matInput placeholder="Location" aria-label="Location" formControlName="locationName"
+              [matAutocomplete]="locAuto">
             <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
               <mat-option *ngFor="let locOption of filteredLocNames$ | async" [value]="locOption">
                 {{locOption}}
               </mat-option>
-
             </mat-autocomplete>
-
           </mat-form-field>
 
-
-          <div class="form-group col-4">
-            <label for="make">Inventory Number:</label>
-            <input type="text" id="inventory" formControlName="inventoryNumber" class="form-control">
-          </div>
-
-
+          <mat-form-field class="form-group col-4">
+            <mat-label>Inventory Number</mat-label>
+            <input matInput placeholder="Inventory Number" formControlName="inventoryNumber">
+          </mat-form-field>
 
         </section>
 
@@ -107,20 +82,20 @@
 
           <h4 class="col-12 text-center">Radio Details</h4>
 
-          <div class="form-group col-4">
-            <label for="make">Make:</label>
-            <input type="text" id="make" formControlName="make" class="form-control">
-          </div>
+          <mat-form-field class="form-group col-4">
+            <mat-label>Make</mat-label>
+            <input matInput placeholder="Make" formControlName="make">
+          </mat-form-field>
 
-          <div class="form-group col-4">
-            <label for="model">Model:</label>
-            <input type="text" id="model" formControlName="model" class="form-control">
-          </div>
+          <mat-form-field class="form-group col-4">
+            <mat-label>Model</mat-label>
+            <input matInput placeholder="Model" formControlName="model">
+          </mat-form-field>
 
-          <div class="form-group col-4">
-            <label for="serialNumber">Serial Number:</label>
-            <input type="text" id="serialNumber" formControlName="serialNumber" class="form-control">
-          </div>
+          <mat-form-field class="form-group col-4">
+            <mat-label>Serial Number</mat-label>
+            <input matInput placeholder="Serial Number" formControlName="serialNumber">
+          </mat-form-field>
 
           <div class="form-group col-6">
             <div class="row">
@@ -134,13 +109,13 @@
                 </mat-select>
               </mat-form-field>
               <!-- Text box for 'Other' radio type -->
-              <mat-form-field *ngIf="editRadioForm.get('radioType')?.value === 'other'" appearance="fill" class="col-12">
+              <mat-form-field *ngIf="editRadioForm.get('radioType')?.value === 'other'" appearance="fill"
+                class="col-12">
                 <mat-label>Specify Other</mat-label>
                 <input matInput formControlName="otherType">
               </mat-form-field>
             </div>
           </div>
-
 
           <div class="col-6">
             <div class="row">
@@ -151,38 +126,39 @@
                   <mat-radio-button [value]="false">No</mat-radio-button>
                 </mat-radio-group>
               </div>
-              <div class="form-group col-12">
-                <label for="progChannels">Programmed Channels:</label>
-                <input type="text" id="progChannels" formControlName="progChannels" class="form-control">
-              </div>
+              <mat-form-field class="form-group col-12">
+                <mat-label>Programmed Channels</mat-label>
+                <input matInput placeholder="Programmed Channels" formControlName="progChannels">
+              </mat-form-field>
             </div>
           </div>
-
 
         </section>
 
         <!-- Notes Section -->
-
-
 
         <section class="row" id="notesSection">
 
           <h4 class="col-12 text-center">Notes: </h4>
 
           <div class="form-group col-12">
-            <label for="notes">Notes: </label>
+            <mat-label>Notes</mat-label>
             <div formArrayName="notes">
               <div *ngFor="let note of notesArray.controls; let i = index;">
                 <div class="input-group">
-                  <input type="text" [formControlName]="i" class="form-control" />
-                  <button *ngIf="notesArray.length > 1" type="button" class="btn btn-danger" (click)="removeNote(i)"><i
-                      class="bi bi-trash-fill"></i></button>
+                  <mat-form-field class="form-group col-12">
+                    <input matInput placeholder="Note" [formControlName]="i">
+                  </mat-form-field>
+                  <button *ngIf="notesArray.length > 1" type="button" class="btn btn-danger" (click)="removeNote(i)">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
                 </div>
               </div>
             </div>
             <button type="button" (click)="addNotes()" class="btn btn-primary"><i
                 class="bi bi-plus-circle"></i></button>
           </div>
+
         </section>
 
         <!-- Service Section -->
@@ -193,53 +169,45 @@
 
             <h4 class="col-12 text-center">Service Record:</h4>
 
-
             <ng-container *ngIf="radio.serviceRecord.length > 0; else noService">
 
               <div class="row">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">
+                <table mat-table [dataSource]="radio.serviceRecord" class="mat-elevation-z8">
 
-                      </th>
-                      <th scope="col">
-                        Date Received
-                      </th>
-                      <th scope="col">
-                        RAA Inoice #
-                      </th>
-                      <th scope="col">
-                        RAA PO #
-                      </th>
-                      <th scope="col">
-                        End User PO #
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <ng-container *ngFor="let record of radio.serviceRecord; index as i">
-                      <tr>
-                        <th scope="row">{{i + 1}}</th>
-                        <td>
-                          <a [routerLink]="['/one-repair/', record._id]">{{record.dateReceived | date: 'MMM d, y'}}</a>
-                        </td>
-                        <td>
-                          {{record.raaInvNum}}
-                        </td>
-                        <td>
-                          {{record.raaPO}}
-                        </td>
-                        <td>
-                          {{record.endUserPO}}
-                        </td>
-                      </tr>
-                    </ng-container>
-                  </tbody>
+                  <ng-container matColumnDef="index">
+                    <th mat-header-cell *matHeaderCellDef> # </th>
+                    <td mat-cell *matCellDef="let record; let i = index">{{i + 1}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="dateReceived">
+                    <th mat-header-cell *matHeaderCellDef> Date Received </th>
+                    <td mat-cell *matCellDef="let record">
+                      <a [routerLink]="['/one-repair/', record._id]">{{record.dateRecEuRaa | date: 'MMM d, y'}}</a>
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="raaInvoice">
+                    <th mat-header-cell *matHeaderCellDef> RAA Invoice # </th>
+                    <td mat-cell *matCellDef="let record">{{record.raaInvNum}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="raaPO">
+                    <th mat-header-cell *matHeaderCellDef> RAA PO # </th>
+                    <td mat-cell *matCellDef="let record">{{record.raaPO}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="endUserPO">
+                    <th mat-header-cell *matHeaderCellDef> End User PO # </th>
+                    <td mat-cell *matCellDef="let record">{{record.endUserPO}}</td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="['index', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO']">
+                  </tr>
+                  <tr mat-row
+                    *matRowDef="let row; columns: ['index', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO']"></tr>
+
                 </table>
               </div>
-
-
 
             </ng-container>
 
@@ -256,22 +224,20 @@
 
           </div>
 
-
         </section>
 
         <!-- Submit -->
 
         <div class="col-12 d-flex justify-content-center">
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary text-center">Submit</button>
         </div>
-
 
       </form>
 
     </div>
 
-
   </div>
+
 </ng-template>
 
 <ng-template #noRadioFound>

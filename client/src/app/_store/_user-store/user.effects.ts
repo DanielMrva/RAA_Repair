@@ -11,6 +11,9 @@ import {
     loadUsers,
     loadUsersSuccess,
     loadUsersFailure,
+    loadOrgUsers,
+    loadOrgUsersFailure,
+    loadOrgUsersSuccess,
     loadOneUser,
     loadOneUserSuccess,
     loadOneUserFailure,
@@ -44,11 +47,26 @@ export class UserEffects {
             ofType(loadUsers),
             switchMap(() =>
                 // call 
-                from(this.userService.queryUsers()).pipe(
+                from(this.userService.queryUsers().valueChanges).pipe(
                     // Take the returned data from ApolloQueryResult and return a new success action containing the users
                     map(({ data }) => loadUsersSuccess({ users: data.users })),
                     // Or if there are errors, return a new failure action with the error
                     catchError((error) => of(loadUsersFailure({ error })))
+                )
+            )
+        )
+    );
+
+    loadOrgUsers$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loadOrgUsers),
+            switchMap(({orgName}) =>
+                // call 
+                from(this.userService.queryOrgUsers(orgName).valueChanges).pipe(
+                    // Take the returned data from ApolloQueryResult and return a new success action containing the users
+                    map(({ data }) => loadOrgUsersSuccess({ users: data.orgUsers })),
+                    // Or if there are errors, return a new failure action with the error
+                    catchError((error) => of(loadOrgUsersFailure({ error })))
                 )
             )
         )
@@ -172,35 +190,6 @@ export class UserEffects {
             )
         )
     );
-
-
-
-
-
-
-
-    // loginUserSuccess2$ = createEffect(() =>
-    //     this.actions$.pipe(
-    //         ofType(loginUserSuccess),
-    //         map(({ loginResults }) => {
-    //             if (loginResults) {
-
-    //                 console.log(loginResults);
-    //                 const { username, orgName, accessLevel } = loginResults.user;
-
-    //                 this.toastService.show(`Welcome ${loginResults.user.username} !`, {
-    //                     classname: 'bg-success text-light',
-    //                     delay: 3000
-    //                 });
-
-    //                 return setAuthInfo({ username, orgName, accessLevel })
-    //             } else {
-    //                 console.log('no login results apparently?...')
-    //                 return clearAuthInfo();
-    //             }
-    //         })
-    //     )
-    // );
 
     loginUserSuccess$ = createEffect(() =>
         this.actions$.pipe(

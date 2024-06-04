@@ -46,13 +46,13 @@ export class UserService {
   }
 
   queryUsers() {
-    return this.apollo.query<{users: User[]}> ({
+    return this.apollo.watchQuery<{users: User[]}> ({
       query: QUERY_USERS
     })
   }
 
   queryOrgUsers(orgName: string) {
-    return this.apollo.query<{orgUsers: User[]}> ({
+    return this.apollo.watchQuery<{orgUsers: User[]}> ({
       query: ORG_USERS,
       variables: {
         orgName

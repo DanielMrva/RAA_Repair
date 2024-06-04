@@ -3,42 +3,35 @@
 </div>
 
 <ng-template #loadedData>
-
     <div *ngIf="error$ | async as error">{{error}}</div>
-
 
     <div *ngIf="oneOrg$ | async as org; else noOrgFound" class="container">
         <div class="row">
-    
             <h2 class="col-12 text-center">Edit Organization</h2>
-    
+
             <form [formGroup]="orgForm" (ngSubmit)="onSubmit()" class="row">
-    
-    
-                <div class="form-group col-12">
-                    <label for="orgName">Organization Name: </label>
+                <mat-form-field class="form-group col-12">
+                    <mat-label for="orgName">Organization Name</mat-label>
                     <input
+                        matInput
                         type="text"
                         id="orgName"
                         formControlName="orgName"
                         placeholder="Organization Name"
-                        class="form-control"
                     />
+                </mat-form-field>
+
+                <div class="col-12 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary text-center">Submit</button>
                 </div>
-    
-                <button type="submit" class="btn btn-primary">Submit</button>
-    
-    
             </form>
-    
         </div>
     </div>
-
 </ng-template>
 
 <ng-template #noOrgFound>
     <div class="container">
-      <h2>No Org Found</h2>
-      <!-- You can add additional content or messages here for when no radio is found -->
+        <h2>No Org Found</h2>
+        <!-- You can add additional content or messages here for when no radio is found -->
     </div>
 </ng-template>

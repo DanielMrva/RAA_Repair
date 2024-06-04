@@ -4,7 +4,7 @@ import { Organization } from '@app/graphql/schemas/typeInterfaces';
 import { TableSearchParams } from '@app/graphql/schemas/typeInterfaces';
 
 @Component({
-  selector: 'app-admin-org-reports',
+  selector: 'app-admin-',
   templateUrl: './admin-org-reports.component.html',
   styleUrls: ['./admin-org-reports.component.css']
 })

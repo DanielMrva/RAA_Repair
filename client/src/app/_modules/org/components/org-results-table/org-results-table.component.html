@@ -1,4 +1,4 @@
-<!-- <div *ngIf="dataSource.isLoading$ | async"> Loading...</div>
+<div *ngIf="isLoading$ | async"> Loading...</div>
 
 <table
     class="table"
@@ -36,7 +36,7 @@
                     </ng-container>
                 </ng-container>
                 <li *ngIf="element.locations && element.locations.length > 5">
-                    <a [routerLink]="['/org-locations/', element.orgName]">And {{element.locations.length - 5}} more...</a>
+                    <a [routerLink]="['/location-results/', element.orgName]">And {{element.locations.length - 5}} more...</a>
                 </li>
             </ul>
         </td>
@@ -60,7 +60,7 @@
 
                 </ng-container>
                 <li *ngIf="element.users && element.users.length > 5">
-                    <a [routerLink]="['/user-reports/', element.orgName]">And {{element.users.length - 5}} more...</a>
+                    <a [routerLink]="['/user-results/', element.orgName]">And {{element.users.length - 5}} more...</a>
                 </li>
             </ul>
 
@@ -73,4 +73,4 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
 
-</table> -->
+</table>

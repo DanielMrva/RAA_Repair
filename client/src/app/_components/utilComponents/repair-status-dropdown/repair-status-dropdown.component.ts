@@ -64,13 +64,13 @@ export class RepairStatusDropdownComponent implements OnInit, ControlValueAccess
 
   updateStatuses(accessLevel: string | null): void {
     switch (accessLevel) {
-      case 'ADMIN':
+      case 'admin':
         this.statuses = [...this.userStatuses, ...this.adminStatuses, ...this.techStatuses];
         break;
-      case 'TECH':
+      case 'tech':
         this.statuses = [...this.techStatuses];
         break;
-      case 'USER':
+      case 'user':
       default:
         this.statuses = [...this.userStatuses];
         break;

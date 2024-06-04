@@ -102,6 +102,8 @@ const typeDefs = `#graphql
         allRepairs: [Repair]
         repair(repairID: String!): Repair
         orgRadios(orgName: String!): [Radio]
+        orgRepairs(orgName: String!): [Repair]
+        # serviceRecord(radio: Radio!): [Repair]
         likeOrgRadios(orgName: String!): [Radio]
         orgUsers(orgName: String!): [User]
         orgNames: [Organization]
@@ -112,7 +114,7 @@ const typeDefs = `#graphql
         locationByName(locationName: String!): Location
         orgLocations(orgName: String!): [Location]
         locationNames: [Location]
-        orgRepairs(orgName: String!): [Repair]
+        likeOrg: [Organization]
     }
 
     input UpdateRepairInput {
