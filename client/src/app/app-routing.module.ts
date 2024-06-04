@@ -4,8 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 // component imports
 import { HomeComponent } from '@app/components/home/home.component';
-// import { AdminRadioReportsComponent } from '@app/components/admin-radio-reports/admin-radio-reports.component';
-// import { AdminUserReportsComponent } from '@app/components/admin-user-reports/admin-user-reports.component';
 import { DashboardComponent } from '@app/components/dashboard/dashboard.component';
 
 
