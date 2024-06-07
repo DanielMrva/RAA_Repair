@@ -7,6 +7,8 @@ import { Store } from '@ngrx/store';
 import { loadOneRadio, loadSerialRadio} from '@app/_store/_radio-store/radio.actions';
 import { selectOneRadio, radioLoadingSelector, radioErrorSelector } from '@app/_store/_radio-store/radio.selectors';
 import { Subscription } from 'rxjs';
+import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
+import { ACCESS_LEVEL_ADMIN } from '@app/utils/constants';
 
 @Component({
   selector: 'app-one-radio',
@@ -22,6 +24,9 @@ export class OneRadioComponent implements OnInit, OnDestroy {
   isLoading$
   radioError$
   oneRadio$
+  userAccessLevel$
+
+  ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +35,7 @@ export class OneRadioComponent implements OnInit, OnDestroy {
       this.isLoading$ = this.store.select(radioLoadingSelector);
       this.radioError$ = this.store.select(radioErrorSelector);
       this.oneRadio$ = this.store.select(selectOneRadio);
+      this.userAccessLevel$ = this.store.select(selectAccessLevel)
     }
 
   ngOnInit(): void {
