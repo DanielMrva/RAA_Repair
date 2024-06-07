@@ -47,7 +47,7 @@ export const repairReducer = createReducer(
         error: null,
     })),
 
-    on(RepairActions.loadOrgRepairsSuccess, (state, {repairs}) => ({
+    on(RepairActions.loadOrgRepairsSuccess, (state, { repairs }) => ({
         ...state,
         Repairs: repairs as Repair[],
         isLoading: false,
@@ -115,5 +115,15 @@ export const repairReducer = createReducer(
         ...state,
         isLoading: false,
         error: error
-    }))
+    })),
+
+    on(RepairActions.deleteRepairSuccess, (state, { repair }) => ({
+        ...state,
+        repairs: state.repairs.filter(repair => repair._id !== repair._id),
+    })),
+
+    on(RepairActions.deleteRepairFailure, (state, { error }) => ({
+        ...state,
+        error: error,
+    })),
 )

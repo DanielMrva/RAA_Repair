@@ -200,4 +200,6 @@ type Mutation {
   editOrg(_id: ID!, updates: UpdateOrgInput): Organization
 
   editLocation(_id: ID!, updates: UpdateLocationInput): Location
+
+  deleteRepair(_id: ID!): Repair
 }

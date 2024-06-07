@@ -633,6 +633,17 @@ const resolvers = {
             }
         },
         // End Edit Location
+        deleteRepair: async (parent, { _id }) => {
+            try {
+                const deletedRepair = await Repair.findByIdAndDelete(_id);
+                return deletedRepair;
+            } catch (error) {
+                console.log(`resolver error: ${error}`);
+                throw new GraphQLError(`Failed to Delete Repair, ${error}`)
+
+            }
+        },
+        // End Delete Repair
 
     }
 };

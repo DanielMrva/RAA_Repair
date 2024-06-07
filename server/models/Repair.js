@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 // const dateFormat = require("../utils/dateFormat");
+const Radio = require('./Radio');
 
 
 
@@ -17,12 +18,6 @@ const repairSchema = new Schema({
     radioLocation: {
         type: String
     },
-    // dateReceived: {
-    //     type: Date,
-    //     default: Date.now,
-    //     // get: (timestamp) => dateFormat(timestamp),
-    //     // Admin
-    // }, 
     endUserPO: {
         type: String,
         // Admin
@@ -158,6 +153,16 @@ const repairSchema = new Schema({
         // Tech / Admin
     },
 
+});
+
+repairSchema.pre('findOneAndDelete', async function(next) {
+    const repair = await this.model.findOne(this.getQuery());
+    if (repair && repair.radioID) {
+      await Radio.findByIdAndUpdate(repair.radioID, {
+        $pull: { serviceRecord: repair._id }
+      });
+    }
+    next();
 });
 
 

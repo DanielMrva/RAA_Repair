@@ -212,7 +212,6 @@ const typeDefs = `#graphql
         ): User
 
         addRepair(
-            _id: ID!
             radioID: String
             radioMake: String
             radioSerial: String
@@ -304,6 +303,10 @@ const typeDefs = `#graphql
             _id: ID!
             updates: UpdateLocationInput
         ): Location
+
+        deleteRepair(
+            _id: ID!
+        ): Repair
     }
 
 `;

@@ -39,6 +39,8 @@ import { TechDashboardComponent } from '@app/components/dashboard/dashboards/tec
 import { ToastComponent } from '@app/components/toast/toast.component';
 import { AuthEffects } from '@app/_store/_auth-store/auth.effects';
 import { LocationMismatchDialogComponent } from '@app/_components/utilComponents/location-mismatch-dialog/location-mismatch-dialog.component';
+import { DeleteRepairButtonComponent } from './_components/utilComponents/delete-repair-button/delete-repair-button.component';
+import { DeleteConfirmModalComponent } from './_components/utilComponents/delete-confirm-modal/delete-confirm-modal.component';
 
 @NgModule({
     declarations: [
@@ -49,6 +51,8 @@ import { LocationMismatchDialogComponent } from '@app/_components/utilComponents
         UserDashboardComponent,
         TechDashboardComponent,
         LocationMismatchDialogComponent,
+        DeleteRepairButtonComponent,
+        DeleteConfirmModalComponent,
         ],
     imports: [
         BrowserModule,
