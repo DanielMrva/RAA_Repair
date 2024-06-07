@@ -11,83 +11,95 @@
     <div *ngIf="oneLocation$ | async as location; else noLocationFound" class="container">
 
         <div class="row">
-            <h2 class="col-12 text-center">{{location.locationName}} Details</h2>
-        </div>
+            <h2 class="col-12 text-center">
+                {{location.locationName}} 
+                <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
+                  <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
+                    <a [routerLink]="['/edit-location', location._id]">EDIT</a>
+                  </ng-container>
+                </ng-container>
+            </h2>
 
-        <h4 class="col-12 text-center">Location Details</h4>
+            <div class="col-4">
+                <h4 class="col-12 text-center">Location Details</h4>
 
-        <div class="col-4">
-            <div class="row">
-                <p class="col-12">{{location.street}}</p>
-                <p class="col-12">{{location.suite}}</p>
-                <p class="col-12">{{location.city}}, {{location.state}}</p>
-                <p class="col-12">{{location.zip}}</p>
-                <p class="col-12">{{location.country}}</p>
-                <p class="col-12">{{location.phone}}</p>
+                <div class="col-12">
+                    <div class="row">
+                        <p class="col-12">{{location.street}}  {{location.suite}}</p>
+                        <p class="col-12">{{location.city}}, {{location.state}}</p>
+                        <p class="col-12">{{location.zip}} {{location.country}}</p>
+                        <p class="col-12">{{location.primaryContact}}</p>
+                        <a href="mailto:{{location.contactEmail}}">{{location.contactEmail}}</a>
+                        <p class="col-12">{{location.phone}}</p>
+                    </div>
+                </div>
+
             </div>
-        </div>
 
-        <div class="col-8">
-            <div class="row">
+            <div class="col-8">
                 <h4 class="col-12 text-center">Radios:</h4>
-                    <ng-container *ngIf="location.radios.length > 0; else noRadios">
+                <ng-container *ngIf="location.radios.length > 0; else noRadios">
 
-                        <div class="row">
-                            <table class="table">
-                                <thead>
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+
+                                    </th>
+                                    <th scope="col">
+                                        Radio
+                                    </th>
+                                    <th scope="col">
+                                        Serial Number
+                                    </th>
+                                    <th scope="col">
+                                        Inventory Number
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let radio of location.radios; index as i">
                                     <tr>
-                                        <th scope="col">
-
+                                        <th scope="row">
+                                            {{i + 1}}
                                         </th>
-                                        <th scope="col">
-                                            Radio
-                                        </th>
-                                        <th scope="col">
-                                            Serial Number
-                                        </th>
-                                        <th scope="col">
-                                            Inventory Number
-                                        </th>
+                                        <td>
+                                            {{radio.make}}, {{radio.model}}
+                                        </td>
+                                        <td>
+                                            <a [routerLink]="['/one-radio/', radio._id]">{{radio.serialNumber}}</a>
+                                        </td>
+                                        <td>
+                                            {{radio.inventoryNumber}}
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <ng-container *ngFor="let radio of location.radios; index as i">
-                                        <tr>
-                                            <th scope="row">
-                                                {{i + 1}}
-                                            </th>
-                                            <td>
-                                                {{radio.make}}, {{radio.model}}
-                                            </td>
-                                            <td>
-                                                <a [routerLink]="['/one-radio/', radio._id]" >{{radio.serialNumber}}</a>
-                                            </td>
-                                            <td>
-                                                {{radio.inventoryNumber}}
-                                            </td>
-                                        </tr>
 
-                                    </ng-container>
-                                </tbody>
-                            </table>
-                        </div>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
 
-                    </ng-container>
+                </ng-container>
 
-                    <ng-template #noRadios>
-                        <div class="row">
-                            <p>No Radios at this Location...</p>
-                        </div>
-                    </ng-template>
-                
+                <ng-template #noRadios>
+                    <div class="row">
+                        <p>No Radios at this Location...</p>
+                    </div>
+                </ng-template>
+
+
             </div>
+
         </div>
+
     </div>
+
 
 </ng-template>
 
 <ng-template #noLocationFound>
     <div class="container">
-      <h2>No Location Found</h2>
+        <h2>No Location Found</h2>
     </div>
-  </ng-template>
+</ng-template>
