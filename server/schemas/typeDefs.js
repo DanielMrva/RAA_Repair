@@ -212,7 +212,6 @@ const typeDefs = `#graphql
         ): User
 
         addRepair(
-            _id: ID!
             radioID: String
             radioMake: String
             radioSerial: String
