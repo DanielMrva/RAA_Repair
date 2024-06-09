@@ -5,12 +5,11 @@ import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { FilterService } from '@app/services/utilityServices/filter.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
-import { loadLocationNames} from '@app/_store/_location-store/location.actions';
+import { loadLocationNames } from '@app/_store/_location-store/location.actions';
 import { selectLocationNames } from '@app/_store/_location-store/location.selectors';
-import { loadOrgNames} from '@app/_store/_org-store/org.actions';
+import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { selectOrgNames } from '@app/_store/_org-store/org.selectors';
 import { Location, Organization } from '@app/graphql/schemas/typeInterfaces';
-
 
 @Component({
   selector: 'app-org-location-selector',
@@ -33,7 +32,7 @@ export class OrgLocationSelectorComponent implements OnInit {
   constructor(
     private filterService: FilterService, 
     private store: Store<AppState>
-    ) {}
+  ) {}
 
   ngOnInit(): void {
     this.store.dispatch(loadOrgNames());
@@ -44,42 +43,37 @@ export class OrgLocationSelectorComponent implements OnInit {
     );
     this.locationNames$ = this.store.select(selectLocationNames);
 
-      // Pre-select orgName if initialOrgName is provided
-      if (this.initialOrgName) {
-        this.orgNameControl.setValue(this.initialOrgName);
-      }
-  
-      // Emit orgName on selection change
-      this.orgNameControl.valueChanges.pipe(
-        startWith(this.initialOrgName || ',')
-      ).subscribe(value => {
+    // Pre-select orgName if initialOrgName is provided
+    if (this.initialOrgName) {
+      this.orgNameControl.setValue(this.initialOrgName);
+      this.orgNameSelected.emit(this.initialOrgName);
+      this.filterLocations(this.initialOrgName);
+    }
+
+    // Subscribe to value changes to emit the orgName and filter locations
+    this.orgNameControl.valueChanges.pipe(
+      startWith(this.initialOrgName || ''),
+      tap(value => {
         const nonNullable = value ?? '';
         this.orgNameSelected.emit(nonNullable);
         this.filterLocations(nonNullable);
       })
-  
-      // Initial filtering if initialOrgName is provided
-      this.filterLocations(this.initialOrgName || '');
+    ).subscribe();
 
-      this.filteredOrgNames$ = this.orgNameControl.valueChanges.pipe(
-        startWith(''),
-        switchMap(value => 
-          this.filterService.filterOrgs(value ?? '', this.orgNames$)
-        )
-      );
+    this.filteredOrgNames$ = this.orgNameControl.valueChanges.pipe(
+      startWith(''),
+      switchMap(value => 
+        this.filterService.filterOrgs(value ?? '', this.orgNames$)
+      )
+    );
+  }
 
-    }
-
-    private filterLocations(orgName: string): void {
-      // Assuming filteredLocs correctly returns Observable<string[]>
-      this.locationNames$.pipe(
-        switchMap(locations => this.filterService.filteredLocs('', orgName, locations)),
-        tap(filteredLocations => {
-          // Make sure filteredLocations is string[]
-          this.filteredLocations.emit(filteredLocations); // filteredLocations should already be string[]
-        })
-      ).subscribe();
-    }
-    
-  
+  private filterLocations(orgName: string): void {
+    this.locationNames$.pipe(
+      switchMap(locations => this.filterService.filteredLocs('', orgName, locations)),
+      tap(filteredLocations => {
+        this.filteredLocations.emit(filteredLocations);
+      })
+    ).subscribe();
+  }
 }
