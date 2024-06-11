@@ -49,7 +49,8 @@
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-4">
-                        <app-org-location-selector class="form-group col-4" [initialOrgName]="initialOrgName"
+                        <app-org-location-selector 
+                            [initialOrgName]="initialOrgName"
                             (orgNameSelected)="handleOrgNameSelected($event)"
                             (filteredLocations)="handleFilteredLocations($event)">
                         </app-org-location-selector>
@@ -122,21 +123,42 @@
                 <section class="row" id="inventory-po">
                     <h4 class="col-12 text-center">Inventory / PO</h4>
 
-                    <mat-form-field class="form-group col-4">
-                        <mat-label>RAA PO:</mat-label>
-                        <input matInput id="raaPO" formControlName="raaPO" placeholder="RAA PO">
-                    </mat-form-field>
+                    <div class="col-4">
+                        <h4>PO & Invoice</h4>
+                        <mat-form-field class="form-group col-12">
+                            <mat-label>RAA PO:</mat-label>
+                            <input matInput id="raaPO" formControlName="raaPO" placeholder="RAA PO">
+                        </mat-form-field>
+                        <mat-form-field class="form-group col-12">
+                            <mat-label>End User PO:</mat-label>
+                            <input matInput id="endUserPO" formControlName="endUserPO" placeholder="End User PO">
+                        </mat-form-field>
+                        <mat-form-field class="form-group col-12">
+                            <mat-label>RAA Invoice:</mat-label>
+                            <input matInput id="raaInvNum" formControlName="raaInvNum" placeholder="RAA Invoice">
+                        </mat-form-field>
+                    </div>
 
-                    <mat-form-field class="form-group col-4">
-                        <mat-label>End User PO:</mat-label>
-                        <input matInput id="endUserPO" formControlName="endUserPO" placeholder="End User PO">
-                    </mat-form-field>
+                    <div class="col-8">
+                        <h4>Accessories:</h4>
+                        <div formArrayName="accessories">
+                            <div *ngFor="let accessory of accessoriesArray.controls; let j = index;"
+                                class="accessory-item">
+                                <mat-form-field class="full-width-input">
+                                    <input matInput [formControlName]="j" placeholder="Accessory">
+                                    <mat-icon matSuffix class="add-icon" (click)="addAccessory()"
+                                    aria-label="add symptom">add_circle</mat-icon>
+    
+                                    <mat-icon matSuffix class="remove-icon" *ngIf="accessoriesArray.length > 1"
+                                        (click)="removeAccessory(j)"
+                                        aria-label="remove accessory">remove_circle</mat-icon>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
 
-                    <mat-form-field class="form-group col-4">
-                        <mat-label>RAA Invoice:</mat-label>
-                        <input matInput id="raaInvNum" formControlName="raaInvNum" placeholder="RAA Invoice">
-                    </mat-form-field>
                 </section>
+
 
                 <section class="row" id="symptom-diagnostics">
                     <h4 class="col-12 text-center">Symptoms & Diagnostics</h4>

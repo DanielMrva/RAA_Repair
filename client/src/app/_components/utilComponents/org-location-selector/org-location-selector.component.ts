@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
@@ -9,14 +9,14 @@ import { loadLocationNames } from '@app/_store/_location-store/location.actions'
 import { selectLocationNames } from '@app/_store/_location-store/location.selectors';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { selectOrgNames } from '@app/_store/_org-store/org.selectors';
-import { Location, Organization } from '@app/graphql/schemas/typeInterfaces';
+import { Location } from '@app/graphql/schemas/typeInterfaces';
 
 @Component({
   selector: 'app-org-location-selector',
   templateUrl: './org-location-selector.component.html',
   styleUrls: ['./org-location-selector.component.css']
 })
-export class OrgLocationSelectorComponent implements OnInit {
+export class OrgLocationSelectorComponent implements OnInit, OnChanges {
   @Input() initialOrgName: string | null = null;
   @Output() orgNameSelected = new EventEmitter<string>();
   @Output() filteredLocations = new EventEmitter<string[]>();
@@ -43,13 +43,6 @@ export class OrgLocationSelectorComponent implements OnInit {
     );
     this.locationNames$ = this.store.select(selectLocationNames);
 
-    // Pre-select orgName if initialOrgName is provided
-    if (this.initialOrgName) {
-      this.orgNameControl.setValue(this.initialOrgName);
-      this.orgNameSelected.emit(this.initialOrgName);
-      this.filterLocations(this.initialOrgName);
-    }
-
     // Subscribe to value changes to emit the orgName and filter locations
     this.orgNameControl.valueChanges.pipe(
       startWith(this.initialOrgName || ''),
@@ -66,6 +59,14 @@ export class OrgLocationSelectorComponent implements OnInit {
         this.filterService.filterOrgs(value ?? '', this.orgNames$)
       )
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialOrgName'] && changes['initialOrgName'].currentValue) {
+      this.orgNameControl.patchValue(this.initialOrgName, { emitEvent: false });
+      this.orgNameSelected.emit(this.initialOrgName!);
+      this.filterLocations(this.initialOrgName!);
+    }
   }
 
   private filterLocations(orgName: string): void {
