@@ -9,6 +9,7 @@ import { withLatestFrom, first, of, Subscription } from 'rxjs';
 import { loadOneRadio } from '@app/_store/_radio-store/radio.actions';
 import { radioErrorSelector, radioLoadingSelector, selectOneRadio } from '@app/_store/_radio-store/radio.selectors';
 import { MismatchModalService } from '@app/services/modal/mismatch-modal.service';
+import { filterEmptyArrayValues } from '@app/utils/filterEmptyArray';
 
 @Component({
   selector: 'app-admin-add-repair',
@@ -171,6 +172,7 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
 
   prepaireRepairData(): RepairFormFields {
 
+
     return {
       radioID: this.adminRepairForm.value.radioID ?? '',
       radioMake: this.adminRepairForm.value.radioMake ?? '',
@@ -179,15 +181,15 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
       endUserPO: this.adminRepairForm.value.endUserPO ?? '',
       raaPO: this.adminRepairForm.value.raaPO ?? '',
       repairStatus: this.adminRepairForm.value.repairStatus ?? '',
-      dateRepairAdded: this.adminRepairForm.value.dateRepairAdded ?? new Date(),
-      dateSentEuRaa: this.adminRepairForm.value.dateSentEuRaa ?? new Date(),
-      dateRecEuRaa: this.adminRepairForm.value.dateRecEuRaa ?? new Date(),
-      dateSentRaaTech: this.adminRepairForm.value.dateSentRaaTech ?? new Date(),
-      dateRecTechRaa: this.adminRepairForm.value.dateRecTechRaa ?? new Date(),
-      dateSentRaaEu: this.adminRepairForm.value.dateSentRaaEu ?? new Date(),
+      dateRepairAdded: this.adminRepairForm.value.dateRepairAdded ?? '',
+      dateSentEuRaa: this.adminRepairForm.value.dateSentEuRaa ?? '',
+      dateRecEuRaa: this.adminRepairForm.value.dateRecEuRaa ?? '',
+      dateSentRaaTech: this.adminRepairForm.value.dateSentRaaTech ?? '',
+      dateRecTechRaa: this.adminRepairForm.value.dateRecTechRaa ?? '',
+      dateSentRaaEu: this.adminRepairForm.value.dateSentRaaEu ?? '',
       techInvNum: this.adminRepairForm.value.techInvNum ?? '',
       raaInvNum: this.adminRepairForm.value.raaInvNum ?? '',
-      symptoms: Array.isArray(this.adminRepairForm.value.symptoms) ? this.adminRepairForm.value.symptoms.map(symptom => symptom ?? '') : [''],
+      symptoms: Array.isArray(this.adminRepairForm.value.symptoms) ? filterEmptyArrayValues(this.adminRepairForm.value.symptoms.map(symptom => symptom ?? '')) : [''],
       testFreq: this.adminRepairForm.value.testFreq ?? '',
       incRxSens: this.adminRepairForm.value.incRxSens ?? '',
       incFreqErr: this.adminRepairForm.value.incFreqErr ?? '',
@@ -197,10 +199,10 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
       outFreqErr: this.adminRepairForm.value.outFreqErr ?? '',
       outMod: this.adminRepairForm.value.outMod ?? '',
       outPowerOut: this.adminRepairForm.value.outPowerOut ?? '',
-      accessories: Array.isArray(this.adminRepairForm.value.accessories) ? this.adminRepairForm.value.accessories.map(a => a ?? '') : [''],
-      workPerformed: Array.isArray(this.adminRepairForm.value.workPerformed) ? this.adminRepairForm.value.workPerformed.map(wp => wp ?? '') : [''],
+      accessories: Array.isArray(this.adminRepairForm.value.accessories) ? filterEmptyArrayValues(this.adminRepairForm.value.accessories.map(a => a ?? '')) : [''],
+      workPerformed: Array.isArray(this.adminRepairForm.value.workPerformed) ? filterEmptyArrayValues(this.adminRepairForm.value.workPerformed.map(wp => wp ?? '')) : [''],
       repHours: this.adminRepairForm.value.repHours ?? 0,
-      partsUsed: Array.isArray(this.adminRepairForm.value.partsUsed) ? this.adminRepairForm.value.partsUsed.map(pu => pu ?? '') : [''],
+      partsUsed: Array.isArray(this.adminRepairForm.value.partsUsed) ? filterEmptyArrayValues(this.adminRepairForm.value.partsUsed.map(pu => pu ?? '')) : [''],
       remarks: this.adminRepairForm.value.remarks ?? ''
     }
 

@@ -39,35 +39,35 @@ const repairSchema = new Schema({
     },
     dateRepairAdded: {
         type: Date,
-        default: Date.now
+        // default: Date.now
     },
     dateSentEuRaa: {
         type: Date,
-        default: Date.now
+        // default: Date.now
         // NOTE: All of these dates flow From --> To, regardless if they are sent or rec.
     },
     dateRecEuRaa: {
         type: Date,
-        default: Date.now
+        // default: Date.now
         // Legacy: dateReceived
     },    
     dateSentRaaTech: {
         type: Date,
-        default: Date.now,
+        // default: Date.now,
         // Legacy: dateSentTech
         // get: (timestamp) => dateFormat(timestamp),
         // Admin
     },
     dateRecTechRaa: {
         type: Date,
-        default: Date.now,
+        // default: Date.now,
         // Legacy: dateRecTech
         // get: (timestamp) => dateFormat(timestamp),
         // Tech
     },
     dateSentRaaEu: {
         type: Date,
-        default: Date.now,
+        // default: Date.now,
         // Legacy: dateSentEU
         // get: (timestamp) => dateFormat(timestamp),
         // Admin

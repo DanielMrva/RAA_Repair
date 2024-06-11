@@ -51,7 +51,7 @@
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-4">
-                        <app-org-location-selector class="form-group col-4" [initialOrgName]="initialOrgName"
+                        <app-org-location-selector class="form-group col-4" [initialOrgName]="repairForm.controls.orgName.value"
                             (orgNameSelected)="handleOrgNameSelected($event)"
                             (filteredLocations)="handleFilteredLocations($event)">
                         </app-org-location-selector>
@@ -76,7 +76,7 @@
                     <h4 class="col-12 text-center">Timeline</h4>
 
                     <div class="form-group col-6">
-                        <app-repair-status-dropdown formControlName="repairStatus"></app-repair-status-dropdown>
+                        <app-repair-status-dropdown formControlName="repairStatus" [initialStatus]="repairForm.controls.repairStatus.value"></app-repair-status-dropdown>
                     </div>
 
                     <mat-form-field class="form-group col-6">
@@ -149,6 +149,9 @@
                                 class="accessory-item">
                                 <mat-form-field class="full-width-input">
                                     <input matInput [formControlName]="j" placeholder="Accessory">
+                                    <mat-icon matSuffix class="add-icon" (click)="addAccessory()"
+                                    aria-label="add symptom">add_circle</mat-icon>
+    
                                     <mat-icon matSuffix class="remove-icon" *ngIf="accessoriesArray.length > 1"
                                         (click)="removeAccessory(j)"
                                         aria-label="remove accessory">remove_circle</mat-icon>
@@ -156,7 +159,6 @@
                             </div>
                         </div>
                     </div>
-
                 </section>
 
                 <!-- Symptoms and Diagnostics Section -->

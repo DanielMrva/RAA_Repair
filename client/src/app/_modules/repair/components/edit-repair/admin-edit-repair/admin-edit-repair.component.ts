@@ -10,6 +10,7 @@ import { radioErrorSelector, radioLoadingSelector, selectOneRadio } from '@app/_
 import { loadOneRadio } from '@app/_store/_radio-store/radio.actions';
 import { MismatchModalService } from '@app/services/modal/mismatch-modal.service';
 import { first, of, withLatestFrom, Subscription, combineLatest } from 'rxjs';
+import { filterEmptyArrayValues } from '@app/utils/filterEmptyArray';
 
 @Component({
   selector: 'app-admin-edit-repair',
@@ -51,6 +52,8 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.repairForm.get('radioID')?.disable();
 
+    console.log('Initial Repair Status:', this.repairForm.controls.repairStatus.value);
+
     this.subscriptions.add(
       this.activatedRoute.paramMap.subscribe(params => {
         const repairID = params.get('id');
@@ -64,6 +67,7 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
                 this.initialOrgName = radio.orgName;
                 this.radioId = radio._id;
                 this.populateForm(repair, radio);
+                console.log('Initial Repair Status:', this.repairForm.controls.repairStatus.value);
               }
             })
           );
@@ -126,57 +130,57 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
     this.store.dispatch(loadOneRepair({ repairID: id }));
   }
 
-  populateForm(repair: Repair, radio: Radio) {
+populateForm(repair: Repair, radio: Radio) {
+    // Patch the form with scalar values
     this.repairForm.patchValue({
-      radioID: repair.radioID,
-      radioMake: repair.radioMake,
-      radioSerial: repair.radioSerial,
-      radioLocation: repair.radioLocation,
-      endUserPO: repair.endUserPO,
-      raaPO: repair.raaPO,
-      repairStatus: repair.repairStatus,
-      dateRepairAdded: new Date(parseInt(repair.dateRepairAdded)),
-      dateSentEuRaa: new Date(parseInt(repair.dateSentEuRaa)),
-      dateRecEuRaa: new Date(parseInt(repair.dateRecEuRaa)),
-      dateSentRaaTech: new Date(parseInt(repair.dateSentRaaTech)),
-      dateRecTechRaa: new Date(parseInt(repair.dateRecTechRaa)),
-      dateSentRaaEu: new Date(parseInt(repair.dateSentRaaEu)),
-      techInvNum: repair.techInvNum,
-      raaInvNum: repair.raaInvNum,
-      testFreq: repair.testFreq,
-      incRxSens: repair.incRxSens,
-      incFreqErr: repair.incFreqErr,
-      incMod: repair.incMod,
-      incPowerOut: repair.incPowerOut,
-      outRxSens: repair.outRxSens,
-      outFreqErr: repair.outFreqErr,
-      outMod: repair.outMod,
-      outPowerOut: repair.outPowerOut,
-      repHours: repair.repHours,
-      remarks: repair.remarks,
-      orgName: radio.orgName
+        radioID: repair.radioID,
+        radioMake: repair.radioMake,
+        radioSerial: repair.radioSerial,
+        radioLocation: repair.radioLocation,
+        endUserPO: repair.endUserPO,
+        raaPO: repair.raaPO,
+        repairStatus: repair.repairStatus,
+        dateRepairAdded: new Date(parseInt(repair.dateRepairAdded)),
+        dateSentEuRaa: new Date(parseInt(repair.dateSentEuRaa)),
+        dateRecEuRaa: new Date(parseInt(repair.dateRecEuRaa)),
+        dateSentRaaTech: new Date(parseInt(repair.dateSentRaaTech)),
+        dateRecTechRaa: new Date(parseInt(repair.dateRecTechRaa)),
+        dateSentRaaEu: new Date(parseInt(repair.dateSentRaaEu)),
+        techInvNum: repair.techInvNum,
+        raaInvNum: repair.raaInvNum,
+        testFreq: repair.testFreq,
+        incRxSens: repair.incRxSens,
+        incFreqErr: repair.incFreqErr,
+        incMod: repair.incMod,
+        incPowerOut: repair.incPowerOut,
+        outRxSens: repair.outRxSens,
+        outFreqErr: repair.outFreqErr,
+        outMod: repair.outMod,
+        outPowerOut: repair.outPowerOut,
+        repHours: repair.repHours,
+        remarks: repair.remarks,
+        orgName: radio.orgName
     });
 
-    // Insert existing symptoms at the beginning
-    repair.symptoms.forEach((symptom, index) => {
-      (this.repairForm.get('symptoms') as FormArray).insert(index, this.formBuilder.control(symptom));
-    });
+    // Helper function to reset FormArray and add new controls
+    const resetFormArray = (formArrayName: string, items: string[]) => {
+      const formArray = this.repairForm.get(formArrayName) as FormArray;
+      formArray.clear();
+      if (items.length === 0) {
+          formArray.push(this.formBuilder.control(''));
+      } else {
+          items.forEach(item => formArray.push(this.formBuilder.control(item)));
+      }
+  };
 
-    // Insert existing accessories at the beginning
-    repair.accessories.forEach((accessory, index) => {
-      (this.repairForm.get('accessories') as FormArray).insert(index, this.formBuilder.control(accessory));
-    });
+    // Reset and populate the FormArrays
+    resetFormArray('symptoms', repair.symptoms);
+    resetFormArray('accessories', repair.accessories);
+    resetFormArray('workPerformed', repair.workPerformed);
+    resetFormArray('partsUsed', repair.partsUsed);
+}
 
-    // Insert existing work performed at the beginning
-    repair.workPerformed.forEach((work, index) => {
-      (this.repairForm.get('workPerformed') as FormArray).insert(index, this.formBuilder.control(work));
-    });
 
-    // Insert existing parts used at the beginning
-    repair.partsUsed.forEach((part, index) => {
-      (this.repairForm.get('partsUsed') as FormArray).insert(index, this.formBuilder.control(part));
-    });
-  }
 
   addSymptom() {
     this.symptomsArray.push(new FormControl<string>('', { nonNullable: true }));
@@ -225,46 +229,47 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
 
   prepareRepairData(): RepairFormFields {
     this.oneRepair$.subscribe((repair: Repair | null) => {
-      if (repair) {
-        this.repairTag = repair.repairTag;
-        this.repairID = repair._id;
-      }
+        if (repair) {
+            this.repairTag = repair.repairTag;
+            this.repairID = repair._id;
+        }
     });
 
+
     return {
-      radioID: this.radioId ?? this.repairForm.value.radioID,
-      radioMake: this.repairForm.value.radioMake ?? '',
-      radioSerial: this.repairForm.value.radioSerial ?? '',
-      radioLocation: this.repairForm.value.radioLocation ?? '',
-      endUserPO: this.repairForm.value.endUserPO ?? '',
-      raaPO: this.repairForm.value.raaPO ?? '',
-      repairTag: this.repairTag,
-      repairStatus: this.repairForm.value.repairStatus ?? '',
-      dateRepairAdded: this.repairForm.value.dateRepairAdded ?? new Date(),
-      dateSentEuRaa: this.repairForm.value.dateSentEuRaa ?? new Date(),
-      dateRecEuRaa: this.repairForm.value.dateRecEuRaa ?? new Date(),
-      dateSentRaaTech: this.repairForm.value.dateSentRaaTech ?? new Date(),
-      dateRecTechRaa: this.repairForm.value.dateRecTechRaa ?? new Date(),
-      dateSentRaaEu: this.repairForm.value.dateSentRaaEu ?? new Date(),
-      techInvNum: this.repairForm.value.techInvNum ?? '',
-      raaInvNum: this.repairForm.value.raaInvNum ?? '',
-      symptoms: Array.isArray(this.repairForm.value.symptoms) ? this.repairForm.value.symptoms.map(symptom => symptom ?? '') : [''],
-      testFreq: this.repairForm.value.testFreq ?? '',
-      incRxSens: this.repairForm.value.incRxSens ?? '',
-      incFreqErr: this.repairForm.value.incFreqErr ?? '',
-      incMod: this.repairForm.value.incMod ?? '',
-      incPowerOut: this.repairForm.value.incPowerOut ?? '',
-      outRxSens: this.repairForm.value.outRxSens ?? '',
-      outFreqErr: this.repairForm.value.outFreqErr ?? '',
-      outMod: this.repairForm.value.outMod ?? '',
-      outPowerOut: this.repairForm.value.outPowerOut ?? '',
-      accessories: Array.isArray(this.repairForm.value.accessories) ? this.repairForm.value.accessories.map(a => a ?? '') : [''],
-      workPerformed: Array.isArray(this.repairForm.value.workPerformed) ? this.repairForm.value.workPerformed.map(wp => wp ?? '') : [''],
-      repHours: this.repairForm.value.repHours ?? 0,
-      partsUsed: Array.isArray(this.repairForm.value.partsUsed) ? this.repairForm.value.partsUsed.map(pu => pu ?? '') : [''],
-      remarks: this.repairForm.value.remarks ?? ''
+        radioID: this.radioId ?? this.repairForm.value.radioID,
+        radioMake: this.repairForm.value.radioMake ?? '',
+        radioSerial: this.repairForm.value.radioSerial ?? '',
+        radioLocation: this.repairForm.value.radioLocation ?? '',
+        endUserPO: this.repairForm.value.endUserPO ?? '',
+        raaPO: this.repairForm.value.raaPO ?? '',
+        repairTag: this.repairTag,
+        repairStatus: this.repairForm.value.repairStatus ?? '',
+        dateRepairAdded: this.repairForm.value.dateRepairAdded ?? new Date(),
+        dateSentEuRaa: this.repairForm.value.dateSentEuRaa ?? new Date(),
+        dateRecEuRaa: this.repairForm.value.dateRecEuRaa ?? new Date(),
+        dateSentRaaTech: this.repairForm.value.dateSentRaaTech ?? new Date(),
+        dateRecTechRaa: this.repairForm.value.dateRecTechRaa ?? new Date(),
+        dateSentRaaEu: this.repairForm.value.dateSentRaaEu ?? new Date(),
+        techInvNum: this.repairForm.value.techInvNum ?? '',
+        raaInvNum: this.repairForm.value.raaInvNum ?? '',
+        symptoms: Array.isArray(this.repairForm.value.symptoms) ? filterEmptyArrayValues(this.repairForm.value.symptoms.map(symptom => symptom ?? '')) : [''],
+        testFreq: this.repairForm.value.testFreq ?? '',
+        incRxSens: this.repairForm.value.incRxSens ?? '',
+        incFreqErr: this.repairForm.value.incFreqErr ?? '',
+        incMod: this.repairForm.value.incMod ?? '',
+        incPowerOut: this.repairForm.value.incPowerOut ?? '',
+        outRxSens: this.repairForm.value.outRxSens ?? '',
+        outFreqErr: this.repairForm.value.outFreqErr ?? '',
+        outMod: this.repairForm.value.outMod ?? '',
+        outPowerOut: this.repairForm.value.outPowerOut ?? '',
+        accessories: Array.isArray(this.repairForm.value.accessories) ? filterEmptyArrayValues(this.repairForm.value.accessories.map(a => a ?? '')) : [''],
+        workPerformed: Array.isArray(this.repairForm.value.workPerformed) ? filterEmptyArrayValues(this.repairForm.value.workPerformed.map(wp => wp ?? '')) : [''],
+        repHours: this.repairForm.value.repHours ?? 0,
+        partsUsed: Array.isArray(this.repairForm.value.partsUsed) ? filterEmptyArrayValues(this.repairForm.value.partsUsed.map(pu => pu ?? '')) : [''],
+        remarks: this.repairForm.value.remarks ?? ''
     };
-  }
+}
 
   handleSubmission(formValue: any, oneRadio: any): void {
     const formRadioLocation = formValue.radioLocation || '';

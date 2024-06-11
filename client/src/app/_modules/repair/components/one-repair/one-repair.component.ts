@@ -10,6 +10,9 @@ import { PdfService } from '@app/services/pdf/pdf.service';
 import { locationErrorSelector, locationLoadingSelector, selectOneLocation } from '@app/_store/_location-store/location.selectors';
 import { Observable, Subscription, combineLatest, first } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
+import { ACCESS_LEVEL_ADMIN } from '@app/utils/constants';
+
 
 @Component({
   selector: 'app-one-repair',
@@ -35,8 +38,11 @@ export class OneRepairComponent implements OnInit, OnDestroy{
   oneLocation$: Observable<Location | null>;
   locationError$: Observable<any>;
   locationIsLoading$: Observable<boolean>
-  
 
+  userAccessLevel$
+
+
+  ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
 
   poText$: Observable<PoTextAttributes | undefined>;
   invoiceText$: Observable<InvoiceTextAttributes | undefined>;  
@@ -62,6 +68,8 @@ export class OneRepairComponent implements OnInit, OnDestroy{
     this.oneLocation$ = this.store.select(selectOneLocation)
     this.locationError$ = this.store.select(locationErrorSelector)
     this.locationIsLoading$ = this.store.select(locationLoadingSelector);
+
+    this.userAccessLevel$ = this.store.select(selectAccessLevel);
 
     this.poText$ = combineLatest([this.oneRepair$, this.oneRadio$]).pipe(
       map(([repair, radio])=> repair && radio ? {
