@@ -1,0 +1,9 @@
+.accessory-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.full-width-input {
+    flex: 1;
+}

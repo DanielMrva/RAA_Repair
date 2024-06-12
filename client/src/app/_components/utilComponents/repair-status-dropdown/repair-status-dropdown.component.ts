@@ -1,6 +1,6 @@
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, Input, OnInit, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatSelectChange, MatSelect } from '@angular/material/select';
+import { MatSelectChange } from '@angular/material/select';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { Observable } from 'rxjs';
@@ -18,8 +18,9 @@ import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
     }
   ]
 })
-
 export class RepairStatusDropdownComponent implements OnInit, ControlValueAccessor {
+  @Input() initialStatus: string | null = null;
+
   userAccessLevel$: Observable<string | null>;
 
   statuses: string[] = [];
@@ -59,8 +60,26 @@ export class RepairStatusDropdownComponent implements OnInit, ControlValueAccess
   ngOnInit(): void {
     this.userAccessLevel$.subscribe(accessLevel => {
       this.updateStatuses(accessLevel);
+      if(this.initialStatus) {
+        this.addInitialStatus(this.initialStatus);
+        this.selectedStatus = this.initialStatus;
+        if (this.selectedStatus.startsWith('Sent to RAA via Other')) {
+          this.otherShippingMethod = this.selectedStatus.split(': ')[1] || '';
+        }
+      }
+      this.onChange(this.selectedStatus);
     });
+
   }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes['initialStatus']) {
+  //     this.addInitialStatus(this.initialStatus || '');
+  //     this.selectedStatus = this.initialStatus || '';
+  //     this.onChange(this.selectedStatus);
+  //     console.log('Initial status:', this.initialStatus);
+  //   }
+  // }
 
   updateStatuses(accessLevel: string | null): void {
     switch (accessLevel) {
@@ -74,6 +93,21 @@ export class RepairStatusDropdownComponent implements OnInit, ControlValueAccess
       default:
         this.statuses = [...this.userStatuses];
         break;
+    }
+  }
+
+  // addInitialStatus(status: string): void {
+  //   if (status && !this.statuses.includes(status)) {
+  //     this.statuses.push(status);
+  //     console.log('Added status:', status);
+  //   } else {
+  //     console.log('No status added or status already exists');
+  //   }
+  // }
+
+  addInitialStatus(status: string): void {
+    if (status && !this.statuses.includes(status)) {
+      this.statuses.push(status);
     }
   }
 

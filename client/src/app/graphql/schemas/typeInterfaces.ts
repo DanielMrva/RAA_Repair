@@ -144,12 +144,12 @@ export type RepairFormFields = {
     raaPO: string
     repairTag?: number
     repairStatus: string
-    dateRepairAdded: Date
-    dateSentEuRaa: Date
-    dateRecEuRaa: Date
-    dateSentRaaTech: Date
-    dateRecTechRaa: Date
-    dateSentRaaEu: Date
+    dateRepairAdded: Date | null
+    dateSentEuRaa: Date | null
+    dateRecEuRaa: Date | null
+    dateSentRaaTech: Date | null
+    dateRecTechRaa: Date | null
+    dateSentRaaEu: Date | null
     techInvNum: string
     raaInvNum: string
     symptoms: string[]

@@ -22,7 +22,14 @@
           <section id="header-section">
 
             <div class="text-center row">
-              <h2 class="col-12">Repair {{repair.repairTag}} Details</h2>
+              <h2 class="col-12">
+                Repair {{repair.repairTag}} Details 
+                <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
+                  <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
+                    <a [routerLink]="['/edit-repair', repair._id]">EDIT</a>
+                  </ng-container>
+                </ng-container>
+              </h2>
 
               <div class="col-4">
                 <button (click)="generatePDF()" class="btn btn-primary w-100">

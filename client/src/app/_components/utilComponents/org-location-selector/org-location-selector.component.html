@@ -3,8 +3,8 @@
         <mat-label>Organization</mat-label>
         <input 
             type="text"
-            placeholder="Organizaiton"
-            aria-label="Organizaiton"
+            placeholder="Organization"
+            aria-label="Organization"
             matInput
             [formControl]="orgNameControl"
             [matAutocomplete]="orgAuto"
@@ -14,10 +14,8 @@
             #orgAuto="matAutocomplete"
         >
             <mat-option *ngFor="let option of filteredOrgNames$ | async" [value]="option">
-                {{option}}
+                {{ option }}
             </mat-option>
-
         </mat-autocomplete>
- 
     </mat-form-field>
 </div>
