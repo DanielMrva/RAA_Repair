@@ -172,7 +172,6 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
 
   prepaireRepairData(): RepairFormFields {
 
-
     return {
       radioID: this.adminRepairForm.value.radioID ?? '',
       radioMake: this.adminRepairForm.value.radioMake ?? '',
@@ -181,12 +180,12 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
       endUserPO: this.adminRepairForm.value.endUserPO ?? '',
       raaPO: this.adminRepairForm.value.raaPO ?? '',
       repairStatus: this.adminRepairForm.value.repairStatus ?? '',
-      dateRepairAdded: this.adminRepairForm.value.dateRepairAdded ?? '',
-      dateSentEuRaa: this.adminRepairForm.value.dateSentEuRaa ?? '',
-      dateRecEuRaa: this.adminRepairForm.value.dateRecEuRaa ?? '',
-      dateSentRaaTech: this.adminRepairForm.value.dateSentRaaTech ?? '',
-      dateRecTechRaa: this.adminRepairForm.value.dateRecTechRaa ?? '',
-      dateSentRaaEu: this.adminRepairForm.value.dateSentRaaEu ?? '',
+      dateRepairAdded: this.adminRepairForm.value.dateRepairAdded ?? null,
+      dateSentEuRaa: this.adminRepairForm.value.dateSentEuRaa ?? null,
+      dateRecEuRaa: this.adminRepairForm.value.dateRecEuRaa ?? null,
+      dateSentRaaTech: this.adminRepairForm.value.dateSentRaaTech ?? null,
+      dateRecTechRaa: this.adminRepairForm.value.dateRecTechRaa ?? null,
+      dateSentRaaEu: this.adminRepairForm.value.dateSentRaaEu ?? null,
       techInvNum: this.adminRepairForm.value.techInvNum ?? '',
       raaInvNum: this.adminRepairForm.value.raaInvNum ?? '',
       symptoms: Array.isArray(this.adminRepairForm.value.symptoms) ? filterEmptyArrayValues(this.adminRepairForm.value.symptoms.map(symptom => symptom ?? '')) : [''],
@@ -212,6 +211,7 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
   submitRepair(): void {
 
     const submittedRepair: RepairFormFields = this.prepaireRepairData();
+
 
     console.log(`sumbitRepair with radioID: ${submittedRepair.radioID}`)
 

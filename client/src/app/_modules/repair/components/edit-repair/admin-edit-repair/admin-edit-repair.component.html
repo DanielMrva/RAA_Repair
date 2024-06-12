@@ -45,13 +45,15 @@
                 </div>
             </section>
 
+
             <form [formGroup]="repairForm" (ngSubmit)="onSubmit()" class="row">
                 <!-- Radio Location Section -->
                 <section class="row" id="radioLocation">
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-4">
-                        <app-org-location-selector class="form-group col-4" [initialOrgName]="repairForm.controls.orgName.value"
+                        <app-org-location-selector class="form-group col-4"
+                            [initialOrgName]="repairForm.controls.orgName.value"
                             (orgNameSelected)="handleOrgNameSelected($event)"
                             (filteredLocations)="handleFilteredLocations($event)">
                         </app-org-location-selector>
@@ -73,53 +75,58 @@
 
                 <!-- Form Timeline Section -->
                 <section class="row" id="timeline">
-                    <h4 class="col-12 text-center">Timeline</h4>
-
-                    <div class="form-group col-6">
-                        <app-repair-status-dropdown formControlName="repairStatus" [initialStatus]="repairForm.controls.repairStatus.value"></app-repair-status-dropdown>
+                    <div class="col-12">
+                        <div class="row">
+                            <h4 class="col-12 text-center">Timeline</h4>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12 full-width-input" style="width: 100%;">
+                                <app-repair-status-dropdown formControlName="repairStatus"
+                                    [initialStatus]="repairForm.controls.repairStatus.value"
+                                    class="full-width-input"></app-repair-status-dropdown>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <mat-form-field class="form-group col-6">
+                                <mat-label>Repair Added</mat-label>
+                                <input matInput [matDatepicker]="dateRepairAddedPicker"
+                                    formControlName="dateRepairAdded">
+                                <mat-datepicker-toggle matSuffix [for]="dateRepairAddedPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dateRepairAddedPicker></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-6">
+                                <mat-label>Date Sent From Customer</mat-label>
+                                <input matInput [matDatepicker]="dateSentEuRaaPicker" formControlName="dateSentEuRaa">
+                                <mat-datepicker-toggle matSuffix [for]="dateSentEuRaaPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dateSentEuRaaPicker></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-6">
+                                <mat-label>Date Received From Customer</mat-label>
+                                <input matInput [matDatepicker]="dateRecEuRaaPicker" formControlName="dateRecEuRaa">
+                                <mat-datepicker-toggle matSuffix [for]="dateRecEuRaaPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dateRecEuRaaPicker></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-6">
+                                <mat-label>Date Sent to Tech</mat-label>
+                                <input matInput [matDatepicker]="dateSentRaaTechPicker"
+                                    formControlName="dateSentRaaTech">
+                                <mat-datepicker-toggle matSuffix [for]="dateSentRaaTechPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dateSentRaaTechPicker></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-6">
+                                <mat-label>Date Received From Tech</mat-label>
+                                <input matInput [matDatepicker]="dateRecTechRaaPicker" formControlName="dateRecTechRaa">
+                                <mat-datepicker-toggle matSuffix [for]="dateRecTechRaaPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dateRecTechRaaPicker></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="form-group col-6">
+                                <mat-label>Date Sent to Customer</mat-label>
+                                <input matInput [matDatepicker]="dateSentRaaEuPicker" formControlName="dateSentRaaEu">
+                                <mat-datepicker-toggle matSuffix [for]="dateSentRaaEuPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dateSentRaaEuPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
                     </div>
-
-                    <mat-form-field class="form-group col-6">
-                        <mat-label>Repair Added</mat-label>
-                        <input matInput [matDatepicker]="dateRepairAddedPicker" formControlName="dateRepairAdded">
-                        <mat-datepicker-toggle matSuffix [for]="dateRepairAddedPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateRepairAddedPicker></mat-datepicker>
-                    </mat-form-field>
-
-                    <mat-form-field class="form-group col-6">
-                        <mat-label>Date Sent From Customer</mat-label>
-                        <input matInput [matDatepicker]="dateSentEuRaaPicker" formControlName="dateSentEuRaa">
-                        <mat-datepicker-toggle matSuffix [for]="dateSentEuRaaPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateSentEuRaaPicker></mat-datepicker>
-                    </mat-form-field>
-
-                    <mat-form-field class="form-group col-6">
-                        <mat-label>Date Received From Customer</mat-label>
-                        <input matInput [matDatepicker]="dateRecEuRaaPicker" formControlName="dateRecEuRaa">
-                        <mat-datepicker-toggle matSuffix [for]="dateRecEuRaaPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateRecEuRaaPicker></mat-datepicker>
-                    </mat-form-field>
-
-                    <mat-form-field class="form-group col-6">
-                        <mat-label>Date Sent to Tech</mat-label>
-                        <input matInput [matDatepicker]="dateSentRaaTechPicker" formControlName="dateSentRaaTech">
-                        <mat-datepicker-toggle matSuffix [for]="dateSentRaaTechPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateSentRaaTechPicker></mat-datepicker>
-                    </mat-form-field>
-
-                    <mat-form-field class="form-group col-6">
-                        <mat-label>Date Received From Tech</mat-label>
-                        <input matInput [matDatepicker]="dateRecTechRaaPicker" formControlName="dateRecTechRaa">
-                        <mat-datepicker-toggle matSuffix [for]="dateRecTechRaaPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateRecTechRaaPicker></mat-datepicker>
-                    </mat-form-field>
-
-                    <mat-form-field class="form-group col-6">
-                        <mat-label>Date Sent to Customer</mat-label>
-                        <input matInput [matDatepicker]="dateSentRaaEuPicker" formControlName="dateSentRaaEu">
-                        <mat-datepicker-toggle matSuffix [for]="dateSentRaaEuPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #dateSentRaaEuPicker></mat-datepicker>
-                    </mat-form-field>
                 </section>
 
                 <!-- Inventory & PO Section -->
@@ -150,8 +157,8 @@
                                 <mat-form-field class="full-width-input">
                                     <input matInput [formControlName]="j" placeholder="Accessory">
                                     <mat-icon matSuffix class="add-icon" (click)="addAccessory()"
-                                    aria-label="add symptom">add_circle</mat-icon>
-    
+                                        aria-label="add symptom">add_circle</mat-icon>
+
                                     <mat-icon matSuffix class="remove-icon" *ngIf="accessoriesArray.length > 1"
                                         (click)="removeAccessory(j)"
                                         aria-label="remove accessory">remove_circle</mat-icon>

@@ -224,6 +224,7 @@ populateForm(repair: Repair, radio: Radio) {
 
   updateRepair(): void {
     const submittedRepair: RepairFormFields = this.prepareRepairData();
+
     this.store.dispatch(editRepair({ id: this.repairID, updates: submittedRepair }));
   }
 
@@ -245,12 +246,12 @@ populateForm(repair: Repair, radio: Radio) {
         raaPO: this.repairForm.value.raaPO ?? '',
         repairTag: this.repairTag,
         repairStatus: this.repairForm.value.repairStatus ?? '',
-        dateRepairAdded: this.repairForm.value.dateRepairAdded ?? new Date(),
-        dateSentEuRaa: this.repairForm.value.dateSentEuRaa ?? new Date(),
-        dateRecEuRaa: this.repairForm.value.dateRecEuRaa ?? new Date(),
-        dateSentRaaTech: this.repairForm.value.dateSentRaaTech ?? new Date(),
-        dateRecTechRaa: this.repairForm.value.dateRecTechRaa ?? new Date(),
-        dateSentRaaEu: this.repairForm.value.dateSentRaaEu ?? new Date(),
+        dateRepairAdded: this.repairForm.value.dateRepairAdded ?? null,
+        dateSentEuRaa: this.repairForm.value.dateSentEuRaa ?? null,
+        dateRecEuRaa: this.repairForm.value.dateRecEuRaa ?? null,
+        dateSentRaaTech: this.repairForm.value.dateSentRaaTech ?? null,
+        dateRecTechRaa: this.repairForm.value.dateRecTechRaa ?? null,
+        dateSentRaaEu: this.repairForm.value.dateSentRaaEu ?? null,
         techInvNum: this.repairForm.value.techInvNum ?? '',
         raaInvNum: this.repairForm.value.raaInvNum ?? '',
         symptoms: Array.isArray(this.repairForm.value.symptoms) ? filterEmptyArrayValues(this.repairForm.value.symptoms.map(symptom => symptom ?? '')) : [''],

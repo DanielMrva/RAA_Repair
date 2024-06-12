@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { FilterService } from '@app/services/utilityServices/filter.service';
 import { Store } from '@ngrx/store';
@@ -22,7 +22,7 @@ export class OrgLocationSelectorComponent implements OnInit, OnChanges {
   @Output() filteredLocations = new EventEmitter<string[]>();
 
   orgNames$!: Observable<string[]>;
-  locationNames$!: Observable<Location[]>;
+  locationNames$: Observable<Location[]> = of([]);  // Initialize with an empty observable
 
   filteredOrgNames$!: Observable<string[]>;
   filteredLocNames$!: Observable<string[]>;
@@ -70,6 +70,10 @@ export class OrgLocationSelectorComponent implements OnInit, OnChanges {
   }
 
   private filterLocations(orgName: string): void {
+    if (!this.locationNames$) {
+      return;
+    }
+
     this.locationNames$.pipe(
       switchMap(locations => this.filterService.filteredLocs('', orgName, locations)),
       tap(filteredLocations => {
