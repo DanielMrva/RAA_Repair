@@ -114,7 +114,8 @@
         <ng-container *ngIf="oneRadio.serviceRecord.length > 0; else noService">
           <ng-container *ngIf="oneRadio.serviceRecord.length >= 5">
             <div class="text-center">
-              <p class="text-warning"><strong>This radio has been serviced {{oneRadio.serviceRecord.length}} times.</strong></p>
+              <p class="text-warning"><strong>This radio has been serviced {{oneRadio.serviceRecord.length}}
+                  times.</strong></p>
             </div>
           </ng-container>
 
@@ -137,6 +138,12 @@
                   <th scope="col">
                     Parts Used
                   </th>
+                  <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
+                    <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
+                      <th scope="col">Actions</th>
+                    </ng-container>
+                  </ng-container>
+
                 </tr>
               </thead>
               <tbody>
@@ -152,7 +159,7 @@
                       </ng-template>
                     </td>
                     <td>
-                      <a [routerLink]="['/one-repair/', record._id]" >{{record.repairTag}}</a>
+                      <a [routerLink]="['/one-repair/', record._id]">{{record.repairTag}}</a>
                     </td>
                     <td>
                       <ul>
@@ -168,6 +175,16 @@
                         </ng-container>
                       </ul>
                     </td>
+                    <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
+                      <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
+                        <td>
+                          <app-delete-repair-button [repair]="record"></app-delete-repair-button>
+                          <a [routerLink]="['/edit-repair', record._id]" class="edit-link">
+                            <mat-icon>edit</mat-icon>
+                          </a>
+                        </td>
+                      </ng-container>
+                    </ng-container>
                   </tr>
                 </ng-container>
               </tbody>

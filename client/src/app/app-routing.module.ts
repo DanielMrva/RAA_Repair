@@ -50,7 +50,7 @@ const routes: Routes = [
   },
   {
     path: 'submit/:radioID?',
-    component: AdminAddRepairComponent,
+    component: AddRepairComponent,
     pathMatch: 'full',
     data: {
       role: ['admin', 'user']
@@ -109,6 +109,7 @@ const routes: Routes = [
   {
     path: 'one-radio/:id',
     component: OneRadioComponent,
+    runGuardsAndResolvers: 'always',
     data: {
       role: ['admin', 'user']
     },

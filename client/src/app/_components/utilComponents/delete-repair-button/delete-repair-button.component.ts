@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { Repair } from '@app/graphql/schemas';
 import { deleteRepair } from '@app/_store/_repair-store/repair.actions';
 import { ToastService } from '@app/services/toast/toast.service';
+import { DeleteModalService } from '@app/services/modal/delete-modal.service';
+import { AppState } from '@app/_store/app.state';
 
 @Component({
   selector: 'app-delete-repair-button',
@@ -11,26 +11,39 @@ import { ToastService } from '@app/services/toast/toast.service';
   styleUrls: ['./delete-repair-button.component.css']
 })
 export class DeleteRepairButtonComponent {
-
-  @Input() repair: Repair;
+  @Input() repair: any;
 
   constructor(
-    private modalService: NgbModal,
-    private store: Store,
+    private store: Store<AppState>,
+    private deleteModalService: DeleteModalService,
     private toastService: ToastService
   ) {}
 
-  openModal() {
-    this.modalService.open();
+  async openDeleteConfirmation() {
+    try {
+      const result = await this.deleteModalService.openDialog(this.repair._id);
+
+      if (result?.delete) {
+        if (result.copy) {
+          this.copyToClipboard(this.repair);
+        }
+        this.confirmDeleteRepair(this.repair);
+      }
+    } catch (error) {
+      console.log('Deletion cancelled', error);
+    }
   }
 
-  confirmDelete(modal: any) {
-    this.store.dispatch(deleteRepair({ id: this.repair._id }));
-    modal.close();
+  confirmDeleteRepair(repair: any): void {
+    this.store.dispatch(deleteRepair({ id: repair._id }));
   }
 
-
-
+  copyToClipboard(repair: any) {
+    const text = JSON.stringify(repair, null, 2);
+    navigator.clipboard.writeText(text).then(() => {
+      this.toastService.show(`Repair ${repair._id} copied to clipboard.`);
+    });
+  }
 
 }
 

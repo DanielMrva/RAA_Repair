@@ -7,8 +7,12 @@ import { DeleteConfirmModalComponent } from '@app/_components/utilComponents/del
   providedIn: 'root'
 })
 export class DeleteModalService {
+  constructor(private modalService: NgbModal) {}
 
-  constructor(private modalService: NgbModal, private store: Store) { }
+  openDialog(repairId: string) {
+    const modalRef = this.modalService.open(DeleteConfirmModalComponent, { centered: true });
+    modalRef.componentInstance.repairId = repairId;
 
-  openDeleteConfirmationDialog()
+    return modalRef.result;
+  }
 }
