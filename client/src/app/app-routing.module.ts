@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 // component imports
 import { HomeComponent } from '@app/components/home/home.component';
-import { DashboardComponent } from '@app/components/dashboard/dashboard.component';
 
 
 import { AddRepairComponent } from './_modules/repair/components/add-repair/add-repair.component';
@@ -24,6 +23,7 @@ import { LoginComponent } from './_modules/user/components/login/login.component
 import { OneLocationComponent } from './_modules/location/components/one-location/one-location.component';
 import { AddLocationComponent } from './_modules/location/components/add-location/add-location.component';
 import { EditLocationComponent } from './_modules/location/components/edit-location/edit-location.component';
+import { MainDashboardComponent } from './_modules/dashboard/components/main-dashboard/main-dashboard.component';
 
 import { roleGuard } from './guards/role-guard';
 import { authGuard } from './guards/auth-guard';
@@ -279,7 +279,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    component: MainDashboardComponent,
     pathMatch: 'full',
     data: {
       role: ['admin', 'user', 'tech']

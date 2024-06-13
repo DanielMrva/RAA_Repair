@@ -1,0 +1,18 @@
+<mat-tab-group>
+    <mat-tab label="All Active Repairs">
+      <app-dashboard-repairs-table [repairs]="activeRepairs$ | async"></app-dashboard-repairs-table>
+    </mat-tab>
+    <mat-tab label="Incoming Repairs">
+      <app-dashboard-repairs-table [repairs]="incomingRepairs$ | async"></app-dashboard-repairs-table>
+    </mat-tab>
+    <mat-tab label="Repairs at RAA">
+      <app-dashboard-repairs-table [repairs]="raaRepairs$ | async"></app-dashboard-repairs-table>
+    </mat-tab>
+    <mat-tab label="Repairs at Technician">
+      <app-dashboard-repairs-table [repairs]="techRepairs$ | async"></app-dashboard-repairs-table>
+    </mat-tab>
+    <mat-tab label="All Complete Repairs">
+      <app-dashboard-repairs-table [repairs]="completeRepairs$ | async"></app-dashboard-repairs-table>
+    </mat-tab>
+  </mat-tab-group>
+  

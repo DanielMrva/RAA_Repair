@@ -14,6 +14,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -27,15 +33,12 @@ import { OrgModule } from '@app/_modules/org/org.module';
 import { RadioModule } from '@app/_modules/radio/radio.module';
 import { RepairModule } from '@app/_modules/repair/repair.module';
 import { LocationModule } from '@app/_modules/location/location.module';
+import { DashboardModule } from './_modules/dashboard/dashboard.module';
 
 
 import { AppComponent } from '@app/app.component';
 import { HomeComponent } from '@app/components/home/home.component';
 
-import { DashboardComponent } from '@app/components/dashboard/dashboard.component';
-import { AdminDashboardComponent } from '@app/components/dashboard/dashboards/admin-dashboard/admin-dashboard.component';
-import { UserDashboardComponent } from '@app/components/dashboard/dashboards/user-dashboard/user-dashboard.component';
-import { TechDashboardComponent } from '@app/components/dashboard/dashboards/tech-dashboard/tech-dashboard.component';
 import { ToastComponent } from '@app/components/toast/toast.component';
 import { AuthEffects } from '@app/_store/_auth-store/auth.effects';
 import { LocationMismatchDialogComponent } from '@app/_components/utilComponents/location-mismatch-dialog/location-mismatch-dialog.component';
@@ -44,10 +47,6 @@ import { LocationMismatchDialogComponent } from '@app/_components/utilComponents
     declarations: [
         AppComponent,
         HomeComponent,
-        DashboardComponent,
-        AdminDashboardComponent,
-        UserDashboardComponent,
-        TechDashboardComponent,
         LocationMismatchDialogComponent,
         ],
     imports: [
@@ -68,6 +67,12 @@ import { LocationMismatchDialogComponent } from '@app/_components/utilComponents
         MatOptionModule,
         MatNativeDateModule,
         BrowserAnimationsModule,
+        MatTabsModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatIconModule,
+        MatButtonModule,
         MatSelectModule,
         MatProgressSpinnerModule,
         NavModule,
@@ -76,6 +81,7 @@ import { LocationMismatchDialogComponent } from '@app/_components/utilComponents
         OrgModule,
         RepairModule,
         LocationModule,
+        DashboardModule,
         ToastComponent,
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode()})
         

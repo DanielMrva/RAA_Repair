@@ -49,7 +49,7 @@ export const repairReducer = createReducer(
 
     on(RepairActions.loadOrgRepairsSuccess, (state, { repairs }) => ({
         ...state,
-        Repairs: repairs as Repair[],
+        repairs: repairs as Repair[],
         isLoading: false,
         error: null
     })),
@@ -68,7 +68,7 @@ export const repairReducer = createReducer(
 
     on(RepairActions.loadAllRepairsSuccess, (state, { repairs }) => ({
         ...state,
-        Repairs: repairs as Repair[],
+        repairs: repairs as Repair[],
         isLoading: false,
         error: null,
     })),
