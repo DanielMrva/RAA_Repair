@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { QUERY_SERIALRADIO, QUERY_SINGLERADIO, ALL_RADIOS, ORG_RADIOS, ADD_RADIO, Edit_Radio, QUERY_LIKE_SERIALRADIO, LIKE_ORG_RADIOS } from '@app/graphql/schemas';
+import { QUERY_SERIALRADIO, QUERY_SINGLERADIO, ALL_RADIOS, ORG_RADIOS, ADD_RADIO, EDIT_RADIO, QUERY_LIKE_SERIALRADIO, LIKE_ORG_RADIOS } from '@app/graphql/schemas';
 import { Radio } from '@app/graphql/schemas/typeInterfaces';
 
 @Injectable({
@@ -100,7 +100,7 @@ export class RadioService {
 
   editRadio(id: string, updates: any) {
     return this.apollo.mutate<{editRadio: Radio}> ({
-      mutation: Edit_Radio,
+      mutation: EDIT_RADIO,
       variables: {id, updates}
     })
   }

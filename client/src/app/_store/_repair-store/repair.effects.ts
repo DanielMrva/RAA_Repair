@@ -2,16 +2,15 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as RadioActions from "@app/_store/_radio-store/radio.actions"
 import * as RepairActions from "./repair.actions";
-import { loadOneRadio } from "../_radio-store/radio.actions";
+import { loadOneRadio, loadLikeSerialRadio } from "../_radio-store/radio.actions";
 import { loadLocationByName } from "../_location-store/location.actions";
 import { Router } from "@angular/router";
 import { RepairService } from "@app/services/repairs/repair.service";
 import { ToastService } from "@app/services/toast/toast.service";
 import { of, from } from "rxjs";
-import { switchMap, map, catchError, mergeMap } from "rxjs/operators";
+import { switchMap, map, catchError, mergeMap, delay } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
-import { RepairFormFields } from "@app/graphql/schemas";
 
 @Injectable()
 export class RepairEffects {
@@ -57,14 +56,14 @@ export class RepairEffects {
         )
     );
 
-    loadOrgRepairs$ = createEffect(() => 
+    loadOrgRepairs$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RepairActions.loadOrgRepairs),
-            switchMap(({ orgName }) => 
+            switchMap(({ orgName }) =>
                 from(this.repairService.orgRepairs(orgName)).pipe(
-                    map(({ data }) => RepairActions.loadOrgRepairsSuccess({ repairs: data.orgRepairs})),
+                    map(({ data }) => RepairActions.loadOrgRepairsSuccess({ repairs: data.orgRepairs })),
 
-                    catchError((error) => of(RepairActions.loadOrgRepairsFailure({ error})))
+                    catchError((error) => of(RepairActions.loadOrgRepairsFailure({ error })))
                 )
             )
         )
@@ -167,6 +166,49 @@ export class RepairEffects {
                     delay: 3000
                 }),
                     console.error(error)
+            })
+        ),
+        { dispatch: false }
+    );
+
+    deleteRepair$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RepairActions.deleteRepair),
+            switchMap(({ id }) =>
+                from(this.repairService.deleteRepair(id)).pipe(
+                    map(({ data }) =>
+                        RepairActions.deleteRepairSuccess({ repair: data?.deleteRepair })),
+
+                    catchError((error) => of(RepairActions.deleteRepairFailure({ error })))
+                )
+            )
+        )
+    );
+
+    deleteRepairSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+          ofType(RepairActions.deleteRepairSuccess),
+          map(({ repair }) => {
+            this.toastService.show('Repair deleted successfully!', { delay: 3000 });
+            if(repair) {
+                this.store.dispatch(loadOneRadio({ radioID: repair?.radioID }));
+
+            }
+            this.router.navigateByUrl(`/one-radio/${repair?.radioID}`);
+          })
+        ),
+        { dispatch: false }
+      );
+
+    deleteRepairFailure$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RepairActions.deleteRepairFailure),
+            map(({ error }) => {
+                this.toastService.show(`Repair deletion failed: ${error}`, {
+                    classname: 'bg-danger light-text',
+                    delay: 3000
+                }),
+                console.error(error)
             })
         ),
         { dispatch: false }

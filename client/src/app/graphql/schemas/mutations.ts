@@ -251,7 +251,7 @@ export const EDIT_REPAIR = gql`
     }
 `
 
-export const Edit_Radio = gql`
+export const EDIT_RADIO = gql`
     mutation editRadio($id: ID!, $updates: UpdateRadioInput) {
         editRadio(_id: $id, updates: $updates) {
             _id
@@ -381,6 +381,45 @@ export const EDIT_LOCATION = gql`
             radios {
                 _id
             }
+        }
+    }
+`
+
+export const DELETE_REPAIR = gql`
+    mutation deleteRepair($id: ID!) {
+        deleteRepair(_id: $id) {
+            _id
+            radioID
+            radioMake
+            radioSerial
+            radioLocation
+            endUserPO
+            raaPO
+            repairTag
+            repairStatus
+            dateRepairAdded
+            dateSentEuRaa
+            dateRecEuRaa
+            dateSentRaaTech
+            dateRecTechRaa
+            dateSentRaaEu
+            techInvNum
+            raaInvNum
+            symptoms
+            testFreq
+            incRxSens
+            incFreqErr
+            incMod
+            incPowerOut
+            outRxSens
+            outFreqErr
+            outMod
+            outPowerOut
+            accessories
+            workPerformed
+            repHours
+            partsUsed
+            remarks
         }
     }
 `

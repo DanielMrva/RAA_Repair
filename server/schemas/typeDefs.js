@@ -303,6 +303,10 @@ const typeDefs = `#graphql
             _id: ID!
             updates: UpdateLocationInput
         ): Location
+
+        deleteRepair(
+            _id: ID!
+        ): Repair
     }
 
 `;
