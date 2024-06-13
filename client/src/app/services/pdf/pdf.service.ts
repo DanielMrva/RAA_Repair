@@ -120,6 +120,7 @@ export class PdfService {
                   {
                     table: {
                       body: [
+                        [`${location?.orgName}`],
                         [`${location?.locationName}`],
                         [`${location?.street}`],
                         [`${location?.suite ? location.suite : ''}`],
@@ -152,6 +153,14 @@ export class PdfService {
               ]
             },
             margin: [0, 0, 0, 7] // Bottom margin
+          },
+          {
+            table: {
+              widths: ['*'],
+              body: [
+                [{text: `Notes: ${radio?.notes}`}]
+              ]
+            }
           },
           {
             // Sub-header: Timeline

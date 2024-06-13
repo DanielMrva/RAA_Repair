@@ -152,10 +152,10 @@
                     <th scope="row">{{i + 1}}</th>
                     <td>
                       <ng-container *ngIf="!record.dateSentEuRaa; else beenSent">
-                        Radio Not Yet Sent to Tech
+                        Radio Not Yet Sent to RAA
                       </ng-container>
                       <ng-template #beenSent>
-                        {{record.dateSentRaaTech | date: 'MMM d, y'}}
+                        {{record.dateSentEuRaa | date: 'MMM d, y'}}
                       </ng-template>
                     </td>
                     <td>
