@@ -59,10 +59,12 @@ export class PdfService {
   formatRepairForPdf(repair: Repair, radio?: Radio, location?: Location): any {
 
     const fdatePurchased = radio?.datePurchased ? new Date(parseInt(radio.datePurchased)).toLocaleDateString() : ` `;
-    const fDateRec = repair.dateRecEuRaa ? new Date(parseInt(repair.dateRecEuRaa)).toLocaleDateString() : ` `;
+    const fDateRepAdded = repair.dateRecEuRaa ? new Date(parseInt(repair.dateRepairAdded)).toLocaleDateString() : ` `;
+    const fDateSentEuRaa = repair.dateSentRaaTech ? new Date(parseInt(repair.dateSentEuRaa)).toLocaleDateString() : ` `;
+    const fDateRecEuRaa = repair.dateRecEuRaa ? new Date(parseInt(repair.dateRecEuRaa)).toLocaleDateString() : ` `;
     const fDateSentTech = repair.dateSentRaaTech ? new Date(parseInt(repair.dateSentRaaTech)).toLocaleDateString() : ` `;
     const fDateRecTech = repair.dateRecTechRaa ? new Date(parseInt(repair.dateRecTechRaa)).toLocaleDateString() : ` `;
-    const fDateSentEU = repair.dateSentRaaEu ? new Date(parseInt(repair.dateSentRaaEu)).toLocaleDateString() : ` `;
+    const fDateSentRaaEu = repair.dateSentRaaEu ? new Date(parseInt(repair.dateSentRaaEu)).toLocaleDateString() : ` `;
 
     const warrantyDate = radio?.warranty ? new Date(parseInt(radio?.warranty)).getTime() : new Date(0).getTime();
     const currentDate = Date.now();
@@ -82,11 +84,26 @@ export class PdfService {
             table: {
               body: [
                 [
+                  { text: 'End User:', alignment: 'center', bold: true },
                   { text: 'Technician:', alignment: 'center', bold: true },
                   { text: 'Customer:', alignment: 'center', bold: true },
-                  { text: 'End User:', alignment: 'center', bold: true }
                 ],
                 [
+                  {
+                    table: {
+                      body: [
+                        [`${location?.orgName}`],
+                        [`${location?.locationName}`],
+                        [`${location?.street}`],
+                        [`${location?.suite ? location.suite : ''}`],
+                        [`${location?.city}, ${location?.state} ${location?.zip}`],
+                        [`${location?.phone}`],
+                        [`${location?.contactEmail}`]
+                      ],
+                      widths: ['*']
+                    },
+                    layout: 'noBorders'
+                  },
                   {
                     table: {
                       body: [
@@ -116,22 +133,8 @@ export class PdfService {
                     },
                     layout: 'noBorders',
                     margin: [0, 0, 10, 0] // Right margin
-                  },
-                  {
-                    table: {
-                      body: [
-                        [`${location?.orgName}`],
-                        [`${location?.locationName}`],
-                        [`${location?.street}`],
-                        [`${location?.suite ? location.suite : ''}`],
-                        [`${location?.city}, ${location?.state} ${location?.zip}`],
-                        [`${location?.phone}`],
-                        [`${location?.contactEmail}`]
-                      ],
-                      widths: ['*']
-                    },
-                    layout: 'noBorders'
                   }
+
                 ]
               ],
               widths: ['33%', '33%', '33%'],
@@ -172,9 +175,10 @@ export class PdfService {
             table: {
               widths: ['*', '*', '*', '*'],
               body: [
-                [{ text: 'Date Purchased:', bold: true }, `${fdatePurchased}`, { text: 'Date Received:', bold: true }, `${fDateRec}`],
+                [{ text: 'Date Purchased:', bold: true }, `${fdatePurchased}`, { text: 'Date Repair Added:', bold: true }, `${fDateRepAdded}`, ],
+                [{ text: 'Date Sent from End User:', bold: true }, `${fDateSentEuRaa}`, { text: 'Date Received:', bold: true }, `${fDateRecEuRaa}`],
                 [{ text: 'Date Sent to Tech:', bold: true }, `${fDateSentTech}`, { text: 'Date Received from Tech:', bold: true }, `${fDateRecTech}`],
-                [{ text: 'Date Sent to End User:', bold: true }, `${fDateSentEU}`, '', '']
+                [{ text: 'Date Sent to End User:', bold: true }, `${fDateSentRaaEu}`, '', '']
               ]
             },
             margin: [0, 0, 0, 7] // Bottom margin
