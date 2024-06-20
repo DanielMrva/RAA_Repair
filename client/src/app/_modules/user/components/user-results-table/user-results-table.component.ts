@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { userLoadingSelector, userErrorSelector, selectAllUsers } from '@app/_store/_user-store/user.selectors';
@@ -8,13 +8,15 @@ import { loadUsers, loadOrgUsers } from '@app/_store/_user-store/user.actions';
 import { Observable } from 'rxjs';
 import { User } from '@app/graphql/schemas';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-user-results-table',
   templateUrl: './user-results-table.component.html',
   styleUrls: ['./user-results-table.component.css']
 })
-export class UserResultsTableComponent implements OnInit, OnDestroy{
+export class UserResultsTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private subscriptions = new Subscription();
 
@@ -29,6 +31,9 @@ export class UserResultsTableComponent implements OnInit, OnDestroy{
     'orgName',
     'accessLevel'
   ]
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private store: Store<AppState>,
@@ -53,7 +58,7 @@ export class UserResultsTableComponent implements OnInit, OnDestroy{
 
         const condition = orgName ? 'orgName' : 'default';
 
-        switch(condition) {
+        switch (condition) {
           case 'orgName':
             // Dispatch action to fetch users by userName
             this.store.dispatch(loadOrgUsers({ orgName }));
@@ -69,8 +74,13 @@ export class UserResultsTableComponent implements OnInit, OnDestroy{
   };
 
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();  
+    this.subscriptions.unsubscribe();
   };
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
 
 }

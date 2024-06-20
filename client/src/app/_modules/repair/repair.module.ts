@@ -11,6 +11,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
@@ -71,6 +72,7 @@ import { RepairStatusDropdownComponent } from '@app/_components/utilComponents/r
     MatSelectModule,
     // MatProgressSpinnerModule,
     // MatFormFieldModule,
+    MatPaginatorModule,
     MatAutocompleteModule,
     MatFormFieldModule,
     MatTableModule,

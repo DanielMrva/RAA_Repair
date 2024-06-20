@@ -1,9 +1,57 @@
 .accessory-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .full-width-input {
-    flex: 1;
+  flex: 1;
 }
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.background {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.header {
+  height: 50px;
+}
+
+.vh-100 {
+  height: calc(100% - 100px);
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+

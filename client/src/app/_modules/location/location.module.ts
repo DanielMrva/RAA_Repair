@@ -11,6 +11,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AddLocationComponent } from './components/add-location/add-location.component';
 import { EditLocationComponent } from './components/edit-location/edit-location.component';
@@ -38,6 +41,9 @@ import { LocationResultsTableComponent } from './components/location-results-tab
     MatSelectModule,
     MatProgressSpinnerModule,
     MatTableModule,
+    MatSortModule,
+    MatIconModule,
+    MatPaginatorModule,
     StoreModule.forFeature('location', locationReducer),
     EffectsModule.forFeature([LocationEffects])
   ],

@@ -7,6 +7,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
 
 import { EditUserComponent } from './components/edit-user/edit-user.component';
 import { OneUserComponent } from './components/one-user/one-user.component';
@@ -35,12 +38,10 @@ import { UserResultsTableComponent } from './components/user-results-table/user-
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    // MatDatepickerModule,
-    // MatInputModule,
-    // MatNativeDateModule,
-    // BrowserAnimationsModule,
-    // MatRadioModule,
     MatTableModule,
+    MatIconModule,
+    MatSortModule,
+    MatPaginatorModule,
     MatSelectModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { orgLoadingSelector, orgErrorSelector, selectAllOrgs } from '@app/_store/_org-store/org.selectors';
@@ -8,13 +8,16 @@ import { loadAllOrgs, loadLikeOrgs } from '@app/_store/_org-store/org.actions';
 import { Observable } from 'rxjs';
 import { Organization } from '@app/graphql/schemas';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+
 
 @Component({
   selector: 'app-org-results-table',
   templateUrl: './org-results-table.component.html',
   styleUrls: ['./org-results-table.component.css']
 })
-export class OrgResultsTableComponent implements OnInit, OnDestroy {
+export class OrgResultsTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private subscriptions = new Subscription();
 
@@ -28,6 +31,10 @@ export class OrgResultsTableComponent implements OnInit, OnDestroy {
     'locations',
     'users'
   ]
+
+  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private store: Store<AppState>,
@@ -70,5 +77,10 @@ export class OrgResultsTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();  
   };
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+}
 
 }
