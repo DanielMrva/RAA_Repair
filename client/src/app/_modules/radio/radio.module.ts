@@ -14,7 +14,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AddRadioComponent } from './components/add-radio/add-radio/add-radio.component';
 import { AdminAddRadioComponent } from './components/add-radio/add-radio/admin-add-radio/admin-add-radio.component';
@@ -49,6 +50,7 @@ import { radioReducer } from '@app/_store/_radio-store/radio.reducers';
     MatTableModule,
     MatSortModule,
     MatIconModule,
+    MatPaginatorModule,
     StoreModule.forFeature('radio', radioReducer),
     EffectsModule.forFeature([RadioEffects])
   ],

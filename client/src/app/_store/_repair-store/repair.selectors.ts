@@ -25,7 +25,7 @@ export const repairLoadingSelector = createSelector(
 );
 
 export const selectActiveRepairs = createSelector(selectAllRepairs, repairs =>
-  repairs.filter(repair => repair.repairStatus !== 'Radio sent to customer')
+  repairs.filter(repair => repair.repairStatus !== 'Radio sent to Customer')
 );
 
 export const selectIncomingRepairs = createSelector(selectAllRepairs, repairs =>
@@ -44,5 +44,5 @@ export const selectRepairsAtTechnician = createSelector(selectAllRepairs, repair
 );
 
 export const selectCompleteRepairs = createSelector(selectAllRepairs, repairs =>
-  repairs.filter(repair => repair.repairStatus === 'Radio sent to customer' || repair.dateSentRaaEu)
+  repairs.filter(repair => repair.repairStatus === 'Radio sent to Customer' || repair.dateSentRaaEu)
 );

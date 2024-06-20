@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { repairLoadingSelector, repairErrorSelector, selectAllRepairs } from '@app/_store/_repair-store/repair.selectors';
@@ -7,13 +7,15 @@ import { ActivatedRoute } from '@angular/router';
 import { loadAllRepairs, loadOrgRepairs } from '@app/_store/_repair-store/repair.actions';
 import { Repair } from '@app/graphql/schemas';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-repair-results-table',
   templateUrl: './repair-results-table.component.html',
   styleUrls: ['./repair-results-table.component.css']
 })
-export class RepairResultsTableComponent implements OnInit, OnDestroy{
+export class RepairResultsTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private subscriptions = new Subscription();
 
@@ -21,6 +23,9 @@ export class RepairResultsTableComponent implements OnInit, OnDestroy{
   repairError$: Observable< string | null>;
   repairs$: Observable<Repair[]>;
   dataSource: MatTableDataSource<Repair> = new MatTableDataSource<Repair>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   displayedColumns: string[] = [
     "radioSerial",
@@ -81,5 +86,10 @@ export class RepairResultsTableComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   };
+
+  ngAfterViewInit(): void {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+  }
 
 }

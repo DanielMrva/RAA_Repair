@@ -1,6 +1,6 @@
-<div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort>
-  
+<div class="d-flex flex-column flex-grow-1">
+  <div class="flex-grow-1 overflow-auto">
+    <table class="table w-100" mat-table [dataSource]="dataSource" matSort>
       <!-- Repair Tag Column -->
       <ng-container matColumnDef="repairTag">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Repair Tag </th>
@@ -8,21 +8,19 @@
           <a [routerLink]="['/one-repair', repair._id]">{{repair.repairTag}}</a>
         </td>
       </ng-container>
-  
       <!-- Repair Status Column -->
       <ng-container matColumnDef="repairStatus">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Repair Status </th>
         <td mat-cell *matCellDef="let repair">{{repair.repairStatus}}</td>
       </ng-container>
-  
       <!-- Radio Details Column -->
       <ng-container matColumnDef="radioDetails">
         <th mat-header-cell *matHeaderCellDef> Radio Details </th>
         <td mat-cell *matCellDef="let repair">
-          <a [routerLink]="['/one-radio', repair.radioID]">S/N: {{repair.radioSerial}}, Loc: {{repair.radioLocation}}</a>
+          <a [routerLink]="['/one-radio', repair.radioID]">S/N: {{repair.radioSerial}}, Loc:
+            {{repair.radioLocation}}</a>
         </td>
       </ng-container>
-  
       <!-- Date Fields Column -->
       <ng-container matColumnDef="dateFields">
         <th mat-header-cell *matHeaderCellDef> Date Fields </th>
@@ -35,11 +33,10 @@
           <div *ngIf="repair.dateSentRaaEu">Sent to End User: {{repair.dateSentRaaEu | date}}</div>
         </td>
       </ng-container>
-  
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-  
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   </div>
-  
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" class="mt-auto"></mat-paginator>
+</div>
