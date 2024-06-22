@@ -40,9 +40,7 @@ import { repairReducer } from '@app/_store/_repair-store/repair.reducers';
 import { AdminEditRepairComponent } from './components/edit-repair/admin-edit-repair/admin-edit-repair.component';
 import { RepairResultsTableComponent } from './components/repair-results-table/repair-results-table.component';
 import { RepairStatusDropdownComponent } from '@app/_components/utilComponents/repair-status-dropdown/repair-status-dropdown.component';
-
-
-
+import { RepairResultsPageComponent } from './components/repair-results-page/repair-results-page.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +53,8 @@ import { RepairStatusDropdownComponent } from '@app/_components/utilComponents/r
     PoTextButtonComponent,
     InvoiceTextButtonComponent,
     RepairResultsTableComponent,
-    RepairStatusDropdownComponent
+    RepairStatusDropdownComponent,
+    RepairResultsPageComponent,
   ],
   imports: [
     CommonModule,

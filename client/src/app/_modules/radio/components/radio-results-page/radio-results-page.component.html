@@ -1,0 +1,18 @@
+<div *ngIf="isLoading$ | async else loadedData">
+    <h2>Loading...</h2>
+</div>
+
+<div *ngIf="radioError$ | async as error">
+    <div class="error-message">
+        <h2>{{error}}</h2>
+    </div>
+
+</div>
+
+<ng-template #loadedData>
+
+    <div *ngIf="radios$ | async as radios">
+        <app-radio-results-table [radios]="radios"></app-radio-results-table>
+    </div>
+
+</ng-template>

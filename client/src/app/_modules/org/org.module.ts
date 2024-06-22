@@ -19,15 +19,15 @@ import { orgReducer } from '@app/_store/_org-store/org.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { OrgEffects } from '@app/_store/_org-store/org.effects';
 import { OrgResultsTableComponent } from './components/org-results-table/org-results-table.component';
-
-
+import { OrgResultsPageComponent } from './components/org-results-page/org-results-page.component';
 
 @NgModule({
   declarations: [
     OneOrgComponent,
     EditOrgComponent,
     AddOrgComponent,
-    OrgResultsTableComponent
+    OrgResultsTableComponent,
+    OrgResultsPageComponent,
   ],
   imports: [
     CommonModule,

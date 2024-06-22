@@ -1,32 +1,17 @@
-import { Component, OnDestroy, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '@app/_store/app.state';
-import { repairLoadingSelector, repairErrorSelector, selectAllRepairs } from '@app/_store/_repair-store/repair.selectors';
-import { Subscription, Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { loadAllRepairs, loadOrgRepairs } from '@app/_store/_repair-store/repair.actions';
-import { Repair } from '@app/graphql/schemas';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Repair } from '@app/graphql/schemas';
 
 @Component({
   selector: 'app-repair-results-table',
   templateUrl: './repair-results-table.component.html',
   styleUrls: ['./repair-results-table.component.css']
 })
-export class RepairResultsTableComponent implements OnInit, OnDestroy, AfterViewInit {
+export class RepairResultsTableComponent implements OnChanges, AfterViewInit  {
 
-  private subscriptions = new Subscription();
-
-  isLoading$: Observable<boolean>;
-  repairError$: Observable< string | null>;
-  repairs$: Observable<Repair[]>;
-  dataSource: MatTableDataSource<Repair> = new MatTableDataSource<Repair>();
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
+  @Input() repairs: Repair[] | null = [];
   displayedColumns: string[] = [
     "radioSerial",
     "radioLocation",
@@ -53,43 +38,27 @@ export class RepairResultsTableComponent implements OnInit, OnDestroy, AfterView
     "partsUsed",
     "remarks"
   ];
+  dataSource: MatTableDataSource<Repair> = new MatTableDataSource<Repair>();
 
-  constructor(
-    private store: Store<AppState>,
-    private route: ActivatedRoute
-  ) {
-    this.isLoading$ = this.store.select(repairLoadingSelector);
-    this.repairError$ = this.store.select(repairErrorSelector);
-    this.repairs$ = this.store.select(selectAllRepairs);
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  constructor() { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['repairs'] && this.repairs) {
+      this.dataSource.data = this.repairs;
+      if (this.paginator) {
+        this.dataSource.paginator = this.paginator;
+      }
+      if (this.sort) {
+        this.dataSource.sort = this.sort;
+      }
+    }
   }
 
-  ngOnInit(): void {
-    this.subscriptions.add(
-      this.repairs$.subscribe((repairs) => {
-        this.dataSource.data = repairs;
-      })
-    );
-
-    this.subscriptions.add(
-      this.route.params.subscribe(params => {
-        const orgName = params['orgName'];
-
-        if (orgName) {
-          this.store.dispatch(loadOrgRepairs({ orgName }));
-        } else {
-          this.store.dispatch(loadAllRepairs());
-        }
-      })
-    )
-  };
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  };
-
-  ngAfterViewInit(): void {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
-
 }

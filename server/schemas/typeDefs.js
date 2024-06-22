@@ -111,10 +111,10 @@ const typeDefs = `#graphql
         allOrgs: [Organization]
         allLocations: [Location]
         location(locationId: String!): Location
-        locationByName(locationName: String!): Location
+        locationByName(locationName: String!): [Location]
         orgLocations(orgName: String!): [Location]
         locationNames: [Location]
-        likeOrg: [Organization]
+        likeOrg(orgName: String!): [Organization]
     }
 
     input UpdateRepairInput {

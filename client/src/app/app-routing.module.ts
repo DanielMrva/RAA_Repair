@@ -27,10 +27,11 @@ import { MainDashboardComponent } from './_modules/dashboard/components/main-das
 
 import { roleGuard } from './guards/role-guard';
 import { authGuard } from './guards/auth-guard';
-import { RadioResultsTableComponent } from './_modules/radio/components/radio-results-table/radio-results-table.component';
-import { OrgResultsTableComponent } from './_modules/org/components/org-results-table/org-results-table.component';
-import { LocationResultsTableComponent } from './_modules/location/components/location-results-table/location-results-table.component';
-import { UserResultsTableComponent } from './_modules/user/components/user-results-table/user-results-table.component';
+import { RadioResultsPageComponent } from './_modules/radio/components/radio-results-page/radio-results-page.component';
+import { OrgResultsPageComponent } from './_modules/org/components/org-results-page/org-results-page.component';
+import { LocationResultsPageComponent } from './_modules/location/components/location-results-page/location-results-page.component';
+import { UserResultsPageComponent } from './_modules/user/components/user-results-page/user-results-page.component';
+import { RepairResultsPageComponent } from './_modules/repair/components/repair-results-page/repair-results-page.component';
 
 
 const routes: Routes = [
@@ -157,7 +158,7 @@ const routes: Routes = [
   },
   {
     path: 'radio-results',
-    component: RadioResultsTableComponent,
+    component: RadioResultsPageComponent,
     pathMatch: 'full',
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard, roleGuard],
@@ -167,7 +168,7 @@ const routes: Routes = [
   },
   {
     path: 'radio-results/:orgName',
-    component: RadioResultsTableComponent,
+    component: RadioResultsPageComponent,
     pathMatch: 'full',
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard, roleGuard],
@@ -177,7 +178,7 @@ const routes: Routes = [
   },
   {
     path: 'radio-results/:serialNumber/:model',
-    component: RadioResultsTableComponent,
+    component: RadioResultsPageComponent,
     pathMatch: 'full',
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard, roleGuard],
@@ -187,7 +188,7 @@ const routes: Routes = [
   },
   {
     path: 'user-results',
-    component: UserResultsTableComponent,
+    component: UserResultsPageComponent,
     data: {
       role: ['admin']
     },
@@ -195,7 +196,7 @@ const routes: Routes = [
   },
   {
     path: 'user-results/:orgName',
-    component: UserResultsTableComponent,
+    component: UserResultsPageComponent,
     data: {
       role: ['admin']
     },
@@ -203,7 +204,7 @@ const routes: Routes = [
   },
   {
     path: 'org-results',
-    component: OrgResultsTableComponent,
+    component: OrgResultsPageComponent,
     pathMatch: 'full',
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard, roleGuard],
@@ -213,7 +214,7 @@ const routes: Routes = [
   },
   {
     path: 'org-results/:orgName',
-    component: OrgResultsTableComponent,
+    component: OrgResultsPageComponent,
     pathMatch: 'full',
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard, roleGuard],
@@ -223,7 +224,7 @@ const routes: Routes = [
   },
   {
     path: 'location-results',
-    component: LocationResultsTableComponent,
+    component: LocationResultsPageComponent,
     pathMatch: 'full',
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard, roleGuard],
@@ -233,7 +234,7 @@ const routes: Routes = [
   },
   {
     path: 'location-results/:orgName',
-    component: LocationResultsTableComponent,
+    component: LocationResultsPageComponent,
     pathMatch: 'full',
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard, roleGuard],

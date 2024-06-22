@@ -1,0 +1,18 @@
+<div *ngIf="isLoading$ | async else loadedData">
+    <h2>Loading...</h2>
+</div>
+
+<div *ngIf="userError$ | async as error">
+    <div class="error-message">
+        <h2>{{error}}</h2>
+    </div>
+
+</div>
+
+<ng-template #loadedData>
+
+    <div *ngIf="users$ | async as users">
+        <app-user-results-table [users]="users"></app-user-results-table>
+    </div>
+
+</ng-template>

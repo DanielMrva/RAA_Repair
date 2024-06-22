@@ -22,7 +22,7 @@ import { UserEffects } from '@app/_store/_user-store/user.effects';
 import { userReducer } from '@app/_store/_user-store/user.reducers';
 import { authReducer } from '@app/_store/_auth-store/auth.reducers';
 import { UserResultsTableComponent } from './components/user-results-table/user-results-table.component';
-
+import { UserResultsPageComponent } from './components/user-results-page/user-results-page.component';
 
 
 @NgModule({
@@ -32,6 +32,7 @@ import { UserResultsTableComponent } from './components/user-results-table/user-
     AddUserComponent,
     LoginComponent,
     UserResultsTableComponent,
+    UserResultsPageComponent,
   ],
   imports: [
     CommonModule,

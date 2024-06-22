@@ -1,0 +1,17 @@
+<div *ngIf="isLoading$ | async else loadedData">
+    <h2>Loading...</h2>
+</div>
+
+<div *ngIf="locationError$ | async as error">
+    <div class="error-message">
+        <h2>{{error}}</h2>
+    </div>
+</div>
+
+<ng-template #loadedData>
+
+    <div *ngIf="locations$ | async as locations">
+        <app-location-results-table [locations]="locations"></app-location-results-table>
+    </div>
+
+</ng-template>
