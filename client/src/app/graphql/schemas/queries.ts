@@ -161,8 +161,8 @@ export const QUERY_LIKE_ORGNAME = gql`
     ${LOCATION_FIELDS_FRAGMENT}
     ${RADIO_FIELDS_FRAGMENT}
     ${SERVICE_RECORD_FRAGMENT}
-    query likeOrgName {
-        likeOrg {
+    query likeOrgName($orgName: String!) {
+        likeOrg(orgName: $orgName){
             ...OrgFieldsFragment
         }
     }

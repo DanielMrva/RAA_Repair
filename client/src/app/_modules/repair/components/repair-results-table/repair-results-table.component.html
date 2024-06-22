@@ -1,173 +1,156 @@
-<div *ngIf="isLoading$ | async; else loadedData">
-    <h2>Loading...</h2>
+<div class="d-flex flex-cloumn flex-grow-1">
+    <div class="flex-grow-1 overflow-auto">
+
+        <table class="table w-100" mat-table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="radioSerial">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Serial Number</th>
+                <td mat-cell *matCellDef="let element">{{ element.radioSerial }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="radioLocation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+                <td mat-cell *matCellDef="let element">{{ element.radioLocation }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="endUserPO">
+                <th mat-header-cell *matHeaderCellDef>End User PO</th>
+                <td mat-cell *matCellDef="let element">{{ element.endUserPO }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="raaPO">
+                <th mat-header-cell *matHeaderCellDef>RAA PO</th>
+                <td mat-cell *matCellDef="let element">{{ element.raaPO }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="repairTag">
+                <th mat-header-cell *matHeaderCellDef>Repair Tag</th>
+                <td mat-cell *matCellDef="let element">{{ element.repairTag }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="repairStatus">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">{{ element.repairStatus }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateRepairAdded">
+                <th mat-header-cell *matHeaderCellDef>Date Repair Added</th>
+                <td mat-cell *matCellDef="let element">{{ element.dateRepairAdded | date: 'MMM d, y' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateSentEuRaa">
+                <th mat-header-cell *matHeaderCellDef>Date Sent to RAA from EU</th>
+                <td mat-cell *matCellDef="let element">{{ element.dateSentEuRaa | date: 'MMM d, y' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateRecEuRaa">
+                <th mat-header-cell *matHeaderCellDef>Date Received by RAA from EU</th>
+                <td mat-cell *matCellDef="let element">{{ element.dateRecEuRaa | date: 'MMM d, y' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateSentRaaTech">
+                <th mat-header-cell *matHeaderCellDef>Date Sent to Tech</th>
+                <td mat-cell *matCellDef="let element">{{ element.dateSentRaaTech | date: 'MMM d, y' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateRecTechRaa">
+                <th mat-header-cell *matHeaderCellDef>Date Received from Tech</th>
+                <td mat-cell *matCellDef="let element">{{ element.dateRecTechRaa | date: 'MMM d, y' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateSentRaaEu">
+                <th mat-header-cell *matHeaderCellDef>Date Sent to EU</th>
+                <td mat-cell *matCellDef="let element">{{ element.dateSentRaaEu | date: 'MMM d, y' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="techInvNum">
+                <th mat-header-cell *matHeaderCellDef>Tech Inv Num</th>
+                <td mat-cell *matCellDef="let element">{{ element.techInvNum }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="raaInvNum">
+                <th mat-header-cell *matHeaderCellDef>RAA Inv Num</th>
+                <td mat-cell *matCellDef="let element">{{ element.raaInvNum }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="testFreq">
+                <th mat-header-cell *matHeaderCellDef>Test Freq</th>
+                <td mat-cell *matCellDef="let element">{{ element.testFreq }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="incRxSens">
+                <th mat-header-cell *matHeaderCellDef>Rx Sens</th>
+                <td mat-cell *matCellDef="let element"><b>Inc:</b> {{ element.incRxSens }} <b>Out:</b>
+                    {{element.outRxSens}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="incFreqErr">
+                <th mat-header-cell *matHeaderCellDef>Frequency Error</th>
+                <td mat-cell *matCellDef="let element"><b>Inc:</b> {{ element.incFreqErr }} <b>Out:</b>
+                    {{element.outFreqErr}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="incMod">
+                <th mat-header-cell *matHeaderCellDef>Modulation</th>
+                <td mat-cell *matCellDef="let element"><b>Inc:</b> {{ element.incMod }} <b>Out:</b>
+                    {{element.outMod}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="incPowerOut">
+                <th mat-header-cell *matHeaderCellDef>Power Output</th>
+                <td mat-cell *matCellDef="let element"><b>Inc:</b> {{ element.incPowerOut }} <b>Out:</b>
+                    {{element.outPowerOut}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="accessories">
+                <th mat-header-cell *matHeaderCellDef>Accessories</th>
+                <td mat-cell *matCellDef="let element">
+                    <ul>
+                        <li *ngFor="let accessory of element.accessories">
+                            {{ accessory }}
+                        </li>
+                    </ul>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="workPerformed">
+                <th mat-header-cell *matHeaderCellDef>Work Performed</th>
+                <td mat-cell *matCellDef="let element">
+                    <ul>
+                        <li *ngFor="let work of element.workPerformed">
+                            {{ work }}
+                        </li>
+                    </ul>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="repHours">
+                <th mat-header-cell *matHeaderCellDef>Rep Hours</th>
+                <td mat-cell *matCellDef="let element">{{ element.repHours }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="partsUsed">
+                <th mat-header-cell *matHeaderCellDef>Parts Used</th>
+                <td mat-cell *matCellDef="let element">
+                    <ul>
+                        <li *ngFor="let part of element.partsUsed">
+                            {{ part }}
+                        </li>
+                    </ul>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="remarks">
+                <th mat-header-cell *matHeaderCellDef>Remarks</th>
+                <td mat-cell *matCellDef="let element">{{ element.remarks }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
 </div>
-
-<ng-template #loadedData>
-    <div *ngIf="repairError$ | async as error">
-        <div class="error-message">
-            <h2>Error</h2>
-            <p>{{ error }}</p>
-        </div>
-    </div>
-
-    <div class="d-flex flex-cloumn flex-grow-1">
-        <div class="flex-grow-1 overflow-auto">
-
-            <table class="table w-100" mat-table [dataSource]="dataSource" matSort>
-
-                <ng-container matColumnDef="radioSerial">
-                    <th mat-header-cell *matHeaderCellDef>Serial Number</th>
-                    <td mat-cell *matCellDef="let element">{{ element.radioSerial }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="radioLocation">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
-                    <td mat-cell *matCellDef="let element">{{ element.radioLocation }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="endUserPO">
-                    <th mat-header-cell *matHeaderCellDef>End User PO</th>
-                    <td mat-cell *matCellDef="let element">{{ element.endUserPO }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="raaPO">
-                    <th mat-header-cell *matHeaderCellDef>RAA PO</th>
-                    <td mat-cell *matCellDef="let element">{{ element.raaPO }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="repairTag">
-                    <th mat-header-cell *matHeaderCellDef>Repair Tag</th>
-                    <td mat-cell *matCellDef="let element">{{ element.repairTag }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="repairStatus">
-                    <th mat-header-cell *matHeaderCellDef>Status</th>
-                    <td mat-cell *matCellDef="let element">{{ element.repairStatus }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="dateRepairAdded">
-                    <th mat-header-cell *matHeaderCellDef>Date Repair Added</th>
-                    <td mat-cell *matCellDef="let element">{{ element.dateRepairAdded | date: 'MMM d, y' }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="dateSentEuRaa">
-                    <th mat-header-cell *matHeaderCellDef>Date Sent to RAA from EU</th>
-                    <td mat-cell *matCellDef="let element">{{ element.dateSentEuRaa | date: 'MMM d, y' }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="dateRecEuRaa">
-                    <th mat-header-cell *matHeaderCellDef>Date Received by RAA from EU</th>
-                    <td mat-cell *matCellDef="let element">{{ element.dateRecEuRaa | date: 'MMM d, y' }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="dateSentRaaTech">
-                    <th mat-header-cell *matHeaderCellDef>Date Sent to Tech</th>
-                    <td mat-cell *matCellDef="let element">{{ element.dateSentRaaTech | date: 'MMM d, y' }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="dateRecTechRaa">
-                    <th mat-header-cell *matHeaderCellDef>Date Received from Tech</th>
-                    <td mat-cell *matCellDef="let element">{{ element.dateRecTechRaa | date: 'MMM d, y' }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="dateSentRaaEu">
-                    <th mat-header-cell *matHeaderCellDef>Date Sent to EU</th>
-                    <td mat-cell *matCellDef="let element">{{ element.dateSentRaaEu | date: 'MMM d, y' }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="techInvNum">
-                    <th mat-header-cell *matHeaderCellDef>Tech Inv Num</th>
-                    <td mat-cell *matCellDef="let element">{{ element.techInvNum }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="raaInvNum">
-                    <th mat-header-cell *matHeaderCellDef>RAA Inv Num</th>
-                    <td mat-cell *matCellDef="let element">{{ element.raaInvNum }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="testFreq">
-                    <th mat-header-cell *matHeaderCellDef>Test Freq</th>
-                    <td mat-cell *matCellDef="let element">{{ element.testFreq }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="incRxSens">
-                    <th mat-header-cell *matHeaderCellDef>Rx Sens</th>
-                    <td mat-cell *matCellDef="let element"><b>Inc:</b> {{ element.incRxSens }} <b>Out:</b>
-                        {{element.outRxSens}}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="incFreqErr">
-                    <th mat-header-cell *matHeaderCellDef>Frequency Error</th>
-                    <td mat-cell *matCellDef="let element"><b>Inc:</b> {{ element.incFreqErr }} <b>Out:</b>
-                        {{element.outFreqErr}}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="incMod">
-                    <th mat-header-cell *matHeaderCellDef>Modulation</th>
-                    <td mat-cell *matCellDef="let element"><b>Inc:</b> {{ element.incMod }} <b>Out:</b>
-                        {{element.outMod}}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="incPowerOut">
-                    <th mat-header-cell *matHeaderCellDef>Power Output</th>
-                    <td mat-cell *matCellDef="let element"><b>Inc:</b> {{ element.incPowerOut }} <b>Out:</b>
-                        {{element.outPowerOut}}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="accessories">
-                    <th mat-header-cell *matHeaderCellDef>Accessories</th>
-                    <td mat-cell *matCellDef="let element">
-                        <ul>
-                            <li *ngFor="let accessory of element.accessories">
-                                {{ accessory }}
-                            </li>
-                        </ul>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="workPerformed">
-                    <th mat-header-cell *matHeaderCellDef>Work Performed</th>
-                    <td mat-cell *matCellDef="let element">
-                        <ul>
-                            <li *ngFor="let work of element.workPerformed">
-                                {{ work }}
-                            </li>
-                        </ul>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="repHours">
-                    <th mat-header-cell *matHeaderCellDef>Rep Hours</th>
-                    <td mat-cell *matCellDef="let element">{{ element.repHours }}</td>
-                </ng-container>
-
-                <ng-container matColumnDef="partsUsed">
-                    <th mat-header-cell *matHeaderCellDef>Parts Used</th>
-                    <td mat-cell *matCellDef="let element">
-                        <ul>
-                            <li *ngFor="let part of element.partsUsed">
-                                {{ part }}
-                            </li>
-                        </ul>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="remarks">
-                    <th mat-header-cell *matHeaderCellDef>Remarks</th>
-                    <td mat-cell *matCellDef="let element">{{ element.remarks }}</td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-        </div>
-
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-    </div>
-</ng-template>
-
-<ng-template #noLoadedData>
-    <h2>No data available</h2>
-</ng-template>

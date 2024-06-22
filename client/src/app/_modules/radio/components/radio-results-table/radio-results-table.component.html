@@ -1,158 +1,143 @@
-<div *ngIf="isLoading$ | async; else loadedData">
-    <h2>Loading...</h2>
+<div class="d-flex flex-column flex-grow-1">
+    <div class="flex-grow-1 overflow-auto">
+        <table class="table w-100" mat-table [dataSource]="dataSource" matSort>
+            <!-- Define your columns here -->
+            <ng-container matColumnDef="locationName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Location
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.locationName }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="datePurchased">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Date Purchased
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.datePurchased | date: 'MMM d, y'}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateEntered">
+                <th mat-header-cell *matHeaderCellDef>
+                    Date Entered
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.dateEntered | date: 'MMM d, y' }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="inventoryNumber">
+                <th mat-header-cell *matHeaderCellDef>
+                    Inventory #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.inventoryNumber}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="make">
+                <th mat-header-cell *matHeaderCellDef>
+                    Make
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.make}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="model">
+                <th mat-header-cell *matHeaderCellDef>
+                    Model
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.model }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="progChannels">
+                <th mat-header-cell *matHeaderCellDef>
+                    # of Channels
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.progChannels }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="notes">
+                <th mat-header-cell *matHeaderCellDef>
+                    Notes
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <ul>
+                        <li *ngFor="let note of element.notes">
+                            {{ note }}
+                        </li>
+                    </ul>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="serialNumber">
+                <th mat-header-cell *matHeaderCellDef>
+                    Serial
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <a [routerLink]="['/one-radio', element._id]">{{ element.serialNumber }}</a>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="serviceRecord">
+                <th mat-header-cell *matHeaderCellDef>
+                    Repairs
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <ul>
+                        <li *ngFor="let service of element.serviceRecord">
+                            <ng-container *ngIf="!service.dateRecEuRaa; else beenReceived">
+                                <a [routerLink]="['/one-repair/', service._id]">Radio Not Yet Received</a>
+                            </ng-container>
+                            <ng-template #beenReceived>
+                                <a [routerLink]="['/one-repair/', service._id]">{{service.dateRecEuRaa | date: 'MMM d,y'}}</a>
+                            </ng-template>
+                        </li>
+                        <li><a [routerLink]="['/submit', { radioID: element._id}]">Add Repair</a></li>
+                    </ul>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="warranty">
+                <th mat-header-cell *matHeaderCellDef>
+                    Warranty
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.warranty | date }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="refurb">
+                <th mat-header-cell *matHeaderCellDef>
+                    Refurb
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.refurb }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="radioType">
+                <th mat-header-cell *matHeaderCellDef>
+                    Radio Type
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.radioType}}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons class="mt-auto"></mat-paginator>
 </div>
 
-<ng-template #loadedData>
-    <div *ngIf="radioError$ | async as error">
-        <div class="error-message">
-            <h2>Error</h2>
-            <p>{{ error }}</p>
-        </div>
-    </div>
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="flex-grow-1 overflow-auto">
-            <table class="table w-100" mat-table [dataSource]="dataSource" matSort>
-                <!-- Define your columns here -->
-                <ng-container matColumnDef="locationName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                        Location
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.locationName }}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="datePurchased">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                        Date Purchased
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.datePurchased | date: 'MMM d, y'}}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="dateEntered">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Date Entered
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.dateEntered | date: 'MMM d, y' }}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="inventoryNumber">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Inventory #
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.inventoryNumber}}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="make">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Make
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.make}}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="model">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Model
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.model }}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="progChannels">
-                    <th mat-header-cell *matHeaderCellDef>
-                        # of Channels
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.progChannels }}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="notes">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Notes
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        <ul>
-                            <li *ngFor="let note of element.notes">
-                                {{ note }}
-                            </li>
-                        </ul>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="serialNumber">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Serial
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        <a [routerLink]="['/one-radio', element._id]">{{ element.serialNumber }}</a>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="serviceRecord">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Repairs
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        <ul>
-                            <li *ngFor="let service of element.serviceRecord">
-                                <ng-container *ngIf="!service.dateRecEuRaa; else beenReceived">
-                                    <a [routerLink]="['/one-repair/', service._id]">Radio Not Yet Received</a>
-                                </ng-container>
-                                <ng-template #beenReceived>
-                                    <a [routerLink]="['/one-repair/', service._id]">{{service.dateRecEuRaa | date: 'MMM d,y'}}</a>
-                                </ng-template>
-                            </li>
-                            <li><a [routerLink]="['/submit', { radioID: element._id}]">Add Repair</a></li>
-                        </ul>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="warranty">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Warranty
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.warranty | date }}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="refurb">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Refurb
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.refurb }}
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="radioType">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Radio Type
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.radioType}}
-                    </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-            </table>
-        </div>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons class="mt-auto"></mat-paginator>
-    </div>
-</ng-template>
-
-<ng-template #noLoadedData>
-    <h2>No data available</h2>
-</ng-template>

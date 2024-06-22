@@ -121,7 +121,7 @@ const resolvers = {
             });
         },
         locationByName: async (parent, { locationName }) => {
-            return Location.findOne({ locationName: locationName }).populate({
+            return Location.find({ locationName: { $regex: new RegExp(locationName, 'i') } }).populate({
                 path: "radios",
                 populate: {
                     path: "serviceRecord"
@@ -140,15 +140,17 @@ const resolvers = {
             return Location.find();
         },
         likeOrg: async (parent, { orgName }) => {
-            return Organization.find({ orgName: { $regex: new RegExp(orgName, 'i') } }).populate({
-                path: "locations",
-                populate: {
-                    path: "radios",
+            return Organization.find({ orgName: { $regex: new RegExp(orgName, 'i') } })
+                .populate("users")
+                .populate({
+                    path: "locations",
                     populate: {
-                        path: "serviceRecord"
+                        path: "radios",
+                        populate: {
+                            path: "serviceRecord"
+                        }
                     }
-                }
-            })
+                });
         }
 
     },

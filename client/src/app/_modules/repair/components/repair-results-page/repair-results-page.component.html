@@ -1,0 +1,18 @@
+<div *ngIf="isLoading$ | async else loadedData">
+    <h2>Loading...</h2>
+</div>
+
+<div *ngIf="repairError$ | async as error">
+    <div class="error-message">
+        <h2>{{error}}</h2>
+    </div>
+
+</div>
+
+<ng-template #loadedData>
+
+    <div *ngIf="repairs$ | async as repairs">
+        <app-repair-results-table [repairs]="repairs"></app-repair-results-table>
+    </div>
+
+</ng-template>

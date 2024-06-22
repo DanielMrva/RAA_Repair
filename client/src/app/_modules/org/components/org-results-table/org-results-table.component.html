@@ -1,87 +1,69 @@
-<div *ngIf="isLoading$ | async else loadedData">
-    <h2>Loading...</h2>
+<div class="d-flex flex-column flex-grow-1">
+    <div class="flex-grow-1 overflow-auto">
+        <table class="table w-100" mat-table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="orgName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Organization:
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.orgName}}
+                </td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="locations">
+                <th mat-header-cell *matHeaderCellDef>
+                    Locations:
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <ul>
+                        <ng-container *ngIf="element.locations">
+                            <ng-container *ngFor="let location of element.locations; let i = index">
+                                <li *ngIf="i < 5">
+                                    <a [routerLink]="['/one-location/', location._id]">{{location.locationName}}</a>
+                                </li>
+                            </ng-container>
+                        </ng-container>
+                        <li *ngIf="element.locations && element.locations.length > 5">
+                            <a [routerLink]="['/location-results/', element.orgName]">And {{element.locations.length
+                                - 5}} more...</a>
+                        </li>
+                    </ul>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="users">
+                <th mat-header-cell *matHeaderCellDef>
+                    Users:
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <ul>
+                        <ng-container *ngIf="element.users">
+                            <ng-container *ngFor="let user of element.users; let j = index">
+                                <li *ngIf="j < 5">
+                                    <a [routerLink]="['/one-user/', user._id]">{{user.username}}</a>
+                                </li>
+                            </ng-container>
+
+                        </ng-container>
+                        <li *ngIf="element.users && element.users.length > 5">
+                            <a [routerLink]="['/user-results/', element.orgName]">And {{element.users.length - 5}}
+                                more...</a>
+                        </li>
+                    </ul>
+
+                </td>
+
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+
+        </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons class="mt-auto"></mat-paginator>
+
 </div>
-
-
-<ng-template #loadedData>
-
-    <div *ngIf="orgError$ | async as error">
-        <div class="error-message">
-            <h2>
-                Error
-            </h2>
-            <p>{{error}}</p>
-        </div>
-
-    </div>
-
-    <div class="d-flex flex-column flex-grow-1">
-        <div class="flex-grow-1 overflow-auto">
-            <table class="table w-100" mat-table [dataSource]="dataSource" matSort>
-
-                <ng-container matColumnDef="orgName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                        Organization:
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.orgName}}
-                    </td>
-
-                </ng-container>
-
-                <ng-container matColumnDef="locations">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Locations:
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        <ul>
-                            <ng-container *ngIf="element.locations">
-                                <ng-container *ngFor="let location of element.locations; let i = index">
-                                    <li *ngIf="i < 5">
-                                        <a [routerLink]="['/one-location/', location._id]">{{location.locationName}}</a>
-                                    </li>
-                                </ng-container>
-                            </ng-container>
-                            <li *ngIf="element.locations && element.locations.length > 5">
-                                <a [routerLink]="['/location-results/', element.orgName]">And {{element.locations.length
-                                    - 5}} more...</a>
-                            </li>
-                        </ul>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="users">
-                    <th mat-header-cell *matHeaderCellDef>
-                        Users:
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        <ul>
-                            <ng-container *ngIf="element.users">
-                                <ng-container *ngFor="let user of element.users; let j = index">
-                                    <li *ngIf="j < 5">
-                                        <a [routerLink]="['/one-user/', user._id]">{{user.username}}</a>
-                                    </li>
-                                </ng-container>
-
-                            </ng-container>
-                            <li *ngIf="element.users && element.users.length > 5">
-                                <a [routerLink]="['/user-results/', element.orgName]">And {{element.users.length - 5}}
-                                    more...</a>
-                            </li>
-                        </ul>
-
-                    </td>
-
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-
-                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-
-            </table>
-        </div>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons class="mt-auto"></mat-paginator>
-
-    </div>
-</ng-template>

@@ -29,8 +29,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RadioEffects } from '@app/_store/_radio-store/radio.effects';
 import { radioReducer } from '@app/_store/_radio-store/radio.reducers';
-
-
+import { RadioResultsPageComponent } from './components/radio-results-page/radio-results-page.component';
 
 @NgModule({
   imports: [
@@ -61,7 +60,8 @@ import { radioReducer } from '@app/_store/_radio-store/radio.reducers';
     EditRadioComponent,
     RadioResultsTableComponent,
     DeleteRepairButtonComponent,
-    DeleteConfirmModalComponent
+    DeleteConfirmModalComponent,
+    RadioResultsPageComponent,
   ],
 })
 export class RadioModule { }

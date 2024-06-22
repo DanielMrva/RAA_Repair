@@ -106,11 +106,11 @@ type Query {
   allOrgs: [Organization]
   allLocations: [Location]
   location(locationId: String!): Location
-  locationByName(locationName: String!): Location
+  locationByName(locationName: String!): [Location]
   orgLocations(orgName: String!): [Location]
   locationNames: [Location]
   orgRepairs(orgName: String!): [Repair]
-
+  likeOrg(orgName: String!): [Organization]
 }
 
 type Mutation {

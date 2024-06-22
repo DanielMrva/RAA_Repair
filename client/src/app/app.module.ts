@@ -42,12 +42,15 @@ import { HomeComponent } from '@app/components/home/home.component';
 import { ToastComponent } from '@app/components/toast/toast.component';
 import { AuthEffects } from '@app/_store/_auth-store/auth.effects';
 import { LocationMismatchDialogComponent } from '@app/_components/utilComponents/location-mismatch-dialog/location-mismatch-dialog.component';
+import { ErrorStatusDisplayComponent } from './_components/utilComponents/error-status-display/error-status-display.component';
+
 
 @NgModule({
     declarations: [
         AppComponent,
         HomeComponent,
         LocationMismatchDialogComponent,
+        ErrorStatusDisplayComponent
         ],
     imports: [
         BrowserModule,
