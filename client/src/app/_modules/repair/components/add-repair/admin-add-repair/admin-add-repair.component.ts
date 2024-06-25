@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
 import { RepairFormFields, UpdateRepairFields } from '@app/graphql/schemas';
 import { Store } from '@ngrx/store';
@@ -20,7 +20,6 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-
   oneRadio$
   radioError$
   radioIsLoading$
@@ -29,51 +28,75 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
 
   filteredLocationNames: string[] = [];
 
+  accessoryOptions: string[] = [
+    'Microphone',
+    'Mounting Bracket',
+    'Mounting Bracket Screws',
+    'Power Cable',
+    'External Speaker',
+    'Accessory Cable',
+    'Antenna (Regular Length)',
+    'Antenna (Stubby)',
+    'Battery (Regular Capacity)',
+    'Battery (High Capacity)',
+    'Belt Clip',
+    'Charger',
+    'Speaker/Mic',
+    'Headset',
+    'Battery (Other - specify)',
+    'Other (specify)'
+  ];
+
+  showOtherAccessory = false;
+  showOtherBattery = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>,
     private mismatchModalService: MismatchModalService,
+    private fb: FormBuilder
   ) {
     this.oneRadio$ = this.store.select(selectOneRadio);
     this.radioError$ = this.store.select(radioErrorSelector);
     this.radioIsLoading$ = this.store.select(radioLoadingSelector);
   }
 
-
-
-  adminRepairForm = new FormGroup({
-    radioID: new FormControl<string>(''),
-    radioMake: new FormControl<string>(''),
-    radioSerial: new FormControl<string>(''),
-    radioLocation: new FormControl<string>(''),
-    endUserPO: new FormControl<string>(''),
-    raaPO: new FormControl<string>(''),
-    repairStatus: new FormControl<string>(''),
-    dateRepairAdded: new FormControl(),
-    dateSentEuRaa: new FormControl(),
-    dateRecEuRaa: new FormControl(),
-    dateSentRaaTech: new FormControl(),
-    dateRecTechRaa: new FormControl(),
-    dateSentRaaEu: new FormControl(),
-    techInvNum: new FormControl<string>(''),
-    raaInvNum: new FormControl<string>(''),
-    symptoms: new FormArray([new FormControl<string>('', { nonNullable: true })]),
-    testFreq: new FormControl<string>(''),
-    incRxSens: new FormControl<string>(''),
-    incFreqErr: new FormControl<string>(''),
-    incMod: new FormControl<string>(''),
-    incPowerOut: new FormControl<string>(''),
-    outRxSens: new FormControl<string>(''),
-    outFreqErr: new FormControl<string>(''),
-    outMod: new FormControl<string>(''),
-    outPowerOut: new FormControl<string>(''),
-    accessories: new FormArray([new FormControl<string>('', { nonNullable: true })]),
-    workPerformed: new FormArray([new FormControl<string>('', { nonNullable: true })]),
-    repHours: new FormControl<number>(0),
-    partsUsed: new FormArray([new FormControl<string>('', { nonNullable: true })]),
-    remarks: new FormControl<string>(''),
-    orgName: new FormControl<string>(''),
+  adminRepairForm = this.fb.group({
+    radioID: [''],
+    radioMake: [''],
+    radioSerial: [''],
+    radioLocation: [''],
+    endUserPO: [''],
+    raaPO: [''],
+    repairStatus: [''],
+    dateRepairAdded: [null],
+    dateSentEuRaa: [null],
+    dateRecEuRaa: [null],
+    dateSentRaaTech: [null],
+    dateRecTechRaa: [null],
+    dateSentRaaEu: [null],
+    techInvNum: [''],
+    raaInvNum: [''],
+    symptoms: this.fb.array([this.fb.control('')]),
+    testFreq: [''],
+    incRxSens: [''],
+    incFreqErr: [''],
+    incMod: [''],
+    incPowerOut: [''],
+    outRxSens: [''],
+    outFreqErr: [''],
+    outMod: [''],
+    outPowerOut: [''],
+    accessories: this.fb.group({
+      selectedAccessories: [[]],
+      otherAccessory: [''],
+      otherBattery: ['']
+    }),
+    workPerformed: this.fb.array([this.fb.control('')]),
+    repHours: [0],
+    partsUsed: this.fb.array([this.fb.control('')]),
+    remarks: [''],
+    orgName: ['']
   });
 
   isSubmitted = false;
@@ -82,8 +105,8 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
     return this.adminRepairForm.get('symptoms') as FormArray;
   }
 
-  get accessoriesArray(): FormArray {
-    return this.adminRepairForm.get('accessories') as FormArray;
+  get accessoriesGroup(): FormGroup {
+    return this.adminRepairForm.get('accessories') as FormGroup;
   }
 
   get workPerformedArray(): FormArray {
@@ -95,23 +118,15 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
   }
 
   addSymptom() {
-    this.symptomsArray.push(new FormControl<string>('', { nonNullable: true }));
+    this.symptomsArray.push(this.fb.control(''));
   };
 
   removeSymptom(index: number) {
     this.symptomsArray.removeAt(index);
   };
 
-  addAccessory() {
-    this.accessoriesArray.push(new FormControl<string>('', { nonNullable: true }));
-  };
-
-  removeAccessory(index: number) {
-    this.accessoriesArray.removeAt(index);
-  };
-
   addWorkPerformed() {
-    this.workPerformedArray.push(new FormControl<string>('', { nonNullable: true }));
+    this.workPerformedArray.push(this.fb.control(''));
   };
 
   removeWorkPerformed(index: number) {
@@ -119,7 +134,7 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
   };
 
   addPartsUsed() {
-    this.partsUsedArray.push(new FormControl<string>('', { nonNullable: true }));
+    this.partsUsedArray.push(this.fb.control(''));
   };
 
   removePartsUsed(index: number) {
@@ -138,9 +153,7 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
     }
   };
 
-
   ngOnInit(): void {
-
     this.subscriptions.add(
       this.activatedRoute.paramMap.subscribe(params => {
         const radioID = params.get('radioID');
@@ -170,8 +183,33 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
     this.filteredLocationNames = locations;
   };
 
-  prepaireRepairData(): RepairFormFields {
+  onAccessoriesChange(event: any): void {
+    const selectedValues = event.value;
+    this.showOtherAccessory = selectedValues.includes('Other (specify)');
+    this.showOtherBattery = selectedValues.includes('Battery (Other - specify)');
+    if (!this.showOtherAccessory) {
+      this.accessoriesGroup.patchValue({ otherAccessory: '' });
+    }
+    if (!this.showOtherBattery) {
+      this.accessoriesGroup.patchValue({ otherBattery: ''});
+    }
+  }
 
+  prepaireRepairData(): RepairFormFields {
+    let accessories = this.accessoriesGroup.value.selectedAccessories;
+  
+    // Filter out "Battery (Other - specify)" and "Other (specify)"
+    accessories = accessories.filter((accessory: string) => 
+      accessory !== 'Battery (Other - specify)' && accessory !== 'Other (specify)');
+  
+    // Add concatenated values if they exist
+    if (this.accessoriesGroup.value.otherAccessory) {
+      accessories.push(`Other: ${this.accessoriesGroup.value.otherAccessory}`);
+    }
+    if (this.accessoriesGroup.value.otherBattery) {
+      accessories.push(`Battery (Other - specify): ${this.accessoriesGroup.value.otherBattery}`);
+    }
+  
     return {
       radioID: this.adminRepairForm.value.radioID ?? '',
       radioMake: this.adminRepairForm.value.radioMake ?? '',
@@ -188,7 +226,7 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
       dateSentRaaEu: this.adminRepairForm.value.dateSentRaaEu ?? null,
       techInvNum: this.adminRepairForm.value.techInvNum ?? '',
       raaInvNum: this.adminRepairForm.value.raaInvNum ?? '',
-      symptoms: Array.isArray(this.adminRepairForm.value.symptoms) ? filterEmptyArrayValues(this.adminRepairForm.value.symptoms.map(symptom => symptom ?? '')) : [''],
+      symptoms: filterEmptyArrayValues(this.adminRepairForm.value.symptoms ?? []),
       testFreq: this.adminRepairForm.value.testFreq ?? '',
       incRxSens: this.adminRepairForm.value.incRxSens ?? '',
       incFreqErr: this.adminRepairForm.value.incFreqErr ?? '',
@@ -198,38 +236,25 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
       outFreqErr: this.adminRepairForm.value.outFreqErr ?? '',
       outMod: this.adminRepairForm.value.outMod ?? '',
       outPowerOut: this.adminRepairForm.value.outPowerOut ?? '',
-      accessories: Array.isArray(this.adminRepairForm.value.accessories) ? filterEmptyArrayValues(this.adminRepairForm.value.accessories.map(a => a ?? '')) : [''],
-      workPerformed: Array.isArray(this.adminRepairForm.value.workPerformed) ? filterEmptyArrayValues(this.adminRepairForm.value.workPerformed.map(wp => wp ?? '')) : [''],
+      accessories: filterEmptyArrayValues(accessories),
+      workPerformed: filterEmptyArrayValues(this.adminRepairForm.value.workPerformed ?? []),
       repHours: this.adminRepairForm.value.repHours ?? 0,
-      partsUsed: Array.isArray(this.adminRepairForm.value.partsUsed) ? filterEmptyArrayValues(this.adminRepairForm.value.partsUsed.map(pu => pu ?? '')) : [''],
+      partsUsed: filterEmptyArrayValues(this.adminRepairForm.value.partsUsed ?? []),
       remarks: this.adminRepairForm.value.remarks ?? ''
     }
-
-
   }
-
+  
   submitRepair(): void {
-
     const submittedRepair: RepairFormFields = this.prepaireRepairData();
-
-
-    console.log(`sumbitRepair with radioID: ${submittedRepair.radioID}`)
-
-
-
-    this.store.dispatch(addRepair({ submittedRepair: submittedRepair }))
-
+    this.store.dispatch(addRepair({ submittedRepair }));
   };
 
   handleSubmission(formValue: any, oneRadio: any): void {
-
     const formRadioLocation = formValue.radioLocation || '';
     const oneRadioLocationName = oneRadio?.locationName || '';
     const radioId = oneRadio?._id || '';
 
     if (formRadioLocation !== oneRadioLocationName) {
-
-      console.log(`formRadioLocation: ${formRadioLocation}, oneRadioLocationName: ${oneRadioLocationName}, radioId: ${radioId}`)
       this.mismatchModalService.openMismatchDialog(
         formRadioLocation,
         oneRadioLocationName,
@@ -239,26 +264,18 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
     } else {
       this.submitRepair()
     }
-
   }
 
   onSubmit() {
-
     this.subscriptions.add(
-
       of(this.adminRepairForm.value).pipe(
         withLatestFrom(this.oneRadio$),
         first(),
       ).subscribe(([formValue, oneRadio]) => {
-
         this.handleSubmission(formValue, oneRadio);
       })
-
     );
-
-
   };
-
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

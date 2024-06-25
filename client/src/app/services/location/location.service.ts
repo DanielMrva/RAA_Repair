@@ -20,7 +20,7 @@ export class LocationService {
   };
 
   queryLocationByName(locationName: string) {
-    return this.apollo.watchQuery<{locationByName: Location[]}> ({
+    return this.apollo.watchQuery<{locationByName: Location}> ({
       query: LOCATION_BY_NAME,
       variables: {
         locationName

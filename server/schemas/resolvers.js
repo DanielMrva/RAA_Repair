@@ -121,7 +121,7 @@ const resolvers = {
             });
         },
         locationByName: async (parent, { locationName }) => {
-            return Location.find({ locationName: { $regex: new RegExp(locationName, 'i') } }).populate({
+            return Location.findOne({ locationName: locationName }).populate({
                 path: "radios",
                 populate: {
                     path: "serviceRecord"
@@ -151,7 +151,7 @@ const resolvers = {
                         }
                     }
                 });
-        }
+        },
 
     },
     Mutation: {

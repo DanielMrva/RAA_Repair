@@ -49,8 +49,7 @@
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-6">
-                        <app-org-location-selector 
-                            [initialOrgName]="initialOrgName"
+                        <app-org-location-selector [initialOrgName]="initialOrgName"
                             (orgNameSelected)="handleOrgNameSelected($event)"
                             (filteredLocations)="handleFilteredLocations($event)">
                         </app-org-location-selector>
@@ -77,13 +76,15 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-6 full-width-input">
-                                <app-repair-status-dropdown formControlName="repairStatus" class="full-width-input"></app-repair-status-dropdown>
+                                <app-repair-status-dropdown formControlName="repairStatus"
+                                    class="full-width-input"></app-repair-status-dropdown>
                             </div>
                         </div>
                         <div class="row">
                             <mat-form-field class="form-group col-6">
                                 <mat-label>Repair Added</mat-label>
-                                <input matInput [matDatepicker]="dateRepairAddedPicker" formControlName="dateRepairAdded">
+                                <input matInput [matDatepicker]="dateRepairAddedPicker"
+                                    formControlName="dateRepairAdded">
                                 <mat-datepicker-toggle matSuffix [for]="dateRepairAddedPicker"></mat-datepicker-toggle>
                                 <mat-datepicker #dateRepairAddedPicker></mat-datepicker>
                             </mat-form-field>
@@ -101,7 +102,8 @@
                             </mat-form-field>
                             <mat-form-field class="form-group col-6">
                                 <mat-label>Date Sent to Tech</mat-label>
-                                <input matInput [matDatepicker]="dateSentRaaTechPicker" formControlName="dateSentRaaTech">
+                                <input matInput [matDatepicker]="dateSentRaaTechPicker"
+                                    formControlName="dateSentRaaTech">
                                 <mat-datepicker-toggle matSuffix [for]="dateSentRaaTechPicker"></mat-datepicker-toggle>
                                 <mat-datepicker #dateSentRaaTechPicker></mat-datepicker>
                             </mat-form-field>
@@ -142,21 +144,32 @@
 
                     <div class="col-8">
                         <h4>Accessories:</h4>
-                        <div formArrayName="accessories">
-                            <div *ngFor="let accessory of accessoriesArray.controls; let j = index;"
-                                class="accessory-item">
-                                <mat-form-field class="full-width-input">
-                                    <input matInput [formControlName]="j" placeholder="Accessory">
-                                    <mat-icon matSuffix class="add-icon" (click)="addAccessory()"
-                                    aria-label="add symptom">add_circle</mat-icon>
-    
-                                    <mat-icon matSuffix class="remove-icon" *ngIf="accessoriesArray.length > 1"
-                                        (click)="removeAccessory(j)"
-                                        aria-label="remove accessory">remove_circle</mat-icon>
-                                </mat-form-field>
-                            </div>
+                        <div formGroupName="accessories">
+                          <mat-form-field class="full-width-input">
+                            <mat-select multiple placeholder="Select Accessories" formControlName="selectedAccessories" (selectionChange)="onAccessoriesChange($event)">
+                              <mat-option *ngFor="let accessory of accessoryOptions" [value]="accessory">
+                                {{ accessory }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          
+                          <div *ngIf="showOtherAccessory" class="mt-3">
+                            <mat-form-field class="full-width-input">
+                              <mat-label>Specify Other Accessory</mat-label>
+                              <input matInput formControlName="otherAccessory">
+                            </mat-form-field>
+                          </div>
+                      
+                          <div *ngIf="showOtherBattery" class="mt-3">
+                            <mat-form-field class="full-width-input">
+                              <mat-label>Specify Other Battery</mat-label>
+                              <input matInput formControlName="otherBattery">
+                            </mat-form-field>
+                          </div>
                         </div>
-                    </div>
+                      </div>
+                      
+
 
                 </section>
 
