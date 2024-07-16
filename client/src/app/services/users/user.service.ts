@@ -11,15 +11,16 @@ export class UserService {
 
   constructor(private apollo: Apollo) { }
 
-  addUser(username: string, email: string, password: string, orgName: string, accessLevel: string) {
+  addUser(username: string, email: string, password: string, accessLevel: string, orgName: string, userLocation: string) {
     return this.apollo.mutate<{addUser: Auth}>({
       mutation: ADD_USER, 
       variables: {
         username,
         email,
         password,
+        accessLevel,
         orgName,
-        accessLevel
+        userLocation
       }
     });
   }

@@ -97,13 +97,12 @@
                     <ng-template>
                       <div class="card">
                         <div class="card-body">
-                          <!-- <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5> -->
                           <p class="card-text">
-                            <strong>Repair Status: {{repair.repairStatus}}</strong><br>
+                            <strong>Reported By:</strong> {{repair.reportedBy}}<br>
+                            <strong>Repair Status:</strong> {{repair.repairStatus}}<br>
                             <strong>Date Purchased:</strong> {{radio.datePurchased | date: 'MMM d, y'}} <br>
                             <strong>Date Repair Added:</strong> {{repair.dateRepairAdded | date: 'MMM d, y'}} <br>
                             <strong>Date Sent to RAA from EU:</strong> {{repair.dateSentEuRaa | date: 'MMM d, y'}} <br>
-                            <!-- Date Received by RAA from EU: Jun 3, 2024 -->
                             <strong>Date Received by RAA from EU:</strong> {{repair.dateRecEuRaa | date: 'MMM d, y'}} <br>
                             <strong>Date Sent to Tech from RAA:</strong> {{repair.dateSentRaaTech | date: 'MMM d, y'}} <br>
                             <strong>Date Rec from Tech:</strong> {{repair.dateRecTechRaa | date: 'MMM d, y'}} <br>

@@ -41,9 +41,9 @@ export class LocationEffects {
     loadLocationByName$ = createEffect(() =>
     this.actions$.pipe(
         ofType(LocationActions.loadLocationByName),
-        mergeMap(({ locationName }) => {
+        mergeMap(({ orgName, locationName }) => {
             console.log('Dispatched loadLocationByName action with Name: ', locationName);
-            return this.locationService.queryLocationByName(locationName).valueChanges.pipe(
+            return this.locationService.queryLocationByName(orgName, locationName).valueChanges.pipe(
                 map(({ data }) => {
                     console.log('Loaded Location by Name data: ', data.locationByName);
                     return LocationActions.loadLocationByNameSuccess({ oneLocation: data.locationByName });

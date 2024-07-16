@@ -1,56 +1,61 @@
 <ul class="navbar-nav">
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Users</a>
-        <ul class="dropdown-menu">
-            <li>
-                <a [routerLink]="['/user-results']" class="dropdown-item">User Reports</a>
-            </li>
-            <li>
-                <a [routerLink]="['/add-user']" class="dropdown-item">Add User</a>
-            </li>
-        </ul>
-
-    </li>
-    
-    <!-- <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Service</a>
-        <ul class="dropdown-menu">
-            <li><a [routerLink]="['/submit']" class="dropdown-item">Add Service</a></li>
-    
-        </ul>
-    </li> -->
-
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Organizations</a>
-        <ul class="dropdown-menu">
-            <li>
-                <a [routerLink]="['/add-org']" class="dropdown-item">Add Organization</a>
-            </li>
-            <li>
-                <a [routerLink]="['/org-results']" class="dropdown-item">Organization Reports</a>
-
-            </li>
-            <li>
-                <a [routerLink]="['/add-location']" class="dropdown-item">Add Location</a>
-            </li>
-    
-        </ul>
+    <li class="nav-item">
+        <div class="dropdown width-content dropdown-flex-container">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Users</a>
+            <ul class="dropdown-menu dropdown-flex-child">
+                <li>
+                    <a [routerLink]="['/user-results']" class="dropdown-item">User Reports</a>
+                </li>
+                <li>
+                    <a [routerLink]="['/add-user']" class="dropdown-item">Add User</a>
+                </li>
+            </ul>
+        </div>
     </li>
 
+    <li class="nav-item">
+        <div class="dropdown" id="service-dropdown">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Service</a>
+            <ul class="dropdown-menu custom-dropdown-width">
+                <li>
+                    <a [routerLink]="['/repair-results']" class="dropdown-item">Repair Reports</a>
+                </li>
+                <li>
+                    <app-repair-by-tag-navigator></app-repair-by-tag-navigator>
+                </li>
+            </ul>
+        </div>
+    </li>
 
+    <li class="nav-item">
+        <div class="dropdown width-content">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Organizations</a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a [routerLink]="['/add-org']" class="dropdown-item">Add Organization</a>
+                </li>
+                <li>
+                    <a [routerLink]="['/org-results']" class="dropdown-item">Organization Reports</a>
+                </li>
+                <li>
+                    <a [routerLink]="['/add-location']" class="dropdown-item">Add Location</a>
+                </li>
+            </ul>
+        </div>
+    </li>
 
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Radios</a>
-        <ul class="dropdown-menu">
-            <li><a [routerLink]="['/add-radio']" class="dropdown-item">Add Radio</a></li>
-
-            <li>
-                <app-org-radios-navigator></app-org-radios-navigator>
-            </li>
-    
-            <li>
-                <app-radio-sn-mnk-navigator></app-radio-sn-mnk-navigator>
-            </li>
-        </ul>
+    <li class="nav-item">
+        <div class="dropdown" id="radio-dropdown">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Radios</a>
+            <ul class="dropdown-menu custom-dropdown-width">
+                <li><a [routerLink]="['/add-radio']" class="dropdown-item">Add Radio</a></li>
+                <li class="dropdown-item">
+                    <app-org-radios-navigator></app-org-radios-navigator>
+                </li>
+                <li class="dropdown-item">
+                    <app-radio-sn-mnk-navigator></app-radio-sn-mnk-navigator>
+                </li>
+            </ul>
+        </div>
     </li>
 </ul>

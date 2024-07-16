@@ -1,82 +1,53 @@
 <div class="container">
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="row justify-content-center">
-    
+
         <h2 class="col-12 text-center">Add A New User</h2>
-    
-    
-        <div class="form-group col col-6 offset-1">
-            <label for="username">User Name: </label>
-            <input
-                type="text"
-                id="username"
-                formControlName="username"
-                placeholder="User Name"
-                class="form-control"
-            />
-        </div>
-    
-        <div class="form-group col col-6 offset-1">
-            <label for="email">Email: </label>
-            <input
-                type="email"
-                id="email"
-                formControlName="email"
-                placeholder="Email"
-                class="form-control"
-            />
-        </div>
-    
-        <div class="form-group col col-6 offset-1">
-            <label for="password">Password: </label>
-            <input
-                type="password"
-                id="password"
-                formControlName="password"
-                placeholder="password"
-                class="form-control"
-            />
-        </div>
-    
-        <div class="form-group col-6 offset-1">
-    
-            <label for="orgName">Organization: </label>
-    
-            <mat-spinner *ngIf="isLoadingOrgNames$ | async; else loadedOrgNames"></mat-spinner>
-    
-            <div *ngIf="orgNameError$ | async as error">{{ error }}</div>
 
-            <ng-template #loadedOrgNames>
-                <input
-                    type="text"
-                    placeholder="Select / Type Organization"
-                    aria-label="Organization Name"
-                    matInput
-                    formControlName="orgName"
-                    [matAutocomplete]="auto"
-                    class="form-control"
-                >
-                
-                <mat-autocomplete #auto="matAutocomplete">
-                    <ng-container *ngIf="filteredOrgName$ | async as orgList">
-                        <mat-option *ngFor="let org of orgList" [value]="org.orgName">
-                            {{ org.orgName }}
-                        </mat-option>
-                    </ng-container>
+        <mat-form-field class="form-group col-8 offset-2">
+            <mat-label>User Name</mat-label>
+            <input matInput type="text" id="username" formControlName="username" placeholder="User Name" />
+        </mat-form-field>
 
-                </mat-autocomplete>
-            </ng-template>
-    
-        </div>
-    
-        <div class="form-group col-6 offset-1">
-            <label for="accessLevel">Access Level: </label>
+        <mat-form-field class="form-group col-8 offset-2">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" id="email" formControlName="email" placeholder="Email" />
+        </mat-form-field>
+
+        <mat-form-field class="form-group col-8 offset-2">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" id="password" formControlName="password" placeholder="Password" />
+        </mat-form-field>
+
+        <mat-form-field class="form-group col-8 offset-2">
+            <mat-label>Organization</mat-label>
+            <input matInput placeholder="Organization" aria-label="Organization" formControlName="orgName" [matAutocomplete]="orgAuto">
+            <mat-autocomplete autoActiveFirstOption #orgAuto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOrgNames$ | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="form-group col-8 offset-2">
+            <mat-label>Location</mat-label>
+            <input matInput placeholder="Location" aria-label="Location" formControlName="userLocation"
+                [matAutocomplete]="locAuto">
+            <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
+                <mat-option *ngFor="let locOption of filteredLocNames$ | async" [value]="locOption">
+                    {{locOption}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="form-group col-8 offset-2">
+            <mat-label>Access Level</mat-label>
             <mat-select formControlName="accessLevel" id="accessLevel">
-              <mat-option value="admin">Admin</mat-option>
-              <mat-option value="user">User</mat-option>
-              <mat-option value="tech">Tech</mat-option>
+                <mat-option value="admin">Admin</mat-option>
+                <mat-option value="user">User</mat-option>
+                <mat-option value="tech">Tech</mat-option>
             </mat-select>
-        </div>
-    
+        </mat-form-field>
+
         <div class="col-12 d-flex justify-content-center">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>

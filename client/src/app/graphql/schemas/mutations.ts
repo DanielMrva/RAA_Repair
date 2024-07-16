@@ -8,20 +8,23 @@ export const ADD_USER = gql`
         $password: String!,
         $orgName: String!,
         $accessLevel: String!
+        $orgName: String!
     ) {
         addUser(
             username: $username
             email: $email
             password: $password
-            orgName: $orgName
             accessLevel: $accessLevel
+            orgName: $orgName
+            userLocation: $orgName
         ) {
             token
             user {
                 _id
                 username
-                orgName
                 accessLevel
+                orgName
+                userLocation
             }
         }
     }
@@ -34,8 +37,9 @@ export const LOGIN_USER = gql<LoginResults, LoginVariables>`
             user {
                 _id
                 username
-                orgName
                 accessLevel
+                orgName
+                userLocation
             }
         }
     }
@@ -49,8 +53,9 @@ export const VALIDATE_ACCESS = gql`
             user {
                 _id
                 username
-                orgName
                 accessLevel
+                orgName
+                userLocation
             }
         }
     }
@@ -61,7 +66,9 @@ export const ADD_REPAIR = gql`
         $radioID: String
         $radioMake: String
         $radioSerial: String
+        $radioOrg: String
         $radioLocation: String
+        $reportedBy: String
         $endUserPO: String
         $raaPO: String
         $repairTag: Int
@@ -94,7 +101,9 @@ export const ADD_REPAIR = gql`
             radioID: $radioID,
             radioMake: $radioMake,
             radioSerial: $radioSerial,
+            radioOrg: $radioOrg,
             radioLocation: $radioLocation,
+            reportedBy: $reportedBy,
             endUserPO: $endUserPO,
             raaPO: $raaPO,
             repairTag: $repairTag,
@@ -127,7 +136,9 @@ export const ADD_REPAIR = gql`
             radioID
             radioMake
             radioSerial
+            radioOrg
             radioLocation
+            reportedBy
             endUserPO
             raaPO
             repairTag
@@ -219,7 +230,9 @@ export const EDIT_REPAIR = gql`
             radioID
             radioMake
             radioSerial
+            radioOrg
             radioLocation
+            reportedBy
             endUserPO
             raaPO
             repairTag
@@ -283,6 +296,7 @@ export const EDIT_USER = gql`
             email
             accessLevel
             orgName
+            userLocation
         }
     }
 `
@@ -392,7 +406,9 @@ export const DELETE_REPAIR = gql`
             radioID
             radioMake
             radioSerial
+            radioOrg
             radioLocation
+            reportedBy
             endUserPO
             raaPO
             repairTag

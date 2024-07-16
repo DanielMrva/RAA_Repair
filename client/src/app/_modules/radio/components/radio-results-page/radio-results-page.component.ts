@@ -1,10 +1,10 @@
-import { Component,  OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { radioLoadingSelector, radioErrorSelector, selectAllRadios } from '@app/_store/_radio-store/radio.selectors';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { loadAllRadios, loadLikeOrgRadios } from '@app/_store/_radio-store/radio.actions';
+import { loadAllRadios, loadLikeOrgRadios, loadLikeSerialRadio } from '@app/_store/_radio-store/radio.actions';
 
 @Component({
   selector: 'app-radio-results-page',
@@ -12,7 +12,7 @@ import { loadAllRadios, loadLikeOrgRadios } from '@app/_store/_radio-store/radio
   styleUrls: ['./radio-results-page.component.css']
 })
 export class RadioResultsPageComponent implements OnDestroy, OnInit {
-  
+
   private subscriptions = new Subscription();
 
   radioError$ = this.store.select(radioErrorSelector);
@@ -28,25 +28,23 @@ export class RadioResultsPageComponent implements OnDestroy, OnInit {
     this.subscriptions.add(
       this.route.params.subscribe(params => {
         const orgName = params['orgName'];
+        const serialNumber = params['serialNumber'];
+        const model = params['model'];
 
-        const condition = orgName ? 'orgName' : 'default';
-
-        switch(condition) {
-          case 'orgName':
-            this.store.dispatch(loadLikeOrgRadios({ orgName }));
-            break;
-  
-          default:
-            this.store.dispatch(loadAllRadios());
-            break;
+        if (orgName) {
+          this.store.dispatch(loadLikeOrgRadios({ orgName }));
+        } else if (serialNumber || model) {
+          this.store.dispatch(loadLikeSerialRadio({ serialNumber: serialNumber || '', model: model || '' }));
+        } else {
+          this.store.dispatch(loadAllRadios());
         }
       })
-    )
-      
-  }
+    );
+  };
+
 
   ngOnDestroy(): void {
-      this.subscriptions.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
 

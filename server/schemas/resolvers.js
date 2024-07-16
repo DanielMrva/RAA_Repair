@@ -40,13 +40,19 @@ const resolvers = {
             return Radio.findOne({ $and: [{ serialNumber: serialNumber }, { model: model }] }).populate(["serviceRecord"]);
         },
         likeSerialRadio: async (parent, { serialNumber, model }) => {
-            return Radio.find({
-                $and: [
-                    { serialNumber: { $regex: new RegExp(serialNumber, 'i') } },
-                    { model: { $regex: new RegExp(model, 'i') } }
-                ]
-            }).populate("serviceRecord")
+            const query = {
+                $and: []
+            };
 
+            if (serialNumber) {
+                query.$and.push({ serialNumber: { $regex: new RegExp(serialNumber, 'i') } });
+            }
+
+            if (model) {
+                query.$and.push({ model: { $regex: new RegExp(model, 'i') } });
+            }
+
+            return Radio.find(query.$and.length > 0 ? query : {}).populate("serviceRecord");
         },
         allRepairs: async () => {
             return Repair.find();
@@ -59,11 +65,16 @@ const resolvers = {
         },
         orgRepairs: async (parent, { orgName }) => {
             // Find all radios with the given orgName, using regExp
-            const radios = await Radio.find({ orgName: { $regex: new RegExp(orgName, 'i') } }).select('_id');
-            const radioIds = radios.map(radio => radio._id);
+            // const radios = await Radio.find({ orgName: { $regex: new RegExp(orgName, 'i') } }).select('_id');
+            // const radioIds = radios.map(radio => radio._id);
 
             // Find all repairs with radioID in the found radios' IDs
-            const repairs = await Repair.find({ radioID: { $in: radioIds } });
+
+            // const repairs = await Repair.find({ radioID: { $in: radioIds } });
+            // Legacy above
+
+            // Find all repairs with radioOrg of like orgName
+            const repairs = await Repair.find({ radioOrg: { $regex: new RegExp(orgName, 'i') } });
 
             return repairs;
         },
@@ -120,8 +131,8 @@ const resolvers = {
                 },
             });
         },
-        locationByName: async (parent, { locationName }) => {
-            return Location.findOne({ locationName: locationName }).populate({
+        locationByName: async (parent, { orgName, locationName }) => {
+            return Location.findOne({ orgName: orgName, locationName: locationName }).populate({
                 path: "radios",
                 populate: {
                     path: "serviceRecord"
@@ -152,15 +163,44 @@ const resolvers = {
                     }
                 });
         },
-
-    },
+        // repairByTag: async (parent, { startTag, endTag }) => {
+        //     if (startTag !== undefined && endTag === undefined) {
+        //         return Repair.find({ repairTag: { $regex: new RegExp(startTag, 'i') } });
+        //     } else if (startTag !== undefined && endTag !== undefined) {
+        //         return Repair.find({ repairTag: { $gte: startTag, $lte: endTag } });
+        //     } else {
+        //         throw new Error("Invalid search parameters");
+        //     }
+        // },
+        repairByTag: async (parent, { startTag, endTag }) => {
+            if (startTag !== undefined && endTag === undefined) {
+              // Ensure startTag is a string
+              const regexPattern = new RegExp(startTag);
+              return Repair.find({
+                $expr: {
+                  $regexMatch: {
+                    input: { $toString: "$repairTag" },
+                    regex: regexPattern, // Use regex object
+                  },
+                },
+              });
+            } else if (startTag !== undefined && endTag !== undefined) {
+              // Range query when both startTag and endTag are defined
+              return Repair.find({
+                repairTag: { $gte: parseInt(startTag), $lte: parseInt(endTag) },
+              });
+            } else {
+              throw new Error("Invalid search parameters");
+            }
+          },
+        },
     Mutation: {
         addUser:
             async (parent, {
-                username, email, password, orgName, accessLevel
+                username, email, password, accessLevel, orgName, userLocation
             }) => {
 
-                const user = await User.create({ username, email, password, orgName, accessLevel });
+                const user = await User.create({ username, email, password, accessLevel, orgName, userLocation });
                 const token = signToken(user);
 
                 return { token, user }
@@ -213,6 +253,7 @@ const resolvers = {
                 radioID,
                 radioMake,
                 radioSerial,
+                radioOrg,
                 radioLocation,
                 endUserPO,
                 raaPO,
@@ -268,6 +309,7 @@ const resolvers = {
                     radioID,
                     radioMake,
                     radioSerial,
+                    radioOrg,
                     radioLocation,
                     endUserPO,
                     raaPO,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { QUERY_SINGLEREPAIR, ALL_REPAIRS, ADD_REPAIR, EDIT_REPAIR, ORG_REPAIRS, DELETE_REPAIR } from '@app/graphql/schemas';
+import { QUERY_SINGLEREPAIR, ALL_REPAIRS, ADD_REPAIR, EDIT_REPAIR, ORG_REPAIRS, DELETE_REPAIR, REPAIR_BY_TAG } from '@app/graphql/schemas';
 import { RepairFormFields, Repair } from '@app/graphql/schemas/typeInterfaces';
 
 @Injectable({
@@ -30,6 +30,16 @@ export class RepairService {
       query: ORG_REPAIRS,
       variables: {
         orgName
+      }
+    })
+  }
+
+  repairByTag(startTag?: number, endTag?: number) {
+    return this.apollo.query<{repairByTag: Repair[]}>({
+      query: REPAIR_BY_TAG,
+      variables: {
+        startTag: startTag, 
+        endTag: endTag
       }
     })
   }

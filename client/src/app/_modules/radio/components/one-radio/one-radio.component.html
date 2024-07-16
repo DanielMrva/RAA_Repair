@@ -108,106 +108,71 @@
 
       </section>
 
-      <section class="row" id="service-record">
-        <h4 class="col-12 text-center">Service Record: </h4>
+        <!-- Service Section -->
 
-        <ng-container *ngIf="oneRadio.serviceRecord.length > 0; else noService">
-          <ng-container *ngIf="oneRadio.serviceRecord.length >= 5">
-            <div class="text-center">
-              <p class="text-warning"><strong>This radio has been serviced {{oneRadio.serviceRecord.length}}
-                  times.</strong></p>
-            </div>
-          </ng-container>
+        <section class="row" id="serviceSection">
 
-          <div class="row">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">
+          <div class="col">
 
-                  </th>
-                  <th scope="col">
-                    Date Sent to RAA
-                  </th>
-                  <th scope="col">
-                    Repair Tag
-                  </th>
-                  <th scope="col">
-                    Work Performed
-                  </th>
-                  <th scope="col">
-                    Parts Used
-                  </th>
-                  <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
-                    <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
-                      <th scope="col">Actions</th>
-                    </ng-container>
+            <h4 class="col-12 text-center">Service Record:</h4>
+
+            <ng-container *ngIf="oneRadio.serviceRecord.length > 0; else noService">
+
+              <div class="row">
+                <table mat-table [dataSource]="oneRadio.serviceRecord" class="mat-elevation-z8">
+
+                  <ng-container matColumnDef="index">
+                    <th mat-header-cell *matHeaderCellDef> # </th>
+                    <td mat-cell *matCellDef="let record; let i = index">{{i + 1}}</td>
                   </ng-container>
 
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let record of oneRadio.serviceRecord; index as i">
-                  <tr>
-                    <th scope="row">{{i + 1}}</th>
-                    <td>
-                      <ng-container *ngIf="!record.dateSentEuRaa; else beenSent">
-                        Radio Not Yet Sent to RAA
-                      </ng-container>
-                      <ng-template #beenSent>
-                        {{record.dateSentEuRaa | date: 'MMM d, y'}}
-                      </ng-template>
+                  <ng-container matColumnDef="dateReceived">
+                    <th mat-header-cell *matHeaderCellDef> Date Received </th>
+                    <td mat-cell *matCellDef="let record">
+                      <a [routerLink]="['/one-repair/', record._id]">{{record.dateRecEuRaa | date: 'MMM d, y'}}</a>
                     </td>
-                    <td>
-                      <a [routerLink]="['/one-repair/', record._id]">{{record.repairTag}}</a>
-                    </td>
-                    <td>
-                      <ul>
-                        <ng-container *ngFor="let work of record.workPerformed">
-                          <li>{{work}}</li>
-                        </ng-container>
-                      </ul>
-                    </td>
-                    <td>
-                      <ul>
-                        <ng-container *ngFor="let part of record.partsUsed">
-                          <li>{{part}}</li>
-                        </ng-container>
-                      </ul>
-                    </td>
-                    <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
-                      <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
-                        <td>
-                          <app-delete-repair-button [repair]="record"></app-delete-repair-button>
-                          <a [routerLink]="['/edit-repair', record._id]" class="edit-link">
-                            <mat-icon>edit</mat-icon>
-                          </a>
-                        </td>
-                      </ng-container>
-                    </ng-container>
+                  </ng-container>
+
+                  <ng-container matColumnDef="raaInvoice">
+                    <th mat-header-cell *matHeaderCellDef> RAA Invoice # </th>
+                    <td mat-cell *matCellDef="let record">{{record.raaInvNum}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="raaPO">
+                    <th mat-header-cell *matHeaderCellDef> RAA PO # </th>
+                    <td mat-cell *matCellDef="let record">{{record.raaPO}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="endUserPO">
+                    <th mat-header-cell *matHeaderCellDef> End User PO # </th>
+                    <td mat-cell *matCellDef="let record">{{record.endUserPO}}</td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="['index', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO']">
                   </tr>
-                </ng-container>
-              </tbody>
-            </table>
+                  <tr mat-row
+                    *matRowDef="let row; columns: ['index', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO']"></tr>
+
+                </table>
+              </div>
+
+            </ng-container>
+
+            <ng-template #noService>
+              <div class="row">
+                <p>No Recorded Repair Tickets...</p>
+              </div>
+            </ng-template>
+
+            <div class="row">
+              <a [routerLink]="['/submit', {serialNumber: oneRadio.serialNumber}]" class="btn btn-primary col-3">Add A
+                Repair Ticket</a>
+            </div>
+
           </div>
 
+        </section>
 
-
-        </ng-container>
-
-        <ng-template #noService>
-          <div class="row">
-            <p>No Recorded Repair Tickets...</p>
-          </div>
-        </ng-template>
-
-        <div class="row">
-          <a [routerLink]="['/submit', {radioID: oneRadio._id}]">Add A Repair Ticket</a>
-        </div>
-
-
-
-      </section>
 
     </div>
 

@@ -1,0 +1,7 @@
+<form [formGroup]="repairByTagForm" (ngSubmit)="navigateToRepairByTag()">
+    <div class="input-group mb-3">
+        <input type="text" id="startTag" formControlName="startTag" class="form-control" placeholder="Start Tag">
+        <input type="text" id="endTag" formControlName="endTag" class="form-control" placeholder="End Tag">
+        <button type="submit" class="btn btn-outline-secondary"><i class="bi bi-arrow-bar-right"></i></button>
+    </div>
+</form>

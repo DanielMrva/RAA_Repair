@@ -31,26 +31,18 @@ export class LocationResultsPageComponent implements OnDestroy, OnInit {
       this.route.params.subscribe(params => {
         const locationName = params['locationName'];
         const orgName = params['orgName'];
-
-        const condition = locationName ? 'locationName' : orgName ? 'orgName' : 'default';
-
-        switch(condition) {
-          case 'locationName':
-            this.store.dispatch(loadLocationByName({ locationName }));
-            break;
-
-          case 'orgName':
-            this.store.dispatch(loadOrgLocations({orgName}));
-            break;
   
-          default:
-            this.store.dispatch(loadAllLocations());
-            break;
+        if (orgName && locationName) {
+          this.store.dispatch(loadLocationByName({ orgName, locationName }));
+        } else if (orgName) {
+          this.store.dispatch(loadOrgLocations({ orgName }));
+        } else {
+          this.store.dispatch(loadAllLocations());
         }
       })
-    )
-      
+    );
   }
+  
 
   ngOnDestroy(): void {
       this.subscriptions.unsubscribe();

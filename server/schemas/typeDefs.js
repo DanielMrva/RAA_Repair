@@ -8,6 +8,7 @@ const typeDefs = `#graphql
         password: String!
         accessLevel: String!
         orgName: String!
+        userLocation: String!
     }
 
     type Repair {
@@ -15,7 +16,9 @@ const typeDefs = `#graphql
         radioID: String
         radioMake: String
         radioSerial: String
+        radioOrg: String
         radioLocation: String
+        reportedBy: String
         endUserPO: String
         raaPO: String
         repairTag: Int
@@ -111,17 +114,20 @@ const typeDefs = `#graphql
         allOrgs: [Organization]
         allLocations: [Location]
         location(locationId: String!): Location
-        locationByName(locationName: String!): Location
+        locationByName( orgName: String!, locationName: String!): Location
         orgLocations(orgName: String!): [Location]
         locationNames: [Location]
         likeOrg(orgName: String!): [Organization]
+        repairByTag(startTag: Int!, endTag: Int): [Repair]
     }
 
     input UpdateRepairInput {
         radioID: String
         radioMake: String
         radioSerial: String
+        radioOrg: String
         radioLocation: String
+        reportedBy: String
         endUserPO: String
         raaPO: String
         repairTag: Int
@@ -172,6 +178,7 @@ const typeDefs = `#graphql
         email: String
         accessLevel: String
         orgName: String
+        userLocation: String
     }
 
     input UpdateOrgInput {
@@ -197,8 +204,9 @@ const typeDefs = `#graphql
             username: String!
             email: String!
             password: String!
-            orgName: String!
             accessLevel: String!
+            orgName: String!
+            userLocation: String!
         ): Auth
 
         login(
@@ -215,7 +223,9 @@ const typeDefs = `#graphql
             radioID: String
             radioMake: String
             radioSerial: String
+            radioOrg: String
             radioLocation: String
+            reportedBy: String
             endUserPO: String
             raaPO: String
             repairTag: Int

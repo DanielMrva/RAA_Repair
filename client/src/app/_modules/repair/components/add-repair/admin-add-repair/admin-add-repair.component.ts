@@ -65,7 +65,9 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
     radioID: [''],
     radioMake: [''],
     radioSerial: [''],
+    radioOrg: [''],
     radioLocation: [''],
+    reportedBy: [''],
     endUserPO: [''],
     raaPO: [''],
     repairStatus: [''],
@@ -95,8 +97,7 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
     workPerformed: this.fb.array([this.fb.control('')]),
     repHours: [0],
     partsUsed: this.fb.array([this.fb.control('')]),
-    remarks: [''],
-    orgName: ['']
+    remarks: ['']
   });
 
   isSubmitted = false;
@@ -165,7 +166,8 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
               this.adminRepairForm.patchValue({
                 radioID: radio._id,
                 radioSerial: radio.serialNumber,
-                radioMake: radio.make
+                radioMake: radio.make,
+                radioOrg: radio.orgName, // Populate the new field here
               });
               this.initialOrgName = radio.orgName;
             }
@@ -173,10 +175,10 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
         }
       })
     );
-  };
-
+  }
+  
   handleOrgNameSelected(orgName: string): void {
-    this.adminRepairForm.patchValue({ orgName });
+    this.adminRepairForm.patchValue({radioOrg: orgName});
   };
 
   handleFilteredLocations(locations: string[]): void {
@@ -193,7 +195,7 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
     if (!this.showOtherBattery) {
       this.accessoriesGroup.patchValue({ otherBattery: ''});
     }
-  }
+  };
 
   prepaireRepairData(): RepairFormFields {
     let accessories = this.accessoriesGroup.value.selectedAccessories;
@@ -214,7 +216,9 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
       radioID: this.adminRepairForm.value.radioID ?? '',
       radioMake: this.adminRepairForm.value.radioMake ?? '',
       radioSerial: this.adminRepairForm.value.radioSerial ?? '',
+      radioOrg: this.adminRepairForm.value.radioOrg ?? '',
       radioLocation: this.adminRepairForm.value.radioLocation ?? '',
+      reportedBy: this.adminRepairForm.value.reportedBy ?? '',
       endUserPO: this.adminRepairForm.value.endUserPO ?? '',
       raaPO: this.adminRepairForm.value.raaPO ?? '',
       repairStatus: this.adminRepairForm.value.repairStatus ?? '',
@@ -242,8 +246,8 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
       partsUsed: filterEmptyArrayValues(this.adminRepairForm.value.partsUsed ?? []),
       remarks: this.adminRepairForm.value.remarks ?? ''
     }
-  }
-  
+  };
+    
   submitRepair(): void {
     const submittedRepair: RepairFormFields = this.prepaireRepairData();
     this.store.dispatch(addRepair({ submittedRepair }));
@@ -264,7 +268,7 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
     } else {
       this.submitRepair()
     }
-  }
+  };
 
   onSubmit() {
     this.subscriptions.add(

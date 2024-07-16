@@ -1,7 +1,7 @@
 <div class="d-flex flex-column flex-grow-1">
     <div class="flex-grow-1 overflow-auto">
         <table class="table w-100" mat-table [dataSource]="dataSource" matSort>
-            <!-- Define your columns here -->
+
             <ng-container matColumnDef="locationName">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Location
@@ -138,6 +138,7 @@
 
         </table>
     </div>
+    
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons class="mt-auto"></mat-paginator>
 </div>
 

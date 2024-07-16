@@ -194,8 +194,8 @@ export const LOCATION_BY_NAME = gql`
     ${LOCATION_FIELDS_FRAGMENT}
     ${RADIO_FIELDS_FRAGMENT}
     ${SERVICE_RECORD_FRAGMENT}
-    query locationByName($locationName: String!) {
-        locationByName(locationName: $locationName) {
+    query locationByName($orgName: String!, $locationName: String!) {
+        locationByName(orgName: $orgName, locationName: $locationName) {
             ... LocationFieldsFragment
         }
     }
@@ -226,7 +226,16 @@ export const ORG_REPAIRS = gql`
     ${SERVICE_RECORD_FRAGMENT}
     query orgRepairs($orgName: String!) {
         orgRepairs(orgName: $orgName) {
-            ... SERVICE_RECORD_FRAGMENT
+            ... ServiceRecordFragment
+        }
+    }
+`
+
+export const REPAIR_BY_TAG = gql`
+    ${SERVICE_RECORD_FRAGMENT}
+    query repairByTag($startTag: Int!, $endTag: Int) {
+        repairByTag(startTag: $startTag, endTag: $endTag) {
+            ... ServiceRecordFragment
         }
     }
 `
