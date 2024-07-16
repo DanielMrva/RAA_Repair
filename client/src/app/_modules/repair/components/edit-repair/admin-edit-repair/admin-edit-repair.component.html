@@ -51,15 +51,15 @@
                 <section class="row" id="radioLocation">
                     <h4 class="col-12 text-center">Service Location</h4>
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                         <app-org-location-selector class="form-group col-4"
-                            [initialOrgName]="repairForm.controls.orgName.value"
+                            [initialOrgName]="repairForm.controls.radioOrg.value"
                             (orgNameSelected)="handleOrgNameSelected($event)"
                             (filteredLocations)="handleFilteredLocations($event)">
                         </app-org-location-selector>
                     </div>
 
-                    <mat-form-field class="form-group col-6">
+                    <mat-form-field class="form-group col-4">
                         <mat-label for="radioLocation">
                             Location:
                         </mat-label>
@@ -70,6 +70,11 @@
                                 {{locOption}}
                             </mat-option>
                         </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field class="form-group col-4">
+                        <mat-label>Reported By:</mat-label>
+                        <input matInput id="reportedBy" formControlName="reportedBy" placeholder="Reported By">
                     </mat-form-field>
                 </section>
 
@@ -173,7 +178,7 @@
                             </mat-form-field>
                           </div>
                         </div>
-                      </div>
+                    </div>
                       
                 </section>
 

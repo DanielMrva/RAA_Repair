@@ -55,3 +55,20 @@
   margin-top: auto;
 }
 
+.width-400 {
+  min-width: 400px;
+}
+
+.width-800 {
+  min-width: 800px;
+  width: 800px;
+}
+
+.dropdown-flex-container {
+  display: flex;
+  border: 1px solid black; /* for visualization */
+}
+
+.dropdown-flex-child {
+  flex: none;
+}

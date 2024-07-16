@@ -3,7 +3,9 @@ export type Repair = {
     radioID: string
     radioMake: string
     radioSerial: string
+    radioOrg: string
     radioLocation: string
+    reportedBy: string
     endUserPO: string
     raaPO: string
     repairTag: number
@@ -58,6 +60,7 @@ export type User = {
     password: string,
     accessLevel: string,
     orgName: string,
+    userLocation?: string,
 };
 
 export type AuthInfo = {
@@ -139,7 +142,9 @@ export type RepairFormFields = {
     radioID: string
     radioMake: string
     radioSerial: string
+    radioOrg: string
     radioLocation: string
+    reportedBy: string
     endUserPO: string
     raaPO: string
     repairTag?: number
@@ -173,7 +178,9 @@ export type UpdateRepairFields = {
     radioID?: string
     radioMake?: string
     radioSerial?: string
+    radioOrg?: string
     radioLocation?: string
+    reportedBy?: string
     endUserPO?: string
     raaPO?: string
     repairTag?: number
@@ -223,7 +230,8 @@ export type UpdateUserFields = {
     username?: string,
     email?: string,
     accessLevel?: string,
-    orgName?: string
+    orgName?: string,
+    userLocation?: string
 }
 
 export type UpdateLocationFields = {

@@ -187,6 +187,37 @@ const routes: Routes = [
     },
   },
   {
+    path: 'repair-results',
+    component: RepairResultsPageComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      role: ['admin']
+    },
+  },
+  
+  // {
+  //   path: 'repair-results/:orgName',
+  //   component: RepairResultsPageComponent,
+  //   pathMatch: 'full',
+  //   runGuardsAndResolvers: 'always',
+  //   canActivate: [authGuard, roleGuard],
+  //   data: {
+  //     role: ['admin']
+  //   },
+  // },
+  // {
+  //   path: 'repair-results/:startTag/:endTag',
+  //   component: RepairResultsPageComponent,
+  //   pathMatch: 'full',
+  //   runGuardsAndResolvers: 'always',
+  //   canActivate: [authGuard, roleGuard],
+  //   data: {
+  //     role: ['admin']
+  //   },
+  // },
+  {
     path: 'user-results',
     component: UserResultsPageComponent,
     data: {
@@ -224,6 +255,16 @@ const routes: Routes = [
   },
   {
     path: 'location-results',
+    component: LocationResultsPageComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      role: ['admin']
+    },
+  },
+  {
+    path: 'location-results/:orgName/:locationName',
     component: LocationResultsPageComponent,
     pathMatch: 'full',
     runGuardsAndResolvers: 'always',

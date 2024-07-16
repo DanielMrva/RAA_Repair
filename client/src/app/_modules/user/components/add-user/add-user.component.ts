@@ -5,8 +5,10 @@ import { Store } from '@ngrx/store';
 import { addUser } from '@app/_store/_user-store/user.actions';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
-import { Organization } from '@app/graphql/schemas';
-import { Observable, Subscription, map, startWith } from 'rxjs';
+import { Organization, Location } from '@app/graphql/schemas';
+import { Observable, Subscription, combineLatest, map, startWith } from 'rxjs';
+import { locationErrorSelector, locationLoadingSelector, selectLocationNames } from '@app/_store/_location-store/location.selectors';
+import { loadLocationNames } from '@app/_store/_location-store/location.actions';
 
 @Component({
   selector: 'app-add-user',
@@ -21,29 +23,39 @@ export class AddUserComponent implements OnInit, OnDestroy {
   isLoadingOrgNames$
   orgNameError$
 
+  locationNames$
+  isLoadingLocationNames$
+  locationNameError$
+
+  orgNameOptions: string[] = [];
+  filteredOrgNames$!: Observable<string[]>;
+
+
+  locNameOptions: string[] = [];
+  filteredLocNames$!: Observable<string[]>;
+
   constructor(
     private store: Store<AppState>
   ) {
     this.orgNames$ = this.store.select(selectOrgNames);
     this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
     this.orgNameError$ = this.store.select(orgErrorSelector);
+
+    this.locationNames$ = this.store.select(selectLocationNames);
+    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
+    this.locationNameError$ = this.store.select(locationErrorSelector);
   }
-
-
-  filteredOrgName$!: Observable<Organization[] | null>;
 
   userForm = new FormGroup({
     username: new FormControl<string>('', { nonNullable: true }),
     email: new FormControl<string>('', { nonNullable: true }),
     password: new FormControl<string>('', { nonNullable: true }),
+    accessLevel: new FormControl<string>(''),
     orgName: new FormControl<string>(''),
-    accessLevel: new FormControl<string>('')
+    userLocation: new FormControl<string>('')
   });
 
   isSubmitted = false;
-
-  filteredOrgNames!: Observable<Organization[]>;
-
 
   fieldValidCheck(field: string) {
     if (
@@ -61,28 +73,52 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(loadOrgNames());
+    this.store.dispatch(loadLocationNames());
 
-    this.filteredOrgName$ = this.userForm.controls['orgName'].valueChanges.pipe(
+    this.filteredOrgNames$ = this.userForm.controls.orgName.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || ''))
+      map(value => this._filterOrgs(value || ''))
     )
-  };
 
-  private _filter(value: string): Organization[] {
-    const filterValue = value.toLowerCase();
-    let orgList: Organization[] = [];
-
-    this.subscriptions.add(
-      this.orgNames$.subscribe((orgs: Organization[] | null) => {
-        if (orgs) {
-          orgList = orgs.filter(org => org.orgName.toLowerCase().includes(filterValue));
-        }
-      })
+    this.filteredLocNames$ = combineLatest([
+      this.userForm.controls.userLocation.valueChanges.pipe(startWith('')),
+      this.userForm.controls.orgName.valueChanges.pipe(startWith('')),
+      this.locationNames$,
+    ]).pipe(
+      map(([locName, orgName, locations]) => this._filterLocs(locName, orgName, locations))
     );
 
+  };
 
 
-    return orgList;
+  private _filterOrgs(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    let orgOptions: string[] = []
+
+    this.orgNames$.subscribe((orgList: Organization[] | []) => {
+      if (orgList.length > 0) {
+        orgOptions = orgList.map(org => org.orgName)
+      } 
+    })
+
+    return orgOptions.filter(option => option.toLowerCase().includes(filterValue))
+
+  }
+
+  private _filterLocs(locValue: string | null, orgValue: string | null, locations: Location[]): string[] {
+    const filteredLocValue = (locValue || '').toLowerCase();
+    const filteredOrgValue = (orgValue || '').toLowerCase();
+  
+    let locOptions: string[] = [];
+  
+    locations.forEach((loc) => {
+      if (loc.locationName.toLowerCase().includes(filteredLocValue) && loc.orgName.toLowerCase() === filteredOrgValue) {
+        locOptions.push(loc.locationName);
+      }
+    });
+  
+    return locOptions;
   };
 
   displayOrgName(org: Organization): string {
@@ -96,16 +132,18 @@ export class AddUserComponent implements OnInit, OnDestroy {
     const username = this.userForm.value.username ?? '';
     const email = this.userForm.value.email ?? '';
     const password = this.userForm.value.password ?? '';
-    const orgName = this.userForm.value.orgName ?? '';
     const accessLevel = this.userForm.value.accessLevel ?? '';
+    const orgName = this.userForm.value.orgName ?? '';
+    const userLocation = this.userForm.value.userLocation ?? '';
 
     this.store.dispatch(
       addUser({
         username,
         email,
         password,
+        accessLevel,
         orgName,
-        accessLevel
+        userLocation
       })
     )
   };

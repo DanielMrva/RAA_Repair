@@ -47,7 +47,7 @@ export class RepairEffects {
                         return [
                             RepairActions.loadOneRepairSuccess({ repair: data.repair }),
                             ...(data.repair.radioID ? [loadOneRadio({ radioID: data.repair.radioID })] : []),
-                            ...(data.repair.radioLocation ? [loadLocationByName({ locationName: data.repair.radioLocation })] : [])
+                            ...(data.repair.radioLocation ? [loadLocationByName({ orgName: data.repair.radioOrg, locationName: data.repair.radioLocation })] : [])
                         ];
                     }),
                     catchError((error) => of(RepairActions.loadOneRepairFailure({ error })))
@@ -82,6 +82,17 @@ export class RepairEffects {
             )
         )
     );
+
+
+  loadRepairByTag$ = createEffect(() => this.actions$.pipe(
+    ofType(RepairActions.loadRepairByTag),
+    mergeMap(action =>
+      this.repairService.repairByTag(action.startTag, action.endTag).pipe(
+        map(result => RepairActions.loadRepairByTagSuccess({ repairs: result.data.repairByTag })),
+        catchError(error => of(RepairActions.loadRepairByTagFailure({ error })))
+      )
+    )
+  ));
 
     addRepair$ = createEffect(() =>
         this.actions$.pipe(

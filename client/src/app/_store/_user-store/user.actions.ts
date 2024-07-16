@@ -26,8 +26,9 @@ export const addUser = createAction(
         username: string,
         email: string,
         password: string,
+        accessLevel: string,
         orgName: string,
-        accessLevel: string
+        userLocation: string,
     }>()
 );
 

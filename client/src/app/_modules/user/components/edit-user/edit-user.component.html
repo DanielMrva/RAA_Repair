@@ -7,72 +7,65 @@
     <div *ngIf="userError$ | async as error">{{error}}</div>
 
     <div *ngIf="oneUser$ | async as user; else noUserFound" class="container">
-
-
-
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="row justify-content-center">
-
             <h2 class="col-12 text-center">Edit User</h2>
 
+            <mat-form-field class="form-group col-8 offset-2">
+                <mat-label>User Name</mat-label>
+                <input matInput type="text" id="username" formControlName="username" placeholder="User Name" />
+            </mat-form-field>
 
-            <div class="form-group col-6 offset-1">
-                <label for="username">User Name: </label>
-                <input type="text" id="username" formControlName="username" placeholder="User Name"
-                    class="form-control" />
-            </div>
+            <mat-form-field class="form-group col-8 offset-2">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" id="email" formControlName="email" placeholder="Email" />
+            </mat-form-field>
 
-            <div class="form-group col-6 offset-1">
-                <label for="email">Email: </label>
-                <input type="email" id="email" formControlName="email" placeholder="Email" class="form-control" />
-            </div>
-
-            <div class="form-group col-6 offset-1">
-    
-                <label for="orgName">Organization: </label>
-        
+            <mat-form-field class="form-group col-8 offset-2">
+                <mat-label>Organization</mat-label>
                 <mat-spinner *ngIf="isLoadingOrgNames$ | async; else loadedOrgNames"></mat-spinner>
-        
                 <div *ngIf="orgNameError$ | async as error">{{ error }}</div>
-    
                 <ng-template #loadedOrgNames>
                     <input
-                        type="text"
+                        matInput
                         placeholder="Select / Type Organization"
                         aria-label="Organization Name"
-                        matInput
                         formControlName="orgName"
                         [matAutocomplete]="auto"
-                        class="form-control"
                     >
-                    
                     <mat-autocomplete #auto="matAutocomplete">
                         <ng-container *ngIf="filteredOrgName$ | async as orgList">
                             <mat-option *ngFor="let org of orgList" [value]="org.orgName">
                                 {{ org.orgName }}
                             </mat-option>
                         </ng-container>
-    
                     </mat-autocomplete>
                 </ng-template>
-        
-            </div>
+            </mat-form-field>
 
+            <mat-form-field class="form-group col-8 offset-2">
+                <mat-label>Location</mat-label>
+                <input matInput placeholder="Location" aria-label="Location" formControlName="userLocation"
+                    [matAutocomplete]="locAuto">
+                <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
+                    <mat-option *ngFor="let locOption of filteredLocNames$ | async" [value]="locOption">
+                        {{locOption}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
 
-            <div class="form-group col-6 offset-1">
-                <label for="accessLevel">Access Level: </label>
+            <mat-form-field class="form-group col-8 offset-2">
+                <mat-label>Access Level</mat-label>
                 <mat-select formControlName="accessLevel" id="accessLevel">
                     <mat-option value="admin">Admin</mat-option>
                     <mat-option value="user">User</mat-option>
                     <mat-option value="tech">Tech</mat-option>
                 </mat-select>
-            </div>
+            </mat-form-field>
 
             <div class="col-12 d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-
         </form>
-
     </div>
 
 </ng-template>
@@ -80,6 +73,6 @@
 <ng-template #noUserFound>
     <div class="container">
         <h2>No User Found</h2>
-        <!-- You can add additional content or messages here for when no radio is found -->
+        <!-- You can add additional content or messages here for when no user is found -->
     </div>
 </ng-template>

@@ -87,8 +87,8 @@ export class UserEffects {
     addUser$ = createEffect(() =>
         this.actions$.pipe(
             ofType(addUser),
-            switchMap(({ username, email, password, orgName, accessLevel }) =>
-                this.userService.addUser(username, email, password, orgName, accessLevel).pipe(
+            switchMap(({ username, email, password, accessLevel,orgName, userLocation }) =>
+                this.userService.addUser(username, email, password, accessLevel,orgName, userLocation ).pipe(
                     map(({ data }) => addUserSuccess({ user: data?.addUser.user })),
                     catchError((error) => of(addUserFailure({ error })))
 

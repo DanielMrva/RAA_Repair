@@ -23,3 +23,8 @@ export const userErrorSelector = createSelector(
     selectUsers,
     (state: UserState) => state.error
 );
+
+export const userLocationSelector = createSelector(
+    selectUsers,
+    (state: UserState) => state.oneUser?.userLocation
+)

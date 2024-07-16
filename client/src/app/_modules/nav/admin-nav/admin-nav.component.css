@@ -1,0 +1,17 @@
+.custom-dropdown-width {
+    min-width: 400px; /* Adjust this value as needed */
+    width: auto;
+    max-width: 80vw; /* Makes sure the dropdown is relative to the viewport width */
+}
+
+.custom-dropdown-width .dropdown-item,
+.custom-dropdown-width app-repair-by-tag-navigator,
+.custom-dropdown-width app-org-radios-navigator,
+.custom-dropdown-width app-radio-sn-mnk-navigator {
+    white-space: nowrap;
+    display: block;
+}
+
+.custom-dropdown-width .input-group .form-control {
+    min-width: 150px; /* Adjust this value as needed */
+}

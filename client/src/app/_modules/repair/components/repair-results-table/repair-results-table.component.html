@@ -1,16 +1,22 @@
-<div class="d-flex flex-cloumn flex-grow-1">
+<div class="d-flex flex-column flex-grow-1">
     <div class="flex-grow-1 overflow-auto">
-
         <table class="table w-100" mat-table [dataSource]="dataSource" matSort>
 
             <ng-container matColumnDef="radioSerial">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Serial Number</th>
-                <td mat-cell *matCellDef="let element">{{ element.radioSerial }}</td>
+                <td mat-cell *matCellDef="let element">
+                    <a [routerLink]="['/one-radio', element.radioID]">{{ element.radioSerial }}</a>
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="radioLocation">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
-                <td mat-cell *matCellDef="let element">{{ element.radioLocation }}</td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Organization & Location</th>
+                <td mat-cell *matCellDef="let element">{{element.radioOrg}}, {{ element.radioLocation }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="reportedBy">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Reported By</th>
+                <td mat-cell *matCellDef="let element">{{element.reportedBy}}</td>
             </ng-container>
 
             <ng-container matColumnDef="endUserPO">
@@ -25,7 +31,10 @@
 
             <ng-container matColumnDef="repairTag">
                 <th mat-header-cell *matHeaderCellDef>Repair Tag</th>
-                <td mat-cell *matCellDef="let element">{{ element.repairTag }}</td>
+                <td mat-cell *matCellDef="let element">
+                    <a [routerLink]="['/one-repair', element._id]">{{ element.repairTag }}</a>
+                    
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="repairStatus">
@@ -36,31 +45,6 @@
             <ng-container matColumnDef="dateRepairAdded">
                 <th mat-header-cell *matHeaderCellDef>Date Repair Added</th>
                 <td mat-cell *matCellDef="let element">{{ element.dateRepairAdded | date: 'MMM d, y' }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="dateSentEuRaa">
-                <th mat-header-cell *matHeaderCellDef>Date Sent to RAA from EU</th>
-                <td mat-cell *matCellDef="let element">{{ element.dateSentEuRaa | date: 'MMM d, y' }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="dateRecEuRaa">
-                <th mat-header-cell *matHeaderCellDef>Date Received by RAA from EU</th>
-                <td mat-cell *matCellDef="let element">{{ element.dateRecEuRaa | date: 'MMM d, y' }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="dateSentRaaTech">
-                <th mat-header-cell *matHeaderCellDef>Date Sent to Tech</th>
-                <td mat-cell *matCellDef="let element">{{ element.dateSentRaaTech | date: 'MMM d, y' }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="dateRecTechRaa">
-                <th mat-header-cell *matHeaderCellDef>Date Received from Tech</th>
-                <td mat-cell *matCellDef="let element">{{ element.dateRecTechRaa | date: 'MMM d, y' }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="dateSentRaaEu">
-                <th mat-header-cell *matHeaderCellDef>Date Sent to EU</th>
-                <td mat-cell *matCellDef="let element">{{ element.dateSentRaaEu | date: 'MMM d, y' }}</td>
             </ng-container>
 
             <ng-container matColumnDef="techInvNum">
@@ -149,8 +133,9 @@
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
         </table>
     </div>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons class="mt-auto"></mat-paginator>
 </div>

@@ -26,6 +26,9 @@ const userSchema = new Schema({
     orgName: {
         type: String,
         required: true,
+    },
+    userLocation: {
+        type: String
     }
 });
 

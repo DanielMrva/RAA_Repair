@@ -4,7 +4,7 @@ import { AppState } from '@app/_store/app.state';
 import { repairLoadingSelector, repairErrorSelector, selectAllRepairs } from '@app/_store/_repair-store/repair.selectors';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { loadAllRepairs, loadOrgRepairs } from '@app/_store/_repair-store/repair.actions';
+import { loadAllRepairs, loadOrgRepairs, loadRepairByTag } from '@app/_store/_repair-store/repair.actions';
 
 @Component({
   selector: 'app-repair-results-page',
@@ -27,23 +27,20 @@ export class RepairResultsPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.route.params.subscribe(params => {
+      this.route.queryParams.subscribe(params => {
         const orgName = params['orgName'];
+        const startTag = params['startTag'] ? parseInt(params['startTag'], 10) : undefined;
+        const endTag = params['endTag'] ? parseInt(params['endTag'], 10) : undefined;
 
-        const condition = orgName ? 'orgName' : 'default';
-
-        switch(condition) {
-          case 'orgName':
-            this.store.dispatch(loadOrgRepairs({ orgName }));
-            break;
-  
-          default:
-            this.store.dispatch(loadAllRepairs());
-            break;
+        if (orgName) {
+          this.store.dispatch(loadOrgRepairs({ orgName }));
+        } else if (startTag !== undefined) {
+          this.store.dispatch(loadRepairByTag({ startTag, endTag }));
+        } else {
+          this.store.dispatch(loadAllRepairs());
         }
       })
-    )
-      
+    );
   }
 
   ngOnDestroy(): void {

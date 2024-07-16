@@ -28,7 +28,9 @@ export const SERVICE_RECORD_FRAGMENT = gql`
         radioID
         radioMake
         radioSerial
+        radioOrg
         radioLocation
+        reportedBy
         endUserPO
         raaPO
         repairTag
@@ -86,6 +88,7 @@ export const USER_FIELDS_FRAGMENT = gql`
         email
         accessLevel
         orgName
+        userLocation
     }
 `
 

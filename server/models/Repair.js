@@ -15,7 +15,13 @@ const repairSchema = new Schema({
     radioSerial: {
         type: String
     },
+    radioOrg: {
+        type: String
+    },
     radioLocation: {
+        type: String
+    },
+    reportedBy: {
         type: String
     },
     endUserPO: {

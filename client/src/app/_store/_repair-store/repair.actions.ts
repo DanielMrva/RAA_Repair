@@ -43,6 +43,21 @@ export const loadAllRepairsFailure = createAction(
     props<{ error: string }>()
 );
 
+export const loadRepairByTag = createAction(
+    '[Repair Service] Search Repairs By Tag',
+    props<{ startTag?: number, endTag?: number }>()
+  );
+  
+  export const loadRepairByTagSuccess = createAction(
+    '[Repair Service] Search Repairs By Tag Success',
+    props<{ repairs: Repair[] }>()
+  );
+  
+  export const loadRepairByTagFailure = createAction(
+    '[Repair Service] Search Repairs By Tag Failure',
+    props<{ error: string }>()
+  );
+
 export const addRepair = createAction(
     '[Add Repair Page] Add Repair',
     props<{ submittedRepair: RepairFormFields }>()

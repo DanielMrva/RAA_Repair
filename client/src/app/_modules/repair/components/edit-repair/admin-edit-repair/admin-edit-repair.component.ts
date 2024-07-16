@@ -87,10 +87,10 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
           this.subscriptions.add(
             combineLatest([this.oneRepair$, this.oneRadio$]).subscribe(([repair, radio]) => {
               if (repair && radio) {
-                this.initialOrgName = radio.orgName;
+                this.initialOrgName = repair.radioOrg;
                 this.repairID = repair._id;
                 this.radioId = radio._id;
-                this.populateForm(repair, radio);
+                this.populateForm(repair);
                 console.log('Initial Repair Status:', this.repairForm.controls.repairStatus.value);
               }
             })
@@ -104,7 +104,9 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
     radioID: new FormControl<string>(''),
     radioMake: new FormControl<string>(''),
     radioSerial: new FormControl<string>(''),
+    radioOrg: new FormControl<string>(''),
     radioLocation: new FormControl<string>(''),
+    reportedBy: new FormControl<string>(''),
     endUserPO: new FormControl<string>(''),
     raaPO: new FormControl<string>(''),
     repairStatus: new FormControl<string>(''),
@@ -159,12 +161,14 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
     this.store.dispatch(loadOneRepair({ repairID: id }));
   }
 
-  populateForm(repair: Repair, radio: Radio) {
+  populateForm(repair: Repair) {
     this.repairForm.patchValue({
       radioID: repair.radioID,
       radioMake: repair.radioMake,
       radioSerial: repair.radioSerial,
+      radioOrg: repair.radioOrg,
       radioLocation: repair.radioLocation,
+      reportedBy: repair.reportedBy,
       endUserPO: repair.endUserPO,
       raaPO: repair.raaPO,
       repairStatus: repair.repairStatus,
@@ -187,7 +191,6 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
       outPowerOut: repair.outPowerOut,
       repHours: repair.repHours,
       remarks: repair.remarks,
-      orgName: radio.orgName
     });
 
     const resetFormArray = (formArrayName: string, items: string[]) => {
@@ -256,8 +259,8 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
   }
 
   handleOrgNameSelected(orgName: string): void {
-    this.repairForm.patchValue({ orgName });
-  }
+    this.repairForm.patchValue({radioOrg: orgName});
+  };
 
   handleFilteredLocations(locations: string[]): void {
     this.filteredLocationNames = locations;
@@ -288,7 +291,9 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
       radioID: this.radioId ?? this.repairForm.value.radioID,
       radioMake: this.repairForm.value.radioMake ?? '',
       radioSerial: this.repairForm.value.radioSerial ?? '',
+      radioOrg: this.repairForm.value.radioOrg ?? '',
       radioLocation: this.repairForm.value.radioLocation ?? '',
+      reportedBy: this.repairForm.value.reportedBy ?? '',
       endUserPO: this.repairForm.value.endUserPO ?? '',
       raaPO: this.repairForm.value.raaPO ?? '',
       repairTag: this.repairTag,
