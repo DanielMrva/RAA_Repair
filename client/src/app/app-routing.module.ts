@@ -7,7 +7,6 @@ import { HomeComponent } from '@app/components/home/home.component';
 
 
 import { AddRepairComponent } from './_modules/repair/components/add-repair/add-repair.component';
-import { AdminAddRepairComponent } from './_modules/repair/components/add-repair/admin-add-repair/admin-add-repair.component';
 import { AddRadioComponent } from './_modules/radio/components/add-radio/add-radio/add-radio.component';
 import { OneRadioComponent } from './_modules/radio/components/one-radio/one-radio.component';
 import { OneRepairComponent } from './_modules/repair/components/one-repair/one-repair.component';

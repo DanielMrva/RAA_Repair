@@ -8,7 +8,7 @@ export const ADD_USER = gql`
         $password: String!,
         $orgName: String!,
         $accessLevel: String!
-        $orgName: String!
+        $userLocation: String!
     ) {
         addUser(
             username: $username
@@ -16,7 +16,7 @@ export const ADD_USER = gql`
             password: $password
             accessLevel: $accessLevel
             orgName: $orgName
-            userLocation: $orgName
+            userLocation: $userLocation
         ) {
             token
             user {

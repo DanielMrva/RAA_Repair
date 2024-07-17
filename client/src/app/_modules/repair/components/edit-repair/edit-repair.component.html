@@ -1,9 +1,9 @@
-<ng-container *ngIf="userAccessLevel$ | async as accessLevel">
+<ng-container *ngIf="isAuthenticated$ | async as authenticated; else notAuthenticated">
 
-    <ng-container [ngSwitch]="accessLevel">
-
-        <app-admin-edit-repair *ngSwitchCase="ADMIN_ACCESS"></app-admin-edit-repair>
-
-    </ng-container>
+    <app-edit-repair-form></app-edit-repair-form>
 
 </ng-container>
+
+<ng-template #notAuthenticated>
+    <h3>Please Log In to Edit Repairs</h3>
+</ng-template>

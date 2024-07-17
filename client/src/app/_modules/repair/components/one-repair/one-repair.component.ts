@@ -11,7 +11,7 @@ import { locationErrorSelector, locationLoadingSelector, selectOneLocation } fro
 import { Observable, Subscription, combineLatest, first } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
-import { ACCESS_LEVEL_ADMIN } from '@app/utils/constants';
+import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH } from '@app/utils/constants';
 
 
 @Component({
@@ -43,6 +43,7 @@ export class OneRepairComponent implements OnInit, OnDestroy{
 
 
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
+  TECH_ACCESS = ACCESS_LEVEL_TECH;
 
   poText$: Observable<PoTextAttributes | undefined>;
   invoiceText$: Observable<InvoiceTextAttributes | undefined>;  
