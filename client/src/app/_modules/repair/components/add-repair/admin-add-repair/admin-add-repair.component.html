@@ -150,30 +150,32 @@
                     <div class="col-8">
                         <h4>Accessories:</h4>
                         <div formGroupName="accessories">
-                          <mat-form-field class="full-width-input">
-                            <mat-select multiple placeholder="Select Accessories" formControlName="selectedAccessories" (selectionChange)="onAccessoriesChange($event)">
-                              <mat-option *ngFor="let accessory of accessoryOptions" [value]="accessory">
-                                {{ accessory }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                          
-                          <div *ngIf="showOtherAccessory" class="mt-3">
                             <mat-form-field class="full-width-input">
-                              <mat-label>Specify Other Accessory</mat-label>
-                              <input matInput formControlName="otherAccessory">
+                                <mat-select multiple placeholder="Select Accessories"
+                                    formControlName="selectedAccessories"
+                                    (selectionChange)="onAccessoriesChange($event)">
+                                    <mat-option *ngFor="let accessory of accessoryOptions" [value]="accessory">
+                                        {{ accessory }}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
-                          </div>
-                      
-                          <div *ngIf="showOtherBattery" class="mt-3">
-                            <mat-form-field class="full-width-input">
-                              <mat-label>Specify Other Battery</mat-label>
-                              <input matInput formControlName="otherBattery">
-                            </mat-form-field>
-                          </div>
+
+                            <div *ngIf="showOtherAccessory" class="mt-3">
+                                <mat-form-field class="full-width-input">
+                                    <mat-label>Specify Other Accessory</mat-label>
+                                    <input matInput formControlName="otherAccessory">
+                                </mat-form-field>
+                            </div>
+
+                            <div *ngIf="showOtherBattery" class="mt-3">
+                                <mat-form-field class="full-width-input">
+                                    <mat-label>Specify Other Battery</mat-label>
+                                    <input matInput formControlName="otherBattery">
+                                </mat-form-field>
+                            </div>
                         </div>
-                      </div>
-                      
+                    </div>
+
 
 
                 </section>
