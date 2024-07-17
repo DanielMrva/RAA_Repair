@@ -11,13 +11,15 @@ import { loadOneRadio } from '@app/_store/_radio-store/radio.actions';
 import { MismatchModalService } from '@app/services/modal/mismatch-modal.service';
 import { first, of, withLatestFrom, Subscription, combineLatest } from 'rxjs';
 import { filterEmptyArrayValues } from '@app/utils/filterEmptyArray';
-
+import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
+import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER } from '@app/utils/constants';
+import { AccessControlService } from '@app/services/accessControl/access-control.service';
 @Component({
-  selector: 'app-admin-edit-repair',
-  templateUrl: './admin-edit-repair.component.html',
-  styleUrls: ['./admin-edit-repair.component.css']
+  selector: 'app-edit-repair-form',
+  templateUrl: './edit-repair-form.component.html',
+  styleUrls: ['./edit-repair-form.component.css']
 })
-export class AdminEditRepairComponent implements OnInit, OnDestroy {
+export class EditRepairFormComponent implements OnDestroy, OnInit {
 
   private subscriptions = new Subscription();
 
@@ -27,6 +29,7 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
   isLoading$;
   repairError$;
   oneRepair$;
+  userAccessLevel$;
 
   initialOrgName: string | null = null;
   filteredLocationNames: string[] = [];
@@ -54,6 +57,11 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
     'Other (specify)'
   ];
 
+  private editableFields = {
+    [ACCESS_LEVEL_ADMIN]: ['*'],
+    [ACCESS_LEVEL_TECH]: ['dateSentRaaTech', 'repairStatus', 'techInvNum', 'accessories', 'symptoms', 'testFreq', 'incRxSens', 'incFreqErr', 'incMod', 'incPowerOut', 'outRxSens', 'outFreqErr', 'outMod', 'outPowerOut', 'workPerformed', 'partsUsed', 'remarks', 'repHours'],
+    [ACCESS_LEVEL_USER]: ['radioOrg', 'radioLocation', 'reportedBy', 'repairStatus', 'dateRepairAdded', 'dateSentEuRaa', 'dateSentRaaEu', 'accessories', 'symptoms', 'remarks']
+  };
 
   showOtherAccessory = false;
   showOtherBattery = false;
@@ -62,7 +70,8 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>,
-    private mismatchModalService: MismatchModalService
+    private mismatchModalService: MismatchModalService,
+    private accessControlService: AccessControlService
   ) {
     this.oneRadio$ = this.store.select(selectOneRadio);
     this.radioError$ = this.store.select(radioErrorSelector);
@@ -70,12 +79,19 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.store.select(repairLoadingSelector);
     this.repairError$ = this.store.select(repairErrorSelector);
     this.oneRepair$ = this.store.select(selectOneRepair);
+    this.userAccessLevel$ = this.store.select(selectAccessLevel);
   }
 
   ngOnInit(): void {
     this.repairForm.get('radioID')?.disable();
 
     console.log('Initial Repair Status:', this.repairForm.controls.repairStatus.value);
+
+    this.subscriptions.add(
+      this.userAccessLevel$.subscribe(() => {
+        this.accessControlService.setFormControlsAccessibility(this.repairForm, this.editableFields);
+      })
+    );
 
     this.subscriptions.add(
       this.activatedRoute.paramMap.subscribe(params => {
@@ -137,13 +153,11 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
     repHours: new FormControl<number>(0),
     partsUsed: new FormArray([new FormControl<string>('', { nonNullable: true })]),
     remarks: new FormControl<string>(''),
-    orgName: new FormControl<string>('')
   });
 
   get accessoriesGroup(): FormGroup {
     return this.repairForm.get('accessories') as FormGroup;
   }
-
 
   get symptomsArray(): FormArray {
     return this.repairForm.get('symptoms') as FormArray;
@@ -268,11 +282,11 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
 
   updateRepair(): void {
     const submittedRepair: RepairFormFields = this.prepareRepairData();
-
     this.store.dispatch(editRepair({ id: this.repairID, updates: submittedRepair }));
   }
 
   prepareRepairData(): RepairFormFields {
+    const enabledControls = this.accessControlService.enableAllControls(this.repairForm);
     const accessoriesGroup = this.repairForm.get('accessories') as FormGroup;
     let accessories = accessoriesGroup.value.selectedAccessories.slice();
 
@@ -287,7 +301,7 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
       accessories.push(`Battery (Other - specify): ${accessoriesGroup.value.otherBattery}`);
     }
 
-    return {
+    const repairData: RepairFormFields = {
       radioID: this.radioId ?? this.repairForm.value.radioID,
       radioMake: this.repairForm.value.radioMake ?? '',
       radioSerial: this.repairForm.value.radioSerial ?? '',
@@ -322,23 +336,48 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
       partsUsed: filterEmptyArrayValues(this.repairForm.value.partsUsed ?? []),
       remarks: this.repairForm.value.remarks ?? ''
     };
+
+    this.accessControlService.restoreDisabledControls(this.repairForm, enabledControls);
+
+    return repairData;
   }
 
   handleSubmission(formValue: any, oneRadio: any): void {
-    const formRadioLocation = formValue.radioLocation || '';
+    const radioLocationControl = this.repairForm.get('radioLocation');
+    const radioOrgControl = this.repairForm.get('radioOrg');
+    
+    let formRadioLocation = '';
+    if (radioLocationControl?.disabled) {
+        radioLocationControl.enable();
+        formRadioLocation = radioLocationControl.value || '';
+        radioLocationControl.disable();
+    } else {
+        formRadioLocation = formValue.radioLocation || '';
+    }
+    
+    let formRadioOrg = '';
+    if (radioOrgControl?.disabled) {
+        radioOrgControl.enable();
+        formRadioOrg = radioOrgControl.value || '';
+        radioOrgControl.disable();
+    } else {
+        formRadioOrg = formValue.radioOrg || '';
+    }
+    
     const oneRadioLocationName = oneRadio?.locationName || '';
+    const oneRadioOrgName = oneRadio?.orgName || '';
     const radioId = this.radioId || oneRadio?._id || formValue.radioID || '';
 
-    if (formRadioLocation !== oneRadioLocationName) {
-      console.log(`formRadioLocation: ${formRadioLocation}, oneRadioLocationName: ${oneRadioLocationName}, radioId: ${radioId}`);
-      this.mismatchModalService.openMismatchDialog(
-        formRadioLocation,
-        oneRadioLocationName,
-        radioId,
-        () => this.updateRepair()
-      );
+    if (formRadioLocation !== oneRadioLocationName || formRadioOrg !== oneRadioOrgName) {
+        console.log(`formRadioLocation: ${formRadioLocation}, oneRadioLocationName: ${oneRadioLocationName}, radioId: ${radioId}`);
+        this.mismatchModalService.openMismatchDialog(
+            formRadioLocation,
+            oneRadioLocationName,
+            radioId,
+            () => this.updateRepair()
+        );
     } else {
-      this.updateRepair();
+        this.updateRepair();
     }
   }
 
@@ -357,3 +396,4 @@ export class AdminEditRepairComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 }
+

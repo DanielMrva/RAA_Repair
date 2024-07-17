@@ -18,6 +18,7 @@ import { Location } from '@app/graphql/schemas/typeInterfaces';
 })
 export class OrgLocationSelectorComponent implements OnInit, OnChanges {
   @Input() initialOrgName: string | null = null;
+  @Input() orgNameControl!: FormControl; // Accept the control from the parent
   @Output() orgNameSelected = new EventEmitter<string>();
   @Output() filteredLocations = new EventEmitter<string[]>();
 
@@ -26,8 +27,6 @@ export class OrgLocationSelectorComponent implements OnInit, OnChanges {
 
   filteredOrgNames$!: Observable<string[]>;
   filteredLocNames$!: Observable<string[]>;
-
-  orgNameControl = new FormControl<string>('');
 
   constructor(
     private filterService: FilterService, 
@@ -43,12 +42,27 @@ export class OrgLocationSelectorComponent implements OnInit, OnChanges {
     );
     this.locationNames$ = this.store.select(selectLocationNames);
 
-    // Subscribe to value changes to emit the orgName and filter locations
+    this.setupValueChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialOrgName'] && changes['initialOrgName'].currentValue) {
+      if (this.orgNameControl.value !== this.initialOrgName) {
+        this.orgNameControl.patchValue(this.initialOrgName, { emitEvent: false });
+        this.orgNameSelected.emit(this.initialOrgName!);
+      }
+      this.filterLocations(this.initialOrgName!);
+    }
+  }
+
+  private setupValueChanges(): void {
     this.orgNameControl.valueChanges.pipe(
       startWith(this.initialOrgName || ''),
       tap(value => {
         const nonNullable = value ?? '';
-        this.orgNameSelected.emit(nonNullable);
+        if (this.orgNameControl.value !== nonNullable) {
+          this.orgNameSelected.emit(nonNullable);
+        }
         this.filterLocations(nonNullable);
       })
     ).subscribe();
@@ -59,14 +73,6 @@ export class OrgLocationSelectorComponent implements OnInit, OnChanges {
         this.filterService.filterOrgs(value ?? '', this.orgNames$)
       )
     );
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['initialOrgName'] && changes['initialOrgName'].currentValue) {
-      this.orgNameControl.patchValue(this.initialOrgName, { emitEvent: false });
-      this.orgNameSelected.emit(this.initialOrgName!);
-      this.filterLocations(this.initialOrgName!);
-    }
   }
 
   private filterLocations(orgName: string): void {

@@ -25,7 +25,7 @@
               <h2 class="col-12">
                 Repair {{repair.repairTag}} Details 
                 <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
-                  <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
+                  <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS || TECH_ACCESS">
                     <a [routerLink]="['/edit-repair', repair._id]">EDIT</a>
                   </ng-container>
                 </ng-container>

@@ -52,12 +52,14 @@
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-4">
-                        <app-org-location-selector class="form-group col-4"
+                        <app-org-location-selector 
+                            [orgNameControl]="repairForm.controls.radioOrg"
                             [initialOrgName]="repairForm.controls.radioOrg.value"
                             (orgNameSelected)="handleOrgNameSelected($event)"
                             (filteredLocations)="handleFilteredLocations($event)">
                         </app-org-location-selector>
                     </div>
+                    
 
                     <mat-form-field class="form-group col-4">
                         <mat-label for="radioLocation">
@@ -157,29 +159,32 @@
                     <div class="col-8">
                         <h4>Accessories:</h4>
                         <div [formGroup]="accessoriesGroup">
-                          <mat-form-field appearance="fill" class="full-width-input">
-                            <mat-label>Accessories</mat-label>
-                            <mat-select formControlName="selectedAccessories" multiple (selectionChange)="onAccessoriesChange($event)">
-                              <mat-option *ngFor="let option of accessoryOptions" [value]="option">{{ option }}</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                      
-                          <div *ngIf="showOtherAccessory">
                             <mat-form-field appearance="fill" class="full-width-input">
-                              <mat-label>Other Accessory</mat-label>
-                              <input matInput formControlName="otherAccessory" placeholder="Specify other accessory">
+                                <mat-label>Accessories</mat-label>
+                                <mat-select formControlName="selectedAccessories" multiple
+                                    (selectionChange)="onAccessoriesChange($event)">
+                                    <mat-option *ngFor="let option of accessoryOptions" [value]="option">{{ option
+                                        }}</mat-option>
+                                </mat-select>
                             </mat-form-field>
-                          </div>
-                      
-                          <div *ngIf="showOtherBattery">
-                            <mat-form-field appearance="fill" class="full-width-input">
-                              <mat-label>Other Battery</mat-label>
-                              <input matInput formControlName="otherBattery" placeholder="Specify other battery">
-                            </mat-form-field>
-                          </div>
+
+                            <div *ngIf="showOtherAccessory">
+                                <mat-form-field appearance="fill" class="full-width-input">
+                                    <mat-label>Other Accessory</mat-label>
+                                    <input matInput formControlName="otherAccessory"
+                                        placeholder="Specify other accessory">
+                                </mat-form-field>
+                            </div>
+
+                            <div *ngIf="showOtherBattery">
+                                <mat-form-field appearance="fill" class="full-width-input">
+                                    <mat-label>Other Battery</mat-label>
+                                    <input matInput formControlName="otherBattery" placeholder="Specify other battery">
+                                </mat-form-field>
+                            </div>
                         </div>
                     </div>
-                      
+
                 </section>
 
                 <!-- Symptoms and Diagnostics Section -->
@@ -328,13 +333,11 @@
 <ng-template #noRepairFound>
     <div class="container">
         <h2>No Repair Found</h2>
-        <!-- You can add additional content or messages here for when no radio is found -->
     </div>
 </ng-template>
 
 <ng-template #noRadioFound>
     <div class="container">
         <h2>No Radio Found</h2>
-        <!-- You can add additional content or messages here for when no radio is found -->
     </div>
 </ng-template>
