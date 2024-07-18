@@ -49,11 +49,14 @@
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-4">
-                        <app-org-location-selector [initialOrgName]="initialOrgName"
-                            (orgNameSelected)="handleOrgNameSelected($event)"
-                            (filteredLocations)="handleFilteredLocations($event)">
+                        <app-org-location-selector 
+                          [orgNameControl]="adminRepairForm.controls.radioOrg"
+                          [initialOrgName]="initialOrgName"
+                          (orgNameSelected)="handleOrgNameSelected($event)"
+                          (filteredLocations)="handleFilteredLocations($event)">
                         </app-org-location-selector>
-                    </div>
+                      </div>
+                      
 
                     <mat-form-field class="form-group col-4">
                         <mat-label for="radioLocation">

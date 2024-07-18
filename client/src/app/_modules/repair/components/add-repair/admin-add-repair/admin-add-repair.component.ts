@@ -54,50 +54,52 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>,
     private mismatchModalService: MismatchModalService,
-    private fb: FormBuilder
+    private formBuilder: FormBuilder
   ) {
     this.oneRadio$ = this.store.select(selectOneRadio);
     this.radioError$ = this.store.select(radioErrorSelector);
     this.radioIsLoading$ = this.store.select(radioLoadingSelector);
   }
 
-  adminRepairForm = this.fb.group({
-    radioID: [''],
-    radioMake: [''],
-    radioSerial: [''],
-    radioOrg: [''],
-    radioLocation: [''],
-    reportedBy: [''],
-    endUserPO: [''],
-    raaPO: [''],
-    repairStatus: [''],
-    dateRepairAdded: [null],
-    dateSentEuRaa: [null],
-    dateRecEuRaa: [null],
-    dateSentRaaTech: [null],
-    dateRecTechRaa: [null],
-    dateSentRaaEu: [null],
-    techInvNum: [''],
-    raaInvNum: [''],
-    symptoms: this.fb.array([this.fb.control('')]),
-    testFreq: [''],
-    incRxSens: [''],
-    incFreqErr: [''],
-    incMod: [''],
-    incPowerOut: [''],
-    outRxSens: [''],
-    outFreqErr: [''],
-    outMod: [''],
-    outPowerOut: [''],
-    accessories: this.fb.group({
-      selectedAccessories: [[]],
-      otherAccessory: [''],
-      otherBattery: ['']
+
+
+  adminRepairForm = new FormGroup({
+    radioID: new FormControl<string>(''),
+    radioMake: new FormControl<string>(''),
+    radioSerial: new FormControl<string>(''),
+    radioOrg: new FormControl<string>(''),
+    radioLocation: new FormControl<string>(''),
+    reportedBy: new FormControl<string>(''),
+    endUserPO: new FormControl<string>(''),
+    raaPO: new FormControl<string>(''),
+    repairStatus: new FormControl<string>(''),
+    dateRepairAdded: new FormControl<Date>(new Date()),
+    dateSentEuRaa: new FormControl<Date>(new Date()),
+    dateRecEuRaa: new FormControl<Date>(new Date()),
+    dateSentRaaTech: new FormControl<Date>(new Date()),
+    dateRecTechRaa: new FormControl<Date>(new Date()),
+    dateSentRaaEu: new FormControl<Date>(new Date()),
+    techInvNum: new FormControl<string>(''),
+    raaInvNum: new FormControl<string>(''),
+    symptoms: new FormArray([new FormControl<string>('', { nonNullable: true })]),
+    testFreq: new FormControl<string>(''),
+    incRxSens: new FormControl<string>(''),
+    incFreqErr: new FormControl<string>(''),
+    incMod: new FormControl<string>(''),
+    incPowerOut: new FormControl<string>(''),
+    outRxSens: new FormControl<string>(''),
+    outFreqErr: new FormControl<string>(''),
+    outMod: new FormControl<string>(''),
+    outPowerOut: new FormControl<string>(''),
+    accessories: new FormGroup({
+      selectedAccessories: new FormControl<string[]>([]),
+      otherAccessory: new FormControl<string>(''),
+      otherBattery: new FormControl<string>('')
     }),
-    workPerformed: this.fb.array([this.fb.control('')]),
-    repHours: [0],
-    partsUsed: this.fb.array([this.fb.control('')]),
-    remarks: ['']
+    workPerformed: new FormArray([new FormControl<string>('', { nonNullable: true })]),
+    repHours: new FormControl<number>(0),
+    partsUsed: new FormArray([new FormControl<string>('', { nonNullable: true })]),
+    remarks: new FormControl<string>(''),
   });
 
   isSubmitted = false;
@@ -118,29 +120,30 @@ export class AdminAddRepairComponent implements OnInit, OnDestroy {
     return this.adminRepairForm.get('partsUsed') as FormArray;
   }
 
+
   addSymptom() {
-    this.symptomsArray.push(this.fb.control(''));
-  };
+    this.symptomsArray.push(new FormControl<string>('', { nonNullable: true }));
+  }
 
   removeSymptom(index: number) {
     this.symptomsArray.removeAt(index);
-  };
+  }
 
   addWorkPerformed() {
-    this.workPerformedArray.push(this.fb.control(''));
-  };
+    this.workPerformedArray.push(new FormControl<string>('', { nonNullable: true }));
+  }
 
   removeWorkPerformed(index: number) {
     this.workPerformedArray.removeAt(index);
-  };
+  }
 
   addPartsUsed() {
-    this.partsUsedArray.push(this.fb.control(''));
-  };
+    this.partsUsedArray.push(new FormControl<string>('', { nonNullable: true }));
+  }
 
   removePartsUsed(index: number) {
     this.partsUsedArray.removeAt(index);
-  };
+  }
 
   fieldValidCheck(field: string) {
     if (
