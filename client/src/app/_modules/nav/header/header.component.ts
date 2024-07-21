@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { selectAccessLevel, selectIsAuthenticated } from '@app/_store/_auth-store/auth.selectors';
 import { logoutUser } from '@app/_store/_user-store/user.actions';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private router: Router
     ) {
       this.loggedUser$ = this.authService.loggedUser$;
 
@@ -53,7 +55,8 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.store.dispatch(logoutUser())
+    this.store.dispatch(logoutUser());
+    this.router.navigate(['/'])
   }
 
 }

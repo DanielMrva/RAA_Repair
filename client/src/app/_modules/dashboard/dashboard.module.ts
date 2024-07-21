@@ -81,6 +81,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MainDashboardComponent } from './components/main-dashboard/main-dashboard.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { DashboardRepairsTableComponent } from './components/dashboard-repairs-table/dashboard-repairs-table.component';
+import { TechDashboardComponent } from './components/tech-dashboard/tech-dashboard.component';
 
 
 
@@ -88,7 +89,8 @@ import { DashboardRepairsTableComponent } from './components/dashboard-repairs-t
   declarations: [
     MainDashboardComponent,
     AdminDashboardComponent,
-    DashboardRepairsTableComponent
+    DashboardRepairsTableComponent,
+    TechDashboardComponent
   ],
   imports: [
     CommonModule,
