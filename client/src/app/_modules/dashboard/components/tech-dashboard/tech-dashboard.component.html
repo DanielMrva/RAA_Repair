@@ -1,0 +1,13 @@
+<div  class="d-flex flex-column flex-grow-1">
+    <mat-tab-group  class="d-flex flex-column flex-grow-1">
+      <mat-tab label="Incoming Repairs">
+        <app-dashboard-repairs-table [repairs]="incomingRepairs$ | async " class="d-flex flex-column flex-grow-1"></app-dashboard-repairs-table>
+      </mat-tab>
+      <mat-tab label="Repairs at RAA">
+        <app-dashboard-repairs-table [repairs]="raaRepairs$ | async" class="d-flex flex-column flex-grow-1"></app-dashboard-repairs-table>
+      </mat-tab>
+      <mat-tab label="Repairs at Technician">
+        <app-dashboard-repairs-table [repairs]="techRepairs$ | async" class="d-flex flex-column flex-grow-1"></app-dashboard-repairs-table>
+      </mat-tab>
+    </mat-tab-group>
+  </div>

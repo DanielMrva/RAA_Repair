@@ -2,6 +2,7 @@
     <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
         <ng-container [ngSwitch]="userAccessLevel">
             <app-admin-dashboard *ngSwitchCase="ADMIN_ACCESS"></app-admin-dashboard>
+            <app-tech-dashboard *ngSwitchCase="TECH_ACCESS"></app-tech-dashboard>
             <!-- Other dashboard components for tech and user access -->
         </ng-container>
     </ng-container>
