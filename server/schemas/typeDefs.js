@@ -106,7 +106,7 @@ const typeDefs = `#graphql
         repair(repairID: String!): Repair
         orgRadios(orgName: String!): [Radio]
         orgRepairs(orgName: String!): [Repair]
-        # serviceRecord(radio: Radio!): [Repair]
+        orgLocRepairs(orgName: String!, locationName: String!): [Repair]
         likeOrgRadios(orgName: String!): [Radio]
         orgUsers(orgName: String!): [User]
         orgNames: [Organization]

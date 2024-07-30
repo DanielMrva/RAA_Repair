@@ -82,6 +82,7 @@ import { MainDashboardComponent } from './components/main-dashboard/main-dashboa
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { DashboardRepairsTableComponent } from './components/dashboard-repairs-table/dashboard-repairs-table.component';
 import { TechDashboardComponent } from './components/tech-dashboard/tech-dashboard.component';
+import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 
 
 
@@ -90,7 +91,8 @@ import { TechDashboardComponent } from './components/tech-dashboard/tech-dashboa
     MainDashboardComponent,
     AdminDashboardComponent,
     DashboardRepairsTableComponent,
-    TechDashboardComponent
+    TechDashboardComponent,
+    UserDashboardComponent
   ],
   imports: [
     CommonModule,

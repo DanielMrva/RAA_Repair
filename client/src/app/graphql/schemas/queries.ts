@@ -231,6 +231,15 @@ export const ORG_REPAIRS = gql`
     }
 `
 
+export const ORG_LOC_REPAIRS = gql`
+    ${SERVICE_RECORD_FRAGMENT}
+    query orgLocRepairs($orgName: String!, $locationName: String!) {
+        orgLocRepairs(orgName: $orgName, locationName: $locationName) {
+            ... ServiceRecordFragment
+        }
+    }
+`
+
 export const REPAIR_BY_TAG = gql`
     ${SERVICE_RECORD_FRAGMENT}
     query repairByTag($startTag: Int!, $endTag: Int) {

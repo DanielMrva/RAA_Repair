@@ -60,7 +60,7 @@ export class UserEffects {
     loadOrgUsers$ = createEffect(() =>
         this.actions$.pipe(
             ofType(loadOrgUsers),
-            switchMap(({orgName}) =>
+            switchMap(({ orgName }) =>
                 // call 
                 from(this.userService.queryOrgUsers(orgName).valueChanges).pipe(
                     // Take the returned data from ApolloQueryResult and return a new success action containing the users
@@ -87,8 +87,8 @@ export class UserEffects {
     addUser$ = createEffect(() =>
         this.actions$.pipe(
             ofType(addUser),
-            switchMap(({ username, email, password, accessLevel,orgName, userLocation }) =>
-                this.userService.addUser(username, email, password, accessLevel,orgName, userLocation ).pipe(
+            switchMap(({ username, email, password, accessLevel, orgName, userLocation }) =>
+                this.userService.addUser(username, email, password, accessLevel, orgName, userLocation).pipe(
                     map(({ data }) => addUserSuccess({ user: data?.addUser.user })),
                     catchError((error) => of(addUserFailure({ error })))
 
@@ -99,26 +99,26 @@ export class UserEffects {
     );
 
     addUserSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-        ofType(addUserSuccess),
-        map(({ user }) => {
-            this.toastService.show('User added successfully', {
-                delay: 3000
-            });
+        this.actions$.pipe(
+            ofType(addUserSuccess),
+            map(({ user }) => {
+                this.toastService.show('User added successfully', {
+                    delay: 3000
+                });
 
-            // Check if user and user._id are defined before navigating
-            if (user && user._id) {
-                this.router.navigate(['one-user', user._id]);
-            } else {
-                // Handle the case where user or user._id is undefined
-                console.error('User or user._id is undefined');
-                this.router.navigate(['/'])
-                // You might want to navigate to a default route or handle this case accordingly
-            }
-        })
-    ),
-    { dispatch: false }
-);
+                // Check if user and user._id are defined before navigating
+                if (user && user._id) {
+                    this.router.navigate(['one-user', user._id]);
+                } else {
+                    // Handle the case where user or user._id is undefined
+                    console.error('User or user._id is undefined');
+                    this.router.navigate(['/'])
+                    // You might want to navigate to a default route or handle this case accordingly
+                }
+            })
+        ),
+        { dispatch: false }
+    );
 
 
     addUserFailure$ = createEffect(() =>
@@ -196,7 +196,7 @@ export class UserEffects {
             ofType(loginUserSuccess),
             map(({ login }) => {
                 if (login && login.token && login.user) {
-                    const { username, orgName, accessLevel } = login.user;
+                    const { username, orgName, accessLevel, userLocation } = login.user;
 
                     this.toastService.show(`Welcome ${username}!`, {
                         classname: 'bg-success text-light',
@@ -205,7 +205,7 @@ export class UserEffects {
 
                     this.router.navigate(['/'])
                     console.log('Login User Success dispatching SET AUTH INFO')
-                    return setAuthInfo({ username, orgName, accessLevel });
+                    return setAuthInfo({ username, orgName, accessLevel, userLocation });
                 } else {
                     console.log('no login results or user information available.');
                     return clearAuthInfo();

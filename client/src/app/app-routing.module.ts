@@ -182,7 +182,7 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard, roleGuard],
     data: {
-      role: ['admin']
+      role: ['admin', 'user']
     },
   },
   {
@@ -192,20 +192,20 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [authGuard, roleGuard],
     data: {
-      role: ['admin']
+      role: ['admin', 'user']
     },
   },
   
-  // {
-  //   path: 'repair-results/:orgName',
-  //   component: RepairResultsPageComponent,
-  //   pathMatch: 'full',
-  //   runGuardsAndResolvers: 'always',
-  //   canActivate: [authGuard, roleGuard],
-  //   data: {
-  //     role: ['admin']
-  //   },
-  // },
+  {
+    path: 'repair-results/:orgName',
+    component: RepairResultsPageComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      role: ['admin', 'user']
+    },
+  },
   // {
   //   path: 'repair-results/:startTag/:endTag',
   //   component: RepairResultsPageComponent,
@@ -287,7 +287,7 @@ const routes: Routes = [
     component: EditRepairComponent,
     pathMatch: 'full',
     data: {
-      role: ['admin']
+      role: ['admin', 'user', 'tech']
     },
     canActivate: [authGuard, roleGuard]
   },

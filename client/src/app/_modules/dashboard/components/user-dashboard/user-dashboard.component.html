@@ -1,0 +1,19 @@
+<div  class="d-flex flex-column flex-grow-1">
+    <mat-tab-group  class="d-flex flex-column flex-grow-1">
+      <mat-tab label="All Active Repairs"  class="d-flex flex-column flex-grow-1">
+        <app-dashboard-repairs-table [repairs]="activeRepairs$ | async" class="d-flex flex-column flex-grow-1"></app-dashboard-repairs-table>
+      </mat-tab>
+      <mat-tab label="Repairs At Location">
+        <app-dashboard-repairs-table [repairs]="repairsAtLocation$ | async " class="d-flex flex-column flex-grow-1"></app-dashboard-repairs-table>
+      </mat-tab>
+      <mat-tab label="Repairs at RAA">
+        <app-dashboard-repairs-table [repairs]="raaRepairs$ | async" class="d-flex flex-column flex-grow-1"></app-dashboard-repairs-table>
+      </mat-tab>
+      <mat-tab label="Repairs at Technician">
+        <app-dashboard-repairs-table [repairs]="techRepairs$ | async" class="d-flex flex-column flex-grow-1"></app-dashboard-repairs-table>
+      </mat-tab>
+      <mat-tab label="All Complete Repairs">
+        <app-dashboard-repairs-table [repairs]="completeRepairs$ | async" class="d-flex flex-column flex-grow-1"></app-dashboard-repairs-table>
+      </mat-tab>
+    </mat-tab-group>
+  </div>

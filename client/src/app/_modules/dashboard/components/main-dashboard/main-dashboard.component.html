@@ -3,6 +3,8 @@
         <ng-container [ngSwitch]="userAccessLevel">
             <app-admin-dashboard *ngSwitchCase="ADMIN_ACCESS"></app-admin-dashboard>
             <app-tech-dashboard *ngSwitchCase="TECH_ACCESS"></app-tech-dashboard>
+            <app-user-dashboard *ngSwitchCase="USER_ACCESS"></app-user-dashboard>
+
             <!-- Other dashboard components for tech and user access -->
         </ng-container>
     </ng-container>

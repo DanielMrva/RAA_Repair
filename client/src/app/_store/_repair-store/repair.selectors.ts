@@ -46,3 +46,7 @@ export const selectRepairsAtTechnician = createSelector(selectAllRepairs, repair
 export const selectCompleteRepairs = createSelector(selectAllRepairs, repairs =>
   repairs.filter(repair => repair.repairStatus === 'Radio sent to Customer' || repair.dateSentRaaEu)
 );
+
+export const selectRepairsAtLoction = createSelector(selectAllRepairs, repairs => 
+  repairs.filter(repair => repair.dateRepairAdded && !repair.dateRecEuRaa)
+);

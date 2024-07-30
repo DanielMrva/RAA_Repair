@@ -60,6 +60,25 @@ export const repairReducer = createReducer(
         error: error
     })),
 
+    on(RepairActions.loadOrgLocRepairs, (state) => ({
+        ...state,
+        isLoading: true,
+        error: null,
+    })),
+
+    on(RepairActions.loadOrgLocRepairsSuccess, (state, { repairs }) => ({
+        ...state,
+        repairs: repairs as Repair[],
+        isLoading: false,
+        error: null
+    })),
+
+    on(RepairActions.loadOrgLocRepairsFailure, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error
+    })),
+
     on(RepairActions.loadAllRepairs, (state) => ({
         ...state,
         isLoading: true,

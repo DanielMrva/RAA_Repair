@@ -1,1 +1,33 @@
-<p>user-nav works!</p>
+<ul class="navbar-nav">
+    <li class="nav-item">
+        <div class="dropdown" id="service-dropdown">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Service</a>
+            <ul class="dropdown-menu custom-dropdown-width">
+                <ng-container *ngIf="userOrgName$ | async as userOrgName">
+                    <li class="dropdown-item">
+                        <a [routerLink]="['/repair-results', userOrgName]" class="dropdown-item">Repair Reports</a>
+                    </li>
+                </ng-container>
+                <!-- <li>
+
+                </li> -->
+            </ul>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <div class="dropdown" id="radio-dropdown">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Radios</a>
+            <ul class="dropdown-menu custom-dropdown-width">
+                
+                <ng-container *ngIf="userOrgName$ | async as userOrgName">
+                    <li class="dropdown-item">
+                        <a [routerLink]="['/radio-results', userOrgName]" class="dropdown-item">Radio Reports</a>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
+    </li>
+</ul>

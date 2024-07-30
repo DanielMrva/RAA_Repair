@@ -7,24 +7,27 @@ export interface AuthState {
     orgName: string | null;
     accessLevel: string | null;
     isAuthenticated: boolean;
+    userLocation: string | null;
 };
 
 export const initialState: AuthState = {
     username: null,
     orgName: null,
     accessLevel: null,
-    isAuthenticated: false
+    isAuthenticated: false,
+    userLocation: null,
 };
 
 export const authReducer = createReducer(
     initialState,
 
-    on(setAuthInfo, (state, { username, orgName, accessLevel }) => ({
+    on(setAuthInfo, (state, { username, orgName, accessLevel, userLocation }) => ({
         ...state,
         username,
         orgName,
         accessLevel,
         isAuthenticated: true,
+        userLocation
     })),
 
     on(clearAuthInfo, (state) => ({
@@ -32,6 +35,7 @@ export const authReducer = createReducer(
         username: null,
         orgName: null,
         accessLevel: null,
-        isAuthenticated: false
+        isAuthenticated: false,
+        userLocation: null
     }))
 )

@@ -22,22 +22,6 @@ export class RepairEffects {
         private router: Router
     ) { }
 
-    // loadOneRepair$ = createEffect(() =>
-    //     this.actions$.pipe(
-    //         ofType(RepairActions.loadOneRepair),
-    //         switchMap(({ repairID }) =>
-    //             from(this.repairService.querySingleRepair(repairID)).pipe(
-    //                 map(({ data }) => 
-    //                     RepairActions.loadOneRepairSuccess({ repair: data.repair })),
-
-
-    //                     catchError((error) => of(RepairActions.loadOneRepairFailure({ error }))
-    //                 )
-    //             )
-    //         )
-    //     )
-    // );
-
     loadOneRepair$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RepairActions.loadOneRepair),
@@ -69,6 +53,19 @@ export class RepairEffects {
         )
     );
 
+    loadOrgLocRepairs$ = createEffect(() => 
+        this.actions$.pipe(
+            ofType(RepairActions.loadOrgLocRepairs),
+            switchMap(({ orgName, locationName }) => 
+                from(this.repairService.orgLocRepairs(orgName, locationName)).pipe(
+                    map(({ data }) => RepairActions.loadOrgLocRepairsSuccess({ repairs: data.orgLocRepairs })),
+
+                    catchError((error) => of(RepairActions.loadOrgLocRepairsFailure({ error})))
+                )
+            )
+        )
+    );
+
     loadAllRepairs$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RepairActions.loadAllRepairs),
@@ -84,15 +81,15 @@ export class RepairEffects {
     );
 
 
-  loadRepairByTag$ = createEffect(() => this.actions$.pipe(
-    ofType(RepairActions.loadRepairByTag),
-    mergeMap(action =>
-      this.repairService.repairByTag(action.startTag, action.endTag).pipe(
-        map(result => RepairActions.loadRepairByTagSuccess({ repairs: result.data.repairByTag })),
-        catchError(error => of(RepairActions.loadRepairByTagFailure({ error })))
-      )
-    )
-  ));
+    loadRepairByTag$ = createEffect(() => this.actions$.pipe(
+        ofType(RepairActions.loadRepairByTag),
+        mergeMap(action =>
+            this.repairService.repairByTag(action.startTag, action.endTag).pipe(
+                map(result => RepairActions.loadRepairByTagSuccess({ repairs: result.data.repairByTag })),
+                catchError(error => of(RepairActions.loadRepairByTagFailure({ error })))
+            )
+        )
+    ));
 
     addRepair$ = createEffect(() =>
         this.actions$.pipe(
@@ -198,18 +195,18 @@ export class RepairEffects {
 
     deleteRepairSuccess$ = createEffect(() =>
         this.actions$.pipe(
-          ofType(RepairActions.deleteRepairSuccess),
-          map(({ repair }) => {
-            this.toastService.show('Repair deleted successfully!', { delay: 3000 });
-            if(repair) {
-                this.store.dispatch(loadOneRadio({ radioID: repair?.radioID }));
+            ofType(RepairActions.deleteRepairSuccess),
+            map(({ repair }) => {
+                this.toastService.show('Repair deleted successfully!', { delay: 3000 });
+                if (repair) {
+                    this.store.dispatch(loadOneRadio({ radioID: repair?.radioID }));
 
-            }
-            this.router.navigateByUrl(`/one-radio/${repair?.radioID}`);
-          })
+                }
+                this.router.navigateByUrl(`/one-radio/${repair?.radioID}`);
+            })
         ),
         { dispatch: false }
-      );
+    );
 
     deleteRepairFailure$ = createEffect(() =>
         this.actions$.pipe(
@@ -219,7 +216,7 @@ export class RepairEffects {
                     classname: 'bg-danger light-text',
                     delay: 3000
                 }),
-                console.error(error)
+                    console.error(error)
             })
         ),
         { dispatch: false }

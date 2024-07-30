@@ -1,38 +1,38 @@
 export type Repair = {
-    _id: string
-    radioID: string
-    radioMake: string
-    radioSerial: string
-    radioOrg: string
-    radioLocation: string
-    reportedBy: string
-    endUserPO: string
-    raaPO: string
-    repairTag: number
-    repairStatus: string
-    dateRepairAdded: string
-    dateSentEuRaa: string
-    dateRecEuRaa: string
-    dateSentRaaTech: string
-    dateRecTechRaa: string
-    dateSentRaaEu: string
-    techInvNum: string
-    raaInvNum: string
-    symptoms: string[]
-    testFreq: string
-    incRxSens: string
-    incFreqErr: string
-    incMod: string
-    incPowerOut: string
-    outRxSens: string
-    outFreqErr: string
-    outMod: string
-    outPowerOut: string
-    accessories: string[]
-    workPerformed: string[]
-    repHours: number
-    partsUsed: string[]
-    remarks: string
+    _id: string,
+    radioID: string,
+    radioMake: string,
+    radioSerial: string,
+    radioOrg: string,
+    radioLocation: string,
+    reportedBy: string,
+    endUserPO: string,
+    raaPO: string,
+    repairTag: number,
+    repairStatus: string,
+    dateRepairAdded: string,
+    dateSentEuRaa: string,
+    dateRecEuRaa: string,
+    dateSentRaaTech: string,
+    dateRecTechRaa: string,
+    dateSentRaaEu: string,
+    techInvNum: string,
+    raaInvNum: string,
+    symptoms: string[],
+    testFreq: string,
+    incRxSens: string,
+    incFreqErr: string,
+    incMod: string,
+    incPowerOut: string,
+    outRxSens: string,
+    outFreqErr: string,
+    outMod: string,
+    outPowerOut: string,
+    accessories: string[],
+    workPerformed: string[],
+    repHours: number,
+    partsUsed: string[],
+    remarks: string,
 };
 
 export type Radio = {
@@ -60,13 +60,14 @@ export type User = {
     password: string,
     accessLevel: string,
     orgName: string,
-    userLocation?: string,
+    userLocation: string,
 };
 
 export type AuthInfo = {
-    username: string;
-    orgName: string;
-    accessLevel: string;
+    username: string,
+    orgName: string,
+    accessLevel: string,
+    userLocation: string,
 };
 
 export type StoredUser = {

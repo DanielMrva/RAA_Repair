@@ -1,42 +1,31 @@
 <div class="container">
     <div class="row">
-
         <h2 class="col-12 text-center">Add Radio</h2>
-
         <form [formGroup]="adminRadioForm" (ngSubmit)="onSubmit()" class="row">
-
             <section class="row" id="timeline-section">
-
                 <h4 class="col-12 text-center">Timeline</h4>
-
-                <mat-form-field class="form-group col-4">
+                <mat-form-field class="form-group col-12 col-lg-4">
                     <mat-label>Date Purchased</mat-label>
                     <input matInput [matDatepicker]="datePurchasedPicker" formControlName="datePurchased">
                     <mat-datepicker-toggle matSuffix [for]="datePurchasedPicker"></mat-datepicker-toggle>
                     <mat-datepicker #datePurchasedPicker></mat-datepicker>
                 </mat-form-field>
-
-                <mat-form-field class="form-group col-4">
+                <mat-form-field class="form-group col-12 col-lg-4">
                     <mat-label>Date Entered</mat-label>
                     <input matInput [matDatepicker]="dateEnteredPicker" formControlName="dateEntered">
                     <mat-datepicker-toggle matSuffix [for]="dateEnteredPicker"></mat-datepicker-toggle>
                     <mat-datepicker #dateEnteredPicker></mat-datepicker>
                 </mat-form-field>
-
-                <mat-form-field class="form-group col-4">
+                <mat-form-field class="form-group col-12 col-lg-4">
                     <mat-label>Warranty Expiration</mat-label>
                     <input matInput [matDatepicker]="warrantyPicker" formControlName="warranty">
                     <mat-datepicker-toggle matSuffix [for]="warrantyPicker"></mat-datepicker-toggle>
                     <mat-datepicker #warrantyPicker></mat-datepicker>
                 </mat-form-field>
-
             </section>
-
             <section class="row" id="tracking">
-
                 <h4 class="col-12 text-center">Tracking</h4>
-
-                <mat-form-field class="form-group col-4">
+                <mat-form-field class="form-group col-12 col-lg-4">
                     <mat-label>Organization</mat-label>
                     <input matInput placeholder="Organization" aria-label="Organization" formControlName="orgName" [matAutocomplete]="orgAuto">
                     <mat-autocomplete autoActiveFirstOption #orgAuto="matAutocomplete">
@@ -45,8 +34,7 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-
-                <mat-form-field class="form-group col-4">
+                <mat-form-field class="form-group col-12 col-lg-4">
                     <mat-label>Location</mat-label>
                     <input matInput placeholder="Location" aria-label="Location" formControlName="locationName" [matAutocomplete]="locAuto">
                     <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
@@ -55,34 +43,26 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
-
-                <mat-form-field class="form-group col-4">
+                <mat-form-field class="form-group col-12 col-lg-4">
                     <mat-label>Inventory Number</mat-label>
                     <input matInput placeholder="Inventory Number" formControlName="inventoryNumber" [class.invalid]="fieldValidCheck('inventoryNumber')">
                 </mat-form-field>
-
             </section>
-
-            <section class="row" id="radio-secton">
-
+            <section class="row" id="radio-section">
                 <h4 class="col-12 text-center">Radio Details</h4>
-
-                <mat-form-field class="form-group col-4">
+                <mat-form-field class="form-group col-12 col-lg-4">
                     <mat-label>Make</mat-label>
                     <input matInput placeholder="Make" formControlName="make" [class.invalid]="fieldValidCheck('make')">
                 </mat-form-field>
-
-                <mat-form-field class="form-group col-4">
+                <mat-form-field class="form-group col-12 col-lg-4">
                     <mat-label>Model</mat-label>
                     <input matInput placeholder="Model" formControlName="model" [class.invalid]="fieldValidCheck('model')">
                 </mat-form-field>
-
-                <mat-form-field class="form-group col-4">
+                <mat-form-field class="form-group col-12 col-lg-4">
                     <mat-label>Serial Number</mat-label>
                     <input matInput placeholder="Serial Number" formControlName="serialNumber" [class.invalid]="fieldValidCheck('serialNumber')">
                 </mat-form-field>
-
-                <mat-form-field appearance="fill" class="form-group col-6">
+                <mat-form-field appearance="fill" class="form-group col-12 col-lg-6">
                     <mat-label>Radio Type</mat-label>
                     <mat-select formControlName="radioType">
                         <mat-option value="mobile">Mobile</mat-option>
@@ -91,30 +71,24 @@
                         <mat-option value="other">Other</mat-option>
                     </mat-select>
                 </mat-form-field>
-
-                <mat-form-field *ngIf="adminRadioForm.get('radioType')?.value === 'other'" appearance="fill" class="form-group col-6">
+                <mat-form-field *ngIf="adminRadioForm.get('radioType')?.value === 'other'" appearance="fill" class="form-group col-12 col-lg-6">
                     <mat-label>Specify Other</mat-label>
                     <input matInput formControlName="otherType">
                 </mat-form-field>
-
-                <div class="form-group col-6">
+                <div class="form-group col-12 col-lg-6">
                     <label>Refurb:</label>
                     <mat-radio-group formControlName="refurb">
                         <mat-radio-button [value]="true">Yes</mat-radio-button>
                         <mat-radio-button [value]="false">No</mat-radio-button>
                     </mat-radio-group>
                 </div>
-
-                <mat-form-field class="form-group col-6">
+                <mat-form-field class="form-group col-12 col-lg-6">
                     <mat-label>Programmed Channels</mat-label>
                     <input matInput placeholder="Programmed Channels" formControlName="progChannels">
                 </mat-form-field>
-
             </section>
-
             <section class="row" id="notes-section">
                 <h4 class="col-12 text-center">Notes: </h4>
-
                 <div class="form-group col-12">
                     <mat-label>Notes</mat-label>
                     <div formArrayName="notes">
@@ -122,20 +96,20 @@
                             <mat-form-field class="form-group col-12">
                                 <input matInput placeholder="Note" [formControlName]="i">
                             </mat-form-field>
-                            <button *ngIf="notesArray.length > 1" type="button" class="btn btn-danger" (click)="removeNotes(i)">
+
+                            <!-- TODO: https://material.angular.io/components/input/examples to figure out how to get this to look better -->
+                            <button *ngIf="notesArray.length > 1" type="button" class="btn btn-danger btn-outline-secondary" (click)="removeNotes(i)">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
+                            <button type="button" class="btn btn-outline-secondary" (click)="addNotes()"><i class="bi bi-plus-circle" id="add-notes-addon"></i></button>
+
                         </div>
-                        <button type="button" class="btn btn-primary" (click)="addNotes()"><i class="bi bi-plus-circle"></i></button>
                     </div>
                 </div>
-
             </section>
-
             <div class="col-12 d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary text-center">Submit</button>
             </div>
-
         </form>
     </div>
 </div>

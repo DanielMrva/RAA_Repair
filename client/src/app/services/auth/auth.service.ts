@@ -36,7 +36,8 @@ export class AuthService {
       return of({
         username: localUser.username,
         orgName: localUser.orgName,
-        accessLevel: localUser.accessLevel
+        accessLevel: localUser.accessLevel,
+        userLocation: localUser.userLocation
       })
     } else {
       return of(null)
