@@ -6,6 +6,7 @@ export interface AuthInfoPayload {
     username: string;
     orgName: string;
     accessLevel: string;
+    userLocation: string;
 }
   
 

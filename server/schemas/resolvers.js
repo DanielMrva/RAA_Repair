@@ -64,24 +64,17 @@ const resolvers = {
             return Radio.find({ orgName: orgName }).populate(["serviceRecord"]);
         },
         orgRepairs: async (parent, { orgName }) => {
-            // Find all radios with the given orgName, using regExp
-            // const radios = await Radio.find({ orgName: { $regex: new RegExp(orgName, 'i') } }).select('_id');
-            // const radioIds = radios.map(radio => radio._id);
-
-            // Find all repairs with radioID in the found radios' IDs
-
-            // const repairs = await Repair.find({ radioID: { $in: radioIds } });
-            // Legacy above
 
             // Find all repairs with radioOrg of like orgName
             const repairs = await Repair.find({ radioOrg: { $regex: new RegExp(orgName, 'i') } });
 
             return repairs;
         },
-        // serviceRecord: async (radio) => {
-        //     // Find all repairs with the given radioID
-        //     return await Repair.find({ radioID: radio._id });
-        // },
+        orgLocRepairs: async (parent, {orgName, locationName}) => {
+
+            const repairs = await Repair.find({ radioOrg: { $regex: new RegExp(orgName, 'i') }, radioLocation: { $regex: new RegExp(locationName, 'i') } })
+            return repairs;
+        },
         likeOrgRadios: async (parent, { orgName }) => {
 
             return Radio.find({
@@ -163,15 +156,6 @@ const resolvers = {
                     }
                 });
         },
-        // repairByTag: async (parent, { startTag, endTag }) => {
-        //     if (startTag !== undefined && endTag === undefined) {
-        //         return Repair.find({ repairTag: { $regex: new RegExp(startTag, 'i') } });
-        //     } else if (startTag !== undefined && endTag !== undefined) {
-        //         return Repair.find({ repairTag: { $gte: startTag, $lte: endTag } });
-        //     } else {
-        //         throw new Error("Invalid search parameters");
-        //     }
-        // },
         repairByTag: async (parent, { startTag, endTag }) => {
             if (startTag !== undefined && endTag === undefined) {
               // Ensure startTag is a string

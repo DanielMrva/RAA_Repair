@@ -28,8 +28,9 @@ export class AuthEffects {
                             const username = localUser.username;
                             const orgName = localUser.orgName;
                             const accessLevel = localUser.accessLevel;
+                            const userLocation = localUser.userLocation;
 
-                            return [AuthActions.setAuthInfo({ username, orgName, accessLevel })];
+                            return [AuthActions.setAuthInfo({ username, orgName, accessLevel, userLocation })];
                         } else {
                             // If no user found, return an empty array or other action if needed.
                             return [];

@@ -41,6 +41,7 @@ import { RepairResultsTableComponent } from './components/repair-results-table/r
 import { RepairStatusDropdownComponent } from '@app/_components/utilComponents/repair-status-dropdown/repair-status-dropdown.component';
 import { RepairResultsPageComponent } from './components/repair-results-page/repair-results-page.component';
 import { EditRepairFormComponent } from './components/edit-repair/edit-repair-form/edit-repair-form.component';
+import { AddRepairFormComponent } from './components/add-repair/add-repair-form/add-repair-form.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { EditRepairFormComponent } from './components/edit-repair/edit-repair-fo
     RepairStatusDropdownComponent,
     RepairResultsPageComponent,
     EditRepairFormComponent,
+    AddRepairFormComponent,
   ],
   imports: [
     CommonModule,

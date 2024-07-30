@@ -19,6 +19,11 @@ export const selectOrgName = createSelector(
     (state: AuthState) => state.orgName
 );
 
+export const selectUserLocation = createSelector(
+    selectAuth,
+    (state: AuthState) => state.userLocation
+);
+
 export const selectIsAuthenticated = createSelector(
     selectAuth,
     (state: AuthState) => state.isAuthenticated
