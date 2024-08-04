@@ -14,7 +14,7 @@ export class OrganizationService {
   constructor(private apollo: Apollo) { }
 
   querySingleOrg(orgId: string) {
-    return this.apollo.query<{org: Organization}> ({
+    return this.apollo.watchQuery<{org: Organization}> ({
       query: QUERY_SINGLEORG,
       variables: {
         orgId

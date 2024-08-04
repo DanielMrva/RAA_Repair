@@ -22,15 +22,15 @@
 
         <h4 class="col-12 text-center">Timeline</h4>
 
-        <div class="col-4">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Date Purchased: </h6>
           <p class="row">{{oneRadio.datePurchased | date: 'MMM d, y'}}</p>
         </div>
-        <div class="col-4">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Date Entered: </h6>
           <p class="row">{{oneRadio.dateEntered | date: 'MMM d, y'}}</p>
         </div>
-        <div class="col-4">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Warranty: </h6>
           <p class="row">{{oneRadio.warranty | date: 'MMM d, y'}}</p>
         </div>
@@ -41,15 +41,15 @@
 
         <h4 class="col-12 text-center">Tracking:</h4>
 
-        <div class="col">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Organization:</h6>
           <p class="row">{{oneRadio.orgName}}</p>
         </div>
-        <div class="col">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Location:</h6>
           <p class="row">{{oneRadio.locationName}}</p>
         </div>
-        <div class="col">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Intventory: </h6>
           <p class="row">{{oneRadio.inventoryNumber}}</p>
         </div>
@@ -60,24 +60,24 @@
 
         <h4 class="col-12 text-center">Radio Details:</h4>
 
-        <div class="col-4">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Make: </h6>
           <p class="row">{{oneRadio.make}}</p>
         </div>
-        <div class="col-4">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Model: </h6>
           <p class="row">{{oneRadio.model}}</p>
         </div>
-        <div class="col-4">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Serial Number: </h6>
           <p class="row">{{oneRadio.serialNumber}}</p>
         </div>
-        <div class="col-4">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Radio Type: </h6>
           <p class="row">{{oneRadio.radioType}}</p>
         </div>
 
-        <div class="col-4">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Refurb:</h6>
           <ng-container *ngIf="oneRadio.refurb">
             <p class="row"><b>Y</b></p>
@@ -87,7 +87,7 @@
           </ng-container>
         </div>
 
-        <div class="col-4">
+        <div class="col-6 col-lg-4">
           <h6 class="row">Programmed Channels: </h6>
           <p class="row">{{oneRadio.progChannels}}</p>
         </div>

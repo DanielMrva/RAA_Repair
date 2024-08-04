@@ -186,6 +186,16 @@ const routes: Routes = [
     },
   },
   {
+    path: 'repair-results/:orgName',
+    component: RepairResultsPageComponent,
+    pathMatch: 'full',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard, roleGuard],
+    data: {
+      role: ['admin', 'user']
+    },
+  },
+  {
     path: 'repair-results',
     component: RepairResultsPageComponent,
     pathMatch: 'full',
@@ -196,16 +206,6 @@ const routes: Routes = [
     },
   },
   
-  {
-    path: 'repair-results/:orgName',
-    component: RepairResultsPageComponent,
-    pathMatch: 'full',
-    runGuardsAndResolvers: 'always',
-    canActivate: [authGuard, roleGuard],
-    data: {
-      role: ['admin', 'user']
-    },
-  },
   // {
   //   path: 'repair-results/:startTag/:endTag',
   //   component: RepairResultsPageComponent,

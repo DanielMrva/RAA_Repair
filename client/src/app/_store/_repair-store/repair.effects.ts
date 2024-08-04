@@ -43,7 +43,7 @@ export class RepairEffects {
     loadOrgRepairs$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RepairActions.loadOrgRepairs),
-            switchMap(({ orgName }) =>
+            switchMap(({ orgName }) => 
                 from(this.repairService.orgRepairs(orgName)).pipe(
                     map(({ data }) => RepairActions.loadOrgRepairsSuccess({ repairs: data.orgRepairs })),
 

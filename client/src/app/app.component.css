@@ -5,6 +5,15 @@
 }
 
 .full-width-input {
+  width: 100%;
+}
+
+.remove-icon 
+.add-icon {
+  cursor: pointer;
+}
+
+.full-width-input {
   flex: 1;
 }
 

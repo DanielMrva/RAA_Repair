@@ -31,6 +31,18 @@ export class OrgEffects {
         )
     );
 
+    loadOneOrg$ = createEffect(() => 
+        this.actions$.pipe(
+            ofType(OrgActions.loadOneOrg),
+            switchMap(({ orgId }) => 
+                from(this.orgService.querySingleOrg(orgId).valueChanges).pipe(
+                    map(({ data }) => OrgActions.loadOneOrgSuccess({ organization: data.org })),
+                    catchError((error) => of(OrgActions.loadOneOrgFailure({ error })))
+                )
+            )
+        )
+    );
+
     loadLikeOrgs$ = createEffect(() =>
         this.actions$.pipe(
             ofType(OrgActions.loadLikeOrgs),

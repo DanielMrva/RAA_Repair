@@ -18,21 +18,21 @@
 
           <h4 class="col-12 text-center">Timeline</h4>
 
-          <mat-form-field class="form-group col-4">
+          <mat-form-field class="form-group col-12 col-lg-4">
             <mat-label>Date Purchased</mat-label>
             <input matInput [matDatepicker]="datePurchasedPicker" formControlName="datePurchased">
             <mat-datepicker-toggle matSuffix [for]="datePurchasedPicker"></mat-datepicker-toggle>
             <mat-datepicker #datePurchasedPicker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field class="form-group col-4">
+          <mat-form-field class="form-group col-12 col-lg-4">
             <mat-label>Date Entered</mat-label>
             <input matInput [matDatepicker]="dateEnteredPicker" formControlName="dateEntered">
             <mat-datepicker-toggle matSuffix [for]="dateEnteredPicker"></mat-datepicker-toggle>
             <mat-datepicker #dateEnteredPicker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field class="form-group col-4">
+          <mat-form-field class="form-group col-12 col-lg-4">
             <mat-label>Warranty Expiration</mat-label>
             <input matInput [matDatepicker]="warrantyPicker" formControlName="warranty">
             <mat-datepicker-toggle matSuffix [for]="warrantyPicker"></mat-datepicker-toggle>
@@ -47,7 +47,7 @@
 
           <h4 class="col-12 text-center">Tracking</h4>
 
-          <mat-form-field class="form-group col-4">
+          <mat-form-field class="form-group col-12 col-lg-4">
             <mat-label>Organization</mat-label>
             <input matInput placeholder="Organization" aria-label="Organization" formControlName="orgName"
               [matAutocomplete]="orgAuto">
@@ -58,7 +58,7 @@
             </mat-autocomplete>
           </mat-form-field>
 
-          <mat-form-field class="form-group col-4">
+          <mat-form-field class="form-group col-12 col-lg-4">
             <mat-label>Location</mat-label>
             <input matInput placeholder="Location" aria-label="Location" formControlName="locationName"
               [matAutocomplete]="locAuto">
@@ -69,7 +69,7 @@
             </mat-autocomplete>
           </mat-form-field>
 
-          <mat-form-field class="form-group col-4">
+          <mat-form-field class="form-group col-12 col-lg-4">
             <mat-label>Inventory Number</mat-label>
             <input matInput placeholder="Inventory Number" formControlName="inventoryNumber">
           </mat-form-field>
@@ -82,22 +82,22 @@
 
           <h4 class="col-12 text-center">Radio Details</h4>
 
-          <mat-form-field class="form-group col-4">
+          <mat-form-field class="form-group col-12 col-lg-4">
             <mat-label>Make</mat-label>
             <input matInput placeholder="Make" formControlName="make">
           </mat-form-field>
 
-          <mat-form-field class="form-group col-4">
+          <mat-form-field class="form-group col-12 col-lg-4">
             <mat-label>Model</mat-label>
             <input matInput placeholder="Model" formControlName="model">
           </mat-form-field>
 
-          <mat-form-field class="form-group col-4">
+          <mat-form-field class="form-group col-12 col-lg-4">
             <mat-label>Serial Number</mat-label>
             <input matInput placeholder="Serial Number" formControlName="serialNumber">
           </mat-form-field>
 
-          <div class="form-group col-6">
+          <div class="form-group col-12 col-lg-12">
             <div class="row">
               <mat-form-field appearance="fill" class="col-12">
                 <mat-label>Radio Type</mat-label>
@@ -117,16 +117,16 @@
             </div>
           </div>
 
-          <div class="col-6">
+          <div class="col-12 col-lg-12">
             <div class="row">
-              <div class="form-group col-12">
-                <label>Refurb:</label>
+              <div class="form-group col-6">
+                <mat-label>Refurb:</mat-label>
                 <mat-radio-group formControlName="refurb">
                   <mat-radio-button [value]="true">Yes</mat-radio-button>
                   <mat-radio-button [value]="false">No</mat-radio-button>
                 </mat-radio-group>
               </div>
-              <mat-form-field class="form-group col-12">
+              <mat-form-field class="form-group col-6">
                 <mat-label>Programmed Channels</mat-label>
                 <input matInput placeholder="Programmed Channels" formControlName="progChannels">
               </mat-form-field>
@@ -148,15 +148,13 @@
                 <div class="input-group">
                   <mat-form-field class="form-group col-12">
                     <input matInput placeholder="Note" [formControlName]="i">
-                  </mat-form-field>
-                  <button *ngIf="notesArray.length > 1" type="button" class="btn btn-danger" (click)="removeNote(i)">
-                    <i class="bi bi-trash-fill"></i>
-                  </button>
+                    <mat-icon matSuffix class="remove-icon text-danger" aria-label="remove notes" *ngIf="notesArray.length > 1" type="button" (click)="removeNote(i)">remove_circle</mat-icon>
+                    <mat-icon matSuffix class="add-icon" aria-label="add notes" type="button" (click)="addNotes()">add_circle</mat-icon>
+      </mat-form-field>
                 </div>
               </div>
             </div>
-            <button type="button" (click)="addNotes()" class="btn btn-primary"><i
-                class="bi bi-plus-circle"></i></button>
+
           </div>
 
         </section>
@@ -218,7 +216,7 @@
             </ng-template>
 
             <div class="row">
-              <a [routerLink]="['/submit', {serialNumber: radio.serialNumber}]" class="btn btn-primary col-3">Add A
+              <a [routerLink]="['/submit', {radioID: radio._id}]" class="btn btn-primary col-3">Add A
                 Repair Ticket</a>
             </div>
 

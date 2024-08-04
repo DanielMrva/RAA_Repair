@@ -113,6 +113,7 @@ type Query {
   orgLocations(orgName: String!): [Location]
   locationNames: [Location]
   orgRepairs(orgName: String!): [Repair]
+  orgLocRepairs(orgName: String!, locationName: String!): [Repair]
   likeOrg(orgName: String!): [Organization]
   repairByTag(startTag: Int!, engTag: Int): [Repair]
 }
