@@ -27,7 +27,6 @@ export class UserService {
 
   loginUser(email: string, password: string) {
 
-    console.log(`Login User in Service: ${email}, ${password}`)
     return this.apollo.mutate<{login: LoginResults}>({
       mutation: LOGIN_USER,
       variables: {

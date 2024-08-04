@@ -20,7 +20,7 @@
 
                     <div class="row">
 
-                        <div class="form-group col-6">
+                        <div class="form-group col-12 col-lg-6">
                             <label for="orgName">Organization Name:</label>
                             <mat-spinner *ngIf="isLoadingOrgNames$ | async; else loadedOrgNames"></mat-spinner>
                             <div *ngIf="orgNameError$ | async as error">{{ error }}</div>
@@ -34,7 +34,7 @@
                         </div>
 
 
-                        <div class="form-group col-6">
+                        <div class="form-group col-12 col-lg-6">
                             <label for="locationName">Location Name:</label>
                             <input type="text" id="locationName" formControlName="locationName" class="form-control"
                                 [class.invalid]="fieldValidCheck('locationName')">
@@ -49,47 +49,47 @@
 
                     </div>
 
-                    <div class="form-group col-4">
+                    <div class="form-group col-12 col-lg-4">
                         <label for="street">Street:</label>
                         <input type="text" id="street" formControlName="street" class="form-control">
                     </div>
 
-                    <div class="form-group col-4">
+                    <div class="form-group col-12 col-lg-4">
                         <label for="suite">Suite / Apt:</label>
                         <input type="text" id="suite" formControlName="suite" class="form-control">
                     </div>
 
-                    <div class="form-group col-4">
+                    <div class="form-group col-12 col-lg-4">
                         <label for="city">City:</label>
                         <input type="text" id="city" formControlName="city" class="form-control">
                     </div>
 
-                    <div class="form-group col-4">
+                    <div class="form-group col-12 col-lg-4">
                         <label for="state">State:</label>
                         <input type="text" id="state" formControlName="state" class="form-control">
                     </div>
 
-                    <div class="form-group col-4">
+                    <div class="form-group col-12 col-lg-4">
                         <label for="zip">Zip:</label>
                         <input type="text" id="zip" formControlName="zip" class="form-control">
                     </div>
 
-                    <div class="form-group col-4">
+                    <div class="form-group col-12 col-lg-4">
                         <label for="country">Country:</label>
                         <input type="text" id="country" formControlName="country" class="form-control">
                     </div>
 
-                    <div class="form-group col-4">
+                    <div class="form-group col-12 col-lg-4">
                         <label for="phone">Phone:</label>
                         <input type="text" id="phone" formControlName="phone" class="form-control">
                     </div>
 
-                    <div class="form-group col-4">
+                    <div class="form-group col-12 col-lg-4">
                         <label for="contactEmail">Contact Email:</label>
                         <input type="text" id="contactEmail" formControlName="contactEmail" class="form-control">
                     </div>
 
-                    <div class="form-group col-4">
+                    <div class="form-group col-12 col-lg-4">
                         <label for="primaryContact">Primary Contact:</label>
                         <input type="text" id="primaryContact" formControlName="primaryContact" class="form-control">
                     </div>

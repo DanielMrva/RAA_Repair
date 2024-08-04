@@ -39,7 +39,7 @@
                             <tr>
                                 <th scope="row">{{i +1}}</th>
                                 <td>
-                                    {{location.locationName}}
+                                    <a [routerLink]="['/one-location/', location._id]">{{location.locationName}}</a>
                                 </td>
                                 <td>
                                     <ul>
@@ -58,9 +58,50 @@
 
         </ng-container>
 
+        <ng-container *ngIf="oneOrg.users.length > 0; else noUsers">
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <th scope="col">
+
+                        </th>
+
+                        <th scope="col">
+                            User Name
+                        </th>
+
+                        <th scope="col">
+                            Email
+                        </th>
+
+                    </thead>
+
+                    <tbody>
+                        <ng-container *ngFor="let user of oneOrg.users; index as u">
+                            <tr>
+                                <th scope="row">{{u +1}}</th>
+                                <td>
+                                    {{user.username}}
+                                </td>
+                                <td>
+                                    {{user.email}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+
         <ng-template #noLocations>
             <div class="row">
-                <p>No Radios at this Location...</p>
+                <p>No Locations at this Organization...</p>
+            </div>
+        </ng-template>
+
+        <ng-template #noUsers>
+            <div class="row">
+                <p>No Users with this Organization...</p>
             </div>
         </ng-template>
     

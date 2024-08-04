@@ -7,7 +7,7 @@
                     Organization:
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.orgName}}
+                    <a [routerLink]="['/one-org/', element._id]">{{element.orgName}}</a>
                 </td>
 
             </ng-container>
