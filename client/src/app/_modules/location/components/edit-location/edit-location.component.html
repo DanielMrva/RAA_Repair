@@ -20,80 +20,80 @@
 
                     <div class="row">
 
-                        <div class="form-group col-12 col-lg-6">
-                            <label for="orgName">Organization Name:</label>
+
+                        <mat-form-field class="form-group col-12 col-lg-6">
+                            <mat-label>Organization Name</mat-label>
                             <mat-spinner *ngIf="isLoadingOrgNames$ | async; else loadedOrgNames"></mat-spinner>
                             <div *ngIf="orgNameError$ | async as error">{{ error }}</div>
                             <ng-template #loadedOrgNames>
-                                <mat-select *ngIf="orgNames$ | async as orgList" id="orgName" formControlName="orgName">
+                                <mat-select *ngIf="orgNames$ | async as orgList" formControlName="orgName">
                                     <mat-option *ngFor="let org of orgList" [value]="org.orgName">
                                         {{ org.orgName }}
                                     </mat-option>
                                 </mat-select>
                             </ng-template>
-                        </div>
+                        </mat-form-field>
 
 
-                        <div class="form-group col-12 col-lg-6">
-                            <label for="locationName">Location Name:</label>
-                            <input type="text" id="locationName" formControlName="locationName" class="form-control"
-                                [class.invalid]="fieldValidCheck('locationName')">
-                        </div>
-
-                        <div *ngIf="fieldValidCheck('locationName')">
-                            <div class="text-danger"
-                                *ngIf="editLocationForm.get('locationName')?.hasError('locationNameExists')">
-                                This location name already exists.
-                            </div>
+                        <mat-form-field class="form-group col-12 col-lg-6">
+                            <mat-label>Location Name</mat-label>
+                            <input matInput placeholder="Location Name" formControlName="locationName" [class.invalid]="fieldValidCheck('locationName')">
+                        </mat-form-field>
+                        <div class="text-danger col-12" *ngIf="editLocationForm.get('locationName')?.hasError('locationNameExists')">
+                            This location name already exists.
                         </div>
 
                     </div>
 
-                    <div class="form-group col-12 col-lg-4">
-                        <label for="street">Street:</label>
-                        <input type="text" id="street" formControlName="street" class="form-control">
-                    </div>
+                    <div class="row">
 
-                    <div class="form-group col-12 col-lg-4">
-                        <label for="suite">Suite / Apt:</label>
-                        <input type="text" id="suite" formControlName="suite" class="form-control">
+                        <mat-form-field class="form-group col-12 col-lg-4">
+                            <mat-label>Street</mat-label>
+                            <input matInput placeholder="Street" formControlName="street">
+                        </mat-form-field>
+    
+                        <mat-form-field class="form-group col-12 col-lg-4">
+                            <mat-label>Suite / Apt</mat-label>
+                            <input matInput placeholder="Suite / Apt" formControlName="suite">
+                        </mat-form-field>
+    
+                        <mat-form-field class="form-group col-12 col-lg-4">
+                            <mat-label>City</mat-label>
+                            <input matInput placeholder="City" formControlName="city">
+                        </mat-form-field>
+    
+                        <mat-form-field class="form-group col-12 col-lg-4">
+                            <mat-label>State</mat-label>
+                            <input matInput placeholder="State" formControlName="state">
+                        </mat-form-field>
+    
+                        <mat-form-field class="form-group col-12 col-lg-4">
+                            <mat-label>Zip</mat-label>
+                            <input matInput placeholder="Zip" formControlName="zip">
+                        </mat-form-field>
+    
+                        <mat-form-field class="form-group col-12 col-lg-4">
+                            <mat-label>Country</mat-label>
+                            <input matInput placeholder="Country" formControlName="country">
+                        </mat-form-field>
+    
+                        <mat-form-field class="form-group col-12 col-lg-4">
+                            <mat-label>Phone</mat-label>
+                            <input matInput placeholder="Phone" formControlName="phone">
+                        </mat-form-field>
+    
+                        <mat-form-field class="form-group col-12 col-lg-4">
+                            <mat-label>Contact Email</mat-label>
+                            <input matInput placeholder="Contact Email" formControlName="contactEmail">
+                        </mat-form-field>
+    
+                        <mat-form-field class="form-group col-12 col-lg-4">
+                            <mat-label>Primary Contact</mat-label>
+                            <input matInput placeholder="Primary Contact" formControlName="primaryContact">
+                        </mat-form-field>
+    
                     </div>
-
-                    <div class="form-group col-12 col-lg-4">
-                        <label for="city">City:</label>
-                        <input type="text" id="city" formControlName="city" class="form-control">
-                    </div>
-
-                    <div class="form-group col-12 col-lg-4">
-                        <label for="state">State:</label>
-                        <input type="text" id="state" formControlName="state" class="form-control">
-                    </div>
-
-                    <div class="form-group col-12 col-lg-4">
-                        <label for="zip">Zip:</label>
-                        <input type="text" id="zip" formControlName="zip" class="form-control">
-                    </div>
-
-                    <div class="form-group col-12 col-lg-4">
-                        <label for="country">Country:</label>
-                        <input type="text" id="country" formControlName="country" class="form-control">
-                    </div>
-
-                    <div class="form-group col-12 col-lg-4">
-                        <label for="phone">Phone:</label>
-                        <input type="text" id="phone" formControlName="phone" class="form-control">
-                    </div>
-
-                    <div class="form-group col-12 col-lg-4">
-                        <label for="contactEmail">Contact Email:</label>
-                        <input type="text" id="contactEmail" formControlName="contactEmail" class="form-control">
-                    </div>
-
-                    <div class="form-group col-12 col-lg-4">
-                        <label for="primaryContact">Primary Contact:</label>
-                        <input type="text" id="primaryContact" formControlName="primaryContact" class="form-control">
-                    </div>
-
+    
                 </section>
 
                 <div class="col-12 d-flex justify-content-center">
