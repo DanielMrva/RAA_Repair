@@ -294,6 +294,7 @@
                     </mat-form-field>
 
                     <div formArrayName="workPerformed" class="col-12 col-lg-6">
+                        <mat-label>Work Performed:</mat-label>
                         <mat-form-field *ngFor="let work of workPerformedArray.controls; let k = index"
                             class="full-width-input" style="width: 100%;">
                             <input matInput [formControlName]="k" placeholder="Work Performed">
@@ -306,6 +307,7 @@
                     </div>
 
                     <div formArrayName="partsUsed" class="col-12 col-lg-6">
+                        <mat-label>Parts Used:</mat-label>
                         <mat-form-field *ngFor="let part of partsUsedArray.controls; let l = index"
                             class="full-width-input" style="width: 100%;">
                             <input matInput [formControlName]="l" placeholder="Parts Used">
