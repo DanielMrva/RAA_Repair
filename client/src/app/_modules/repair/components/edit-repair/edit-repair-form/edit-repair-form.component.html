@@ -194,6 +194,7 @@
                     <div formArrayName="symptoms" class="col-12 col-lg-6">
                         <mat-form-field *ngFor="let sym of symptomsArray.controls; let j = index"
                             class="full-width-input" style="width: 100%;">
+                            <mat-label>Symptom</mat-label>
                             <input matInput [formControlName]="j" placeholder="Symptom">
                             <mat-icon matSuffix class="remove-icon text-danger" *ngIf="symptomsArray.length > 1"
                                 (click)="removeSymptom(j)" aria-label="remove symptom">remove_circle</mat-icon>
