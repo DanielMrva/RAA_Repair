@@ -30,6 +30,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
   repairError$;
   oneRepair$;
   userAccessLevel$;
+  USER_ACCESS = ACCESS_LEVEL_USER;
 
   initialOrgName: string | null = null;
   filteredLocationNames: string[] = [];
@@ -60,7 +61,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
   private editableFields = {
     [ACCESS_LEVEL_ADMIN]: ['*'],
     [ACCESS_LEVEL_TECH]: ['dateSentRaaTech', 'repairStatus', 'techInvNum', 'accessories', 'symptoms', 'testFreq', 'incRxSens', 'incFreqErr', 'incMod', 'incPowerOut', 'outRxSens', 'outFreqErr', 'outMod', 'outPowerOut', 'workPerformed', 'partsUsed', 'remarks', 'repHours'],
-    [ACCESS_LEVEL_USER]: ['radioOrg', 'radioLocation', 'reportedBy', 'repairStatus', 'dateRepairAdded', 'dateSentEuRaa', 'dateSentRaaEu', 'accessories', 'symptoms', 'remarks']
+    [ACCESS_LEVEL_USER]: ['radioOrg', 'radioLocation', 'reportedBy', 'repairStatus', 'dateRepairAdded', 'dateSentEuRaa', 'dateSentRaaEu', 'accessories', 'symptoms']
   };
 
   showOtherAccessory = false;
@@ -87,11 +88,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
 
     console.log('Initial Repair Status:', this.repairForm.controls.repairStatus.value);
 
-    this.subscriptions.add(
-      this.userAccessLevel$.subscribe(() => {
-        this.accessControlService.setFormControlsAccessibility(this.repairForm, this.editableFields);
-      })
-    );
+
 
     this.subscriptions.add(
       this.activatedRoute.paramMap.subscribe(params => {
@@ -114,7 +111,9 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
         }
       })
     );
-  }
+
+
+  }  
 
   repairForm = new FormGroup({
     radioID: new FormControl<string>(''),
@@ -234,6 +233,14 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
 
     this.showOtherAccessory = accessoriesGroup.value.otherAccessory !== '';
     this.showOtherBattery = accessoriesGroup.value.otherBattery !== '';
+
+
+    // accessControlService utilized here do to timing of form population/validation and the disabling functionality of the service.
+    this.subscriptions.add(
+      this.userAccessLevel$.subscribe(() => {
+        this.accessControlService.setFormControlsAccessibility(this.repairForm, this.editableFields);
+      })
+    );
   }
 
   onAccessoriesChange(event: any): void {

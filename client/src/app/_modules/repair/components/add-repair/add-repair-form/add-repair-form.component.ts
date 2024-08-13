@@ -29,11 +29,16 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
 
   userAccessLevel$
 
+  USER_ACCESS = ACCESS_LEVEL_USER;
+
   initialOrgName: string | null = null;
+  initialLocationName: string | null = null;
 
   filteredLocationNames: string[] = [];
 
   radioID!: string;
+
+
 
   accessoryOptions: string[] = [
     'Microphone',
@@ -57,7 +62,7 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
   private editableFields = {
     [ACCESS_LEVEL_ADMIN]: ['*'],
     [ACCESS_LEVEL_TECH]: ['dateSentRaaTech', 'repairStatus', 'techInvNum', 'accessories', 'symptoms', 'testFreq', 'incRxSens', 'incFreqErr', 'incMod', 'incPowerOut', 'outRxSens', 'outFreqErr', 'outMod', 'outPowerOut', 'workPerformed', 'partsUsed', 'remarks', 'repHours'],
-    [ACCESS_LEVEL_USER]: ['radioOrg', 'radioLocation', 'reportedBy', 'repairStatus', 'dateRepairAdded', 'dateSentEuRaa', 'dateSentRaaEu', 'accessories', 'symptoms', 'remarks']
+    [ACCESS_LEVEL_USER]: ['reportedBy', 'repairStatus', 'dateRepairAdded', 'dateSentEuRaa', 'accessories', 'symptoms', 'remarks']
   };
 
   showOtherAccessory = false;
@@ -193,9 +198,11 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
                 radioID: radio._id,
                 radioSerial: radio.serialNumber,
                 radioMake: radio.make,
-                radioOrg: radio.orgName, // Populate the new field here
+                radioOrg: radio.orgName,
+                radioLocation: radio.locationName
               });
               this.initialOrgName = radio.orgName;
+              this.initialLocationName = radio.locationName;
             }
           });
         }
