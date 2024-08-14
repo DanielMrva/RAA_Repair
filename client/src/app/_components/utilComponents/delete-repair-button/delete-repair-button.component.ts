@@ -19,7 +19,11 @@ export class DeleteRepairButtonComponent {
     private toastService: ToastService
   ) {}
 
-  async openDeleteConfirmation() {
+  async openDeleteConfirmation($event: Event) {
+
+    $event.stopPropagation();
+    $event.preventDefault();
+    
     try {
       const result = await this.deleteModalService.openDialog(this.repair._id);
 
