@@ -199,10 +199,13 @@
                     <td mat-cell *matCellDef="let record">{{record.endUserPO}}</td>
                   </ng-container>
 
-                  <tr mat-header-row *matHeaderRowDef="['index', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO']">
-                  </tr>
-                  <tr mat-row
-                    *matRowDef="let row; columns: ['index', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO']"></tr>
+                  <ng-container matColumnDef="delete">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let record"><app-delete-repair-button [repair]="record"></app-delete-repair-button></td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="['index', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO', 'delete']"></tr>
+                  <tr mat-row *matRowDef="let row; columns: ['index', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO', 'delete']"></tr>
 
                 </table>
               </div>
