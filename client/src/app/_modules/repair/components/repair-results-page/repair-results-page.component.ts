@@ -27,7 +27,7 @@ export class RepairResultsPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.route.params.subscribe(params => {
+      this.route.queryParams.subscribe(params => {
         const orgName = params['orgName'];
         const startTag = params['startTag'] ? parseInt(params['startTag'], 10) : undefined;
         const endTag = params['endTag'] ? parseInt(params['endTag'], 10) : undefined;

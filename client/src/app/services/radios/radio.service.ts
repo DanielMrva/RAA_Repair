@@ -38,14 +38,12 @@ export class RadioService {
   }
 
   allRadios() {
-    console.log('all radios in service')
     return this.apollo.watchQuery<{allRadios: Radio[]}>({
       query: ALL_RADIOS
     });
   }
 
   orgRadios(orgName: string) {
-    console.log('org radios in service')
     return this.apollo.watchQuery<{orgRadios: Radio[]}>({
       query: ORG_RADIOS,
       variables: {
