@@ -5,6 +5,8 @@ import { orgLoadingSelector, selectOneOrg, orgErrorSelector } from '@app/_store/
 import * as OrgActions from '@app/_store/_org-store/org.actions';
 import { AppState } from '@app/_store/app.state';
 import { Subscription } from 'rxjs';
+import { ACCESS_LEVEL_ADMIN } from '@app/utils/constants';
+import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
 
 @Component({
   selector: 'app-one-org',
@@ -19,6 +21,10 @@ export class OneOrgComponent implements OnInit, OnDestroy {
   orgError$
   oneOrg$
 
+  userAccessLevel$
+
+  ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
+
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>
@@ -26,6 +32,8 @@ export class OneOrgComponent implements OnInit, OnDestroy {
       this.isLoading$ = this.store.select(orgLoadingSelector);
       this.orgError$ = this.store.select(orgErrorSelector);
       this.oneOrg$ = this.store.select(selectOneOrg);
+      this.userAccessLevel$ = this.store.select(selectAccessLevel)
+
     }
 
     ngOnInit(): void {
