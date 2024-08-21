@@ -14,14 +14,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { OneOrgComponent } from './components/one-org/one-org.component';
 import { EditOrgComponent } from './components/edit-org/edit-org.component';
 import { AddOrgComponent } from './components/add-org/add-org.component';
+import { OrgResultsTableComponent } from './components/org-results-table/org-results-table.component';
+import { OrgResultsPageComponent } from './components/org-results-page/org-results-page.component';
 import { DeleteDocumentButtonComponent } from '@app/_components/utilComponents/delete-document-button/delete-document-button.component';
 
 import { StoreModule } from '@ngrx/store';
 import { orgReducer } from '@app/_store/_org-store/org.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { OrgEffects } from '@app/_store/_org-store/org.effects';
-import { OrgResultsTableComponent } from './components/org-results-table/org-results-table.component';
-import { OrgResultsPageComponent } from './components/org-results-page/org-results-page.component';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
