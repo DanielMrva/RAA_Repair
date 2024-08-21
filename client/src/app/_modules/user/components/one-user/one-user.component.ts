@@ -6,6 +6,8 @@ import { Store } from '@ngrx/store';
 import { loadOneUser } from '@app/_store/_user-store/user.actions';
 import { selectOneUser, userErrorSelector, userLoadingSelector } from '@app/_store/_user-store/user.selectors';
 import { Subscription } from 'rxjs';
+import { ACCESS_LEVEL_ADMIN } from '@app/utils/constants';
+import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
 
 @Component({
   selector: 'app-one-user',
@@ -22,6 +24,11 @@ export class OneUserComponent implements OnInit, OnDestroy {
   userError$
   oneUser$
 
+  userAccessLevel$
+
+
+  ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
+
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>
@@ -29,6 +36,9 @@ export class OneUserComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.store.select(userLoadingSelector);
     this.userError$ = this.store.select(userErrorSelector);
     this.oneUser$ = this.store.select(selectOneUser);
+
+    this.userAccessLevel$ = this.store.select(selectAccessLevel);
+
   }
 
   ngOnInit(): void {

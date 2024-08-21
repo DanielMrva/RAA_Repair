@@ -230,6 +230,7 @@ export type UpdateRadioFields = {
 export type UpdateUserFields = {
     username?: string,
     email?: string,
+    password?: string,
     accessLevel?: string,
     orgName?: string,
     userLocation?: string

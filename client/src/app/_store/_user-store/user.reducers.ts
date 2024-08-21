@@ -17,7 +17,9 @@ import {
     loadOrgUsersFailure,
     editUser,
     editUserSuccess,
-    editUserFailure
+    editUserFailure,
+    deleteUserFailure,
+    deleteUserSuccess
 } from "./user.actions";
 import { User, statusType } from "@app/graphql/schemas";
 
@@ -149,5 +151,15 @@ export const userReducer = createReducer(
         ...state,
         isLoading: false,
         error: error
-    }))
+    })),
+    
+    on(deleteUserSuccess, (state, { user }) => ({
+        ...state,
+        users: state.users.filter(user => user._id !== user._id),
+    })),
+
+    on(deleteUserFailure, (state, { error }) => ({
+        ...state,
+        error: error,
+    })),
 )

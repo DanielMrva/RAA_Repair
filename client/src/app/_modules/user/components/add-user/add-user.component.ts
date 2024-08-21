@@ -34,6 +34,18 @@ export class AddUserComponent implements OnInit, OnDestroy {
   locNameOptions: string[] = [];
   filteredLocNames$!: Observable<string[]>;
 
+  userForm = new FormGroup({
+    username: new FormControl<string>('', { nonNullable: true }),
+    email: new FormControl<string>('', { nonNullable: true }),
+    password: new FormControl<string>('', { nonNullable: true }),
+    accessLevel: new FormControl<string>(''),
+    orgName: new FormControl<string>(''),
+    userLocation: new FormControl<string>('')
+  });
+
+  isSubmitted = false;
+
+
   constructor(
     private store: Store<AppState>
   ) {
@@ -46,16 +58,6 @@ export class AddUserComponent implements OnInit, OnDestroy {
     this.locationNameError$ = this.store.select(locationErrorSelector);
   }
 
-  userForm = new FormGroup({
-    username: new FormControl<string>('', { nonNullable: true }),
-    email: new FormControl<string>('', { nonNullable: true }),
-    password: new FormControl<string>('', { nonNullable: true }),
-    accessLevel: new FormControl<string>(''),
-    orgName: new FormControl<string>(''),
-    userLocation: new FormControl<string>('')
-  });
-
-  isSubmitted = false;
 
   fieldValidCheck(field: string) {
     if (

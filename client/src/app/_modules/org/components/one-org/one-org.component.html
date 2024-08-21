@@ -10,7 +10,13 @@
     <div *ngIf="oneOrg$ | async as oneOrg" class="container">
     
         <div class="row">
-            <h2 class="col-12 text-center">{{oneOrg.orgName}}</h2>
+            <h2 class="col-12 text-center">{{oneOrg.orgName}}
+                <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
+                    <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
+                      <a [routerLink]="['/edit-org', oneOrg._id]">EDIT</a>
+                    </ng-container>
+                  </ng-container>
+            </h2>
         </div>
 
         <h4 class="col-12 text-center">Locations:</h4>

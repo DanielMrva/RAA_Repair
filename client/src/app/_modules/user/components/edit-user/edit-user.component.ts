@@ -35,11 +35,13 @@ export class EditUserComponent implements OnInit, OnDestroy {
 
   userId!: string;
   filteredOrgName$!: Observable<Organization[] | null>;
+  locNameOptions: string[] = [];
   filteredLocNames$!: Observable<string[]>;
 
   userForm = new FormGroup({
     username: new FormControl<string>('', { nonNullable: true }),
     email: new FormControl<string>('', { nonNullable: true }),
+    password: new FormControl<string>('', { nonNullable: true }),
     orgName: new FormControl<string>(''),
     userLocation: new FormControl<string>(''),
     accessLevel: new FormControl<string>('')
@@ -60,45 +62,6 @@ export class EditUserComponent implements OnInit, OnDestroy {
     this.oneUser$ = this.store.select(selectOneUser);
     this.isLoadingUser$ = this.store.select(userLoadingSelector);
     this.userError$ = this.store.select(userErrorSelector);
-  }
-
-  loadUser(id: string): void {
-    this.store.dispatch(loadOneUser({ userId: id }));
-  }
-
-  loadOrgNames(): void {
-    this.store.dispatch(loadOrgNames());
-  }
-
-  loadLocationNames(): void {
-    this.store.dispatch(loadLocationNames());
-  }
-
-  populateForm() {
-    this.subscriptions.add(
-      this.oneUser$.subscribe((user: User | null) => {
-        if (user) {
-          this.userForm.patchValue({
-            username: user.username,
-            email: user.email,
-            orgName: user.orgName,
-            userLocation: user.userLocation,
-            accessLevel: user.accessLevel
-          });
-        }
-      })
-    );
-  }
-
-  updateUser(updateUser: UpdateUserFields): void {
-    this.subscriptions.add(
-      this.oneUser$.subscribe((user: User | null) => {
-        if (user) {
-          this.userId = user._id;
-        }
-      })
-    );
-    this.store.dispatch(editUser({ id: this.userId, updates: updateUser }));
   }
 
   ngOnInit(): void {
@@ -124,10 +87,6 @@ export class EditUserComponent implements OnInit, OnDestroy {
     });
 
     this.populateForm();
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
   }
 
   private _filterOrgs(value: string): Organization[] {
@@ -160,13 +119,44 @@ export class EditUserComponent implements OnInit, OnDestroy {
     return locOptions;
   }
 
+
+  loadUser(id: string): void {
+    this.store.dispatch(loadOneUser({ userId: id }));
+  }
+
+  loadOrgNames(): void {
+    this.store.dispatch(loadOrgNames());
+  }
+
+  loadLocationNames(): void {
+    this.store.dispatch(loadLocationNames());
+  }
+
+  populateForm() {
+    this.subscriptions.add(
+      this.oneUser$.subscribe((user: User | null) => {
+        if (user) {
+          this.userForm.patchValue({
+            username: user.username,
+            email: user.email,
+            password: user.password,
+            orgName: user.orgName,
+            userLocation: user.userLocation,
+            accessLevel: user.accessLevel
+          });
+        }
+      })
+    );
+  }
+
   onSubmit(): void {
     const username = this.userForm.value.username ?? '';
     const email = this.userForm.value.email ?? '';
+    const password = this.userForm.value.password?.trim() !== '' ? this.userForm.value.password : undefined;
     const accessLevel = this.userForm.value.accessLevel ?? '';
     const orgName = this.userForm.value.orgName ?? '';
     const userLocation = this.userForm.value.userLocation ?? '';
-
+  
     const submittedUser: UpdateUserFields = {
       username,
       email,
@@ -174,7 +164,31 @@ export class EditUserComponent implements OnInit, OnDestroy {
       orgName,
       userLocation
     };
-
+  
+    // Only add password to the update object if it has a value
+    if (password) {
+      submittedUser.password = password;
+    }
+  
     this.updateUser(submittedUser);
   }
+  
+  updateUser(updateUser: UpdateUserFields): void {
+    this.subscriptions.add(
+      this.oneUser$.subscribe((user: User | null) => {
+        if (user) {
+          this.userId = user._id;
+        }
+      })
+    );
+    this.store.dispatch(editUser({ id: this.userId, updates: updateUser }));
+  }
+  
+
+
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
 }
