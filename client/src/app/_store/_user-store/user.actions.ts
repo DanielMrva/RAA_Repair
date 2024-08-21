@@ -101,3 +101,18 @@ export const editUserFailure = createAction(
     props<{ error: string}>()
 );
 
+export const deleteUser = createAction(
+    '[User] Delete User',
+    props<{ id: string }>()
+);
+
+export const deleteUserSuccess = createAction(
+    '[User] Delete User Success',
+    props<{ user?: User }>()
+);
+
+export const deleteUserFailure = createAction(
+    '[User] Delete User Failure',
+    props<{ error: any }>()
+);
+

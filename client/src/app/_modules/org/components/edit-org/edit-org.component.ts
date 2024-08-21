@@ -36,9 +36,7 @@ export class EditOrgComponent implements OnInit, OnDestroy {
   });
 
   orgId!: string;
-  org!: Organization;
-  editOrgForm!: FormGroup;
-  loadingOrg: boolean = true;
+
 
   loadOrg(id: string): void {
 

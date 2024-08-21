@@ -7,10 +7,6 @@ const orgSchema = new Schema({
         unique: true,
         trim: true,
     },
-    // radios: [{
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Radio',
-    // }],
     locations: [{
         type: Schema.Types.ObjectId,
         ref: 'Location'

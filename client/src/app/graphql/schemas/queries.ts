@@ -9,6 +9,7 @@ export const QUERY_USERS = gql`
             email
             accessLevel
             orgName
+            userLocation
         }
     }
 `
@@ -21,6 +22,7 @@ export const QUERY_SINGLEUSER = gql`
             email
             accessLevel
             orgName
+            userLocation
         }
     }
 

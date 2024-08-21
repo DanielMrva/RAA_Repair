@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-
 @Component({
   selector: 'app-delete-confirm-modal',
   templateUrl: './delete-confirm-modal.component.html',
@@ -9,7 +8,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class DeleteConfirmModalComponent {
 
-  @Input() repairId!: string;
+  @Input() documentId!: string;
+  @Input() docType!: string;
 
   constructor(public activeModal: NgbActiveModal) {}
 
@@ -22,4 +22,3 @@ export class DeleteConfirmModalComponent {
   }
 
 }
-

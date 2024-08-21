@@ -9,9 +9,15 @@
     <div *ngIf="oneUser$ | async as user; else noUserFound" class="container">
         <div class="row">
             <h2 class="col-12 text-center">User: {{user.username}}</h2>
+            <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
+                <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
+                  <a [routerLink]="['/edit-user', user._id]">EDIT</a>
+                </ng-container>
+              </ng-container>
             <ul class="col-6 p-3">
                 <li>Email: {{user.email}}</li>
                 <li>Organization: {{user.orgName}}</li>
+                <li>Location: {{user.userLocation}}</li>
                 <li>Access Level: {{user.accessLevel}}</li>
             </ul>
     

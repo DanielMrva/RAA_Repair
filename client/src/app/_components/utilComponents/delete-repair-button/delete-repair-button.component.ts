@@ -25,7 +25,7 @@ export class DeleteRepairButtonComponent {
     $event.preventDefault();
     
     try {
-      const result = await this.deleteModalService.openDialog(this.repair._id);
+      const result = await this.deleteModalService.openDialog(this.repair._id, "Repair");
 
       if (result?.delete) {
         if (result.copy) {

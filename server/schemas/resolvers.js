@@ -672,6 +672,16 @@ const resolvers = {
             }
         },
         // End Delete Repair
+        deleteUser: async ( parent, { _id }) => {
+            try {
+                const deletedUser = await User.findByIdAndDelete(_id);
+                return deletedUser
+            } catch (error) {
+                console.log(`resolver error: ${error}`);
+                throw new GraphQLError(`Failed to Delete User, ${error``}`)
+            }
+        },
+        // End Delete User
 
     }
 };

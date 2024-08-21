@@ -210,4 +210,6 @@ type Mutation {
   editLocation(_id: ID!, updates: UpdateLocationInput): Location
 
   deleteRepair(_id: ID!): Repair
+
+  deleteUser(_id: ID!): User
 }

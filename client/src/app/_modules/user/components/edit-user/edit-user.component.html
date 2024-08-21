@@ -21,6 +21,11 @@
             </mat-form-field>
 
             <mat-form-field class="form-group col-8 offset-2">
+                <mat-label>New Password</mat-label>
+                <input matInput type="password" id="password" formControlName="password" placeholder="New Password" />
+            </mat-form-field>
+
+            <mat-form-field class="form-group col-8 offset-2">
                 <mat-label>Organization</mat-label>
                 <mat-spinner *ngIf="isLoadingOrgNames$ | async; else loadedOrgNames"></mat-spinner>
                 <div *ngIf="orgNameError$ | async as error">{{ error }}</div>

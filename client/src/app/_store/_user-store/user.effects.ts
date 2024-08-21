@@ -19,7 +19,10 @@ import {
     loadOneUserFailure,
     editUser,
     editUserSuccess,
-    editUserFailure
+    editUserFailure,
+    deleteUser,
+    deleteUserFailure,
+    deleteUserSuccess
 } from "./user.actions";
 import { Router } from "@angular/router";
 import { setAuthInfo, clearAuthInfo } from "../_auth-store/auth.actions";
@@ -30,6 +33,7 @@ import { switchMap, map, catchError, withLatestFrom, exhaustMap, tap } from "rxj
 import { Store, createAction } from "@ngrx/store";
 import { selectAllUsers } from "./user.selectors";
 import { AppState } from "../app.state";
+import { loadLikeOrgs, loadOneOrg } from "../_org-store/org.actions";
 
 @Injectable()
 export class UserEffects {
@@ -236,6 +240,50 @@ export class UserEffects {
             map(() => clearAuthInfo())
         )
     );
+
+        deleteUser$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(deleteUser),
+            switchMap(({ id }) =>
+                from(this.userService.deleteUser(id)).pipe(
+                    map(({ data }) =>
+                        deleteUserSuccess({ user: data?.deleteUser })),
+
+                    catchError((error) => of(deleteUserFailure({ error })))
+                )
+            )
+        )
+    );
+
+    deleteUserSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(deleteUserSuccess),
+            map(({ user }) => {
+                this.toastService.show('User deleted successfully!', { delay: 3000 });
+                if (user) {
+                    this.store.dispatch(loadLikeOrgs({ orgName: user?.orgName }));
+
+                }
+                this.router.navigateByUrl(`/org-results/${user?.orgName}`);
+            })
+        ),
+        { dispatch: false }
+    );
+
+    deleteUserFailure$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(deleteUserFailure),
+            map(({ error }) => {
+                this.toastService.show(`User deletion failed: ${error}`, {
+                    classname: 'bg-danger light-text',
+                    delay: 3000
+                }),
+                    console.error(error)
+            })
+        ),
+        { dispatch: false }
+    );
+
 
 }
 

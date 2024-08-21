@@ -440,3 +440,17 @@ export const DELETE_REPAIR = gql`
     }
 `
 
+export const DELETE_USER = gql`
+    mutation deleteUser($id: ID!) {
+        deleteUser(_id: $id) {
+            _id
+            username
+            email
+            password
+            accessLevel
+            orgName
+            userLocation
+        }
+    }
+`
+

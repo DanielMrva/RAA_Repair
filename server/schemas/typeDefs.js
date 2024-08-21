@@ -176,6 +176,7 @@ const typeDefs = `#graphql
     input UpdateUserInput {
         username: String
         email: String
+        password: String
         accessLevel: String
         orgName: String
         userLocation: String
@@ -317,6 +318,10 @@ const typeDefs = `#graphql
         deleteRepair(
             _id: ID!
         ): Repair
+        
+        deleteUser(
+            _id: ID!
+        ): User
     }
 
 `;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo, QueryRef, MutationResult } from 'apollo-angular';
-import { ADD_USER, EDIT_USER, LOGIN_USER } from '@app/graphql/schemas/mutations';
+import { ADD_USER, EDIT_USER, LOGIN_USER, DELETE_USER } from '@app/graphql/schemas/mutations';
 import { Auth, LoginResults, UpdateUserFields, User } from '@app/graphql/schemas/typeInterfaces';
 import { ORG_USERS, QUERY_SINGLEUSER, QUERY_USERS } from '@app/graphql/schemas/queries';
 
@@ -66,4 +66,13 @@ export class UserService {
       variables: {id, updates}
     })
   }
+
+  deleteUser(id: string) {
+    return this.apollo.mutate<{deleteUser: User}> ({
+      mutation: DELETE_USER,
+      variables: {id}
+    })
+  }
+
+
 }
