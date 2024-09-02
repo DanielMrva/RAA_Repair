@@ -27,8 +27,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
   isLoadingLocationNames$
   locationNameError$
 
-  orgNameOptions: string[] = [];
-  filteredOrgNames$!: Observable<string[]>;
+  filteredLocationNames: string[] = [];
 
 
   locNameOptions: string[] = [];
@@ -77,50 +76,14 @@ export class AddUserComponent implements OnInit, OnDestroy {
     this.store.dispatch(loadOrgNames());
     this.store.dispatch(loadLocationNames());
 
-    this.filteredOrgNames$ = this.userForm.controls.orgName.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterOrgs(value || ''))
-    )
-
-    this.filteredLocNames$ = combineLatest([
-      this.userForm.controls.userLocation.valueChanges.pipe(startWith('')),
-      this.userForm.controls.orgName.valueChanges.pipe(startWith('')),
-      this.locationNames$,
-    ]).pipe(
-      map(([locName, orgName, locations]) => this._filterLocs(locName, orgName, locations))
-    );
-
   };
 
+  handleOrgNameSelected(orgName: string): void {
+    this.userForm.patchValue({orgName: orgName});
+  };
 
-  private _filterOrgs(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    let orgOptions: string[] = []
-
-    this.orgNames$.subscribe((orgList: Organization[] | []) => {
-      if (orgList.length > 0) {
-        orgOptions = orgList.map(org => org.orgName)
-      } 
-    })
-
-    return orgOptions.filter(option => option.toLowerCase().includes(filterValue))
-
-  }
-
-  private _filterLocs(locValue: string | null, orgValue: string | null, locations: Location[]): string[] {
-    const filteredLocValue = (locValue || '').toLowerCase();
-    const filteredOrgValue = (orgValue || '').toLowerCase();
-  
-    let locOptions: string[] = [];
-  
-    locations.forEach((loc) => {
-      if (loc.locationName.toLowerCase().includes(filteredLocValue) && loc.orgName.toLowerCase() === filteredOrgValue) {
-        locOptions.push(loc.locationName);
-      }
-    });
-  
-    return locOptions;
+  handleFilteredLocations(locations: string[]): void {
+    this.filteredLocationNames = locations;
   };
 
   displayOrgName(org: Organization): string {

@@ -27,6 +27,7 @@ import { LocationResultsTableComponent } from './components/location-results-tab
 import { LocationResultsPageComponent } from './components/location-results-page/location-results-page.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { UtilityModule } from '../utility/utility.module';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSortModule,
     MatIconModule,
     MatPaginatorModule,
+    UtilityModule,
     StoreModule.forFeature('location', locationReducer),
     EffectsModule.forFeature([LocationEffects])
   ],

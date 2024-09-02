@@ -49,12 +49,12 @@
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-4">
-                        <app-org-location-selector 
+                        <app-org-loc-selector 
                           [orgNameControl]="adminRepairForm.controls.radioOrg"
                           [initialOrgName]="initialOrgName"
                           (orgNameSelected)="handleOrgNameSelected($event)"
                           (filteredLocations)="handleFilteredLocations($event)">
-                        </app-org-location-selector>
+                        </app-org-loc-selector>
                       </div>
                       
 
@@ -84,8 +84,8 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-6 full-width-input">
-                                <app-repair-status-dropdown formControlName="repairStatus"
-                                    class="full-width-input"></app-repair-status-dropdown>
+                                <app-repair-stat-dropdown formControlName="repairStatus"
+                                    class="full-width-input"></app-repair-stat-dropdown>
                             </div>
                         </div>
                         <div class="row">

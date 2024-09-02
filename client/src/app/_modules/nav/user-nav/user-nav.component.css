@@ -6,7 +6,7 @@
 
 .custom-dropdown-width .dropdown-item,
 .custom-dropdown-width app-repair-by-tag-navigator,
-.custom-dropdown-width app-org-radios-navigator,
+.custom-dropdown-width app-org-rad-navigator,
 .custom-dropdown-width app-radio-sn-mnk-navigator {
     white-space: nowrap;
     display: block;

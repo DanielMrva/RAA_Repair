@@ -42,6 +42,7 @@ import { RepairStatusDropdownComponent } from '@app/_components/utilComponents/r
 import { RepairResultsPageComponent } from './components/repair-results-page/repair-results-page.component';
 import { EditRepairFormComponent } from './components/edit-repair/edit-repair-form/edit-repair-form.component';
 import { AddRepairFormComponent } from './components/add-repair/add-repair-form/add-repair-form.component';
+import { UtilityModule } from '../utility/utility.module';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { AddRepairFormComponent } from './components/add-repair/add-repair-form/
     MatSortModule,
     NgbAccordionModule,
     NgbModalModule,
+    UtilityModule,
     StoreModule.forFeature('repair', repairReducer),
     EffectsModule.forFeature([RepairEffects])
   ]

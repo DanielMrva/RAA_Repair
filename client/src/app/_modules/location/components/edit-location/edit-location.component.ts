@@ -33,7 +33,10 @@ export class EditLocationComponent implements OnInit, OnDestroy {
   
   isSubmitted = false;
 
+  initialOrgName: string | null = null;
+  filteredLocationNames: string[] = [];
   locationList!: Location[];
+
 
   locationId!: string;
 
@@ -77,6 +80,14 @@ export class EditLocationComponent implements OnInit, OnDestroy {
       return false
     }
   };
+
+  handleOrgNameSelected(orgName: string): void {
+    this.editLocationForm.patchValue({orgName: orgName});
+  };
+
+  handleFilteredLocations(locations: string[]): void {
+    this.filteredLocationNames = locations;
+  }
 
   locationNameValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {

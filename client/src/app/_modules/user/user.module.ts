@@ -30,6 +30,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UtilityModule } from '../utility/utility.module';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatRadioModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
+    UtilityModule,
     StoreModule.forFeature('user', userReducer),
     StoreModule.forFeature('auth', authReducer),
     EffectsModule.forFeature([UserEffects]),

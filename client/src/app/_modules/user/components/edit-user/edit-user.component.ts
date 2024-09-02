@@ -25,6 +25,11 @@ export class EditUserComponent implements OnInit, OnDestroy {
   isLoadingOrgNames$
   orgNameError$
 
+
+  initialOrgName: string | null = null;
+
+  filteredLocationNames: string[] = [];
+
   locationNames$
   isLoadingLocationNames$
   locationNameError$
@@ -34,9 +39,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
   userError$
 
   userId!: string;
-  filteredOrgName$!: Observable<Organization[] | null>;
-  locNameOptions: string[] = [];
-  filteredLocNames$!: Observable<string[]>;
+
 
   userForm = new FormGroup({
     username: new FormControl<string>('', { nonNullable: true }),
@@ -68,19 +71,6 @@ export class EditUserComponent implements OnInit, OnDestroy {
     this.loadOrgNames();
     this.loadLocationNames();
 
-    this.filteredOrgName$ = this.userForm.controls['orgName'].valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterOrgs(value || ''))
-    );
-
-    this.filteredLocNames$ = combineLatest([
-      this.userForm.controls.userLocation.valueChanges.pipe(startWith('')),
-      this.userForm.controls.orgName.valueChanges.pipe(startWith('')),
-      this.locationNames$,
-    ]).pipe(
-      map(([locName, orgName, locations]) => this._filterLocs(locName, orgName, locations))
-    );
-
     this.activatedRoute.params.subscribe((params: Params) => {
       const userId = params['id'];
       this.loadUser(userId);
@@ -89,35 +79,14 @@ export class EditUserComponent implements OnInit, OnDestroy {
     this.populateForm();
   }
 
-  private _filterOrgs(value: string): Organization[] {
-    const filterValue = value.toLowerCase();
-    let orgList: Organization[] = [];
+  handleOrgNameSelected(orgName: string): void {
+    this.userForm.patchValue({orgName: orgName});
+  };
 
-    this.subscriptions.add(
-      this.orgNames$.subscribe((orgs: Organization[] | null) => {
-        if (orgs) {
-          orgList = orgs.filter(org => org.orgName.toLowerCase().includes(filterValue));
-        }
-      })
-    );
+  handleFilteredLocations(locations: string[]): void {
+    this.filteredLocationNames = locations;
+  };
 
-    return orgList;
-  }
-
-  private _filterLocs(locValue: string | null, orgValue: string | null, locations: Location[]): string[] {
-    const filteredLocValue = (locValue || '').toLowerCase();
-    const filteredOrgValue = (orgValue || '').toLowerCase();
-
-    let locOptions: string[] = [];
-
-    locations.forEach((loc) => {
-      if (loc.locationName.toLowerCase().includes(filteredLocValue) && loc.orgName.toLowerCase() === filteredOrgValue) {
-        locOptions.push(loc.locationName);
-      }
-    });
-
-    return locOptions;
-  }
 
 
   loadUser(id: string): void {

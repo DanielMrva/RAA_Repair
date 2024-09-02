@@ -38,11 +38,11 @@
               </div>
 
               <div *ngIf="poText$ | async as poText" class="col-4">
-                <app-po-text-button *ngIf="poText" [purchaseOrderContent]="poText"></app-po-text-button>
+                <app-po-txt-btn *ngIf="poText" [purchaseOrderContent]="poText"></app-po-txt-btn>
               </div>
 
               <div *ngIf="invoiceText$ | async as invoiceText" class="col-4">
-                <app-invoice-text-button *ngIf="invoiceText" [invoiceContent]="invoiceText"></app-invoice-text-button>
+                <app-invoice-txt-btn *ngIf="invoiceText" [invoiceContent]="invoiceText"></app-invoice-txt-btn>
               </div>
 
               <h4 class="col-12">Repair for Radio: <a [routerLink]="['/one-radio/', radio._id]"

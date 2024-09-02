@@ -39,6 +39,8 @@ export class AddLocationComponent implements OnInit, OnDestroy {
   }
 
 
+  initialOrgName: string | null = null;
+  filteredLocationNames: string[] = [];
   locationList!: Location[];
 
   locationForm = new FormGroup({
@@ -57,7 +59,13 @@ export class AddLocationComponent implements OnInit, OnDestroy {
 
   isSubmitted = false;
 
+  handleOrgNameSelected(orgName: string): void {
+    this.locationForm.patchValue({orgName: orgName});
+  };
 
+  handleFilteredLocations(locations: string[]): void {
+    this.filteredLocationNames = locations;
+  }
 
   fieldValidCheck(field: string) {
     if (

@@ -18,6 +18,7 @@ import { StoreModule } from '@ngrx/store';
 import { authReducer } from '@app/_store/_auth-store/auth.reducers';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { UtilityModule } from '../utility/utility.module';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     // MatFormFieldModule,
     // MatInputModule,
+    UtilityModule,
     StoreModule.forFeature('auth', authReducer)
   ],
   exports: [

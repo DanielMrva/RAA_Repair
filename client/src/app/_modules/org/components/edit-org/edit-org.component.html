@@ -3,7 +3,8 @@
 </div>
 
 <ng-template #loadedData>
-    <div *ngIf="error$ | async as error">{{error}}</div>
+    <div *ngIf="error$ | async as error"><app-error-display [error]="error"></app-error-display>
+    </div>
 
     <div *ngIf="oneOrg$ | async as org; else noOrgFound" class="container">
         <div class="row">
@@ -58,7 +59,7 @@
 
                 <ng-container matColumnDef="delete">
                     <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let user"><app-delete-document-button [document]="user" [docType]="'user'" ></app-delete-document-button></td>
+                    <td mat-cell *matCellDef="let user"><app-deletion-button [document]="user" [docType]="'user'" ></app-deletion-button></td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="['index', 'username', 'email', 'userLocation', 'delete']"></tr>
