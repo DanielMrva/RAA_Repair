@@ -22,35 +22,9 @@ export class EditRadioComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  private _filterOrgs(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  initialOrgName: string | null = null;
 
-    let orgOptions: string[] = []
-
-    this.orgNames$.subscribe((orgList: Organization[] | []) => {
-      if (orgList.length > 0) {
-        orgOptions = orgList.map(org => org.orgName)
-      }
-    })
-
-    return orgOptions.filter(option => option.toLowerCase().includes(filterValue))
-
-  }
-
-  private _filterLocs(locValue: string | null, orgValue: string | null, locations: Location[]): string[] {
-    const filteredLocValue = (locValue || '').toLowerCase();
-    const filteredOrgValue = (orgValue || '').toLowerCase();
-
-    let locOptions: string[] = [];
-
-    locations.forEach((loc) => {
-      if (loc.locationName.toLowerCase().includes(filteredLocValue) && loc.orgName.toLowerCase() === filteredOrgValue) {
-        locOptions.push(loc.locationName);
-      }
-    });
-
-    return locOptions;
-  }
+  filteredLocationNames: string[] = [];
 
   isLoading$
   radioError$
@@ -97,22 +71,6 @@ export class EditRadioComponent implements OnInit, OnDestroy {
     this.store.dispatch(loadOrgNames());
     this.store.dispatch(loadLocationNames())
 
-    // this.editRadioForm.patchValue({
-    //   orgName: '',
-    //   locationName: '',
-    //   datePurchased: new Date(),
-    //   dateEntered: new Date(),
-    //   inventoryNumber: '',
-    //   make: '',
-    //   model: '',
-    //   progChannels: '',
-    //   notes: [],
-    //   serialNumber: '',
-    //   warranty: new Date(),
-    //   refurb: false,
-    //   radioType: ''
-    // })
-
     this.subscriptions.add(
       this.activatedRoute.params.subscribe((params: Params) => {
         this.radioID = params['id'];
@@ -123,20 +81,6 @@ export class EditRadioComponent implements OnInit, OnDestroy {
 
 
     this.populateForm();
-
-    this.filteredOrgNames$ = this.editRadioForm.controls.orgName.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterOrgs(value || ''))
-    );
-
-    this.filteredLocNames$ = combineLatest([
-      this.editRadioForm.controls.locationName.valueChanges.pipe(startWith('')),
-      this.editRadioForm.controls.orgName.valueChanges.pipe(startWith('')),
-      this.locationNames$,
-    ]).pipe(
-      map(([locName, orgName, locations]) => this._filterLocs(locName, orgName, locations))
-    );
-
 
   };
 
@@ -170,6 +114,14 @@ export class EditRadioComponent implements OnInit, OnDestroy {
   loadRadio(id: string): void {
 
     this.store.dispatch(loadOneRadio({ radioID: id }))
+  };
+
+  handleOrgNameSelected(orgName: string): void {
+    this.editRadioForm.patchValue({orgName: orgName});
+  };
+
+  handleFilteredLocations(locations: string[]): void {
+    this.filteredLocationNames = locations;
   };
 
   populateForm() {

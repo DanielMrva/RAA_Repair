@@ -30,6 +30,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UtilityModule } from '../utility/utility.module';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatProgressSpinnerModule,
     MatAutocompleteModule,
     StoreModule.forFeature('org', orgReducer),
-    EffectsModule.forFeature([OrgEffects])
+    EffectsModule.forFeature([OrgEffects]),
+    UtilityModule
   ]
 })
 export class OrgModule { }

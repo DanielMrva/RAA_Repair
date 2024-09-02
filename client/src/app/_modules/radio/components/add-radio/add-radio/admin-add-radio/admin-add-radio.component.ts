@@ -8,9 +8,6 @@ import { selectLocationNames, locationErrorSelector, locationLoadingSelector } f
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { loadLocationNames } from '@app/_store/_location-store/location.actions';
 import { Observable, Subscription, combineLatest } from 'rxjs';
-import { map, startWith } from 'rxjs/operators'
-import { Organization, UpdateRadioFields } from '@app/graphql/schemas';
-import { Location } from '@app/graphql/schemas';
 
 
 @Component({
@@ -31,11 +28,9 @@ export class AdminAddRadioComponent implements OnInit, OnDestroy{
   locationNameError$
 
   orgNameOptions: string[] = [];
-  filteredOrgNames$!: Observable<string[]>;
+  initialOrgName: string | null = null;
 
-
-  locNameOptions: string[] = [];
-  filteredLocNames$!: Observable<string[]>;
+  filteredLocNames: string[] = [];
 
   constructor(
     private store: Store<AppState>
@@ -99,49 +94,14 @@ export class AdminAddRadioComponent implements OnInit, OnDestroy{
     this.store.dispatch(loadOrgNames())
     this.store.dispatch(loadLocationNames())
 
-    this.filteredOrgNames$ = this.adminRadioForm.controls.orgName.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterOrgs(value || ''))
-    )
-
-    this.filteredLocNames$ = combineLatest([
-      this.adminRadioForm.controls.locationName.valueChanges.pipe(startWith('')),
-      this.adminRadioForm.controls.orgName.valueChanges.pipe(startWith('')),
-      this.locationNames$,
-    ]).pipe(
-      map(([locName, orgName, locations]) => this._filterLocs(locName, orgName, locations))
-    );
-      
   }
 
-  private _filterOrgs(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  handleOrgNameSelected(orgName: string): void {
+    this.adminRadioForm.patchValue({orgName: orgName});
+  };
 
-    let orgOptions: string[] = []
-
-    this.orgNames$.subscribe((orgList: Organization[] | []) => {
-      if (orgList.length > 0) {
-        orgOptions = orgList.map(org => org.orgName)
-      } 
-    })
-
-    return orgOptions.filter(option => option.toLowerCase().includes(filterValue))
-
-  }
-
-  private _filterLocs(locValue: string | null, orgValue: string | null, locations: Location[]): string[] {
-    const filteredLocValue = (locValue || '').toLowerCase();
-    const filteredOrgValue = (orgValue || '').toLowerCase();
-  
-    let locOptions: string[] = [];
-  
-    locations.forEach((loc) => {
-      if (loc.locationName.toLowerCase().includes(filteredLocValue) && loc.orgName.toLowerCase() === filteredOrgValue) {
-        locOptions.push(loc.locationName);
-      }
-    });
-  
-    return locOptions;
+  handleFilteredLocations(locations: string[]): void {
+    this.filteredLocNames = locations;
   };
 
   onSubmit() {

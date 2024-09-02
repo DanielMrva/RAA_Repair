@@ -30,6 +30,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { RadioEffects } from '@app/_store/_radio-store/radio.effects';
 import { radioReducer } from '@app/_store/_radio-store/radio.reducers';
 import { RadioResultsPageComponent } from './components/radio-results-page/radio-results-page.component';
+import { UtilityModule } from '../utility/utility.module';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { RadioResultsPageComponent } from './components/radio-results-page/radio
     MatSortModule,
     MatIconModule,
     MatPaginatorModule,
+    UtilityModule,
     StoreModule.forFeature('radio', radioReducer),
     EffectsModule.forFeature([RadioEffects])
   ],

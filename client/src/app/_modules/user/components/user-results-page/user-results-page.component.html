@@ -4,7 +4,7 @@
 
 <div *ngIf="userError$ | async as error">
     <div class="error-message">
-        <h2>{{error}}</h2>
+        <app-error-display [error]="error"></app-error-display>
     </div>
 
 </div>

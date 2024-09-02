@@ -44,6 +44,7 @@ import { AuthEffects } from '@app/_store/_auth-store/auth.effects';
 import { LocationMismatchDialogComponent } from '@app/_components/utilComponents/location-mismatch-dialog/location-mismatch-dialog.component';
 import { ErrorStatusDisplayComponent } from './_components/utilComponents/error-status-display/error-status-display.component';
 import { MatInputModule } from '@angular/material/input';
+import { UtilityModule } from './_modules/utility/utility.module';
 
 
 @NgModule({
@@ -88,7 +89,8 @@ import { MatInputModule } from '@angular/material/input';
         LocationModule,
         DashboardModule,
         ToastComponent,
-        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode()})
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode()}),
+        UtilityModule
         
     ],
     providers: [ AuthService ],

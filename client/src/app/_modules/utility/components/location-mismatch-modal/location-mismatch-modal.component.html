@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h4 class="modal-title">Repair and Radio Location Mismatch</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <p>
+        It looks like there is a misatch between this Repair's location: {{newLocation}} the Radio's location:
+        {{oldLocation}}. 
+        <br>
+        Would you like to update the Radio's location to {{newLocation}}?
+        <br>
+        Note: you can always update the <a [routerLink]="['oneRadio/', radioID]">Radio</a> at a later time.
+    </p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="confirmUpdate()">Update Radio Location</button>
+    <button type="button" class="btn btn-outline-dark" (click)="submitWithoutUpdate()">Do not Update, Submit Repair</button>
+    <button type="button" class="btn btn-outline-dark" (click)="cancel()">Do not Update, Go Back to Form</button>
+
+</div>
