@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
-import { loadOneLocation } from '@app/_store/_location-store/location.actions';
+import { loadAllLocations, loadLocationByName, loadOneLocation } from '@app/_store/_location-store/location.actions';
 import { selectOneLocation, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
 import { Subscription } from 'rxjs';
 import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
@@ -26,7 +26,8 @@ export class OneLocationComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private router: Router
   ) {
       this.isLoading$ = this.store.select(locationLoadingSelector);
       this.locationError$ = this.store.select(locationErrorSelector);
@@ -38,7 +39,17 @@ export class OneLocationComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.route.params.subscribe((params) => {
         const locationId = params['id'];
-        this.store.dispatch(loadOneLocation({ locationId }));
+        const orgName = params['orgName'];
+        const locationName = params['locationName']
+
+        if (orgName && locationName) {
+          this.store.dispatch(loadLocationByName({ orgName, locationName}));
+        } else if (locationId) {
+          this.store.dispatch(loadOneLocation({ locationId}))
+        } else {
+          this.store.dispatch(loadAllLocations());
+          this.router.navigate(['location-results/'])
+        }
       })
     );
   }

@@ -47,7 +47,7 @@ export class LocationEffects {
                 return this.locationService.queryLocationByName(orgName, locationName).valueChanges.pipe(
                     map(({ data }) => {
                         console.log('Loaded Location by Name data: ', data.locationByName);
-                        return LocationActions.loadLocationByNameSuccess({ locations: [data.locationByName] });
+                        return LocationActions.loadLocationByNameSuccess({ oneLocation: data.locationByName });
                     }),
                     catchError((error) => {
                         console.error('Error loading Location by Name: ', error);

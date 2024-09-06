@@ -148,6 +148,14 @@ const routes: Routes = [
     canActivate: [authGuard, roleGuard]
   },
   {
+    path: 'one-location/:orgName/:locationName',
+    component: OneLocationComponent,
+    data: {
+      role: ['admin', 'user']
+    },
+    canActivate: [authGuard, roleGuard]
+  },
+  {
     path: 'edit-location/:id',
     component: EditLocationComponent,
     data: {
