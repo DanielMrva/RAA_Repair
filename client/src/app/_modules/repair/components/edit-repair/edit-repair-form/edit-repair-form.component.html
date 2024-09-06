@@ -7,7 +7,7 @@
 
     <div *ngIf="oneRepair$ | async as repair; else noRepairFound" class="container">
         <div class="row">
-            <h2 class="col-12 text-center">Edit Repair Ticket</h2>
+            <h2 class="col-12 text-center">Edit Repair # {{repair.repairTag}} Ticket</h2>
 
             <ng-template *ngIf="radioError$ as radioError">
                 {{radioError}}

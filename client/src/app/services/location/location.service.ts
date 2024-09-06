@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { QUERY_LOCATIONS, QUERY_SINGLELOCATION, ORG_LOCATIONS, LOCATION_BY_NAME, LOCATION_NAMES, Location, UpdateLocationFields } from '@app/graphql/schemas';
-import { ADD_LOCATION, EDIT_LOCATION } from '@app/graphql/schemas/mutations';
+import { ADD_LOCATION, EDIT_LOCATION, DELTE_LOCATION } from '@app/graphql/schemas/mutations';
 
 @Injectable({
   providedIn: 'root'
@@ -85,6 +85,13 @@ export class LocationService {
   locationNames() {
     return this.apollo.query<{locationNames: Location[]}> ({
       query: LOCATION_NAMES
+    })
+  }
+
+  deleteLocation(id: string) {
+    return this.apollo.mutate<{deleteLocation: Location}> ({
+      mutation: DELTE_LOCATION,
+      variables: {id}
     })
   }
   

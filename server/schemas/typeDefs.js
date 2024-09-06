@@ -322,6 +322,18 @@ const typeDefs = `#graphql
         deleteUser(
             _id: ID!
         ): User
+
+        deleteRadio(
+            _id: ID!
+        ): Radio
+
+        deleteLocation(
+            _id: ID!
+        ): Location
+
+        deleteOrganization(
+            _id: ID!
+        ): Organization
     }
 
 `;

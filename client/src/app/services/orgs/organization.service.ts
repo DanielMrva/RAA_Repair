@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Organization, UpdateOrgFields } from '@app/graphql/schemas/typeInterfaces';
 import { ORG_NAMES, QUERY_ORGS, QUERY_SINGLEORG, QUERY_LIKE_ORGNAME } from '@app/graphql/schemas/queries';
-import { EDIT_ORG, ADD_ORG } from '@app/graphql/schemas/mutations';
+import { EDIT_ORG, ADD_ORG, DELETE_ORGANIZATION } from '@app/graphql/schemas/mutations';
 
 
 
@@ -54,6 +54,13 @@ export class OrganizationService {
     return this.apollo.mutate<{addOrg: Organization}> ({
       mutation: ADD_ORG,
       variables: { orgName}
+    })
+  }
+
+  deleteOrganization(id: string) {
+    return this.apollo.mutate<{deleteOrganization: Organization}> ({
+      mutation: DELETE_ORGANIZATION,
+      variables: {id}
     })
   }
 }

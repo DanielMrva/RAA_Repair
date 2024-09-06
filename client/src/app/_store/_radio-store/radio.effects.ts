@@ -8,6 +8,7 @@ import { of, from } from "rxjs";
 import { switchMap, map, catchError, mergeMap } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
+import { loadLocationByName } from "../_location-store/location.actions";
 
 @Injectable()
 export class RadioEffects {
@@ -15,7 +16,8 @@ export class RadioEffects {
         private actions$: Actions,
         private radioService: RadioService,
         private toastService: ToastService,
-        private router: Router
+        private router: Router,
+        private store: Store<AppState>
     ) { }
 
     loadSerialRadio$ = createEffect(() =>
@@ -207,6 +209,49 @@ export class RadioEffects {
             ofType(RadioActions.editRadioFailure),
             map(({ error }) => {
                 this.toastService.show('Failed to edit radio. Please try again', {
+                    classname: 'bg-danger light-text',
+                    delay: 3000
+                }),
+                    console.error(error)
+            })
+        ),
+        { dispatch: false }
+    );
+    
+    deleteRadio$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RadioActions.deleteRadio),
+            switchMap(({ id }) =>
+                from(this.radioService.deleteRadio(id)).pipe(
+                    map(({ data }) =>
+                        RadioActions.deleteRadioSuccess({ radio: data?.deleteRadio })),
+
+                    catchError((error) => of(RadioActions.deleteRadioFailure({ error })))
+                )
+            )
+        )
+    );
+
+    deleteRadioSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RadioActions.deleteRadioSuccess),
+            map(({ radio }) => {
+                this.toastService.show('Radio deleted successfully!', { delay: 3000 });
+                if (radio) {
+                    this.store.dispatch(loadLocationByName({ orgName: radio?.orgName, locationName: radio?.locationName}))
+
+                }
+                this.router.navigateByUrl(`/location-results/${radio?.orgName}/${radio?.locationName}`);
+            })
+        ),
+        { dispatch: false }
+    );
+
+    deleteRadioFailure$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RadioActions.deleteRadioFailure),
+            map(({ error }) => {
+                this.toastService.show(`Radio deletion failed: ${error}`, {
                     classname: 'bg-danger light-text',
                     delay: 3000
                 }),

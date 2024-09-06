@@ -138,4 +138,14 @@ export const orgReducer = createReducer(
         isLoading: false,
         error: error
     })),
+
+    on(OrgActions.deleteOrganizationSuccess, (state, { organization }) => ({
+        ...state,
+        organizations: state.organizations.filter(organization => organization._id !== organization._id),
+    })),
+
+    on(OrgActions.deleteOrganizationFailure, (state, { error }) => ({
+        ...state,
+        error: error,
+    })),
 )

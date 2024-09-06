@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as LocationActions from "./location.actions";
-import { loadAllOrgs } from "../_org-store/org.actions";
+import { loadAllOrgs, loadLikeOrgs } from "../_org-store/org.actions";
 import { Router } from "@angular/router";
 import { LocationService } from "@app/services/location/location.service";
 import { ToastService } from "@app/services/toast/toast.service";
@@ -16,7 +16,8 @@ export class LocationEffects {
         private actions$: Actions,
         private locationService: LocationService,
         private toastService: ToastService,
-        private router: Router
+        private router: Router,
+        private store: Store<AppState>
     ) { }
 
     loadOneLocation$ = createEffect(() =>
@@ -39,23 +40,23 @@ export class LocationEffects {
     );
 
     loadLocationByName$ = createEffect(() =>
-    this.actions$.pipe(
-        ofType(LocationActions.loadLocationByName),
-        mergeMap(({ orgName, locationName }) => {
-            console.log('Dispatched loadLocationByName action with Name: ', locationName);
-            return this.locationService.queryLocationByName(orgName, locationName).valueChanges.pipe(
-                map(({ data }) => {
-                    console.log('Loaded Location by Name data: ', data.locationByName);
-                    return LocationActions.loadLocationByNameSuccess({ oneLocation: data.locationByName });
-                }),
-                catchError((error) => {
-                    console.error('Error loading Location by Name: ', error);
-                    return of(LocationActions.loadLocationByNameFailure({ error }));
-                })
-            );
-        })
-    )
-);
+        this.actions$.pipe(
+            ofType(LocationActions.loadLocationByName),
+            mergeMap(({ orgName, locationName }) => {
+                console.log('Dispatched loadLocationByName action with Name: ', locationName);
+                return this.locationService.queryLocationByName(orgName, locationName).valueChanges.pipe(
+                    map(({ data }) => {
+                        console.log('Loaded Location by Name data: ', data.locationByName);
+                        return LocationActions.loadLocationByNameSuccess({ oneLocation: data.locationByName });
+                    }),
+                    catchError((error) => {
+                        console.error('Error loading Location by Name: ', error);
+                        return of(LocationActions.loadLocationByNameFailure({ error }));
+                    })
+                );
+            })
+        )
+    );
 
 
     loadAllLocations$ = createEffect(() =>
@@ -102,7 +103,7 @@ export class LocationEffects {
                 phone,
                 contactEmail,
                 primaryContact
-   
+
             }) =>
                 from(this.locationService.addLocation(
                     locationName,
@@ -198,16 +199,60 @@ export class LocationEffects {
     );
 
     loadLocationNames$ = createEffect(() =>
-    this.actions$.pipe(
-        ofType(LocationActions.loadLocationNames),
-        switchMap(() =>
-            from(this.locationService.locationNames()).pipe(
-                map(({ data }) => LocationActions.loadLocationNamesSuccess({ locationNames: data.locationNames })),
+        this.actions$.pipe(
+            ofType(LocationActions.loadLocationNames),
+            switchMap(() =>
+                from(this.locationService.locationNames()).pipe(
+                    map(({ data }) => LocationActions.loadLocationNamesSuccess({ locationNames: data.locationNames })),
 
-                catchError((error) => of(LocationActions.loadLocationNamesFailure({ error })))
+                    catchError((error) => of(LocationActions.loadLocationNamesFailure({ error })))
+                )
+            )
+
+        )
+    );
+
+    deleteLocation$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LocationActions.deleteLocation),
+            switchMap(({ id }) =>
+                from(this.locationService.deleteLocation(id)).pipe(
+                    map(({ data }) =>
+                        LocationActions.deleteLocationSuccess({ location: data?.deleteLocation })),
+
+                    catchError((error) => of(LocationActions.deleteLocationFailure({ error })))
+                )
             )
         )
+    );
 
-    )
-)
+    deleteLocationSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LocationActions.deleteLocationSuccess),
+            map(({ location }) => {
+                this.toastService.show('Location deleted successfully!', { delay: 3000 });
+                if (location) {
+                    this.store.dispatch(loadLikeOrgs({ orgName: location?.orgName }))
+
+                }
+                this.router.navigateByUrl(`/location-results/${location?.orgName}/${location?.locationName}`);
+            })
+        ),
+        { dispatch: false }
+    );
+
+    deleteLocationFailure$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LocationActions.deleteLocationFailure),
+            map(({ error }) => {
+                this.toastService.show(`Location deletion failed: ${error}`, {
+                    classname: 'bg-danger light-text',
+                    delay: 3000
+                }),
+                    console.error(error)
+            })
+        ),
+        { dispatch: false }
+    );
+
 }

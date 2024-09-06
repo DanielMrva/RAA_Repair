@@ -27,24 +27,23 @@
                 <h4 class="col-12 text-center">Tracking</h4>
 
                 <div class="form-group col-12">
-                    <app-org-loc-selector 
-                      [orgNameControl]="adminRadioForm.controls.orgName"
-                      [initialOrgName]="initialOrgName"
-                      (orgNameSelected)="handleOrgNameSelected($event)"
-                      (filteredLocations)="handleFilteredLocations($event)">
+                    <app-org-loc-selector [orgNameControl]="adminRadioForm.controls.orgName"
+                        [initialOrgName]="initialOrgName" (orgNameSelected)="handleOrgNameSelected($event)"
+                        (filteredLocations)="handleFilteredLocations($event)">
                     </app-org-loc-selector>
-                  </div>
+                </div>
 
                 <mat-form-field class="form-group col-12 col-lg-4">
                     <mat-label>Location</mat-label>
-                    <input matInput placeholder="Location" aria-label="Location" [formControl]="adminRadioForm.controls.locationName"
-                        [matAutocomplete]="locAuto">
+                    <input matInput placeholder="Location" aria-label="Location"
+                        [formControl]="adminRadioForm.controls.locationName" [matAutocomplete]="locAuto">
                     <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
                         <mat-option *ngFor="let locOption of filteredLocNames" [value]="locOption">
                             {{locOption}}
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
+
                 <mat-form-field class="form-group col-12 col-lg-4">
                     <mat-label>Inventory Number</mat-label>
                     <input matInput placeholder="Inventory Number" formControlName="inventoryNumber"
@@ -112,9 +111,12 @@
                         <div *ngFor="let note of notesArray.controls; let i = index" class="mb-2">
                             <mat-form-field class="form-group col-12">
                                 <input matInput placeholder="Note" [formControlName]="i">
-                                <mat-icon matSuffix class="remove-icon text-danger" aria-label="remove notes" *ngIf="notesArray.length > 1" type="button" (click)="removeNotes(i)">remove_circle</mat-icon>
-                                <mat-icon matSuffix class="add-icon" aria-label="add notes" type="button" (click)="addNotes()">add_circle</mat-icon>
-                              </mat-form-field>
+                                <mat-icon matSuffix class="remove-icon text-danger" aria-label="remove notes"
+                                    *ngIf="notesArray.length > 1" type="button"
+                                    (click)="removeNotes(i)">remove_circle</mat-icon>
+                                <mat-icon matSuffix class="add-icon" aria-label="add notes" type="button"
+                                    (click)="addNotes()">add_circle</mat-icon>
+                            </mat-form-field>
                         </div>
                     </div>
                 </div>

@@ -134,3 +134,19 @@ export const editRadioFailure = createAction(
     props<{ error: string}>()
 );
 
+export const deleteRadio = createAction(
+    '[Radio] Delete Radio',
+    props<{ id: string }>()
+);
+
+export const deleteRadioSuccess = createAction(
+    '[Radio] Delete Radio Success',
+    props<{ radio?: Radio }>()
+);
+
+export const deleteRadioFailure = createAction(
+    '[Radio] Delete Radio Failure',
+    props<{ error: any }>()
+);
+
+

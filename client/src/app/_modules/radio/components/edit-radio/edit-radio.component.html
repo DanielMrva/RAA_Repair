@@ -47,10 +47,10 @@
 
           <h4 class="col-12 text-center">Tracking</h4>
 
-          <div class="form-group col-12">
+          <div class="form-group col-12 col-lg-4">
             <app-org-loc-selector 
               [orgNameControl]="editRadioForm.controls.orgName"
-              [initialOrgName]="initialOrgName"
+              [initialOrgName]="editRadioForm.controls.orgName.value"
               (orgNameSelected)="handleOrgNameSelected($event)"
               (filteredLocations)="handleFilteredLocations($event)">
             </app-org-loc-selector>
@@ -61,7 +61,7 @@
             <input matInput placeholder="Location" aria-label="Location" formControlName="locationName"
               [matAutocomplete]="locAuto">
             <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
-              <mat-option *ngFor="let locOption of filteredLocNames$ | async" [value]="locOption">
+              <mat-option *ngFor="let locOption of filteredLocationNames" [value]="locOption">
                 {{locOption}}
               </mat-option>
             </mat-autocomplete>
@@ -199,7 +199,7 @@
 
                   <ng-container matColumnDef="delete">
                     <th mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let record"><app-delete-repair-button [repair]="record"></app-delete-repair-button></td>
+                    <td mat-cell *matCellDef="let record"><app-deletion-button [document]="record" [docType]="'repair'"></app-deletion-button></td>
                   </ng-container>
 
                   <tr mat-header-row *matHeaderRowDef="['index', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO', 'delete']"></tr>
