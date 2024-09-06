@@ -8,7 +8,7 @@ import { editLocation, loadOneLocation, loadLocationNames } from '@app/_store/_l
 import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { selectLocationNames, locationErrorSelector, locationLoadingSelector, selectOneLocation } from '@app/_store/_location-store/location.selectors';
-import { Subscription } from 'rxjs';
+import { shareReplay, Subscription } from 'rxjs';
 
 
 
@@ -30,15 +30,15 @@ export class EditLocationComponent implements OnInit, OnDestroy {
   isLoadingLocationNames$
   locationError$
 
-  
+    
   isSubmitted = false;
 
-  initialOrgName: string | null = null;
   filteredLocationNames: string[] = [];
   locationList!: Location[];
 
 
   locationId!: string;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,8 +50,8 @@ export class EditLocationComponent implements OnInit, OnDestroy {
     this.orgNameError$ = this.store.select(orgErrorSelector);
 
     this.oneLocation$ = this.store.select(selectOneLocation);
-    this.locationNames$ = this.store.select(selectLocationNames);
-    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
+    this.locationNames$ = this.store.select(selectLocationNames).pipe(shareReplay(1));
+    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector).pipe(shareReplay(1));
     this.locationError$ = this.store.select(locationErrorSelector);
   }
 
@@ -68,6 +68,31 @@ export class EditLocationComponent implements OnInit, OnDestroy {
     contactEmail: new FormControl<string>(''),
     primaryContact: new FormControl<string>('')
   });
+
+  ngOnInit(): void {
+
+    this.subscriptions.add(
+      this.activatedRoute.params.subscribe((params: Params) => {
+        this.locationId = params['id'];
+        this.loadLocation(this.locationId)
+      })
+    );
+    
+    this.populateForm();
+
+    this.subscriptions.add(
+      this.editLocationForm.get('orgName')!.valueChanges.subscribe(() => {
+        this.editLocationForm.get('locationName')!.setValidators([
+          Validators.required,
+          this.locationNameValidator()
+        ]);
+        this.editLocationForm.get('locationName')!.updateValueAndValidity(); // Ensure validators are recalculated
+      })
+    );
+
+    this.store.dispatch(loadOrgNames());
+    this.loadLocationNames();
+  };
 
   fieldValidCheck(field: string) {
     if (
@@ -184,31 +209,6 @@ export class EditLocationComponent implements OnInit, OnDestroy {
     this.updateLocation(submittedLocation);
 
 
-  }
-
-  ngOnInit(): void {
-
-    this.subscriptions.add(
-      this.activatedRoute.params.subscribe((params: Params) => {
-        this.locationId = params['id'];
-        this.loadLocation(this.locationId)
-      })
-    );
-    
-    this.populateForm();
-
-    this.subscriptions.add(
-      this.editLocationForm.get('orgName')!.valueChanges.subscribe(() => {
-        this.editLocationForm.get('locationName')!.setValidators([
-          Validators.required,
-          this.locationNameValidator()
-        ]);
-        this.editLocationForm.get('locationName')!.updateValueAndValidity(); // Ensure validators are recalculated
-      })
-    );
-
-    this.store.dispatch(loadOrgNames());
-    this.loadLocationNames();
   };
 
   ngOnDestroy(): void {

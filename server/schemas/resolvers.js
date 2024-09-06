@@ -682,6 +682,36 @@ const resolvers = {
             }
         },
         // End Delete User
+        deleteRadio: async ( parent, { _id }) => {
+            try {
+                const deletedRadio = await Radio.findByIdAndDelete(_id);
+                return deletedRadio
+            } catch (error) {
+                console.log(`resolver error: ${error}`);
+                throw new GraphQLError(`Failed to Delete Radio, ${error``}`)
+            }
+        },
+        // End Delete Radio
+        deleteLocation: async ( parent, { _id }) => {
+            try {
+                const deletedLocation = await Location.findByIdAndDelete(_id);
+                return deletedLocation
+            } catch (error) {
+                console.log(`resolver error: ${error}`);
+                throw new GraphQLError(`Failed to Delete Location, ${error``}`)
+            }
+        },
+        // End Delete Location
+        deleteOrganization: async ( parent, { _id }) => {
+            try {
+                const deletedOrganization = await Organization.findByIdAndDelete(_id);
+                return deletedOrganization
+            } catch (error) {
+                console.log(`resolver error: ${error}`);
+                throw new GraphQLError(`Failed to Delete Organization, ${error``}`)
+            }
+        },
+        // End Delete Organization
 
     }
 };

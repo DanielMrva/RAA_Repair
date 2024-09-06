@@ -91,3 +91,17 @@ export const loadOrgNamesFailure = createAction(
     props<{ error: string }>()
 );
 
+export const deleteOrganization = createAction(
+    '[Organization] Delete Organization',
+    props<{ id: string }>()
+);
+
+export const deleteOrganizationSuccess = createAction(
+    '[Organization] Delete Organization Success',
+    props<{ organization?: Organization }>()
+);
+
+export const deleteOrganizationFailure = createAction(
+    '[Organization] Delete Organization Failure',
+    props<{ error: any }>()
+);

@@ -149,5 +149,49 @@ export class OrgEffects {
             )
 
         )
-    )
+    );
+
+    deleteOrg$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(OrgActions.deleteOrganization),
+            switchMap(({ id }) =>
+                from(this.orgService.deleteOrganization(id)).pipe(
+                    map(({ data }) =>
+                        OrgActions.deleteOrganizationSuccess({ organization: data?.deleteOrganization })),
+
+                    catchError((error) => of(OrgActions.deleteOrganizationFailure({ error })))
+                )
+            )
+        )
+    );
+
+    deleteOrgSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(OrgActions.deleteOrganizationSuccess),
+            map(({ organization }) => {
+                this.toastService.show('Org deleted successfully!', { delay: 3000 });
+                if (organization) {
+                    this.store.dispatch(OrgActions.loadLikeOrgs({ orgName: organization?.orgName }))
+
+                }
+                this.router.navigateByUrl(`/org-results/${organization?.orgName}`);
+            })
+        ),
+        { dispatch: false }
+    );
+
+    deleteOrgFailure$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(OrgActions.deleteOrganizationFailure),
+            map(({ error }) => {
+                this.toastService.show(`Org deletion failed: ${error}`, {
+                    classname: 'bg-danger light-text',
+                    delay: 3000
+                }),
+                    console.error(error)
+            })
+        ),
+        { dispatch: false }
+    );
+
 }

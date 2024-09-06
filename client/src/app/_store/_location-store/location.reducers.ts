@@ -158,4 +158,14 @@ export const locationReducer = createReducer(
         isLoading: false,
         error: error
     })),
+
+    on(LocationActions.deleteLocationSuccess, (state, { location }) => ({
+        ...state,
+        locations: state.locations.filter(location => location._id !== location._id),
+    })),
+
+    on(LocationActions.deleteLocationFailure, (state, { error }) => ({
+        ...state,
+        error: error,
+    })),
 )

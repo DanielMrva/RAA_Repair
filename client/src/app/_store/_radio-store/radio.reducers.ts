@@ -179,5 +179,15 @@ export const radioReducer = createReducer(
         isLoading: false,
         error: error
     })),
+
+    on(RadioActions.deleteRadioSuccess, (state, { radio }) => ({
+        ...state,
+        radios: state.radios.filter(radio => radio._id !== radio._id),
+    })),
+
+    on(RadioActions.deleteRadioFailure, (state, { error }) => ({
+        ...state,
+        error: error,
+    })),
 )
 

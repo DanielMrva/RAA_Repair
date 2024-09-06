@@ -21,84 +21,78 @@
 
         <h4 class="col-12 text-center">Locations:</h4>
 
-        <ng-container *ngIf="oneOrg.locations.length > 0; else noLocations">
-
-            <div class="row">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">
-
-                            </th>
-                            <th scope="col">
-                                Location Name
-                            </th>
-                            <th scope="col">
-                                Radios
-                            </th>
-
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngFor="let location of oneOrg.locations; index as i">
-                            <tr>
-                                <th scope="row">{{i +1}}</th>
-                                <td>
-                                    <a [routerLink]="['/one-location/', location._id]">{{location.locationName}}</a>
-                                </td>
-                                <td>
-                                    <ul>
-                                        <ng-container *ngFor="let radio of location.radios; index as j">
-                                            <li >
-                                                {{j+1}} <a [routerLink]="['/one-radio/', radio._id]">{{radio.make}} {{radio.model}} {{radio.serialNumber}}</a>
-                                            </li>
-                                        </ng-container>
-                                    </ul>
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-            </div>
-
-        </ng-container>
-
         <ng-container *ngIf="oneOrg.users.length > 0; else noUsers">
+
             <div class="row">
-                <table class="table">
-                    <thead>
-                        <th scope="col">
-
-                        </th>
-
-                        <th scope="col">
-                            User Name
-                        </th>
-
-                        <th scope="col">
-                            Email
-                        </th>
-
-                    </thead>
-
-                    <tbody>
-                        <ng-container *ngFor="let user of oneOrg.users; index as u">
-                            <tr>
-                                <th scope="row">{{u +1}}</th>
-                                <td>
-                                    {{user.username}}
-                                </td>
-                                <td>
-                                    {{user.email}}
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
+                <table mat-table [dataSource]="oneOrg.users" class="mat-elevation-z8">
+    
+                    <ng-container matColumnDef="index">
+                        <th mat-header-cell *matHeaderCellDef> # </th>
+                        <td mat-cell *matCellDef="let user; let i = index">{{i + 1}}</td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="username">
+                        <th mat-header-cell *matHeaderCellDef> User Name </th>
+                        <td mat-cell *matCellDef="let user">
+                            <a [routerLink]="['/one-user/', user._id]">{{user.username}}</a>
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef> Email </th>
+                        <td mat-cell *matCellDef="let user">
+                            {{user.email}}
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="userLocation">
+                        <th mat-header-cell *matHeaderCellDef> Location </th>
+                        <td mat-cell *matCellDef="let user">
+                            {{user.userLocation}}
+                        </td>
+                    </ng-container>    
+    
+                    <tr mat-header-row *matHeaderRowDef="['index', 'username', 'email', 'userLocation']"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['index', 'username', 'email', 'userLocation']"></tr>
                 </table>
             </div>
+    
         </ng-container>
+    
+        <h4 class="col-12 text-center">Locations:</h4>
+    
+        <ng-container *ngIf="oneOrg.locations.length > 0; else noLocations">
+    
+            <div class="row">
+                <table mat-table [dataSource]="oneOrg.locations" class="mat-elevation-z8">
+    
+                    <ng-container matColumnDef="index">
+                        <th mat-header-cell *matHeaderCellDef> # </th>
+                        <td mat-cell *matCellDef="let location; let i = index">{{i + 1}}</td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="locationName">
+                        <th mat-header-cell *matHeaderCellDef> Location Name </th>
+                        <td mat-cell *matCellDef="let location">
+                            <a [routerLink]="['/one-location/', location._id]">{{location.locationName}}</a>
+                        </td>
+                    </ng-container>
 
+
+                    <ng-container matColumnDef="radios">
+                        <th mat-header-cell *matHeaderCellDef> Number of Radios </th>
+                        <td mat-cell *matCellDef="let location">
+                            {{location.radios.length}}
+                        </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="['index', 'locationName', 'radios']"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['index', 'locationName', 'radios']"></tr>
+                </table>
+            </div>
+    
+        </ng-container>
+    
         <ng-template #noLocations>
             <div class="row">
                 <p>No Locations at this Organization...</p>

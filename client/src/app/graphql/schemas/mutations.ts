@@ -454,3 +454,64 @@ export const DELETE_USER = gql`
     }
 `
 
+export const DELETE_RADIO = gql`
+    mutation deleteRadio($id: ID!) {
+        deleteRadio(_id: $id) {
+            _id
+            orgName
+            locationName
+            datePurchased
+            dateEntered
+            inventoryNumber
+            make
+            model
+            progChannels
+            notes
+            serialNumber
+            serviceRecord {
+                _id
+            }
+            warranty
+            refurb
+            radioType
+        }
+    }
+`
+
+export const DELTE_LOCATION = gql`
+    mutation deleteLocation($id: ID!) {
+        deleteLocation(_id: $id) {
+            _id
+            locationName
+            orgName
+            street
+            suite
+            city
+            state
+            zip
+            country
+            phone
+            contactEmail
+            primaryContact
+            radios {
+                _id
+            }
+        }
+    }
+`
+
+export const DELETE_ORGANIZATION = gql`
+    mutation deleteOrganization($id: ID!) {
+        deleteOrganization(_id: $id) {
+            _id
+            orgName
+            users {
+                _id
+            }
+            locations {
+                _id
+            }
+        }
+    }
+`
+

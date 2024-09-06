@@ -207,7 +207,7 @@ export class UserEffects {
                         delay: 3000
                     }),
 
-                    this.router.navigate(['/'])
+                        this.router.navigate(['/'])
                     console.log('Login User Success dispatching SET AUTH INFO')
                     return setAuthInfo({ username, orgName, accessLevel, userLocation });
                 } else {
@@ -241,7 +241,7 @@ export class UserEffects {
         )
     );
 
-        deleteUser$ = createEffect(() =>
+    deleteUser$ = createEffect(() =>
         this.actions$.pipe(
             ofType(deleteUser),
             switchMap(({ id }) =>

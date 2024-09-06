@@ -22,10 +22,13 @@
 
 
                         <div class="form-group col-12 col-lg-6">
-                            <app-org-loc-selector [orgNameControl]="editLocationForm.controls.orgName"
+                            <app-org-loc-selector 
+                                [orgNameControl]="editLocationForm.controls.orgName"
                                 [initialOrgName]="editLocationForm.controls.orgName.value"
                                 (orgNameSelected)="handleOrgNameSelected($event)"
-                                (filteredLocations)="handleFilteredLocations($event)"></app-org-loc-selector>
+                                (filteredLocations)="handleFilteredLocations($event)"
+                                >
+                            </app-org-loc-selector>
                         </div>
 
 
@@ -98,8 +101,71 @@
 
             </form>
         </div>
+
+        <h4 class="col-12 text-center">Radios:</h4>
+
+        <ng-container *ngIf="location.radios.length > 0; else noRadios">
+    
+            <div class="row">
+                <table mat-table [dataSource]="location.radios" class="mat-elevation-z8">
+    
+                    <ng-container matColumnDef="index">
+                        <th mat-header-cell *matHeaderCellDef> # </th>
+                        <td mat-cell *matCellDef="let radio; let i = index">{{i + 1}}</td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="serialNumber">
+                        <th mat-header-cell *matHeaderCellDef> Serial Number </th>
+                        <td mat-cell *matCellDef="let radio">
+                            <a [routerLink]="['/one-radio/', radio._id]">{{radio.serialNumber}}</a>
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="make">
+                        <th mat-header-cell *matHeaderCellDef> Make </th>
+                        <td mat-cell *matCellDef="let radio">
+                            {{radio.make}}
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="model">
+                        <th mat-header-cell *matHeaderCellDef> Model </th>
+                        <td mat-cell *matCellDef="let radio">
+                            {{radio.model}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="serviceRecord">
+                        <th mat-header-cell *matHeaderCellDef> Number of Repairs </th>
+                        <td mat-cell *matCellDef="let radio">
+                            {{radio.serviceRecord.length}}
+                        </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="delete">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let radio"><app-deletion-button [document]="radio" [docType]="'radio'" ></app-deletion-button></td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="['index', 'serialNumber', 'make', 'model', 'serviceRecord', 'delete']"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['index', 'serialNumber', 'make', 'model', 'serviceRecord', 'delete']"></tr>
+                </table>
+            </div>
+    
+        </ng-container>
+    
+        <ng-template #noRadios>
+            <div class="row">
+                <p>No Radios at this Location...</p>
+            </div>
+        </ng-template>
+    
     </div>
+
+
 </ng-template>
+
+
 
 <ng-template #noLocationFound>
 

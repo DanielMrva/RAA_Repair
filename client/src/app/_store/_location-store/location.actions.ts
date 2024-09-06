@@ -115,3 +115,18 @@ export const loadLocationNamesFailure = createAction(
     '[Location Service] Load Location Names Failure',
     props<{ error: string }>()
 );
+
+export const deleteLocation = createAction(
+    '[Location] Delete Location',
+    props<{ id: string }>()
+);
+
+export const deleteLocationSuccess = createAction(
+    '[Location] Delete Location Success',
+    props<{ location?: Location }>()
+);
+
+export const deleteLocationFailure = createAction(
+    '[Location] Delete Location Failure',
+    props<{ error: any }>()
+);
