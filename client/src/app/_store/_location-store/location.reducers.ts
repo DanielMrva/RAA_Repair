@@ -50,9 +50,9 @@ export const locationReducer = createReducer(
         error: null,
     })),
 
-    on(LocationActions.loadLocationByNameSuccess, (state, { oneLocation } ) => ({
+    on(LocationActions.loadLocationByNameSuccess, (state, { locations } ) => ({
         ...state,
-        oneLocation: oneLocation,
+        locations: locations,
         isLoading: false,
         error: null,
     })),

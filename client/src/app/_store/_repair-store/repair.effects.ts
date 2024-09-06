@@ -200,9 +200,8 @@ export class RepairEffects {
                 this.toastService.show('Repair deleted successfully!', { delay: 3000 });
                 if (repair) {
                     this.store.dispatch(loadOneRadio({ radioID: repair?.radioID }));
-
+                    this.router.navigateByUrl(`/one-radio/${repair?.radioID}`);
                 }
-                this.router.navigateByUrl(`/one-radio/${repair?.radioID}`);
             })
         ),
         { dispatch: false }

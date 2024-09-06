@@ -239,9 +239,8 @@ export class RadioEffects {
                 this.toastService.show('Radio deleted successfully!', { delay: 3000 });
                 if (radio) {
                     this.store.dispatch(loadLocationByName({ orgName: radio?.orgName, locationName: radio?.locationName}))
-
+                    this.router.navigate(['/location-results', radio?.orgName, radio?.locationName]);
                 }
-                this.router.navigateByUrl(`/location-results/${radio?.orgName}/${radio?.locationName}`);
             })
         ),
         { dispatch: false }
