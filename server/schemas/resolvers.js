@@ -199,21 +199,25 @@ const resolvers = {
 
             if (!user) {
                 console.log('bad user', email);
-                // throw unwrapResolverError(badAttempt);
-                throw new ApolloError(badAttempt, "Unauthenticated")
-            }
+
+                throw new GraphQLError(badAttempt, {
+                    extensions: {
+                      code: 'FORBIDDEN',
+                    },
+                  })            }
 
             const correctPassword = await user.isCorrectPassword(password);
 
             if (!correctPassword) {
-                console.log('bad password', user);
-                throw new ApolloError(badAttempt, "Unauthenticated")
 
-                // throw new unwrapResolverError(badAttempt);
+                throw new GraphQLError(badAttempt, {
+                    extensions: {
+                      code: 'FORBIDDEN',
+                    },
+                  })
             }
 
             const token = signToken(user);
-            // console.log(`Token: ${token}, User: ${user}`);
 
             return { token, user }
         },
