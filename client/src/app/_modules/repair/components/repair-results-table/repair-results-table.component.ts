@@ -2,7 +2,12 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild, AfterViewInit } 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
+import { AppState } from '@app/_store/app.state';
 import { Repair } from '@app/graphql/schemas';
+import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH } from '@app/utils/constants';
+import { Store } from '@ngrx/store';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-repair-results-table',
@@ -12,6 +17,11 @@ import { Repair } from '@app/graphql/schemas';
 export class RepairResultsTableComponent implements OnChanges, AfterViewInit  {
 
   @Input() repairs: Repair[] | null = [];
+  dataSource: MatTableDataSource<Repair> = new MatTableDataSource<Repair>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
   displayedColumns: string[] = [
     "radioSerial",
     "radioLocation",
@@ -27,14 +37,24 @@ export class RepairResultsTableComponent implements OnChanges, AfterViewInit  {
     "workPerformed",
     "repHours",
     "partsUsed",
-    "remarks"
   ];
-  dataSource: MatTableDataSource<Repair> = new MatTableDataSource<Repair>();
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  userAccessLevel$
 
-  constructor() { }
+
+  ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
+  TECH_ACCESS = ACCESS_LEVEL_TECH;
+
+
+
+
+  constructor(
+    private store: Store<AppState>
+  ) {
+    this.userAccessLevel$ = this.store.select(selectAccessLevel).pipe(
+      tap((accessLevel) => this.updateDisplayedColumns(accessLevel))
+    );
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['repairs'] && this.repairs) {
@@ -51,5 +71,30 @@ export class RepairResultsTableComponent implements OnChanges, AfterViewInit  {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  private updateDisplayedColumns(accessLevel: string | null): void {
+    // Reset to default columns
+    this.displayedColumns = [
+      "radioSerial",
+      "radioLocation",
+      "reportedBy",
+      "endUserPO",
+      "raaPO",
+      "repairTag",
+      "repairStatus",
+      "dateRepairAdded",
+      "techInvNum",
+      "raaInvNum",
+      "accessories",
+      "workPerformed",
+      "repHours",
+      "partsUsed",
+    ];
+
+    // Conditionally add the "remarks" column
+    if (accessLevel === this.ADMIN_ACCESS || accessLevel === this.TECH_ACCESS) {
+      this.displayedColumns.push("remarks");
+    }
   }
 }

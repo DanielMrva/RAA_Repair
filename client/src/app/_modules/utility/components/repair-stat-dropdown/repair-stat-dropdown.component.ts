@@ -34,7 +34,7 @@ export class RepairStatDropdownComponent implements OnInit, ControlValueAccessor
   ];
 
   adminStatuses = [
-    'Radio received by R.A.A.',
+    'Radio Received from Customer',
     'Radio sent to Technician',
     'Radio received from Technician',
     'Radio sent to Customer'

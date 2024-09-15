@@ -286,10 +286,15 @@
                           <li>{{part}}</li>
                         </ng-container>
                       </ul>
-                      <p>
-                        <strong>Remarks:</strong><br>
-                        {{repair.remarks}}
-                      </p>
+                      <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
+                        <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS || userAccessLevel === TECH_ACCESS">
+                          <p>
+                            <strong>Remarks:</strong><br>
+                            {{repair.remarks}}
+                          </p>
+                        </ng-container>
+                      </ng-container>
+                      
                     </div>
                   </div>
                 </ng-template>
