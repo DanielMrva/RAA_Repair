@@ -73,27 +73,36 @@ export class OneRepairComponent implements OnInit, OnDestroy{
     this.userAccessLevel$ = this.store.select(selectAccessLevel);
 
     this.poText$ = combineLatest([this.oneRepair$, this.oneRadio$]).pipe(
-      map(([repair, radio])=> repair && radio ? {
-        make: repair.radioMake,
-        model: radio.model,
-        serialNumber: repair.radioSerial,
-        accessories: repair.accessories,
-        repairTag: repair.repairTag,
-        orgName: radio.orgName,
-        locationName: repair.radioLocation
-      } : undefined) 
+      map(([repair, radio]): PoTextAttributes | undefined => {
+        if (repair) {
+          return {
+            make: repair.radioMake || 'Unknown Make', // Fallback value for make
+            model: radio ? radio.model : 'Unknown Model', // Fallback value for model
+            serialNumber: repair.radioSerial || 'Unknown Serial', // Fallback value for serialNumber
+            accessories: repair.accessories || [], // Fallback value for accessories
+            repairTag: repair.repairTag || 0, // Fallback value for repairTag
+            orgName: radio ? radio.orgName : 'Unknown Organization', // Fallback value for orgName
+            locationName: repair.radioLocation || 'Unknown Location', // Fallback value for locationName
+          };
+        }
+        return undefined;
+      })
     );
-
+    
     this.invoiceText$ = combineLatest([this.oneRepair$, this.oneRadio$]).pipe(
-      map(([repair, radio]) => repair && radio ? {
-        make: repair.radioMake,
-        model: radio.model,
-        serialNumber: repair.radioSerial,
-        repairTag: repair.repairTag,
-        workPerformed: repair.workPerformed
-      }: undefined)
+      map(([repair, radio]): InvoiceTextAttributes | undefined => {
+        if (repair) {
+          return {
+            make: repair.radioMake || 'Unknown Make', // Fallback value for make
+            model: radio ? radio.model : 'Unknown Model', // Fallback value for model
+            serialNumber: repair.radioSerial || 'Unknown Serial', // Fallback value for serialNumber
+            repairTag: repair.repairTag || 0, // Fallback value for repairTag
+            workPerformed: repair.workPerformed || [], // Fallback value for workPerformed
+          };
+        }
+        return undefined;
+      })
     );
-  
   }
 
   ngOnInit(): void {

@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 // const dateFormat = require("../utils/dateFormat")
 const Location = require('./Location');
+const Repair = require('./Repair')
 
 const radioSchema = new Schema({
     orgName: {
@@ -93,6 +94,31 @@ radioSchema.statics.updateLocation = async function (_id, newLocationName) {
         throw new Error (`Failed to update radio location ${error.message}`)
     }
 }
+
+// radioSchema.js
+
+radioSchema.statics.deleteByIdAndCleanupRepairs = async function (_id) {
+    try {
+        const radioToDelete = await this.findById(_id);
+
+        if (!radioToDelete) {
+            throw new Error('Radio not found');
+        }
+
+        // If there are any repairs associated with the radio, delete them
+        if (radioToDelete.serviceRecord.length > 0) {
+            await Repair.deleteMany({ _id: { $in: radioToDelete.serviceRecord } });
+        }
+
+        // Delete the radio
+        const deletedRadio = await this.findByIdAndDelete(_id);
+        return deletedRadio;
+    } catch (error) {
+        console.error(`Failed to delete radio and cleanup repairs: ${error}`);
+        throw new Error(`Failed to delete radio and associated repairs: ${error.message}`);
+    }
+};
+
 
 const Radio = model("Radio", radioSchema);
 
