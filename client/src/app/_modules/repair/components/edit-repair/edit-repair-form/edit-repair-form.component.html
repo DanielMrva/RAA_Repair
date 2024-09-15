@@ -7,7 +7,15 @@
 
     <div *ngIf="oneRepair$ | async as repair; else noRepairFound" class="container">
         <div class="row">
-            <h2 class="col-12 text-center">Edit Repair # {{repair.repairTag}} Ticket</h2>
+            <h2 class="col-12 text-center">Edit Repair # {{repair.repairTag}} Ticket 
+                <ng-container
+                    *ngIf="userAccessLevel$ | async as userAccessLevel"> 
+                    <ng-container
+                        *ngIf="userAccessLevel === ADMIN_ACCESS">
+                        <app-deletion-button [document]="repair" [docType]="'repair'"></app-deletion-button>
+                    </ng-container> 
+                </ng-container>
+            </h2>
 
             <ng-template *ngIf="radioError$ as radioError">
                 {{radioError}}
@@ -52,8 +60,7 @@
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-12 col-lg-4">
-                        <app-org-loc-selector 
-                            [orgNameControl]="repairForm.controls.radioOrg"
+                        <app-org-loc-selector [orgNameControl]="repairForm.controls.radioOrg"
                             [initialOrgName]="repairForm.controls.radioOrg.value"
                             (orgNameSelected)="handleOrgNameSelected($event)"
                             (filteredLocations)="handleFilteredLocations($event)">
@@ -300,8 +307,8 @@
                                 class="full-width-input">
                                 <input matInput [formControlName]="k" placeholder="Work Performed">
                                 <ng-container *ngIf="accessLevel !== USER_ACCESS">
-                                    <mat-icon matSuffix class="remove-icon text-danger" *ngIf="workPerformedArray.length > 1"
-                                        (click)="removeWorkPerformed(k)"
+                                    <mat-icon matSuffix class="remove-icon text-danger"
+                                        *ngIf="workPerformedArray.length > 1" (click)="removeWorkPerformed(k)"
                                         aria-label="remove work performed">remove_circle</mat-icon>
                                     <mat-icon matSuffix class="add-icon" (click)="addWorkPerformed()"
                                         aria-label="add work performed">add_circle</mat-icon>
@@ -313,8 +320,9 @@
                                 class="full-width-input">
                                 <input matInput [formControlName]="l" placeholder="Parts Used">
                                 <ng-container *ngIf="accessLevel !== USER_ACCESS">
-                                    <mat-icon matSuffix class="remove-icon text-danger" *ngIf="partsUsedArray.length > 1"
-                                        (click)="removePartsUsed(l)" aria-label="remove parts used">remove_circle</mat-icon>
+                                    <mat-icon matSuffix class="remove-icon text-danger"
+                                        *ngIf="partsUsedArray.length > 1" (click)="removePartsUsed(l)"
+                                        aria-label="remove parts used">remove_circle</mat-icon>
                                     <mat-icon matSuffix class="add-icon" (click)="addPartsUsed()"
                                         aria-label="add parts used">add_circle</mat-icon>
                                 </ng-container>

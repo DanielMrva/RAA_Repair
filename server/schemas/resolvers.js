@@ -660,7 +660,7 @@ const resolvers = {
             }
             catch (error) {
                 console.log(`resolver error: ${error}`);
-                throw new GraphQLError('Failed to Edit Location')
+                throw new GraphQLError(`Failed to Edit Location, ${error.message}`)
 
             }
         },
@@ -670,8 +670,8 @@ const resolvers = {
                 const deletedRepair = await Repair.findByIdAndDelete(_id);
                 return deletedRepair;
             } catch (error) {
-                console.log(`resolver error: ${error}`);
-                throw new GraphQLError(`Failed to Delete Repair, ${error}`)
+                console.log(`resolver error: ${error.message}`);
+                throw new GraphQLError(`Failed to Delete Repair, ${error.message}`)
 
             }
         },
@@ -681,18 +681,18 @@ const resolvers = {
                 const deletedUser = await User.findByIdAndDelete(_id);
                 return deletedUser
             } catch (error) {
-                console.log(`resolver error: ${error}`);
-                throw new GraphQLError(`Failed to Delete User, ${error``}`)
+                console.log(`resolver error: ${error.message}`);
+                throw new GraphQLError(`Failed to Delete User, ${error.message}`)
             }
         },
         // End Delete User
-        deleteRadio: async ( parent, { _id }) => {
+        deleteRadio: async (parent, { _id }) => {
             try {
-                const deletedRadio = await Radio.findByIdAndDelete(_id);
-                return deletedRadio
+                const deletedRadio = await Radio.deleteByIdAndCleanupRepairs(_id); // Using a static method on the model
+                return deletedRadio;
             } catch (error) {
-                console.log(`resolver error: ${error}`);
-                throw new GraphQLError(`Failed to Delete Radio, ${error``}`)
+                console.log(`Resolver error: ${error.message}`);
+                throw new GraphQLError(`Failed to delete Radio, ${error.message}`);
             }
         },
         // End Delete Radio
@@ -701,8 +701,8 @@ const resolvers = {
                 const deletedLocation = await Location.findByIdAndDelete(_id);
                 return deletedLocation
             } catch (error) {
-                console.log(`resolver error: ${error}`);
-                throw new GraphQLError(`Failed to Delete Location, ${error``}`)
+                console.log(`resolver error: ${error.message}`);
+                throw new GraphQLError(`Failed to Delete Location, ${error.message}`)
             }
         },
         // End Delete Location
@@ -711,8 +711,8 @@ const resolvers = {
                 const deletedOrganization = await Organization.findByIdAndDelete(_id);
                 return deletedOrganization
             } catch (error) {
-                console.log(`resolver error: ${error}`);
-                throw new GraphQLError(`Failed to Delete Organization, ${error``}`)
+                console.log(`resolver error: ${error.message}`);
+                throw new GraphQLError(`Failed to Delete Organization, ${error.message}`)
             }
         },
         // End Delete Organization

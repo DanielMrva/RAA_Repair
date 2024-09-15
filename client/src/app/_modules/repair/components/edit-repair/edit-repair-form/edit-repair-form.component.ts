@@ -31,6 +31,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
   oneRepair$;
   userAccessLevel$;
   USER_ACCESS = ACCESS_LEVEL_USER;
+  ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
 
   initialOrgName: string | null = null;
   filteredLocationNames: string[] = [];
