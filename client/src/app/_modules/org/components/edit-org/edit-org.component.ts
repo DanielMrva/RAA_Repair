@@ -7,6 +7,8 @@ import { AppState } from '@app/_store/app.state';
 import { editOrg, loadOneOrg } from '@app/_store/_org-store/org.actions';
 import { selectOneOrg, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
 import { Subscription } from 'rxjs';
+import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
+import { ACCESS_LEVEL_ADMIN } from '@app/utils/constants';
 
 @Component({
   selector: 'app-edit-org',
@@ -22,6 +24,9 @@ export class EditOrgComponent implements OnInit, OnDestroy {
   isLoading$
   error$
 
+  userAccessLevel$;
+  ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>
@@ -29,6 +34,8 @@ export class EditOrgComponent implements OnInit, OnDestroy {
     this.oneOrg$ = this.store.select(selectOneOrg);
     this.isLoading$ = this.store.select(orgLoadingSelector);
     this.error$ = this.store.select(orgErrorSelector);
+    this.userAccessLevel$ = this.store.select(selectAccessLevel);
+
   };
 
   orgForm = new FormGroup({
