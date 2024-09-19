@@ -7,13 +7,11 @@
 
     <div *ngIf="oneRepair$ | async as repair; else noRepairFound" class="container">
         <div class="row">
-            <h2 class="col-12 text-center">Edit Repair # {{repair.repairTag}} Ticket 
-                <ng-container
-                    *ngIf="userAccessLevel$ | async as userAccessLevel"> 
-                    <ng-container
-                        *ngIf="userAccessLevel === ADMIN_ACCESS">
-                        <app-deletion-button [document]="repair" [docType]="'repair'"></app-deletion-button>
-                    </ng-container> 
+            <h2 class="col-12 text-center">Edit Repair # {{repair.repairTag}} Ticket
+                <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
+                    <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
+                        <app-deletion-button [document]="repair" [docType]="'Repair'"></app-deletion-button>
+                    </ng-container>
                 </ng-container>
             </h2>
 

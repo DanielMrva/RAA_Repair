@@ -8,7 +8,13 @@
 
     <div *ngIf="oneOrg$ | async as org; else noOrgFound" class="container">
         <div class="row">
-            <h2 class="col-12 text-center">Edit Organization</h2>
+            <h2 class="col-12 text-center">Edit Organization: {{org.orgName}} 
+                <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
+                    <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
+                        <app-deletion-button [document]="org" [docType]="'Organization'"></app-deletion-button>
+                    </ng-container>
+                </ng-container>
+            </h2>
 
             <form [formGroup]="orgForm" (ngSubmit)="onSubmit()" class="row justify-content-center">
                 <mat-form-field class="form-group col-12">
