@@ -76,26 +76,60 @@ radioSchema.statics.updateLocation = async function (_id, newLocationName) {
 
         if (oldLocationName !== newLocationName) {
             console.log(`update: ${oldLocationName} to ${newLocationName}`);
+
+            // Remove radio from old location
             await Location.findOneAndUpdate(
-                {locationName: oldLocationName},
+                { locationName: oldLocationName },
                 { $pull: { radios: _id } }
-            )
+            );
 
-            await Location.findOneAndUpdate(
-                { locationName: newLocationName},
-                { $addToSet: { radios: _id } }
-            )
+            // Check if the new location exists
+            const newLocation = await Location.findOne({ locationName: newLocationName });
 
+            if (!newLocation) {
+                throw new Error(`Location '${newLocationName}' does not exist.`);
+            }
+
+            // Check if the new location already contains the radio._id
+            if (!newLocation.radios.includes(_id)) {
+                // Add radio to new location if not already present
+                await Location.findOneAndUpdate(
+                    { locationName: newLocationName },
+                    { $addToSet: { radios: _id } }
+                );
+            } else {
+                console.log(`Radio already exists in new location: ${newLocationName}`);
+            }
+
+            // Update the radio document with the new location
             radio.locationName = newLocationName;
             await radio.save();
+        } else if (oldLocationName === newLocationName) {
+            console.log(`Possible Self-Edit location: from ${oldLocationName} to ${newLocationName}`);
+
+            // Check if the current location exists
+            const currentLocation = await Location.findOne({ locationName: oldLocationName });
+
+            if (!currentLocation) {
+                throw new Error(`Location '${oldLocationName}' does not exist.`);
+            }
+
+            // Check if the current location already contains the radio._id
+            if (!currentLocation.radios.includes(_id)) {
+                // Add radio._id to the current location if not already present
+                await Location.findOneAndUpdate(
+                    { locationName: oldLocationName },
+                    { $addToSet: { radios: _id } }
+                );
+            } else {
+                console.log(`Radio already exists in location: ${oldLocationName}`);
+            }
         }
     } catch (error) {
         console.log(`Radio Model - updateLocation error: ${error}`);
-        throw new Error (`Failed to update radio location ${error.message}`)
+        throw new Error(`Failed to update radio location: ${error.message}`);
     }
-}
-
-// radioSchema.js
+};
 
 radioSchema.statics.deleteByIdAndCleanupRepairs = async function (_id) {
     try {
@@ -118,6 +152,62 @@ radioSchema.statics.deleteByIdAndCleanupRepairs = async function (_id) {
         throw new Error(`Failed to delete radio and associated repairs: ${error.message}`);
     }
 };
+
+radioSchema.statics.updateRepairsWithNewRadioInfo = async function (_id, updates = {}) {
+    try {
+        const radio = await this.findById(_id);
+
+        if (!radio) {
+            throw new Error('Radio Not Found');
+        }
+
+        const { make: newMake, serialNumber: newSerialNumber } = updates;
+
+        // Prepare update conditions for repairs
+        const repairUpdates = {};
+
+        if (newMake && radio.make !== newMake) {
+            repairUpdates.radioMake = newMake;
+        }
+
+        if (newSerialNumber && radio.serialNumber !== newSerialNumber) {
+            repairUpdates.radioSerial = newSerialNumber;
+        }
+
+        // Only proceed if there are changes to make or serial number
+        if (Object.keys(repairUpdates).length > 0) {
+            // Update all repairs associated with this radio via radioID
+            const updateResult = await Repair.updateMany(
+                { radioID: _id },
+                { $set: repairUpdates }
+            );
+
+            if (updateResult.nModified === 0) {
+                console.log('No repairs found or modified.');
+            } else {
+                console.log(`Updated ${updateResult.nModified} repairs`);
+            }
+
+            // Update the radio document with the new make and/or serial number
+            if (newMake) {
+                radio.make = newMake;
+            }
+            if (newSerialNumber) {
+                radio.serialNumber = newSerialNumber;
+            }
+
+            await radio.save();
+
+            return `Repairs updated and radio information saved. ${updateResult.nModified} repairs modified.`;
+        } else {
+            return 'No changes detected in radio make or serial number.';
+        }
+    } catch (error) {
+        console.log(`Radio Model - updateRepairsWithNewRadioInfo error: ${error}`);
+        throw new Error(`Failed to update radio and related repairs: ${error.message}`);
+    }
+};
+
 
 
 const Radio = model("Radio", radioSchema);

@@ -208,7 +208,7 @@ export class RadioEffects {
         this.actions$.pipe(
             ofType(RadioActions.editRadioFailure),
             map(({ error }) => {
-                this.toastService.show('Failed to edit radio. Please try again', {
+                this.toastService.show(`Failed to edit Radio. Please try again`, {
                     classname: 'bg-danger light-text',
                     delay: 3000
                 }),

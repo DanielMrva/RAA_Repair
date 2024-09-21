@@ -104,6 +104,7 @@ export const locationReducer = createReducer(
 
     on(LocationActions.addLocation, (state) => ({
         ...state,
+        oneLocation: null,
         isLoading: true,
         error: null,
     })),
