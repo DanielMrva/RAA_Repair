@@ -126,10 +126,17 @@
                     <td mat-cell *matCellDef="let record; let i = index">{{i + 1}}</td>
                   </ng-container>
 
+                  <ng-container matColumnDef="dateRepairAdded">
+                    <th mat-header-cell *matHeaderCellDef> Date Added </th>
+                    <td mat-cell *matCellDef="let record">
+                      <a [routerLink]="['/one-repair/', record._id]">{{record.dateRepairAdded | date: 'MMM d, y'}}</a>
+                    </td>
+                  </ng-container>
+
                   <ng-container matColumnDef="dateReceived">
                     <th mat-header-cell *matHeaderCellDef> Date Received </th>
                     <td mat-cell *matCellDef="let record">
-                      <a [routerLink]="['/one-repair/', record._id]">{{record.dateRecEuRaa | date: 'MMM d, y'}}</a>
+                      {{record.dateRecEuRaa | date: 'MMM d, y'}}
                     </td>
                   </ng-container>
 
@@ -148,10 +155,13 @@
                     <td mat-cell *matCellDef="let record">{{record.endUserPO}}</td>
                   </ng-container>
 
-                  <tr mat-header-row *matHeaderRowDef="['index', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO']">
-                  </tr>
-                  <tr mat-row
-                    *matRowDef="let row; columns: ['index', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO']"></tr>
+                  <ng-container matColumnDef="delete">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let record"><app-deletion-button [document]="record" [docType]="'repair'"></app-deletion-button></td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="['index', 'dateRepairAdded', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO', 'delete']"></tr>
+                  <tr mat-row *matRowDef="let row; columns: ['index', 'dateRepairAdded', 'dateReceived', 'raaInvoice', 'raaPO', 'endUserPO', 'delete']"></tr>
 
                 </table>
               </div>

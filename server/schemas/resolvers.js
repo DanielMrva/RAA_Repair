@@ -70,7 +70,7 @@ const resolvers = {
 
             return repairs;
         },
-        orgLocRepairs: async (parent, {orgName, locationName}) => {
+        orgLocRepairs: async (parent, { orgName, locationName }) => {
 
             const repairs = await Repair.find({ radioOrg: { $regex: new RegExp(orgName, 'i') }, radioLocation: { $regex: new RegExp(locationName, 'i') } })
             return repairs;
@@ -158,26 +158,26 @@ const resolvers = {
         },
         repairByTag: async (parent, { startTag, endTag }) => {
             if (startTag !== undefined && endTag === undefined) {
-              // Ensure startTag is a string
-              const regexPattern = new RegExp(startTag);
-              return Repair.find({
-                $expr: {
-                  $regexMatch: {
-                    input: { $toString: "$repairTag" },
-                    regex: regexPattern, // Use regex object
-                  },
-                },
-              });
+                // Ensure startTag is a string
+                const regexPattern = new RegExp(startTag);
+                return Repair.find({
+                    $expr: {
+                        $regexMatch: {
+                            input: { $toString: "$repairTag" },
+                            regex: regexPattern, // Use regex object
+                        },
+                    },
+                });
             } else if (startTag !== undefined && endTag !== undefined) {
-              // Range query when both startTag and endTag are defined
-              return Repair.find({
-                repairTag: { $gte: parseInt(startTag), $lte: parseInt(endTag) },
-              });
+                // Range query when both startTag and endTag are defined
+                return Repair.find({
+                    repairTag: { $gte: parseInt(startTag), $lte: parseInt(endTag) },
+                });
             } else {
-              throw new Error("Invalid search parameters");
+                throw new Error("Invalid search parameters");
             }
-          },
         },
+    },
     Mutation: {
         addUser:
             async (parent, {
@@ -202,9 +202,10 @@ const resolvers = {
 
                 throw new GraphQLError(badAttempt, {
                     extensions: {
-                      code: 'FORBIDDEN',
+                        code: 'FORBIDDEN',
                     },
-                  })            }
+                })
+            }
 
             const correctPassword = await user.isCorrectPassword(password);
 
@@ -212,9 +213,9 @@ const resolvers = {
 
                 throw new GraphQLError(badAttempt, {
                     extensions: {
-                      code: 'FORBIDDEN',
+                        code: 'FORBIDDEN',
                     },
-                  })
+                })
             }
 
             const token = signToken(user);
@@ -548,11 +549,26 @@ const resolvers = {
 
         editRadio: async (parent, { _id, updates }) => {
             try {
-
+                // Handle location update
                 if (updates.locationName) {
                     await Radio.updateLocation(_id, updates.locationName);
                 }
 
+                // Handle make and serial number updates in a single call if both are present
+                if (updates.make && updates.serialNumber) {
+                    await Radio.updateRepairsWithNewRadioInfo(_id, { make: updates.make, serialNumber: updates.serialNumber });
+                } else {
+                    // Handle make update separately if only make is provided
+                    if (updates.make) {
+                        await Radio.updateRepairsWithNewRadioInfo(_id, { make: updates.make });
+                    }
+                    // Handle serial number update separately if only serialNumber is provided
+                    if (updates.serialNumber) {
+                        await Radio.updateRepairsWithNewRadioInfo(_id, { serialNumber: updates.serialNumber });
+                    }
+                }
+
+                // Update the radio document itself
                 const radio = await Radio.findOneAndUpdate({ _id }, { $set: updates }, { new: true });
 
                 if (!radio) {
@@ -560,13 +576,13 @@ const resolvers = {
                         extensions: {
                             code: 'Edit_Radio_Error'
                         }
-                    })
+                    });
                 }
 
                 return radio;
             } catch (error) {
                 console.log(`resolver error: ${error}`);
-                throw new GraphQLError('Failed to edit radio')
+                throw new GraphQLError('Failed to edit radio');
             }
         },
         // End Edit Radio
@@ -676,7 +692,7 @@ const resolvers = {
             }
         },
         // End Delete Repair
-        deleteUser: async ( parent, { _id }) => {
+        deleteUser: async (parent, { _id }) => {
             try {
                 const deletedUser = await User.findByIdAndDelete(_id);
                 return deletedUser
@@ -696,7 +712,7 @@ const resolvers = {
             }
         },
         // End Delete Radio
-        deleteLocation: async ( parent, { _id }) => {
+        deleteLocation: async (parent, { _id }) => {
             try {
                 const deletedLocation = await Location.findByIdAndDelete(_id);
                 return deletedLocation
@@ -706,7 +722,7 @@ const resolvers = {
             }
         },
         // End Delete Location
-        deleteOrganization: async ( parent, { _id }) => {
+        deleteOrganization: async (parent, { _id }) => {
             try {
                 const deletedOrganization = await Organization.findByIdAndDelete(_id);
                 return deletedOrganization
