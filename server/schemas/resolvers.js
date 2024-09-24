@@ -178,6 +178,14 @@ const resolvers = {
             }
         },
     },
+    Repair: {
+        radioDetails: async (parent, args, { radioLoader }) => {
+            if (!radioLoader) {
+                throw new Error('radioLoader not initialized');
+            }
+            return radioLoader.load(parent.radioID);
+        },
+    },
     Mutation: {
         addUser:
             async (parent, {
@@ -185,9 +193,8 @@ const resolvers = {
             }) => {
 
                 const user = await User.create({ username, email, password, accessLevel, orgName, userLocation });
-                const token = signToken(user);
 
-                return { token, user }
+                return user
             },
         // End Add User
 

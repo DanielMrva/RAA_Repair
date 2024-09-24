@@ -125,7 +125,7 @@ type Mutation {
     password: String!
     orgName: String!
     userLocation: String!
-  ): Auth
+  ): User
 
   login(email: String!, password: String!): Auth
 

@@ -18,7 +18,6 @@ export const ADD_USER = gql`
             orgName: $orgName
             userLocation: $userLocation
         ) {
-            token
             user {
                 _id
                 username

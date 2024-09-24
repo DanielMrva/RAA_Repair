@@ -1,6 +1,5 @@
 const { Schema, model } = require("mongoose");
 // const dateFormat = require("../utils/dateFormat");
-const Radio = require('./Radio');
 
 
 
@@ -51,7 +50,7 @@ const repairSchema = new Schema({
         type: Date,
         // default: Date.now
         // Legacy: dateReceived
-    },    
+    },
     dateSentRaaTech: {
         type: Date,
         // default: Date.now,
@@ -161,12 +160,14 @@ const repairSchema = new Schema({
 
 });
 
-repairSchema.pre('findOneAndDelete', async function(next) {
+repairSchema.pre('findOneAndDelete', async function (next) {
     const repair = await this.model.findOne(this.getQuery());
     if (repair && repair.radioID) {
-      await Radio.findByIdAndUpdate(repair.radioID, {
-        $pull: { serviceRecord: repair._id }
-      });
+        const Radio = require('./Radio');
+
+        await Radio.findByIdAndUpdate(repair.radioID, {
+            $pull: { serviceRecord: repair._id }
+        });
     }
     next();
 });
@@ -179,8 +180,8 @@ const Repair = model("Repair", repairSchema);
 
 module.exports = Repair;
 
-    // pointOfContact: {
-    //     type: String
-    // }
-    // TODO: Add in a field for who reported the issue POINT OF CONTACT
+// pointOfContact: {
+//     type: String
+// }
+// TODO: Add in a field for who reported the issue POINT OF CONTACT
 
