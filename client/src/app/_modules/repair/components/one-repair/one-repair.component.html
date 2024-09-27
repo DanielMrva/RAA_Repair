@@ -40,7 +40,7 @@
 
           <!-- Check if radio exists -->
           <ng-container *ngIf="oneRadio$ | async as radio; else noRadioFound">
-            <h4 class="col-12">Repair for Radio: <a [routerLink]="['/one-radio/', radio._id]" class="text-decoration-none">{{radio.make}} {{radio.serialNumber}}</a> <ng-container *ngIf="oneLocation$ | async as location">At {{location.locationName}}</ng-container></h4>
+            <h4 class="col-12">Repair for Radio: <a [routerLink]="['/one-radio/', radio._id]" class="text-decoration-none">{{radio.make}} {{radio.serialNumber}}</a> <ng-container *ngIf="oneLocation$ | async as location"> At {{location.locationName}}</ng-container></h4>
           </ng-container>
 
         </div>
