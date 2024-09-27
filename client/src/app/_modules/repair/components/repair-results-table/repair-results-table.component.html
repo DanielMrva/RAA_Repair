@@ -11,12 +11,19 @@
 
             <ng-container matColumnDef="radioLocation">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Organization & Location</th>
-                <td mat-cell *matCellDef="let element">{{element.radioOrg}}, {{ element.radioLocation }}</td>
+                <td mat-cell *matCellDef="let element">{{element.radioOrg}}, {{ element.radioDetails.radioLocation }}
+                    <ng-container *ngIf="element.reportedBy">by {{element.reportedBy}}</ng-container></td>
             </ng-container>
 
-            <ng-container matColumnDef="reportedBy">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Reported By</th>
-                <td mat-cell *matCellDef="let element">{{element.reportedBy}}</td>
+            <ng-container matColumnDef="radioDetails">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Radio Details</th>
+                <td mat-cell *matCellDef="let element">
+                    <ul>
+                        <li>{{ element.radioDetails?.radioMake }}</li>
+                        <li>{{ element.radioDetails?.radioModel }}</li>
+                        <li>{{ element.radioDetails?.radioSerial }}</li>
+                    </ul>
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="endUserPO">

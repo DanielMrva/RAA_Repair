@@ -26,6 +26,9 @@ export const SERVICE_RECORD_FRAGMENT = gql`
     fragment ServiceRecordFragment on Repair {
         _id
         radioID
+        radioDetails {
+            ...RadioDetailsFragment
+        }
         radioMake
         radioSerial
         radioOrg
@@ -60,6 +63,18 @@ export const SERVICE_RECORD_FRAGMENT = gql`
         remarks
     }
 `
+
+export const RADIO_DETAILS_FRAGMENT = gql`
+  fragment RadioDetailsFragment on RepairRadioDetails {
+    radioId
+    radioMake
+    radioModel
+    radioSerial
+    radioOrg
+    radioLocation
+  }
+`;
+
 
 export const LOCATION_FIELDS_FRAGMENT = gql`
     fragment LocationFieldsFragment on Location {

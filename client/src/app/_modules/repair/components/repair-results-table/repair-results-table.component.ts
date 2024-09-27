@@ -25,7 +25,7 @@ export class RepairResultsTableComponent implements OnChanges, AfterViewInit  {
   displayedColumns: string[] = [
     "radioSerial",
     "radioLocation",
-    "reportedBy",
+    "radioDetails",
     "endUserPO",
     "raaPO",
     "repairTag",
@@ -78,7 +78,7 @@ export class RepairResultsTableComponent implements OnChanges, AfterViewInit  {
     this.displayedColumns = [
       "radioSerial",
       "radioLocation",
-      "reportedBy",
+      "radioDetails",
       "endUserPO",
       "raaPO",
       "repairTag",
