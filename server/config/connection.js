@@ -7,7 +7,6 @@ const mongoose = require("mongoose");
 
 const developmentMongoDBURI = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}/${process.env.DB_NAME}`;
 
-// const developmentMongoDBURI = `mongodb://127.0.0.1:27017/radio_referbish_DB`;
 const productionMongoDBURI = process.env.MONGODB_URI;
 
 // Function to determine which URI to use

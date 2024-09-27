@@ -14,22 +14,6 @@ export class AuthService {
     User | null | undefined
   >(undefined);
 
-  // autoLogin() {
-  //   if (localStorage.getItem('user')) {
-  //     const localUser = JSON.parse(localStorage.getItem('user') ?? '');
-  //     this.loggedUser$.next(
-  //         {
-  //           _id: localUser._id, 
-  //           username: localUser.username,
-  //           email: localUser.email,
-  //           password: localUser.password,
-  //           accessLevel: localUser.accessLevel,
-  //           orgName: localUser.orgName
-  //         }
-  //       )
-  //   }
-  // }
-
   autoLogin(): Observable <AuthInfo | null> {
     if (localStorage.getItem('user')) {
       const localUser = JSON.parse(localStorage.getItem('user') ?? '') as AuthInfo;

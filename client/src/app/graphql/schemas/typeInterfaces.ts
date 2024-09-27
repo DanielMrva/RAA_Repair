@@ -1,6 +1,7 @@
 export type Repair = {
     _id: string,
     radioID: string,
+    radioDetails?: RepairRadioDetails,
     radioMake: string,
     radioSerial: string,
     radioOrg: string,
@@ -34,6 +35,17 @@ export type Repair = {
     partsUsed: string[],
     remarks: string,
 };
+
+
+export type RepairRadioDetails = {
+    radioId: string,
+    radioMake: string,
+    radioModel: string,
+    radioSerial: string,
+    radioOrg: string,
+    radioLocation: string
+};
+
 
 export type Radio = {
     _id: string,

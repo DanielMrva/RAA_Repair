@@ -14,6 +14,7 @@ const typeDefs = `#graphql
     type Repair {
         _id: ID!
         radioID: String
+        radioDetails: RepairRadioDetails
         radioMake: String
         radioSerial: String
         radioOrg: String
@@ -46,6 +47,21 @@ const typeDefs = `#graphql
         repHours: Float
         partsUsed: [String]
         remarks: String
+    }
+
+    type RepairRadioDetails {
+        radioId: String
+        radioMake: String
+        radioModel: String
+        radioSerial: String
+        radioOrg: String
+        radioLocation: String
+    }
+
+    union RadioDetailsResult = RepairRadioDetails | RadioNotFoundError
+
+    type RadioNotFoundError {
+        message: String
     }
 
     type Location {
@@ -208,7 +224,7 @@ const typeDefs = `#graphql
             accessLevel: String!
             orgName: String!
             userLocation: String!
-        ): Auth
+        ): User
 
         login(
             email: String!

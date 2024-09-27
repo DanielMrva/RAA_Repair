@@ -11,6 +11,7 @@ type User {
 type Repair {
   _id: ID!
   radioID: String
+  radioDetails: RepairRadioDetails
   radioMake: String
   radioSerial: String
   radioOrg: String
@@ -43,6 +44,15 @@ type Repair {
   repHours: Float
   partsUsed: [String]
   remarks: String
+}
+
+type RepairRadioDetails {
+  radioId: String
+  radioMake: String
+  radioModel: String
+  radioSerial: String
+  radioOrg: String
+  radioLocation: String
 }
 
 type Radio {
@@ -125,7 +135,7 @@ type Mutation {
     password: String!
     orgName: String!
     userLocation: String!
-  ): Auth
+  ): User
 
   login(email: String!, password: String!): Auth
 
