@@ -18,7 +18,7 @@ export class InvoiceTxtBtnComponent {
 
     const workPerformedString = workPerformed.join(', ')
 
-    return `Service Labor to Repair: ${make}, ${model}, Serial NO: ${serialNumber}, Repair Tag: ${repairTag}, Work Performed: ${workPerformedString}`
+    return `Service Labor to Repair: ${make}, ${model}, S/N: ${serialNumber}, Repair Tag: ${repairTag}, Work Performed: ${workPerformedString}`
   };
 
   copyInvoiceTextToClipboard() {

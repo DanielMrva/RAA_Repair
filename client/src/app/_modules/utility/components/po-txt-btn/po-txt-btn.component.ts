@@ -26,7 +26,7 @@ export class PoTxtBtnComponent {
       orgText = `${orgName}, ${locationName}`
     }
 
-    return `Radio Repair: ${make} ${model}, Serial NO: ${serialNumber}, with ${accessoriesText}, Repair Tag: ${repairTag}, ${orgText}`
+    return `Radio Repair: ${make} ${model}, S/N: ${serialNumber}, with ${accessoriesText}, Repair Tag: ${repairTag}, ${orgText}`
   }
 
   copyPoTextToClipboard() {

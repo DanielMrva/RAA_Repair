@@ -20,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { CopyPartsBtnComponent } from './components/copy-parts-btn/copy-parts-btn.component';
 
 
 
@@ -35,7 +36,8 @@ import { MatSelectModule } from '@angular/material/select';
     OrgRadNavigatorComponent,
     RadioSnMkNavigatorComponent,
     RepairTagNavigatorComponent,
-    RepairStatDropdownComponent
+    RepairStatDropdownComponent,
+    CopyPartsBtnComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +61,8 @@ import { MatSelectModule } from '@angular/material/select';
     OrgRadNavigatorComponent,
     RadioSnMkNavigatorComponent,
     RepairTagNavigatorComponent,
-    RepairStatDropdownComponent
+    RepairStatDropdownComponent,
+    CopyPartsBtnComponent
   ]
 })
 export class UtilityModule { }

@@ -95,7 +95,6 @@
                 <ng-template>
                   <div class="card">
                     <div class="card-body">
-                      <!-- <h5 class="card-title">{{radio.orgName}} - {{radio.locationName}}</h5> -->
                       <p class="card-text">
                         <strong>RAA Invoice:</strong> {{repair.raaInvNum}} <br>
                         <strong>RAA PO:</strong> {{repair.raaPO}} <br>
@@ -119,6 +118,40 @@
 
 
       </section>
+
+      <section id="poTrackingSection">
+
+        <div class="accordion" id="statAccordion" ngbAccordion>
+          <div ngbAccordionItem [collapsed]="true" class="accordion-item">
+            <h2 ngbAccordionHeader class="accordionHeading" id="statHeading">
+              <button ngbAccordionButton class="accordion-button" aria-controls="statContent"> Status: {{repair.repairStatus}}
+              </button>
+            </h2>
+            <div ngbAccordionCollapse id="statContent" class="accordion-collapse" aria-labelledby="statHeading">
+              <div ngbAccordionBody class="accordion-body">
+                <ng-template>
+                  <div class="card">
+                    <div class="card-body">
+                      <p class="card-text">
+                        <strong>Repair Added:</strong> {{repair.dateRepairAdded | date:'mediumDate'}}<br>
+                        <strong>Sent from Customer:</strong> {{repair.dateSentEuRaa | date:'mediumDate'}}<br>
+                        <strong>Received from Customer:</strong> {{repair.dateRecEuRaa| date:'mediumDate'}}<br>
+                        <strong>Sent to Technician:</strong> {{repair.dateSentRaaTech | date:'mediumDate'}}<br>
+                        <strong>Received from Technician:</strong> {{repair.dateRecTechRaa | date:'mediumDate'}}<br>
+                        <strong>Sent to Customer:</strong> {{repair.dateSentRaaEu| date:'mediumDate'}}<br>
+                      </p>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+      </section>
+
 
       <section id="symptomsAndDiagnosticsSection">
 
@@ -283,7 +316,10 @@
                       </p>
                       <ul>
                         <ng-container *ngFor="let part of repair.partsUsed">
-                          <li>{{part}}</li>
+                          <li>
+                            {{part}} 
+                            <app-copy-parts-btn  [partsNumberString]="part"></app-copy-parts-btn>
+                          </li>
                         </ng-container>
                       </ul>
                       <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
