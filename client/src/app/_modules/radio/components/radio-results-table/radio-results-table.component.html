@@ -95,10 +95,10 @@
                     <ul>
                         <li *ngFor="let service of element.serviceRecord">
                             <ng-container *ngIf="!service.dateRecEuRaa; else beenReceived">
-                                <a [routerLink]="['/one-repair/', service._id]">Radio Not Yet Received</a>
+                                <a [routerLink]="['/one-repair/', service._id]">Radio Not Yet Received: {{service.repairTag}}</a>
                             </ng-container>
                             <ng-template #beenReceived>
-                                <a [routerLink]="['/one-repair/', service._id]">{{service.dateRecEuRaa | date: 'MMM d,y'}}</a>
+                                <a [routerLink]="['/one-repair/', service._id]">{{service.dateRecEuRaa | date: 'MMM d,y'}} - {{service.repairTag}}</a>
                             </ng-template>
                         </li>
                         <li><a [routerLink]="['/submit', { radioID: element._id}]">Add Repair</a></li>
