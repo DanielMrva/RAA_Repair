@@ -55,6 +55,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     'Charger',
     'Speaker/Mic',
     'Headset',
+    'Dust Cover',
     'Battery (Other - specify)',
     'Other (specify)'
   ];
