@@ -18,13 +18,11 @@ export const ADD_USER = gql`
             orgName: $orgName
             userLocation: $userLocation
         ) {
-            user {
                 _id
                 username
                 accessLevel
                 orgName
                 userLocation
-            }
         }
     }
 `
