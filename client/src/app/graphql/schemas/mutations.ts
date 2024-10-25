@@ -513,4 +513,42 @@ export const DELETE_ORGANIZATION = gql`
         }
     }
 `
+export const ADD_PART = gql`
+    mutation addPart($part: AddPartInput!) {
+        addPart(part: $part) {
+            _id
+            partNumber
+            description
+            data
+            cost
+            msrp
+        }
+    }
+`
+
+export const EDIT_PART = gql`
+    mutation editPart($id: ID!, $updates: UpdatePartInput) {
+        editPart(_id: $id, updates: $updates) {
+            _id
+            partNumber
+            description
+            data
+            cost
+            msrp
+        }
+    }
+`
+
+export const DELETE_PART = gql`
+    mutation deletePart($id: ID!) {
+        deletePart(_id: $id) {
+            _id
+            partNumber
+            description
+            data
+            cost
+            msrp
+        }
+    }
+`
 

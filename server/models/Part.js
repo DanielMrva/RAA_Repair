@@ -11,13 +11,20 @@ const partSchema = new Schema({
         required: true,
         trim: true
     },
+    data: {
+        type: String,
+        trim: true
+    },
     manufacturer: {
         type: String,
         trim: true
     },
-    unitPrice: [{
+    cost: [{
         type: Number
-    }]
+    }],
+    msrp: {
+        type: Number
+    }
 
 })
 

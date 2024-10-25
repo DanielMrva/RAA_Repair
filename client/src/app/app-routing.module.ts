@@ -213,17 +213,6 @@ const routes: Routes = [
       role: ['admin', 'user']
     },
   },
-  
-  // {
-  //   path: 'repair-results/:startTag/:endTag',
-  //   component: RepairResultsPageComponent,
-  //   pathMatch: 'full',
-  //   runGuardsAndResolvers: 'always',
-  //   canActivate: [authGuard, roleGuard],
-  //   data: {
-  //     role: ['admin']
-  //   },
-  // },
   {
     path: 'user-results',
     component: UserResultsPageComponent,

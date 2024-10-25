@@ -105,7 +105,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
                 this.initialOrgName = repair.radioOrg;
                 this.repairID = repair._id;
                 this.radioId = radio._id;
-                this.populateForm(repair);
+                this.populateForm(repair, radio);
                 console.log('Initial Repair Status:', this.repairForm.controls.repairStatus.value);
               }
             })
@@ -176,11 +176,11 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     this.store.dispatch(loadOneRepair({ repairID: id }));
   }
 
-  populateForm(repair: Repair) {
+  populateForm(repair: Repair, radio: Radio) {
     this.repairForm.patchValue({
       radioID: repair.radioID,
       radioMake: repair.radioMake,
-      radioSerial: repair.radioSerial,
+      radioSerial: repair.radioDetails? repair.radioDetails.radioSerial : radio.serialNumber,
       radioOrg: repair.radioOrg,
       radioLocation: repair.radioLocation,
       reportedBy: repair.reportedBy,

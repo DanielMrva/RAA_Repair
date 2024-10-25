@@ -119,3 +119,15 @@ export const ORG_FIELDS_FRAGMENT = gql`
         }
     }
 `
+
+export const PART_FIELDS_FRAGMENT = gql`
+    fragment PartFieldsFragment on Part {
+        _id
+        partNumber
+        description
+        data
+        manufacturer
+        cost
+        msrp
+    }
+`

@@ -13,5 +13,6 @@ export interface AppState {
     location: LocationState,
     radio: RadioState,
     repair: RepairState,
-    user: UserState
+    user: UserState,
+    // part: PartState
 }
