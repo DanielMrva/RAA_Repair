@@ -26,6 +26,8 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   raaRepairs$ = this.store.select(selectRepairsAtRAA);
   techRepairs$ = this.store.select(selectRepairsAtTechnician);
   completeRepairs$ = this.store.select(selectCompleteRepairs);
+  userOrgName$ = this.store.select(selectOrgName)
+  userLocation$ = this.store.select(selectUserLocation)
 
 
   private subscriptions = new Subscription();
@@ -34,11 +36,8 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const userOrgName$ = this.store.select(selectOrgName);
-    const userLocation$ = this.store.select(selectUserLocation);
-
     this.subscriptions.add(
-      combineLatest([userOrgName$, userLocation$]).subscribe(([orgName, locationName]) => {
+      combineLatest([this.userOrgName$, this.userLocation$]).subscribe(([orgName, locationName]) => {
         if (orgName && locationName) {
           this.store.dispatch(loadOrgLocRepairs({ orgName, locationName }))
         }
