@@ -30,11 +30,11 @@ export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
   filteredLocNames$!: Observable<string[]>;
 
   constructor(
-    private filterService: FilterService, 
+    private filterService: FilterService,
     private store: Store<AppState>,
     private cdr: ChangeDetectorRef
   ) {
-    
+
   }
 
   ngOnDestroy(): void {
@@ -62,7 +62,7 @@ export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
       this.filterLocations(this.initialOrgName!);
       this.cdr.detectChanges();
     }
-  
+
   };
 
   private destory$ = new Subject<void>()
@@ -83,7 +83,7 @@ export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     this.filteredOrgNames$ = this.orgNameControl.valueChanges.pipe(
       startWith(''),
-      switchMap(value => 
+      switchMap(value =>
         this.filterService.filterOrgs(value ?? '', this.orgNames$)
       )
     );

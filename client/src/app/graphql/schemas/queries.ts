@@ -269,6 +269,9 @@ export const REPAIR_BY_TAG = gql`
     }
 `
 
+
+
+
 export const QUERY_PARTS = gql`
     ${PART_FIELDS_FRAGMENT}
     query allParts {

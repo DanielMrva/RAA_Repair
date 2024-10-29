@@ -21,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CopyPartsBtnComponent } from './components/copy-parts-btn/copy-parts-btn.component';
+import { PartSelectorDropdownComponent } from './components/part-selector/part-selector-dropdown/part-selector-dropdown.component';
 
 
 
@@ -37,7 +38,8 @@ import { CopyPartsBtnComponent } from './components/copy-parts-btn/copy-parts-bt
     RadioSnMkNavigatorComponent,
     RepairTagNavigatorComponent,
     RepairStatDropdownComponent,
-    CopyPartsBtnComponent
+    CopyPartsBtnComponent,
+    PartSelectorDropdownComponent
   ],
   imports: [
     CommonModule,

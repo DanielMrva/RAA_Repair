@@ -18,13 +18,11 @@ export const ADD_USER = gql`
             orgName: $orgName
             userLocation: $userLocation
         ) {
-            user {
                 _id
                 username
                 accessLevel
                 orgName
                 userLocation
-            }
         }
     }
 `
@@ -513,6 +511,7 @@ export const DELETE_ORGANIZATION = gql`
         }
     }
 `
+
 export const ADD_PART = gql`
     mutation addPart($part: AddPartInput!) {
         addPart(part: $part) {
@@ -551,4 +550,3 @@ export const DELETE_PART = gql`
         }
     }
 `
-
