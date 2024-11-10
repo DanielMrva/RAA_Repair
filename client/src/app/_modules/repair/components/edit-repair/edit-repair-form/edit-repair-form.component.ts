@@ -14,6 +14,8 @@ import { filterEmptyArrayValues } from '@app/utils/filterEmptyArray';
 import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
 import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER } from '@app/utils/constants';
 import { AccessControlService } from '@app/services/accessControl/access-control.service';
+import { updateArrayControl } from '@app/utils/updateArrayControl';
+
 @Component({
   selector: 'app-edit-repair-form',
   templateUrl: './edit-repair-form.component.html',
@@ -115,7 +117,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     );
 
 
-  }  
+  }
 
   repairForm = new FormGroup({
     radioID: new FormControl<string>(''),
@@ -172,6 +174,12 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     return this.repairForm.get('partsUsed') as FormArray;
   }
 
+  updatePartsUsed(newParts: string[]): void {
+    const partsArray = this.repairForm.get('partsUsed') as FormArray;
+    updateArrayControl(newParts, partsArray)
+  };
+
+
   loadRepair(id: string): void {
     this.store.dispatch(loadOneRepair({ repairID: id }));
   }
@@ -180,7 +188,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     this.repairForm.patchValue({
       radioID: repair.radioID,
       radioMake: repair.radioMake,
-      radioSerial: repair.radioDetails? repair.radioDetails.radioSerial : radio.serialNumber,
+      radioSerial: repair.radioDetails ? repair.radioDetails.radioSerial : radio.serialNumber,
       radioOrg: repair.radioOrg,
       radioLocation: repair.radioLocation,
       reportedBy: repair.reportedBy,
@@ -282,7 +290,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
   }
 
   handleOrgNameSelected(orgName: string): void {
-    this.repairForm.patchValue({radioOrg: orgName});
+    this.repairForm.patchValue({ radioOrg: orgName });
   };
 
   handleFilteredLocations(locations: string[]): void {
@@ -346,6 +354,9 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
       remarks: this.repairForm.value.remarks ?? ''
     };
 
+    console.log('partsUsedArray:', this.partsUsedArray.value);
+    console.log('Submitted partsUsed:', filterEmptyArrayValues(this.partsUsedArray.value));
+
     this.accessControlService.restoreDisabledControls(this.repairForm, enabledControls);
 
     return repairData;
@@ -354,39 +365,39 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
   handleSubmission(formValue: any, oneRadio: any): void {
     const radioLocationControl = this.repairForm.get('radioLocation');
     const radioOrgControl = this.repairForm.get('radioOrg');
-    
+
     let formRadioLocation = '';
     if (radioLocationControl?.disabled) {
-        radioLocationControl.enable();
-        formRadioLocation = radioLocationControl.value || '';
-        radioLocationControl.disable();
+      radioLocationControl.enable();
+      formRadioLocation = radioLocationControl.value || '';
+      radioLocationControl.disable();
     } else {
-        formRadioLocation = formValue.radioLocation || '';
+      formRadioLocation = formValue.radioLocation || '';
     }
-    
+
     let formRadioOrg = '';
     if (radioOrgControl?.disabled) {
-        radioOrgControl.enable();
-        formRadioOrg = radioOrgControl.value || '';
-        radioOrgControl.disable();
+      radioOrgControl.enable();
+      formRadioOrg = radioOrgControl.value || '';
+      radioOrgControl.disable();
     } else {
-        formRadioOrg = formValue.radioOrg || '';
+      formRadioOrg = formValue.radioOrg || '';
     }
-    
+
     const oneRadioLocationName = oneRadio?.locationName || '';
     const oneRadioOrgName = oneRadio?.orgName || '';
     const radioId = this.radioId || oneRadio?._id || formValue.radioID || '';
 
     if (formRadioLocation !== oneRadioLocationName || formRadioOrg !== oneRadioOrgName) {
-        console.log(`formRadioLocation: ${formRadioLocation}, oneRadioLocationName: ${oneRadioLocationName}, radioId: ${radioId}`);
-        this.mismatchModalService.openMismatchDialog(
-            formRadioLocation,
-            oneRadioLocationName,
-            radioId,
-            () => this.updateRepair()
-        );
+      console.log(`formRadioLocation: ${formRadioLocation}, oneRadioLocationName: ${oneRadioLocationName}, radioId: ${radioId}`);
+      this.mismatchModalService.openMismatchDialog(
+        formRadioLocation,
+        oneRadioLocationName,
+        radioId,
+        () => this.updateRepair()
+      );
     } else {
-        this.updateRepair();
+      this.updateRepair();
     }
   }
 

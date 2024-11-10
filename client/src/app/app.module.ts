@@ -45,6 +45,8 @@ import { LocationMismatchDialogComponent } from '@app/_components/utilComponents
 import { ErrorStatusDisplayComponent } from './_components/utilComponents/error-status-display/error-status-display.component';
 import { MatInputModule } from '@angular/material/input';
 import { UtilityModule } from './_modules/utility/utility.module';
+import { AccessLevelDirective } from './_directives/access-level.directive';
+import { IsAuthenticatedDirective } from './_directives/is-authenticated.directive';
 
 
 @NgModule({

@@ -19,12 +19,12 @@ import { Location } from '@app/graphql/schemas/typeInterfaces';
 export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() initialOrgName: string | null = null;
-  @Input() orgNameControl!: FormControl; // Accept the control from the parent
+  @Input() orgNameControl!: FormControl;
   @Output() orgNameSelected = new EventEmitter<string>();
   @Output() filteredLocations = new EventEmitter<string[]>();
 
   orgNames$!: Observable<string[]>;
-  locationNames$: Observable<Location[]> = of([]);  // Initialize with an empty observable
+  locationNames$: Observable<Location[]> = of([]);
 
   filteredOrgNames$!: Observable<string[]>;
   filteredLocNames$!: Observable<string[]>;
@@ -84,7 +84,7 @@ export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
     this.filteredOrgNames$ = this.orgNameControl.valueChanges.pipe(
       startWith(''),
       switchMap(value =>
-        this.filterService.filterOrgs(value ?? '', this.orgNames$)
+        this.filterService.filterStrings(value ?? '', this.orgNames$)
       )
     );
   }

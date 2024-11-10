@@ -5,7 +5,7 @@ import { Part } from "@app/graphql/schemas";
 export interface PartState {
     onePart: Part | null;
     parts: Part[];
-    partNames: Part[];
+    // partNames: Part[];
     error: string | null;
     isLoading: boolean;
 };
@@ -13,7 +13,7 @@ export interface PartState {
 export const initialState: PartState = {
     onePart: null,
     parts: [],
-    partNames: [],
+    // partNames: [],
     error: null,
     isLoading: false
 };
@@ -121,24 +121,24 @@ export const partReducer = createReducer(
         error: error
     })),
 
-    on(PartActions.loadPartNames, state => ({ 
-        ...state, 
-        isLoading: true, 
-        error: null 
-    })),
+    // on(PartActions.loadPartNames, state => ({ 
+    //     ...state, 
+    //     isLoading: true, 
+    //     error: null 
+    // })),
 
-    on(PartActions.loadPartNamesSuccess, (state, { partNames }) => ({
-        ...state,
-        partNames: partNames as Part[],
-        isLoading: false,
-        error: null
-    })),
+    // on(PartActions.loadPartNamesSuccess, (state, { partNames }) => ({
+    //     ...state,
+    //     partNames: partNames as Part[],
+    //     isLoading: false,
+    //     error: null
+    // })),
 
-    on(PartActions.loadPartNamesFailure, (state, { error }) => ({
-        ...state,
-        isLoading: false,
-        error: error
-    })),
+    // on(PartActions.loadPartNamesFailure, (state, { error }) => ({
+    //     ...state,
+    //     isLoading: false,
+    //     error: error
+    // })),
 
     on(PartActions.deletePartSuccess, (state, { part }) => ({
         ...state,

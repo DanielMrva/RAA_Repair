@@ -1,5 +1,4 @@
 import { createReducer, on } from "@ngrx/store";
-// import of actions
 import * as LocationActions from "./location.actions";
 import { Location } from "@app/graphql/schemas";
 

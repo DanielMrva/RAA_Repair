@@ -316,7 +316,16 @@
                                 </ng-container>
                             </mat-form-field>
                         </div>
+
                         <div formArrayName="partsUsed" class="col-12 col-lg-6">
+                            <app-part-selector-dropdown
+                                [initialPartsUsed]="partsUsedArray.value" 
+                                (partsUsedChange)="updatePartsUsed($event)">
+                            </app-part-selector-dropdown>
+                        </div>
+                        
+                        
+                        <!-- <div formArrayName="partsUsed" class="col-12 col-lg-6">
                             <mat-form-field *ngFor="let part of partsUsedArray.controls; let l = index"
                                 class="full-width-input">
                                 <input matInput [formControlName]="l" placeholder="Parts Used">
@@ -327,7 +336,7 @@
                                         aria-label="add parts used">add_circle</mat-icon>
                                 </ng-container>
                             </mat-form-field>
-                        </div>
+                        </div> -->
                     </ng-container>
 
                     <mat-form-field class="form-group col-12">

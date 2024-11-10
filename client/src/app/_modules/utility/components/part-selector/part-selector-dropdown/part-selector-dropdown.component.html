@@ -1,1 +1,42 @@
-<p>part-selector-dropdown works!</p>
+<form [formGroup]="partsDropdownForm">
+    <div formArrayName="partsArray">
+      <div *ngFor="let control of formControls; let i = index">
+        <mat-form-field appearance="fill" class="full-width-input">
+          <mat-label>Parts Used:</mat-label>
+          <input
+            type="text"
+            placeholder="Select Part"
+            aria-label="Parts Used"
+            matInput
+            [formControl]="control"
+            [matAutocomplete]="partAuto"
+          />
+          <mat-autocomplete
+            #partAuto="matAutocomplete"
+            autoActiveFirstOption
+            (optionSelected)="onOptionSelected($event, i)"
+          >
+            <!-- No longer bind [value]; instead pass the entire part object via (optionSelected) -->
+            <mat-option *ngFor="let option of (filteredParts$[i] | async)" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
+          <ng-container *appAccessLevel="'admin' || 'tech'">
+            <mat-icon
+              *ngIf="partsDropdownForm.controls.partsArray.length > 1"
+              matSuffix
+              class="remove-icon"
+              (click)="removePart($event, i)"
+              aria-label="Remove Part"
+            >
+              remove_circle
+            </mat-icon>
+            <mat-icon matSuffix class="add-icon" (click)="addPart($event)" aria-label="Add Part">
+              add_circle
+            </mat-icon>
+          </ng-container>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+  
