@@ -1,11 +1,7 @@
 <div class="d-flex flex-column flex-grow-1">
-    <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
-        <ng-container [ngSwitch]="userAccessLevel">
-            <app-admin-dashboard *ngSwitchCase="ADMIN_ACCESS"></app-admin-dashboard>
-            <app-tech-dashboard *ngSwitchCase="TECH_ACCESS"></app-tech-dashboard>
-            <app-user-dashboard *ngSwitchCase="USER_ACCESS"></app-user-dashboard>
 
-            <!-- Other dashboard components for tech and user access -->
-        </ng-container>
-    </ng-container>
+    <app-admin-dashboard *appAccessLevel="'admin'"></app-admin-dashboard>
+    <app-tech-dashboard *appAccessLevel="'tech'"></app-tech-dashboard>
+    <app-user-dashboard *appAccessLevel="'user'"></app-user-dashboard>
+
 </div>
