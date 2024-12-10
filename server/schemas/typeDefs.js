@@ -112,7 +112,7 @@ const typeDefs = `#graphql
         description: String!
         data: String
         manufacturer: String
-        cost: [Float]
+        cost: Float
         msrp: Float
     }
 
@@ -234,7 +234,7 @@ const typeDefs = `#graphql
         description: String
         data: String
         manufacturer: String
-        cost: [Float]
+        cost: Float
         msrp: Float
     }
 
@@ -243,7 +243,7 @@ const typeDefs = `#graphql
         description: String!
         data: String
         manufacturer: String
-        cost: [Float]
+        cost: Float
         msrp: Float
     }
 
@@ -338,7 +338,12 @@ const typeDefs = `#graphql
         ): Location
 
         addPart(
-            part: AddPartInput
+            partNumber: String!
+            description: String!
+            data: String
+            manufacturer: String
+            cost: Float
+            msrp: Float
         ): Part
         
         editRepair(

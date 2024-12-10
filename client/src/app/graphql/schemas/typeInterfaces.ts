@@ -119,7 +119,7 @@ export type Part = {
     description: string,
     data?: string,
     manufacturer?: string,
-    cost?: [number],
+    cost?: number,
     msrp?: number
 }
 
@@ -281,7 +281,7 @@ export type UpdatePartFields = {
     description?: string,
     data?: string,
     manufacturer?: string,
-    cost?:[number],
+    cost?: number,
     msrp?:number
 }
 
@@ -290,7 +290,7 @@ export type AddPartFields = {
     description: string,
     data?: string,
     manufacturer?: string,
-    cost?: [number],
+    cost?: number,
     msrp?: number
 }
 

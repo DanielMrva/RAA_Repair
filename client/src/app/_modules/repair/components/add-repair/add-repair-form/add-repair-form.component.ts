@@ -31,6 +31,8 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
   userAccessLevel$
 
   USER_ACCESS = ACCESS_LEVEL_USER;
+  ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
+  TECH_ACCESS = ACCESS_LEVEL_TECH;
 
   initialOrgName: string | null = null;
   initialLocationName: string | null = null;
@@ -205,7 +207,10 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
         }
       })
     );
+
   }
+
+  
 
   handleOrgNameSelected(orgName: string): void {
     this.repairForm.patchValue({ radioOrg: orgName });
@@ -248,7 +253,7 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
       radioMake: this.repairForm.value.radioMake ?? '',
       radioSerial: this.repairForm.value.radioSerial ?? '',
       radioOrg: this.repairForm.value.radioOrg ?? '',
-      radioLocation: this.repairForm.value.radioLocation ?? '',
+      radioLocation: this.initialLocationName ?? this.repairForm.value.radioLocation ?? '',
       reportedBy: this.repairForm.value.reportedBy ?? '',
       endUserPO: this.repairForm.value.endUserPO ?? '',
       raaPO: this.repairForm.value.raaPO ?? '',

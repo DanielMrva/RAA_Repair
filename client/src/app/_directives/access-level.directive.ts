@@ -5,9 +5,9 @@ import { UserAccessService } from '@app/services/accessControl/user-access.servi
   selector: '[appAccessLevel]'
 })
 export class AccessLevelDirective {
-
   private currentAccessLevel!: string | null;
-  private requiredAccessLevel!: string;
+  private requiredAccessLevel!: string | string[];
+  private elseTemplateRef: TemplateRef<any> | null = null;
 
   constructor(
     private templateRef: TemplateRef<any>,
@@ -17,24 +17,32 @@ export class AccessLevelDirective {
     this.userAccessService.userAccessLevel$.subscribe(accessLevel => {
       this.currentAccessLevel = accessLevel;
       this.updateView();
-    })
-
+    });
   }
 
-  
-  @Input() set appAccessLevel(requiredAccessLevel: string) {
+  @Input() set appAccessLevel(requiredAccessLevel: string | string[]) {
     this.requiredAccessLevel = requiredAccessLevel;
     this.updateView();
   }
 
+  @Input() set appAccessLevelElse(templateRef: TemplateRef<any> | null) {
+    this.elseTemplateRef = templateRef;
+    this.updateView();
+  }
+
   private updateView() {
-    if (this.currentAccessLevel === this.requiredAccessLevel) {
+    this.viewContainer.clear();
+    if (this.isAccessGranted()) {
       this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainer.clear();
+    } else if (this.elseTemplateRef) {
+      this.viewContainer.createEmbeddedView(this.elseTemplateRef);
     }
   }
 
-  
-
+  private isAccessGranted(): boolean {
+    if (Array.isArray(this.requiredAccessLevel)) {
+      return this.requiredAccessLevel.includes(this.currentAccessLevel!);
+    }
+    return this.requiredAccessLevel === this.currentAccessLevel;
+  }
 }

@@ -1,4 +1,3 @@
-// services/access-control.service.ts
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';

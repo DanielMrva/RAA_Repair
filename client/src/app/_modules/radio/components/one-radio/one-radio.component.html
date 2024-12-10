@@ -11,7 +11,7 @@
     <div class="row">
       <h2 class="col-12 text-center">
         Radio: {{oneRadio.make}} {{oneRadio.serialNumber}} at {{oneRadio.locationName}} Details
-        <a [routerLink]="['/edit-radio', oneRadio._id]" *appAccessLevel="'admin'">EDIT</a>
+        <a [routerLink]="['/edit-radio', oneRadio._id]" *appAccessLevel="ADMIN_ACCESS">EDIT</a>
       </h2>
 
       <section class="row" id="timeline-section">

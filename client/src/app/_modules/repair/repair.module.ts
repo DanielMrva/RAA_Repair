@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -21,8 +20,6 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 import { MatSelectModule } from '@angular/material/select';
-// import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-// import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { AddRepairComponent } from './components/add-repair/add-repair.component';
 import { OneRepairComponent } from './components/one-repair/one-repair.component';
@@ -69,11 +66,8 @@ import { UtilityModule } from '../utility/utility.module';
     MatNativeDateModule,
     MatIconModule,
     MatDialogModule,
-    // BrowserAnimationsModule,
     MatRadioModule,
     MatSelectModule,
-    // MatProgressSpinnerModule,
-    // MatFormFieldModule,
     MatPaginatorModule,
     MatAutocompleteModule,
     MatFormFieldModule,

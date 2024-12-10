@@ -36,12 +36,10 @@ export class PartService {
     })
   }
 
-  addPart(part: AddPartFields) {
+  addPart(addPartFields: AddPartFields) {
     return this.apollo.mutate<{addPart: Part}> ({
       mutation: ADD_PART,
-      variables: {
-        part: { ...part}
-      }
+      variables: addPartFields
     })
   }
 

@@ -1,8 +1,4 @@
-<ng-container *ngIf="isAuthenticated$ | async as authenticated; else notAuthenticated">
-
-    <app-edit-repair-form></app-edit-repair-form>
-
-</ng-container>
+<app-edit-repair-form *appIsAuthenticated="let false; else notAuthenticated"></app-edit-repair-form>
 
 <ng-template #notAuthenticated>
     <h3>Please Log In to Edit Repairs</h3>

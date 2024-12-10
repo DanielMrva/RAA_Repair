@@ -28,6 +28,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { PartEffects } from '@app/_store/_part-store/part.effects';
 import { IsAuthenticatedDirective } from '@app/_directives/is-authenticated.directive';
 import { AccessLevelDirective } from '@app/_directives/access-level.directive';
+import { AddPartModalFormComponent } from './components/addPartModalForm/add-part-modal-form/add-part-modal-form.component';
 
 
 
@@ -47,7 +48,8 @@ import { AccessLevelDirective } from '@app/_directives/access-level.directive';
     CopyPartsBtnComponent,
     PartSelectorDropdownComponent,
     IsAuthenticatedDirective,
-    AccessLevelDirective
+    AccessLevelDirective,
+    AddPartModalFormComponent
   ],
   imports: [
     CommonModule,
@@ -78,7 +80,8 @@ import { AccessLevelDirective } from '@app/_directives/access-level.directive';
     CopyPartsBtnComponent,
     PartSelectorDropdownComponent,
     IsAuthenticatedDirective,
-    AccessLevelDirective
+    AccessLevelDirective,
+    AddPartModalFormComponent
   ]
 })
 export class UtilityModule { }

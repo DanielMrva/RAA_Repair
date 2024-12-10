@@ -7,8 +7,8 @@ import { AppState } from '@app/_store/app.state';
 import { editRepair, loadOneRepair } from '@app/_store/_repair-store/repair.actions';
 import { selectOneRepair, repairErrorSelector, repairLoadingSelector } from '@app/_store/_repair-store/repair.selectors';
 import { radioErrorSelector, radioLoadingSelector, selectOneRadio } from '@app/_store/_radio-store/radio.selectors';
-import { loadOneRadio } from '@app/_store/_radio-store/radio.actions';
 import { MismatchModalService } from '@app/services/modal/mismatch-modal.service';
+import { AddPartModalService } from '@app/services/modal/add-part-modal.service';
 import { first, of, withLatestFrom, Subscription, combineLatest } from 'rxjs';
 import { filterEmptyArrayValues } from '@app/utils/filterEmptyArray';
 import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
@@ -34,6 +34,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
   userAccessLevel$;
   USER_ACCESS = ACCESS_LEVEL_USER;
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
+  TECH_ACCESS = ACCESS_LEVEL_TECH;
 
   initialOrgName: string | null = null;
   filteredLocationNames: string[] = [];
@@ -76,6 +77,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>,
     private mismatchModalService: MismatchModalService,
+    private addPartModalService: AddPartModalService,
     private accessControlService: AccessControlService
   ) {
     this.oneRadio$ = this.store.select(selectOneRadio);

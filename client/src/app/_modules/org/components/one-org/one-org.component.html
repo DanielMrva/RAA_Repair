@@ -11,7 +11,7 @@
 
         <div class="row">
             <h2 class="col-12 text-center">{{oneOrg.orgName}}
-                <a [routerLink]="['/edit-org', oneOrg._id]" *appAccessLevel="'admin'">EDIT</a>
+                <a [routerLink]="['/edit-org', oneOrg._id]" *appAccessLevel="ADMIN_ACCESS">EDIT</a>
             </h2>
         </div>
 

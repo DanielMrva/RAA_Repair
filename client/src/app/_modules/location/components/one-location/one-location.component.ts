@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { loadAllLocations, loadLocationByName, loadOneLocation } from '@app/_store/_location-store/location.actions';
 import { selectOneLocation, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
 import { Subscription } from 'rxjs';
-import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
 import { ACCESS_LEVEL_ADMIN } from '@app/utils/constants';
 
 @Component({
@@ -20,7 +19,6 @@ export class OneLocationComponent implements OnInit, OnDestroy {
   isLoading$;
   locationError$;
   oneLocation$;
-  userAccessLevel$;
 
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
 
@@ -32,7 +30,6 @@ export class OneLocationComponent implements OnInit, OnDestroy {
       this.isLoading$ = this.store.select(locationLoadingSelector);
       this.locationError$ = this.store.select(locationErrorSelector);
       this.oneLocation$ = this.store.select(selectOneLocation);
-      this.userAccessLevel$ = this.store.select(selectAccessLevel);
   }
 
   ngOnInit(): void {

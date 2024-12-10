@@ -18,7 +18,7 @@
         <div class="text-center row">
           <h2 class="col-12">
             Repair {{repair.repairTag}} Details
-            <a [routerLink]="['/edit-repair', repair._id]" *appAccessLevel=" 'admin'|| 'tech' ">EDIT</a>
+            <a [routerLink]="['/edit-repair', repair._id]" *appAccessLevel="[ADMIN_ACCESS, TECH_ACCESS]">EDIT</a>
           </h2>
 
           <div class="col-4">
@@ -133,6 +133,7 @@
                   <div class="card">
                     <div class="card-body">
                       <p class="card-text">
+                        <strong>Reported By:</strong> {{repair.reportedBy}} <br>
                         <strong>Repair Added:</strong> {{repair.dateRepairAdded | date:'mediumDate'}}<br>
                         <strong>Sent from Customer:</strong> {{repair.dateSentEuRaa | date:'mediumDate'}}<br>
                         <strong>Received from Customer:</strong> {{repair.dateRecEuRaa| date:'mediumDate'}}<br>
@@ -319,7 +320,7 @@
                           </li>
                         </ng-container>
                       </ul>
-                        <p *appAccessLevel=" 'admin' || 'tech' ">
+                        <p *appAccessLevel=" [ADMIN_ACCESS, TECH_ACCESS] ">
                           <strong>Remarks:</strong><br>
                           {{repair.remarks}}
                         </p>

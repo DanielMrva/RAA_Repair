@@ -513,12 +513,27 @@ export const DELETE_ORGANIZATION = gql`
 `
 
 export const ADD_PART = gql`
-    mutation addPart($part: AddPartInput!) {
-        addPart(part: $part) {
+    mutation addPart(
+        $partNumber: String!
+        $description: String!
+        $data: String
+        $manufacturer: String
+        $cost: Float
+        $msrp: Float
+    ) {
+        addPart(
+            partNumber: $partNumber,
+            description: $description,
+            data: $data,
+            manufacturer: $manufacturer
+            cost: $cost,
+            msrp: $msrp
+        ) {
             _id
             partNumber
             description
             data
+            manufacturer
             cost
             msrp
         }

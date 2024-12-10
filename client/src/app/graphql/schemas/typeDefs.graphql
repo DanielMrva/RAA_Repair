@@ -103,7 +103,7 @@ type Part {
   description: String!
   data: String
   manufacturer: String
-  cost: [Float]
+  cost: Float
   msrp: Float
 }
 
@@ -222,7 +222,14 @@ type Mutation {
     primaryContact: String
   ): Location
 
-  addPart(part: AddPartInput): Part
+  addPart(
+    partNumber: String!
+    description: String!
+    data: String
+    manufacturer: String
+    cost: Float
+    msrp: Float
+  ): Part
 
   editRepair(_id: ID!, updates: UpdateRepairInput): Repair
 

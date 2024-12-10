@@ -45,9 +45,7 @@ export const loadPartsByPnPdFailure = createAction(
 
 export const addPart = createAction(
     '[Add Part Page] Add Part',
-    props<{ 
-        AddPartFields: AddPartFields
-    }>()
+    props<{ addPartFields: AddPartFields }>()
 );
 
 export const addPartSuccess = createAction(

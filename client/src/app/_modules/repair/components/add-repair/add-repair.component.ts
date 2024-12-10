@@ -14,9 +14,6 @@ import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER } from '@app/u
 
 export class AddRepairComponent {
 
-  userAccessLevel$
-  isAuthenticated$
-
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
   USER_ACCESS = ACCESS_LEVEL_USER;
   TECH_ACCESS = ACCESS_LEVEL_TECH;
@@ -25,8 +22,7 @@ export class AddRepairComponent {
     private authService: AuthService,
     private store: Store<AppState>
   ) {
-    this.userAccessLevel$ = this.store.select(selectAccessLevel);
-    this.isAuthenticated$ = this.store.select(selectIsAuthenticated)
+
 
   }
 

@@ -10,7 +10,7 @@
         <div class="row">
             <h2 class="col-12 text-center">Edit Organization: {{org.orgName}}
                 <app-deletion-button [document]="org" [docType]="'organization'"
-                    *appAccessLevel="'admin'"></app-deletion-button>
+                    *appAccessLevel="ADMIN_ACCESS"></app-deletion-button>
             </h2>
 
             <form [formGroup]="orgForm" (ngSubmit)="onSubmit()" class="row justify-content-center">

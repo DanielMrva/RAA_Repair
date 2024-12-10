@@ -300,21 +300,30 @@
                             placeholder="Repair Hours">
                     </mat-form-field>
 
-                    <div formArrayName="workPerformed" class="col-12 col-lg-6">
+                    <div formArrayName="workPerformed" class="col-12 col-lg-6"
+                        *appAccessLevel="[ADMIN_ACCESS, TECH_ACCESS]; else noAccess">
                         <mat-form-field *ngFor="let work of workPerformedArray.controls; let k = index"
                             class="full-width-input">
                             <input matInput [formControlName]="k" placeholder="Work Performed">
-                            <ng-container *appAccessLevel="'admin' || 'tech'">
-                                <mat-icon matSuffix class="remove-icon text-danger"
-                                    *ngIf="workPerformedArray.length > 1" (click)="removeWorkPerformed(k)"
-                                    aria-label="remove work performed">remove_circle</mat-icon>
-                                <mat-icon matSuffix class="add-icon" (click)="addWorkPerformed()"
-                                    aria-label="add work performed">add_circle
-                                </mat-icon>
-                            </ng-container>
+                            <mat-icon *ngIf="workPerformedArray.length > 1" matSuffix class="remove-icon text-danger"
+                                (click)="removeWorkPerformed(k)" aria-label="remove work performed">
+                                remove_circle
+                            </mat-icon>
+                            <mat-icon matSuffix class="add-icon" (click)="addWorkPerformed()"
+                                aria-label="add work performed">
+                                add_circle
+                            </mat-icon>
 
                         </mat-form-field>
                     </div>
+                    <ng-template #noAccess>
+                        <mat-form-field *ngFor="let work of workPerformedArray.controls; let k = index"
+                            class="full-width-input">
+                            <input matInput [formControlName]="k" placeholder="Work Performed">
+                        </mat-form-field> 
+                    </ng-template>
+
+
 
                     <div formArrayName="partsUsed" class="col-12 col-lg-6">
                         <app-part-selector-dropdown [initialPartsUsed]="partsUsedArray.value"

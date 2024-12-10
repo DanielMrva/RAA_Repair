@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { PartService } from "@app/services/part/part.service";
 import { ToastService } from "@app/services/toast/toast.service";
 import { of, from } from "rxjs";
-import { switchMap, map, catchError, mergeMap } from "rxjs/operators";
+import { switchMap, map, catchError, mergeMap, tap } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
 
@@ -71,11 +71,9 @@ export class PartEffects {
     addPart$ = createEffect(() =>
         this.actions$.pipe(
             ofType(PartActions.addPart),
-            switchMap(({
-                AddPartFields
-            }) =>
+            switchMap(({ addPartFields }) =>
                 from(this.partService.addPart(
-                    AddPartFields
+                    addPartFields
                 )).pipe(
                     map(({ data }) => PartActions.addPartSuccess({ part: data?.addPart })),
 
@@ -88,15 +86,14 @@ export class PartEffects {
     addPartSuccess$ = createEffect(() =>
         this.actions$.pipe(
             ofType(PartActions.addPartSuccess),
-            map(({ part }) => {
-                this.toastService.show('Part added successfully!', {
-                    delay: 3000
-                })
-                    // TODO: Figure out what to do here.  I think if this is a modal, I can just go back to the page...?
-                    // this.router.navigate(['one-part', part?._id])
-            })
+            tap(({ part}) => {
+                this.toastService.show(`Part: ${part?.partNumber} - ${part?.description} added successfully!`, { delay: 3000 });
+            }),
+            switchMap(() => [
+                PartActions.loadAllParts(),
+            ])
         ),
-        { dispatch: false }
+        { dispatch: true }
     );
 
     addPartFailure$ = createEffect(() =>

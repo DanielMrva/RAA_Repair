@@ -1,29 +1,22 @@
-import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, Input, inject } from '@angular/core';
+import { NgIf } from '@angular/common';
 import { UserAuthenticatedService } from '@app/services/accessControl/user-authenticated.service';
 
 @Directive({
-  selector: '[appIsAuthenticated]'
+  selector: '[appIsAuthenticated]',
+  hostDirectives: [NgIf],  // Use NgIf directly in the directive
 })
 export class IsAuthenticatedDirective {
+  private ngIf = inject(NgIf, { host: true });  //Injecting here rather than in constructor to pass variables
+  private authService = inject(UserAuthenticatedService);
 
-  private isAuthenticated: boolean = false;
-
-  constructor(
-    private templateRef: TemplateRef<any>,
-    private viewContainer: ViewContainerRef,
-    private userAuthenticatedService: UserAuthenticatedService
-  ) { 
-    this.userAuthenticatedService.isAuthenticated$.subscribe(authenticated => {
-      this.isAuthenticated = authenticated;
-      this.updateView();
-    });
+  @Input('appIsAuthenticatedElse') set elseTemplate(templateRef: NgIf['ngIfElse']) {
+    this.ngIf.ngIfElse = templateRef;  // Bind the else template to NgIf
   }
 
-  private updateView() {
-    if (this.isAuthenticated) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainer.clear();
-    }
+  constructor() {
+    this.authService.isAuthenticated$.subscribe(isAuthenticated => {
+      this.ngIf.ngIf = isAuthenticated;  // Control visibility with NgIf
+    });
   }
 }

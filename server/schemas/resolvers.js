@@ -273,6 +273,7 @@ const resolvers = {
                 radioSerial,
                 radioOrg,
                 radioLocation,
+                reportedBy,
                 endUserPO,
                 raaPO,
                 repairTag,
@@ -329,6 +330,7 @@ const resolvers = {
                     radioSerial,
                     radioOrg,
                     radioLocation,
+                    reportedBy,
                     endUserPO,
                     raaPO,
                     repairTag: newRepairTag,
@@ -554,15 +556,18 @@ const resolvers = {
 
 
 
-        addPart: async (_, args) => {
-          const {
-            partNumber,
-            description,
-            data = '',
-            manufacturer = 'Unknown',
-            cost = [],
-            msrp = 0
-          } = args;
+        addPart: async (
+            parent, 
+            {
+                partNumber,
+                description,
+                data,
+                manufacturer,
+                cost,
+                msrp
+            }
+        ) => {
+
         
           // Check for required fields early
           if (!partNumber || !description) {
@@ -573,15 +578,15 @@ const resolvers = {
         
           try {
             // Check if the part already exists based on partNumber (assuming it's unique)
-            const existingPart = await Part.findOne({ partNumber });
+            const existingPart = await Part.findOne({ partNumber, description });
         
             if (existingPart) {
               throw new GraphQLError(
-                `Part with partNumber ${partNumber} already exists. Please try again.`,
+                `Part with partNumber ${partNumber} and ${description} already exists. Please try again.`,
                 {
                   extensions: {
                     code: 'PART_EXISTS',
-                    argumentName: 'partNumber'
+                    argumentName: 'partNumber, description'
                   }
                 }
               );

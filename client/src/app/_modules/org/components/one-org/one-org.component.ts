@@ -21,7 +21,6 @@ export class OneOrgComponent implements OnInit, OnDestroy {
   orgError$
   oneOrg$
 
-  userAccessLevel$
 
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
 
@@ -32,7 +31,6 @@ export class OneOrgComponent implements OnInit, OnDestroy {
       this.isLoading$ = this.store.select(orgLoadingSelector);
       this.orgError$ = this.store.select(orgErrorSelector);
       this.oneOrg$ = this.store.select(selectOneOrg);
-      this.userAccessLevel$ = this.store.select(selectAccessLevel)
 
     }
 

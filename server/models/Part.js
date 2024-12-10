@@ -19,9 +19,9 @@ const partSchema = new Schema({
         type: String,
         trim: true
     },
-    cost: [{
+    cost: {
         type: Number
-    }],
+    },
     msrp: {
         type: Number
     }
