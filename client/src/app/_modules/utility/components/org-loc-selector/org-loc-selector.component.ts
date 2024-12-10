@@ -19,22 +19,22 @@ import { Location } from '@app/graphql/schemas/typeInterfaces';
 export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() initialOrgName: string | null = null;
-  @Input() orgNameControl!: FormControl; // Accept the control from the parent
+  @Input() orgNameControl!: FormControl;
   @Output() orgNameSelected = new EventEmitter<string>();
   @Output() filteredLocations = new EventEmitter<string[]>();
 
   orgNames$!: Observable<string[]>;
-  locationNames$: Observable<Location[]> = of([]);  // Initialize with an empty observable
+  locationNames$: Observable<Location[]> = of([]);
 
   filteredOrgNames$!: Observable<string[]>;
   filteredLocNames$!: Observable<string[]>;
 
   constructor(
-    private filterService: FilterService, 
+    private filterService: FilterService,
     private store: Store<AppState>,
     private cdr: ChangeDetectorRef
   ) {
-    
+
   }
 
   ngOnDestroy(): void {
@@ -62,7 +62,7 @@ export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
       this.filterLocations(this.initialOrgName!);
       this.cdr.detectChanges();
     }
-  
+
   };
 
   private destory$ = new Subject<void>()
@@ -83,8 +83,8 @@ export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
     this.filteredOrgNames$ = this.orgNameControl.valueChanges.pipe(
       startWith(''),
-      switchMap(value => 
-        this.filterService.filterOrgs(value ?? '', this.orgNames$)
+      switchMap(value =>
+        this.filterService.filterStrings(value ?? '', this.orgNames$)
       )
     );
   }

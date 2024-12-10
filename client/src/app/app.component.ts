@@ -10,7 +10,7 @@ import { autoLogin } from './_store/_auth-store/auth.actions';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'radio_referbish';
+  title = 'Radios Across America - Repair Service';
 
   constructor(
     private authService: AuthService,

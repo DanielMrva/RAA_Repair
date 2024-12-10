@@ -19,6 +19,16 @@ export class FilterService {
     );
   }
 
+  filterStrings(value: string, inputValues$: Observable<string[]>): Observable<string[]> {
+
+    const filterValue = value.toLowerCase();
+
+    return inputValues$.pipe(
+      map( valueList => valueList.filter(valueName => valueName.toLowerCase().includes(filterValue)))
+    );
+
+  }
+
   filteredLocs(locValue: string | null, orgName: string | null, locations: Location[]): Observable<string[]> {
     const filteredLocValue = (locValue || '').toLowerCase();
     const org = (orgName || '').toLowerCase();

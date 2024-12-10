@@ -12,12 +12,8 @@
 
         <div class="row">
             <h2 class="col-12 text-center">
-                {{location.locationName}} 
-                <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
-                  <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
-                    <a [routerLink]="['/edit-location', location._id]">EDIT</a>
-                  </ng-container>
-                </ng-container>
+                {{location.locationName}}
+                <a [routerLink]="['/edit-location', location._id]" *appAccessLevel="ADMIN_ACCESS">EDIT</a>
             </h2>
 
             <div class="col-12 col-lg-4">
@@ -25,7 +21,7 @@
 
                 <div class="col-12">
                     <div class="row">
-                        <p class="col-12">{{location.street}}  {{location.suite}}</p>
+                        <p class="col-12">{{location.street}} {{location.suite}}</p>
                         <p class="col-12">{{location.city}}, {{location.state}}</p>
                         <p class="col-12">{{location.zip}} {{location.country}}</p>
                         <p class="col-12">{{location.primaryContact}}</p>
@@ -39,36 +35,36 @@
             <div class="col-12 col-lg-8">
                 <h4 class="col-12 text-center">Radios:</h4>
                 <ng-container *ngIf="location.radios.length > 0; else noRadios">
-    
+
                     <div class="row">
                         <table mat-table [dataSource]="location.radios" class="mat-elevation-z8">
-            
+
                             <ng-container matColumnDef="index">
                                 <th mat-header-cell *matHeaderCellDef> # </th>
                                 <td mat-cell *matCellDef="let radio; let i = index">{{i + 1}}</td>
                             </ng-container>
-            
+
                             <ng-container matColumnDef="serialNumber">
                                 <th mat-header-cell *matHeaderCellDef> Serial Number </th>
                                 <td mat-cell *matCellDef="let radio">
                                     <a [routerLink]="['/one-radio/', radio._id]">{{radio.serialNumber}}</a>
                                 </td>
                             </ng-container>
-            
+
                             <ng-container matColumnDef="make">
                                 <th mat-header-cell *matHeaderCellDef> Make </th>
                                 <td mat-cell *matCellDef="let radio">
                                     {{radio.make}}
                                 </td>
                             </ng-container>
-            
+
                             <ng-container matColumnDef="model">
                                 <th mat-header-cell *matHeaderCellDef> Model </th>
                                 <td mat-cell *matCellDef="let radio">
                                     {{radio.model}}
                                 </td>
                             </ng-container>
-        
+
                             <ng-container matColumnDef="serviceRecord">
                                 <th mat-header-cell *matHeaderCellDef> Number of Repairs </th>
                                 <td mat-cell *matCellDef="let radio">
@@ -76,13 +72,16 @@
                                 </td>
                             </ng-container>
 
-                            <tr mat-header-row *matHeaderRowDef="['index', 'serialNumber', 'make', 'model', 'serviceRecord']"></tr>
-                            <tr mat-row *matRowDef="let row; columns: ['index', 'serialNumber', 'make', 'model', 'serviceRecord']"></tr>
+                            <tr mat-header-row
+                                *matHeaderRowDef="['index', 'serialNumber', 'make', 'model', 'serviceRecord']"></tr>
+                            <tr mat-row
+                                *matRowDef="let row; columns: ['index', 'serialNumber', 'make', 'model', 'serviceRecord']">
+                            </tr>
                         </table>
                     </div>
-            
+
                 </ng-container>
-        
+
                 <ng-template #noRadios>
                     <div class="row">
                         <p>No Radios at this Location...</p>

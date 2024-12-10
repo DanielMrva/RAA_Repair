@@ -16,34 +16,28 @@
 
             <a [routerLink]="['/']" class="nav-link">Home</a>
 
-            <ng-container *ngIf="isAuthenticated$ | async as isAuthenticated; else elseBlock">
 
-                <li class="nav-item">
-                    <a [routerLink]="['/dashboard']" class="nav-link">Dashboard</a>
-                </li>
+            <li class="nav-item" *appIsAuthenticated="let false">
+                <a [routerLink]="['/dashboard']" class="nav-link">Dashboard</a>
+            </li>
 
-                <li class="nav-item">
+            <ng-container *appIsAuthenticated="let false; else notLogged">
+                <li class="nav-item" >
                     <div class="nav-link" (click)="logout()">Logout</div>
                 </li>
-
             </ng-container>
 
-            <ng-template #elseBlock>
+
+            <ng-template #notLogged>
                 <li class="nav-item">
                     <a [routerLink]="['/login']" class="nav-link">Login</a>
                 </li>
             </ng-template>
 
-            <ng-container *ngIf="accessLevel$ | async as userAccessLevel">
-                <ng-container [ngSwitch]="userAccessLevel">
-                    <app-admin-nav *ngSwitchCase="ADMIN_ACCESS"></app-admin-nav>
-                    <app-tech-nav *ngSwitchCase="TECH_ACCESS"></app-tech-nav>
-                    <app-user-nav *ngSwitchCase="USER_ACCESS"></app-user-nav>
-                    <li class="nav-item" *ngSwitchDefault><a [routerLink]="['/login']" class="nav-link">Cannot Establish
-                            Access Level</a>
-                    </li>
-                </ng-container>
-            </ng-container>
+
+            <app-admin-nav *appAccessLevel=" ADMIN_ACCESS "></app-admin-nav>
+            <app-tech-nav *appAccessLevel="TECH_ACCESS"></app-tech-nav>
+            <app-user-nav *appAccessLevel="USER_ACCESS"></app-user-nav>
 
         </ul>
 
@@ -63,26 +57,23 @@
             <li class="nav-item">
                 <a [routerLink]="['/']" class="nav-link text-dark">Home</a>
             </li>
-            <ng-container *ngIf="isAuthenticated$ | async as isAuthenticated; else elseBlock">
+            <ng-container *appIsAuthenticated="let false; else elseBlock">
                 <li class="nav-item">
                     <a [routerLink]="['/dashboard']" class="nav-link text-dark">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <div class="nav-link text-dark" (click)="logout()">Logout</div>
                 </li>
-            </ng-container>
-            <ng-container *ngIf="accessLevel$ | async as userAccessLevel">
 
-                <ng-container [ngSwitch]="userAccessLevel">
-                    <app-admin-nav *ngSwitchCase="ADMIN_ACCESS"></app-admin-nav>
-                    <app-tech-nav *ngSwitchCase="TECH_ACCESS"></app-tech-nav>
-                    <app-user-nav *ngSwitchCase="USER_ACCESS"></app-user-nav>
-                    <li class="nav-item" *ngSwitchDefault><a [routerLink]="['/login']" class="nav-link">Cannot Establish
-                            Access Level</a>
-                    </li>
-                </ng-container>
+                <app-admin-nav *appAccessLevel="ADMIN_ACCESS"></app-admin-nav>
+                <app-tech-nav *appAccessLevel="TECH_ACCESS"></app-tech-nav>
+                <app-user-nav *appAccessLevel="USER_ACCESS"></app-user-nav>
 
             </ng-container>
+
+
+
+
             <ng-template #elseBlock>
                 <li class="nav-item">
                     <a [routerLink]="['/login']" class="nav-link text-dark">Login</a>

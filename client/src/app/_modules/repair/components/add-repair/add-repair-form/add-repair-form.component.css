@@ -1,8 +1,19 @@
 .full-width-input {
-    width: 100%;
+  width: 100%;
 }
 
-.remove-icon 
+.mat-form-field {
+  display: flex;
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.remove-icon,
 .add-icon {
-    cursor: pointer;
+  cursor: pointer;
 }

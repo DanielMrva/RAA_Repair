@@ -21,6 +21,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CopyPartsBtnComponent } from './components/copy-parts-btn/copy-parts-btn.component';
+import { PartSelectorDropdownComponent } from './components/part-selector/part-selector-dropdown/part-selector-dropdown.component';
+import { StoreModule } from '@ngrx/store';
+import { partReducer } from '@app/_store/_part-store/part.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { PartEffects } from '@app/_store/_part-store/part.effects';
+import { IsAuthenticatedDirective } from '@app/_directives/is-authenticated.directive';
+import { AccessLevelDirective } from '@app/_directives/access-level.directive';
+import { AddPartModalFormComponent } from './components/addPartModalForm/add-part-modal-form/add-part-modal-form.component';
 
 
 
@@ -37,7 +45,11 @@ import { CopyPartsBtnComponent } from './components/copy-parts-btn/copy-parts-bt
     RadioSnMkNavigatorComponent,
     RepairTagNavigatorComponent,
     RepairStatDropdownComponent,
-    CopyPartsBtnComponent
+    CopyPartsBtnComponent,
+    PartSelectorDropdownComponent,
+    IsAuthenticatedDirective,
+    AccessLevelDirective,
+    AddPartModalFormComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +60,10 @@ import { CopyPartsBtnComponent } from './components/copy-parts-btn/copy-parts-bt
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    StoreModule.forFeature('part', partReducer),
+    EffectsModule.forFeature([PartEffects])
+
   ],
   exports: [
     DeletionModalComponent,
@@ -62,7 +77,11 @@ import { CopyPartsBtnComponent } from './components/copy-parts-btn/copy-parts-bt
     RadioSnMkNavigatorComponent,
     RepairTagNavigatorComponent,
     RepairStatDropdownComponent,
-    CopyPartsBtnComponent
+    CopyPartsBtnComponent,
+    PartSelectorDropdownComponent,
+    IsAuthenticatedDirective,
+    AccessLevelDirective,
+    AddPartModalFormComponent
   ]
 })
 export class UtilityModule { }

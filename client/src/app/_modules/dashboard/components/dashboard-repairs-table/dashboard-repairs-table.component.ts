@@ -21,8 +21,9 @@ export class DashboardRepairsTableComponent implements OnChanges, AfterViewInit 
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['repairs'] && this.repairs) {
-      this.dataSource.data = this.repairs;
+    if (changes['repairs'] && changes['repairs'].currentValue?.length > 0) {
+      console.log('Updating table with repairs:', this.repairs);
+      this.dataSource.data = this.repairs || [];
     }
   }
 

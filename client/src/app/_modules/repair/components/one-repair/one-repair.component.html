@@ -1,4 +1,5 @@
-<div *ngIf="repairIsLoading$ || radioIsLoading$ || locationIsLoading$ | async; else loadedData" class="text-center my-5">
+<div *ngIf="repairIsLoading$ || radioIsLoading$ || locationIsLoading$ | async; else loadedData"
+  class="text-center my-5">
   <h2>Loading...</h2>
 </div>
 
@@ -17,11 +18,7 @@
         <div class="text-center row">
           <h2 class="col-12">
             Repair {{repair.repairTag}} Details
-            <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
-              <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS || userAccessLevel === TECH_ACCESS">
-                <a [routerLink]="['/edit-repair', repair._id]">EDIT</a>
-              </ng-container>
-            </ng-container>
+            <a [routerLink]="['/edit-repair', repair._id]" *appAccessLevel="[ADMIN_ACCESS, TECH_ACCESS]">EDIT</a>
           </h2>
 
           <div class="col-4">
@@ -40,7 +37,9 @@
 
           <!-- Check if radio exists -->
           <ng-container *ngIf="oneRadio$ | async as radio; else noRadioFound">
-            <h4 class="col-12">Repair for Radio: <a [routerLink]="['/one-radio/', radio._id]" class="text-decoration-none">{{radio.make}} {{radio.serialNumber}}</a> <ng-container *ngIf="oneLocation$ | async as location"> At {{location.locationName}}</ng-container></h4>
+            <h4 class="col-12">Repair for Radio: <a [routerLink]="['/one-radio/', radio._id]"
+                class="text-decoration-none">{{radio.make}} {{radio.serialNumber}}</a> <ng-container
+                *ngIf="oneLocation$ | async as location"> At {{location.locationName}}</ng-container></h4>
           </ng-container>
 
         </div>
@@ -105,7 +104,7 @@
                         <ng-container *ngFor="let acc of repair.accessories">
                           <li>{{acc}}</li>
                         </ng-container>
-                            
+
                       </ul>
                     </div>
                   </div>
@@ -124,7 +123,8 @@
         <div class="accordion" id="statAccordion" ngbAccordion>
           <div ngbAccordionItem [collapsed]="true" class="accordion-item">
             <h2 ngbAccordionHeader class="accordionHeading" id="statHeading">
-              <button ngbAccordionButton class="accordion-button" aria-controls="statContent"> Status: {{repair.repairStatus}}
+              <button ngbAccordionButton class="accordion-button" aria-controls="statContent"> Status:
+                {{repair.repairStatus}}
               </button>
             </h2>
             <div ngbAccordionCollapse id="statContent" class="accordion-collapse" aria-labelledby="statHeading">
@@ -133,6 +133,7 @@
                   <div class="card">
                     <div class="card-body">
                       <p class="card-text">
+                        <strong>Reported By:</strong> {{repair.reportedBy}} <br>
                         <strong>Repair Added:</strong> {{repair.dateRepairAdded | date:'mediumDate'}}<br>
                         <strong>Sent from Customer:</strong> {{repair.dateSentEuRaa | date:'mediumDate'}}<br>
                         <strong>Received from Customer:</strong> {{repair.dateRecEuRaa| date:'mediumDate'}}<br>
@@ -160,8 +161,7 @@
             <h2 ngbAccordionHeader class="accordion-header" id="symptomsHeading" aria-controls="symptomsContent">
               <button ngbAccordionButton class="accordion-button"> Symptoms </button>
             </h2>
-            <div ngbAccordionCollapse id="symptomsContent" class="accordion-collapse"
-              aria-labledBy="symptomsHeading">
+            <div ngbAccordionCollapse id="symptomsContent" class="accordion-collapse" aria-labledBy="symptomsHeading">
               <div ngbAccordionBody class="accordion-body">
                 <ng-template>
                   <div class="card">
@@ -186,8 +186,7 @@
 
         <div class="accordion" id="diagnosticsAccordion" ngbAccordion>
           <div ngbAccordionItem [collapsed]="true" class="accordion-item">
-            <h2 ngbAccordionHeader class="accordion-header" id="diagnosticsHeading"
-              aria-controls="diagnosticsContent">
+            <h2 ngbAccordionHeader class="accordion-header" id="diagnosticsHeading" aria-controls="diagnosticsContent">
               <button ngbAccordionButton class="accordion-button"> Diagnostics </button>
             </h2>
             <div ngbAccordionCollapse id="diagnosticsContent" class="accordion-collapse"
@@ -291,8 +290,7 @@
 
         <div class="accordion" id="workDetailsAccordion" ngbAccordion>
           <div ngbAccordionItem [collapsed]="true" class="accordion-item">
-            <h2 ngbAccordionHeader class="accordion-header" id="workDetailsHeading"
-              aria-controls="workDetailsContent">
+            <h2 ngbAccordionHeader class="accordion-header" id="workDetailsHeading" aria-controls="workDetailsContent">
               <button ngbAccordionButton class="accordion-button"> Work Performed </button>
             </h2>
             <div ngbAccordionCollapse id="workDetailsContent" class="accordion-collapse"
@@ -317,20 +315,16 @@
                       <ul>
                         <ng-container *ngFor="let part of repair.partsUsed">
                           <li>
-                            {{part}} 
-                            <app-copy-parts-btn  [partsNumberString]="part"></app-copy-parts-btn>
+                            {{part}}
+                            <app-copy-parts-btn [partsNumberString]="part"></app-copy-parts-btn>
                           </li>
                         </ng-container>
                       </ul>
-                      <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
-                        <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS || userAccessLevel === TECH_ACCESS">
-                          <p>
-                            <strong>Remarks:</strong><br>
-                            {{repair.remarks}}
-                          </p>
-                        </ng-container>
-                      </ng-container>
-                      
+                        <p *appAccessLevel=" [ADMIN_ACCESS, TECH_ACCESS] ">
+                          <strong>Remarks:</strong><br>
+                          {{repair.remarks}}
+                        </p>
+
                     </div>
                   </div>
                 </ng-template>

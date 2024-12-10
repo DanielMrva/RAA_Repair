@@ -1,4 +1,4 @@
-const { User, Organization, Radio, Repair, Location } = require('../models');
+const { User, Organization, Radio, Repair, Location, Part } = require('../models');
 const { unwrapResolverError, ApolloError } = require('@apollo/server/errors');
 const { signToken } = require('../utils/auth');
 const { sign } = require('jsonwebtoken');
@@ -177,6 +177,28 @@ const resolvers = {
                 throw new Error("Invalid search parameters");
             }
         },
+        allParts: async () => {
+            return Part.find();
+        },
+        part: async (parent, {partId}) => {
+            return Part.findById(partId);
+        },
+        partByNumDesc: async (parent, { partNumber, partDescription}) => {
+            const query = {
+                $and: []
+            };
+
+            if (partNumer) {
+                query.$and.push({ partNumber: { $regex: new RegExp(partNumber, 'i') } });
+            }
+
+            if (partDescription) {
+                query.$and.push({ description: { $regex: new RegExp(partDescription, 'i') } });
+            }
+
+            return Part.find(query.$and.length > 0 ? query : {});
+
+        }
     },
     Repair: {
         radioDetails: async (parent, args, { radioLoader }) => {
@@ -251,6 +273,7 @@ const resolvers = {
                 radioSerial,
                 radioOrg,
                 radioLocation,
+                reportedBy,
                 endUserPO,
                 raaPO,
                 repairTag,
@@ -307,6 +330,7 @@ const resolvers = {
                     radioSerial,
                     radioOrg,
                     radioLocation,
+                    reportedBy,
                     endUserPO,
                     raaPO,
                     repairTag: newRepairTag,
@@ -531,6 +555,66 @@ const resolvers = {
         // End Add Location
 
 
+
+        addPart: async (
+            parent, 
+            {
+                partNumber,
+                description,
+                data,
+                manufacturer,
+                cost,
+                msrp
+            }
+        ) => {
+
+        
+          // Check for required fields early
+          if (!partNumber || !description) {
+            throw new GraphQLError('partNumber and description are required.', {
+              extensions: { code: 'BAD_USER_INPUT' }
+            });
+          }
+        
+          try {
+            // Check if the part already exists based on partNumber (assuming it's unique)
+            const existingPart = await Part.findOne({ partNumber, description });
+        
+            if (existingPart) {
+              throw new GraphQLError(
+                `Part with partNumber ${partNumber} and ${description} already exists. Please try again.`,
+                {
+                  extensions: {
+                    code: 'PART_EXISTS',
+                    argumentName: 'partNumber, description'
+                  }
+                }
+              );
+            }
+        
+            // Create the new part in the database
+            const newPart = await Part.create({
+              partNumber,
+              description,
+              data,
+              manufacturer,
+              cost,
+              msrp
+            });
+        
+            return newPart;
+          } catch (error) {
+            console.error('Error creating part:', error);
+        
+            // Return a generic error for the client, while logging the actual error for debugging
+            throw new GraphQLError('Failed to submit part.', {
+              extensions: { code: 'SUBMIT_PART_ERROR' }
+            });
+          }
+        },
+        
+        // End Add Part
+
         editRepair: async (parent, { _id, updates }) => {
 
             console.log(`id: ${_id}`)
@@ -688,6 +772,32 @@ const resolvers = {
             }
         },
         // End Edit Location
+
+        editPart: async (parent, { _id, updates }) => {
+            try {
+
+                const oldPart = await Part.findById({ _id });
+
+                if (!oldPart) {
+                    throw new GraphQLError('Old Part Not Found', {
+                        extensions: {
+                            code: 'Edit_PART_ERROR_NO_OLD_PART'
+                        }
+                    });
+                }
+
+                const part = await Part.findOneAndUpdate({ _id }, { $set: updates }, { new: true });
+
+                return part
+
+            }
+            catch (error) {
+                console.log(`resolver error: ${error}`);
+                throw new GraphQLError(`Failed to Edit Part, ${error.message}`)
+
+            }
+        },
+        // End Edit Part
         deleteRepair: async (parent, { _id }) => {
             try {
                 const deletedRepair = await Repair.findByIdAndDelete(_id);

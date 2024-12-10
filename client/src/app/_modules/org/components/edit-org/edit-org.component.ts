@@ -24,7 +24,6 @@ export class EditOrgComponent implements OnInit, OnDestroy {
   isLoading$
   error$
 
-  userAccessLevel$;
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
 
   constructor(
@@ -34,8 +33,6 @@ export class EditOrgComponent implements OnInit, OnDestroy {
     this.oneOrg$ = this.store.select(selectOneOrg);
     this.isLoading$ = this.store.select(orgLoadingSelector);
     this.error$ = this.store.select(orgErrorSelector);
-    this.userAccessLevel$ = this.store.select(selectAccessLevel);
-
   };
 
   orgForm = new FormGroup({

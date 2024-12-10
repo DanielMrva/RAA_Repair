@@ -1,0 +1,62 @@
+<form [formGroup]="partsDropdownForm">
+  <div formArrayName="partsArray">
+    <div *ngFor="let control of formControls; let i = index">
+      <mat-form-field appearance="fill" class="full-width-input">
+        <mat-label>Parts Used:</mat-label>
+        <input 
+          type="text" 
+          placeholder="Select Part" 
+          aria-label="Parts Used" 
+          matInput 
+          [formControl]="control"
+          [matAutocomplete]="partAuto" 
+          (input)="emitPartsUsedChange()"
+        >
+        <mat-autocomplete 
+          #partAuto="matAutocomplete" 
+          autoActiveFirstOption
+          (optionSelected)="onOptionSelected($event, i)"
+        >
+          <mat-option 
+            *ngFor="let option of (filteredParts$[i] | async)"
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+          <mat-option value="other">Other</mat-option>
+          <mat-option value="admin-other">Admin Other</mat-option>
+        </mat-autocomplete>
+        <mat-icon 
+          *ngIf="partsDropdownForm.controls.partsArray.length > 1" 
+          matSuffix 
+          class="remove-icon"
+          (click)="removePart($event, i)" 
+          aria-label="Remove Part"
+        >
+          remove_circle
+        </mat-icon>
+        <mat-icon 
+          matSuffix 
+          class="add-icon" 
+          (click)="addPart($event)" 
+          aria-label="Add Part"
+        >
+          add_circle
+        </mat-icon>
+      </mat-form-field>
+
+      <!-- Render "Other" text box if "other" is selected -->
+      <div *ngIf="isOtherSelected(i)">
+        <mat-form-field appearance="fill" class="full-width-input">
+          <mat-label>Specify Other Part:</mat-label>
+          <input 
+            matInput 
+            placeholder="Enter other part details"
+            (input)="onOtherPartInput($event, i)"
+          />
+        </mat-form-field>
+      </div>
+
+    </div>
+  </div>
+</form>

@@ -106,6 +106,16 @@ const typeDefs = `#graphql
         radioType: String
     }
 
+    type Part {
+        _id: ID!
+        partNumber: String!
+        description: String!
+        data: String
+        manufacturer: String
+        cost: Float
+        msrp: Float
+    }
+
     type Auth {
         token: ID!
         user: User!
@@ -135,6 +145,9 @@ const typeDefs = `#graphql
         locationNames: [Location]
         likeOrg(orgName: String!): [Organization]
         repairByTag(startTag: Int!, endTag: Int): [Repair]
+        allParts: [Part]
+        part(partId: ID!): Part
+        partByNumDesc(partNumber: String, partDescription: String): [Part]
     }
 
     input UpdateRepairInput {
@@ -214,6 +227,24 @@ const typeDefs = `#graphql
         phone: String
         contactEmail: String
         primaryContact: String
+    }
+
+    input UpdatePartInput {
+        partNumber: String
+        description: String
+        data: String
+        manufacturer: String
+        cost: Float
+        msrp: Float
+    }
+
+    input AddPartInput {
+        partNumber: String!
+        description: String!
+        data: String
+        manufacturer: String
+        cost: Float
+        msrp: Float
     }
 
     type Mutation {
@@ -305,6 +336,15 @@ const typeDefs = `#graphql
             contactEmail: String
             primaryContact: String
         ): Location
+
+        addPart(
+            partNumber: String!
+            description: String!
+            data: String
+            manufacturer: String
+            cost: Float
+            msrp: Float
+        ): Part
         
         editRepair(
             _id: ID!
@@ -331,6 +371,11 @@ const typeDefs = `#graphql
             updates: UpdateLocationInput
         ): Location
 
+        editPart(
+            _id: ID!
+            updates: UpdatePartInput
+        ): Part
+
         deleteRepair(
             _id: ID!
         ): Repair
@@ -350,6 +395,10 @@ const typeDefs = `#graphql
         deleteOrganization(
             _id: ID!
         ): Organization
+
+        deletePart(
+            _id: ID!
+        ): Part
     }
 
 `;

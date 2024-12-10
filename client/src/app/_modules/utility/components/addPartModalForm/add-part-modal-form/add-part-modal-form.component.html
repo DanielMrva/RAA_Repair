@@ -1,0 +1,51 @@
+<div class="container py-3">
+  <div class="row">
+    <h4 class="col-12 d-flex justify-content-center">Add New Part</h4>
+  </div>
+  <form [formGroup]="addPartForm" (ngSubmit)="submitForm()" class="row">
+    <mat-form-field class="form-group col-12">
+      <mat-label for="partNumber">
+        Part Number:
+      </mat-label>
+      <input
+        type="text"
+        placeholder="Part Number"
+        aria-label="Part Number"
+        matInput
+        [formControl]="addPartForm.controls.partNumber"
+      >
+    </mat-form-field>
+    <mat-form-field class="form-group col-12">
+      <mat-label for="description">
+        Part Description:
+      </mat-label>
+      <input
+        type="text"
+        placeholder="Part Description"
+        aria-label="Part Description"
+        matInput
+        [formControl]="addPartForm.controls.description"
+      >
+    </mat-form-field>
+  
+    <mat-form-field class="form-group col-12">
+      <mat-label for="manufacturer">
+        Manufacturer:
+      </mat-label>
+      <input
+        type="text"
+        placeholder="Manufacturer"
+        aria-label="Manufacturer"
+        matInput
+        [formControl]="addPartForm.controls.manufacturer"
+      >
+    </mat-form-field>
+  
+    <div class="col-12 d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary" [disabled]="addPartForm.invalid">Submit</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+  
+    </div>
+  
+  </form>
+</div>

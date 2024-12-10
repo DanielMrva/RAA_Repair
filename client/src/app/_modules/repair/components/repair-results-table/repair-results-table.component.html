@@ -5,14 +5,15 @@
             <ng-container matColumnDef="radioSerial">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Serial Number</th>
                 <td mat-cell *matCellDef="let element">
-                    <a [routerLink]="['/one-radio', element.radioID]">{{ element.radioSerial }}</a>
+                    <a [routerLink]="['/one-radio', element.radioID]">{{ element.radioDetails.radioSerial }}</a>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="radioLocation">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Organization & Location</th>
                 <td mat-cell *matCellDef="let element">{{element.radioOrg}}, {{ element.radioDetails.radioLocation }}
-                    <ng-container *ngIf="element.reportedBy">by {{element.reportedBy}}</ng-container></td>
+                    <ng-container *ngIf="element.reportedBy">by {{element.reportedBy}}</ng-container>
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="radioDetails">
@@ -133,14 +134,11 @@
                 </td>
             </ng-container>
 
-            <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
-                <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS || userAccessLevel === TECH_ACCESS">
-                    <ng-container matColumnDef="remarks">
-                        <th mat-header-cell *matHeaderCellDef>Remarks</th>
-                        <td mat-cell *matCellDef="let element">{{ element.remarks }}</td>
-                    </ng-container>
-                </ng-container>
+            <ng-container matColumnDef="remarks" *appAccessLevel=" [ADMIN_ACCESS, TECH_ACCESS] ">
+                <th mat-header-cell *matHeaderCellDef>Remarks</th>
+                <td mat-cell *matCellDef="let element">{{ element.remarks }}</td>
             </ng-container>
+
 
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

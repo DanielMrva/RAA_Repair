@@ -111,6 +111,16 @@ export type Location = {
     contactEmail: string,
     primaryContact: string,
     radios: Radio[]
+};
+// TODO: Determine advantages of using/not using Part type for form field definitions.  If it works out, modify usages in other forms for other types
+export type Part = {
+    _id?: string,
+    partNumber: string,
+    description: string,
+    data?: string,
+    manufacturer?: string,
+    cost?: number,
+    msrp?: number
 }
 
 export type Auth = {
@@ -264,6 +274,24 @@ export type UpdateLocationFields = {
 
 export type UpdateOrgFields = {
     orgName?: string
+};
+
+export type UpdatePartFields = {
+    partNumber?: string,
+    description?: string,
+    data?: string,
+    manufacturer?: string,
+    cost?: number,
+    msrp?:number
+}
+
+export type AddPartFields = {
+    partNumber: string,
+    description: string,
+    data?: string,
+    manufacturer?: string,
+    cost?: number,
+    msrp?: number
 }
 
 export type TableSearchParams = {

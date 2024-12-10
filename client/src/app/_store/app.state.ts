@@ -5,6 +5,7 @@ import { OrgState } from "./_org-store/org.reducers";
 import { AuthState } from "./_auth-store/auth.reducers";
 import { NavState } from "./_nav-store/nav.reducers";
 import { LocationState } from "./_location-store/location.reducers";
+import { PartState } from "./_part-store/part.reducers";
 
 export interface AppState {
     auth: AuthState,
@@ -13,5 +14,6 @@ export interface AppState {
     location: LocationState,
     radio: RadioState,
     repair: RepairState,
-    user: UserState
+    user: UserState,
+    part: PartState
 }

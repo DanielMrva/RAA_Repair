@@ -13,6 +13,7 @@ import { filterEmptyArrayValues } from '@app/utils/filterEmptyArray';
 import { AccessControlService } from '@app/services/accessControl/access-control.service';
 import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
 import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER } from '@app/utils/constants';
+import { updateArrayControl } from '@app/utils/updateArrayControl';
 
 @Component({
   selector: 'app-add-repair-form',
@@ -30,6 +31,8 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
   userAccessLevel$
 
   USER_ACCESS = ACCESS_LEVEL_USER;
+  ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
+  TECH_ACCESS = ACCESS_LEVEL_TECH;
 
   initialOrgName: string | null = null;
   initialLocationName: string | null = null;
@@ -140,6 +143,10 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
     return this.repairForm.get('partsUsed') as FormArray;
   }
 
+  updatePartsUsed(newParts: string[]): void {
+    const partsArray = this.repairForm.get('partsUsed') as FormArray;
+    updateArrayControl(newParts, partsArray);
+  }
 
   addSymptom() {
     this.symptomsArray.push(new FormControl<string>('', { nonNullable: true }));
@@ -155,14 +162,6 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
 
   removeWorkPerformed(index: number) {
     this.workPerformedArray.removeAt(index);
-  }
-
-  addPartsUsed() {
-    this.partsUsedArray.push(new FormControl<string>('', { nonNullable: true }));
-  }
-
-  removePartsUsed(index: number) {
-    this.partsUsedArray.removeAt(index);
   }
 
   fieldValidCheck(field: string) {
@@ -208,10 +207,13 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
         }
       })
     );
+
   }
+
   
+
   handleOrgNameSelected(orgName: string): void {
-    this.repairForm.patchValue({radioOrg: orgName});
+    this.repairForm.patchValue({ radioOrg: orgName });
   };
 
   handleFilteredLocations(locations: string[]): void {
@@ -226,7 +228,7 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
       this.accessoriesGroup.patchValue({ otherAccessory: '' });
     }
     if (!this.showOtherBattery) {
-      this.accessoriesGroup.patchValue({ otherBattery: ''});
+      this.accessoriesGroup.patchValue({ otherBattery: '' });
     }
   };
 
@@ -251,7 +253,7 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
       radioMake: this.repairForm.value.radioMake ?? '',
       radioSerial: this.repairForm.value.radioSerial ?? '',
       radioOrg: this.repairForm.value.radioOrg ?? '',
-      radioLocation: this.repairForm.value.radioLocation ?? '',
+      radioLocation: this.initialLocationName ?? this.repairForm.value.radioLocation ?? '',
       reportedBy: this.repairForm.value.reportedBy ?? '',
       endUserPO: this.repairForm.value.endUserPO ?? '',
       raaPO: this.repairForm.value.raaPO ?? '',
@@ -285,7 +287,7 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
 
     return repairData;
   }
-      
+
   submitRepair(): void {
     const submittedRepair: RepairFormFields = this.prepareRepairData();
     this.store.dispatch(addRepair({ submittedRepair }));
@@ -325,3 +327,5 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
 
 
 }
+
+

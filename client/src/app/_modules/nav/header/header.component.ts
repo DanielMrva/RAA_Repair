@@ -17,12 +17,6 @@ export class HeaderComponent implements OnInit {
 
   loggedUser$
 
-  userAccessLevel: string | null = null;
-
-  accessLevel$
-  isAuthenticated$
-
-  
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
   USER_ACCESS = ACCESS_LEVEL_USER;
   TECH_ACCESS = ACCESS_LEVEL_TECH;
@@ -31,26 +25,12 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private store: Store<AppState>,
     private router: Router
-    ) {
-      this.loggedUser$ = this.authService.loggedUser$;
-
-      this.accessLevel$ = this.store.select(selectAccessLevel);
-      this.isAuthenticated$ = this.store.select(selectIsAuthenticated)
-
-      }
+  ) {
+    this.loggedUser$ = this.authService.loggedUser$;
+  }
 
   ngOnInit(): void {
 
-      // this.store.dispatch(autoLogin())
-      // this.userAccessLevel = this.authService.getUserAccessLevel();
-
-      this.accessLevel$.subscribe(( accessLevel: string | null) => {
-        if(accessLevel) {
-          this.userAccessLevel = accessLevel
-        } else {
-          this.userAccessLevel = null;
-        }
-      });
   }
 
   logout() {

@@ -512,3 +512,56 @@ export const DELETE_ORGANIZATION = gql`
     }
 `
 
+export const ADD_PART = gql`
+    mutation addPart(
+        $partNumber: String!
+        $description: String!
+        $data: String
+        $manufacturer: String
+        $cost: Float
+        $msrp: Float
+    ) {
+        addPart(
+            partNumber: $partNumber,
+            description: $description,
+            data: $data,
+            manufacturer: $manufacturer
+            cost: $cost,
+            msrp: $msrp
+        ) {
+            _id
+            partNumber
+            description
+            data
+            manufacturer
+            cost
+            msrp
+        }
+    }
+`
+
+export const EDIT_PART = gql`
+    mutation editPart($id: ID!, $updates: UpdatePartInput) {
+        editPart(_id: $id, updates: $updates) {
+            _id
+            partNumber
+            description
+            data
+            cost
+            msrp
+        }
+    }
+`
+
+export const DELETE_PART = gql`
+    mutation deletePart($id: ID!) {
+        deletePart(_id: $id) {
+            _id
+            partNumber
+            description
+            data
+            cost
+            msrp
+        }
+    }
+`

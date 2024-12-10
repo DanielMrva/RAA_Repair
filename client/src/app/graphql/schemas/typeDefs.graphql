@@ -97,6 +97,16 @@ type Organization {
   users: [User]
 }
 
+type Part {
+  _id: ID!
+  partNumber: String!
+  description: String!
+  data: String
+  manufacturer: String
+  cost: Float
+  msrp: Float
+}
+
 type Auth {
   token: ID!
   user: User!
@@ -126,6 +136,9 @@ type Query {
   orgLocRepairs(orgName: String!, locationName: String!): [Repair]
   likeOrg(orgName: String!): [Organization]
   repairByTag(startTag: Int!, engTag: Int): [Repair]
+  allParts: [Part]
+  part(partId: ID!): Part
+  partByNumDesc(partNumber: String, partDescription: String) [Part]
 }
 
 type Mutation {
@@ -209,6 +222,15 @@ type Mutation {
     primaryContact: String
   ): Location
 
+  addPart(
+    partNumber: String!
+    description: String!
+    data: String
+    manufacturer: String
+    cost: Float
+    msrp: Float
+  ): Part
+
   editRepair(_id: ID!, updates: UpdateRepairInput): Repair
 
   editRadio(_id: ID!, updates: UpdateRadioInput): Radio
@@ -219,6 +241,8 @@ type Mutation {
 
   editLocation(_id: ID!, updates: UpdateLocationInput): Location
 
+  editPart(_id: ID!, updates: UpdatePartUpdate): Part
+
   deleteRepair(_id: ID!): Repair
 
   deleteUser(_id: ID!): User
@@ -228,4 +252,8 @@ type Mutation {
   deleteLocation(_id: ID!): Location
 
   deleteOrganization(_id: ID!): Organization
+
+  deletePart(_id: ID!): Part
+
+
 }

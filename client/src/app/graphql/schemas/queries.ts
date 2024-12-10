@@ -1,5 +1,5 @@
 import { gql } from 'apollo-angular';
-import { USER_FIELDS_FRAGMENT, ORG_FIELDS_FRAGMENT, LOCATION_FIELDS_FRAGMENT, RADIO_FIELDS_FRAGMENT, SERVICE_RECORD_FRAGMENT, RADIO_DETAILS_FRAGMENT } from './fragments';
+import { USER_FIELDS_FRAGMENT, ORG_FIELDS_FRAGMENT, LOCATION_FIELDS_FRAGMENT, RADIO_FIELDS_FRAGMENT, SERVICE_RECORD_FRAGMENT, RADIO_DETAILS_FRAGMENT, PART_FIELDS_FRAGMENT } from './fragments';
 
 export const QUERY_USERS = gql`
     query users {
@@ -265,6 +265,36 @@ export const REPAIR_BY_TAG = gql`
     query repairByTag($startTag: Int!, $endTag: Int) {
         repairByTag(startTag: $startTag, endTag: $endTag) {
             ... ServiceRecordFragment
+        }
+    }
+`
+
+
+
+
+export const QUERY_PARTS = gql`
+    ${PART_FIELDS_FRAGMENT}
+    query allParts {
+        allParts {
+            ... PartFieldsFragment
+        }
+    }
+`
+
+export const QUERY_SINGLE_PART = gql`
+    ${PART_FIELDS_FRAGMENT}
+    query part($partId: String!) {
+        part(partId: $partId) {
+            ... PartFieldsFragment
+        }
+    }
+`
+
+export const QUERY_LIKE_PART_PN_PD = gql`
+    ${PART_FIELDS_FRAGMENT}
+    query partByNumDesc($partNumber: String, $partDescription: String) {
+        partByNumDesc(partNumber: $partNumber, partDescription: $partDescription) {
+            ... PartFieldsFragment
         }
     }
 `

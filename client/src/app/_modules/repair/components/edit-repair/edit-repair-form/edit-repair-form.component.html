@@ -8,11 +8,8 @@
     <div *ngIf="oneRepair$ | async as repair; else noRepairFound" class="container">
         <div class="row">
             <h2 class="col-12 text-center">Edit Repair # {{repair.repairTag}} Ticket
-                <ng-container *ngIf="userAccessLevel$ | async as userAccessLevel">
-                    <ng-container *ngIf="userAccessLevel === ADMIN_ACCESS">
-                        <app-deletion-button [document]="repair" [docType]="'repair'"></app-deletion-button>
-                    </ng-container>
-                </ng-container>
+                <app-deletion-button [document]="repair" [docType]="'repair'"
+                    *appAccessLevel="ADMIN_ACCESS"></app-deletion-button>
             </h2>
 
             <ng-template *ngIf="radioError$ as radioError">
@@ -299,34 +296,43 @@
                             placeholder="Repair Hours">
                     </mat-form-field>
 
-                    <ng-container *ngIf="userAccessLevel$ | async as accessLevel">
-                        <div formArrayName="workPerformed" class="col-12 col-lg-6">
-                            <mat-form-field *ngFor="let work of workPerformedArray.controls; let k = index"
-                                class="full-width-input">
-                                <input matInput [formControlName]="k" placeholder="Work Performed">
-                                <ng-container *ngIf="accessLevel !== USER_ACCESS">
-                                    <mat-icon matSuffix class="remove-icon text-danger"
-                                        *ngIf="workPerformedArray.length > 1" (click)="removeWorkPerformed(k)"
-                                        aria-label="remove work performed">remove_circle</mat-icon>
-                                    <mat-icon matSuffix class="add-icon" (click)="addWorkPerformed()"
-                                        aria-label="add work performed">add_circle</mat-icon>
-                                </ng-container>
-                            </mat-form-field>
-                        </div>
-                        <div formArrayName="partsUsed" class="col-12 col-lg-6">
-                            <mat-form-field *ngFor="let part of partsUsedArray.controls; let l = index"
-                                class="full-width-input">
-                                <input matInput [formControlName]="l" placeholder="Parts Used">
-                                <ng-container *ngIf="accessLevel !== USER_ACCESS">
-                                    <mat-icon matSuffix class="remove-icon text-danger"
-                                        *ngIf="partsUsedArray.length > 1" (click)="removePartsUsed(l)"
-                                        aria-label="remove parts used">remove_circle</mat-icon>
-                                    <mat-icon matSuffix class="add-icon" (click)="addPartsUsed()"
-                                        aria-label="add parts used">add_circle</mat-icon>
-                                </ng-container>
-                            </mat-form-field>
-                        </div>
-                    </ng-container>
+                    <div formArrayName="workPerformed" class="col-12 col-lg-6"
+                        *appAccessLevel="[ADMIN_ACCESS, TECH_ACCESS]; else noAccess">
+                        <mat-form-field *ngFor="let work of workPerformedArray.controls; let k = index"
+                            class="full-width-input">
+                            <input matInput [formControlName]="k" placeholder="Work Performed">
+                            <mat-icon *ngIf="workPerformedArray.length > 1" matSuffix class="remove-icon text-danger"
+                                (click)="removeWorkPerformed(k)" aria-label="remove work performed">
+                                remove_circle
+                            </mat-icon>
+                            <mat-icon matSuffix class="add-icon" (click)="addWorkPerformed()"
+                                aria-label="add work performed">
+                                add_circle
+                            </mat-icon>
+
+                        </mat-form-field>
+                    </div>
+                    <ng-template #noAccess>
+                        <mat-form-field *ngFor="let work of workPerformedArray.controls; let k = index"
+                            class="full-width-input">
+                            <input matInput [formControlName]="k" placeholder="Work Performed">
+                            <mat-icon *ngIf="workPerformedArray.length > 1" matSuffix class="remove-icon text-danger"
+                                (click)="removeWorkPerformed(k)" aria-label="remove work performed">
+                                remove_circle
+                            </mat-icon>
+                            <mat-icon matSuffix class="add-icon" (click)="addWorkPerformed()"
+                                aria-label="add work performed">
+                                add_circle
+                            </mat-icon>
+
+                        </mat-form-field>
+                    </ng-template>
+
+                    <div class="col-12 col-lg-6">
+                        <app-part-selector-dropdown [initialPartsUsed]="partsUsedArray.value"
+                            (partsUsedChange)="updatePartsUsed($event)">
+                        </app-part-selector-dropdown>
+                    </div>
 
 
                     <mat-form-field class="form-group col-12">
