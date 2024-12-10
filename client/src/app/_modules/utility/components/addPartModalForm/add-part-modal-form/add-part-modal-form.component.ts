@@ -19,7 +19,7 @@ export class AddPartModalFormComponent {
     partNumber: new FormControl<string>('', Validators.required),
     description: new FormControl<string>('', Validators.required),
     manufacturer: new FormControl<string>(''),
-    cost: new FormArray([ new FormControl<number>(0)]),
+    cost: new FormControl<number>(0),
     msrp: new FormControl<number>(0)
   });
 
@@ -36,9 +36,7 @@ export class AddPartModalFormComponent {
         partNumber: partData.partNumber ?? '',
         description: partData.description ?? '',
         manufacturer: partData.manufacturer ?? '',
-        cost: Array.isArray(partData.cost)
-        ? (partData.cost.filter((value) => typeof value === 'number') as number[])
-        : [partData.cost ?? 0],        
+        cost: partData.cost ?? 0,    
         msrp: partData.msrp ?? 0
       }
       const concatenatedValue = `${partData.partNumber} - ${partData.description}`;
