@@ -433,7 +433,7 @@ const resolvers = {
                 });
 
                 await Location.findOneAndUpdate(
-                    { locationName: locationName },
+                    { locationName: locationName, orgName: orgName },
                     { $addToSet: { radios: newRadio._id } }
                 );
 
