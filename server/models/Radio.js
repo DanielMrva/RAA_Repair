@@ -66,67 +66,56 @@ const radioSchema = new Schema({
 
 radioSchema.statics.updateLocation = async function (_id, newLocationName) {
     try {
-        const radio = await this.findById(_id);
+        // if (!mongoose.Types.ObjectId.isValid(_id)) {
+        //     throw new Error('Invalid radio ID');
+        // }
 
+        const radio = await this.findById(_id);
         if (!radio) {
-            throw new Error('Radio Not Found');
+            throw new Error('Radio not found');
         }
 
         const oldLocationName = radio.locationName;
 
         if (oldLocationName !== newLocationName) {
-            console.log(`update: ${oldLocationName} to ${newLocationName}`);
+            console.log(`Updating location from '${oldLocationName}' to '${newLocationName}'`);
 
             // Remove radio from old location
             await Location.findOneAndUpdate(
-                { locationName: oldLocationName },
+                { locationName: oldLocationName, orgName: radio.orgName },
                 { $pull: { radios: _id } }
             );
 
             // Check if the new location exists
-            const newLocation = await Location.findOne({ locationName: newLocationName });
+            const newLocation = await Location.findOneAndUpdate(
+                { locationName: newLocationName, orgName: radio.orgName },
+                { $addToSet: { radios: _id } },
+                { new: true } // Return the modified document
+            );
 
             if (!newLocation) {
                 throw new Error(`Location '${newLocationName}' does not exist.`);
             }
 
-            // Check if the new location already contains the radio._id
-            if (!newLocation.radios.includes(_id)) {
-                // Add radio to new location if not already present
-                await Location.findOneAndUpdate(
-                    { locationName: newLocationName },
-                    { $addToSet: { radios: _id } }
-                );
-            } else {
-                console.log(`Radio already exists in new location: ${newLocationName}`);
-            }
-
-            // Update the radio document with the new location
+            // Update the radio's location name
             radio.locationName = newLocationName;
             await radio.save();
-        } else if (oldLocationName === newLocationName) {
-            console.log(`Possible Self-Edit location: from ${oldLocationName} to ${newLocationName}`);
+        } else {
+            console.log(`Possible self-edit: '${oldLocationName}' to '${newLocationName}'`);
 
-            // Check if the current location exists
-            const currentLocation = await Location.findOne({ locationName: oldLocationName });
+            // Ensure the radio is listed in the current location
+            const currentLocation = await Location.findOneAndUpdate(
+                { locationName: oldLocationName, orgName: radio.orgName },
+                { $addToSet: { radios: _id } },
+                { new: true }
+            );
 
             if (!currentLocation) {
                 throw new Error(`Location '${oldLocationName}' does not exist.`);
             }
-
-            // Check if the current location already contains the radio._id
-            if (!currentLocation.radios.includes(_id)) {
-                // Add radio._id to the current location if not already present
-                await Location.findOneAndUpdate(
-                    { locationName: oldLocationName },
-                    { $addToSet: { radios: _id } }
-                );
-            } else {
-                console.log(`Radio already exists in location: ${oldLocationName}`);
-            }
         }
     } catch (error) {
-        console.log(`Radio Model - updateLocation error: ${error}`);
+        console.error(`Failed to update radio location: ${error.message}`);
         throw new Error(`Failed to update radio location: ${error.message}`);
     }
 };
