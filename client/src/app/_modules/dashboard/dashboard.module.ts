@@ -16,6 +16,7 @@ import { DashboardRepairsTableComponent } from './components/dashboard-repairs-t
 import { TechDashboardComponent } from './components/tech-dashboard/tech-dashboard.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 import { UtilityModule } from '../utility/utility.module';
+import { DashboardPartsTableComponent } from './components/dashboard-parts-table/dashboard-parts-table.component';
 
 
 
@@ -25,7 +26,8 @@ import { UtilityModule } from '../utility/utility.module';
     AdminDashboardComponent,
     DashboardRepairsTableComponent,
     TechDashboardComponent,
-    UserDashboardComponent
+    UserDashboardComponent,
+    DashboardPartsTableComponent
   ],
   imports: [
     CommonModule,

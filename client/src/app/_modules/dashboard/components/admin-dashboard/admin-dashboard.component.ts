@@ -9,6 +9,8 @@ import {
   selectRepairsAtTechnician,
   selectCompleteRepairs
 } from '@app/_store/_repair-store/repair.selectors';
+import { selectAllParts } from '@app/_store/_part-store/part.selectors';
+import { loadAllParts } from '@app/_store/_part-store/part.actions';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -22,11 +24,13 @@ export class AdminDashboardComponent implements OnInit{
   raaRepairs$ = this.store.select(selectRepairsAtRAA);
   techRepairs$ = this.store.select(selectRepairsAtTechnician);
   completeRepairs$ = this.store.select(selectCompleteRepairs);
+  allParts$ = this.store.select(selectAllParts);
 
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.store.dispatch(loadAllRepairs());
+    this.store.dispatch(loadAllParts());
   }
 
 }

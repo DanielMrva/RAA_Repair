@@ -188,7 +188,7 @@ const resolvers = {
                 $and: []
             };
 
-            if (partNumer) {
+            if (partNumber) {
                 query.$and.push({ partNumber: { $regex: new RegExp(partNumber, 'i') } });
             }
 

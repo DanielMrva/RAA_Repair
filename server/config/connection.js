@@ -3,6 +3,7 @@ if (process.env.NODE_ENV == 'production') {
 } else {
     require ('dotenv').config({path: '.env.development'});
 }
+
 const mongoose = require("mongoose");
 
 const developmentMongoDBURI = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}/${process.env.DB_NAME}`;
@@ -26,3 +27,5 @@ mongoose.connect(getDatabaseUri(), {
   .catch(err => console.log('MongoDB connection error:', err));
 
 module.exports = mongoose.connection;
+
+
