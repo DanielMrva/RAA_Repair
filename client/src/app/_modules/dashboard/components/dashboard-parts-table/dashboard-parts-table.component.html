@@ -36,6 +36,7 @@
           <th mat-header-cell *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let part">
             <app-deletion-button [docType]="'part'" [document]="part"></app-deletion-button>
+            <app-edit-document-button [docID]="part._id" [docType]="'part'"></app-edit-document-button>
           </td>
         </ng-container>
   

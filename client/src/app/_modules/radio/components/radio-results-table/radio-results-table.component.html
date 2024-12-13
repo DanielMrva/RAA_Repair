@@ -7,8 +7,11 @@
                     Location
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.locationName }}
-                </td>
+                    {{ element.orgName }}
+                    <br>
+                    -
+                    <br>
+                    {{ element.locationName }}                </td>
             </ng-container>
 
             <ng-container matColumnDef="datePurchased">

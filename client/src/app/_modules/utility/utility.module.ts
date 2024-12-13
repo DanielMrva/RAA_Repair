@@ -29,6 +29,7 @@ import { PartEffects } from '@app/_store/_part-store/part.effects';
 import { IsAuthenticatedDirective } from '@app/_directives/is-authenticated.directive';
 import { AccessLevelDirective } from '@app/_directives/access-level.directive';
 import { AddPartModalFormComponent } from './components/addPartModalForm/add-part-modal-form/add-part-modal-form.component';
+import { EditDocumentButtonComponent } from './components/edit-document-button/edit-document-button.component';
 
 
 
@@ -49,7 +50,8 @@ import { AddPartModalFormComponent } from './components/addPartModalForm/add-par
     PartSelectorDropdownComponent,
     IsAuthenticatedDirective,
     AccessLevelDirective,
-    AddPartModalFormComponent
+    AddPartModalFormComponent,
+    EditDocumentButtonComponent
   ],
   imports: [
     CommonModule,
@@ -81,7 +83,8 @@ import { AddPartModalFormComponent } from './components/addPartModalForm/add-par
     PartSelectorDropdownComponent,
     IsAuthenticatedDirective,
     AccessLevelDirective,
-    AddPartModalFormComponent
+    AddPartModalFormComponent,
+    EditDocumentButtonComponent
   ]
 })
 export class UtilityModule { }
