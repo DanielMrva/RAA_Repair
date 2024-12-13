@@ -1,8 +1,8 @@
 <div class="container py-3">
   <div class="row">
-    <h4 class="col-12 d-flex justify-content-center">Add New Part</h4>
+    <h4 class="col-12 d-flex justify-content-center">{{ partID ? 'Edit Part' : 'Add New Part'}}</h4>
   </div>
-  <form [formGroup]="addPartForm" (ngSubmit)="submitForm()" class="row">
+  <form [formGroup]="partForm" (ngSubmit)="submitForm()" class="row">
     <mat-form-field class="form-group col-12">
       <mat-label for="partNumber">
         Part Number:
@@ -12,8 +12,12 @@
         placeholder="Part Number"
         aria-label="Part Number"
         matInput
-        [formControl]="addPartForm.controls.partNumber"
+        [formControl]="partForm.controls.partNumber"
+        [class.invalid]="isDuplicatePartNumber(partForm.get('partNumber')?.value || '')"
       >
+      <small *ngIf="isDuplicatePartNumber(partForm.get('partNumber')?.value || '')">
+        Part number already exists.
+      </small>
     </mat-form-field>
     <mat-form-field class="form-group col-12">
       <mat-label for="description">
@@ -24,8 +28,12 @@
         placeholder="Part Description"
         aria-label="Part Description"
         matInput
-        [formControl]="addPartForm.controls.description"
+        [formControl]="partForm.controls.description"
+        [class.invalid]="isDuplicateDescription(partForm.get('description')?.value || '', partForm.get('partNumber')?.value || '')"
       >
+      <small *ngIf="isDuplicateDescription(partForm.get('description')?.value || '', partForm.get('partNumber')?.value || '')">
+        Description with that Part Number already exists.
+      </small>
     </mat-form-field>
   
     <mat-form-field class="form-group col-12">
@@ -37,12 +45,12 @@
         placeholder="Manufacturer"
         aria-label="Manufacturer"
         matInput
-        [formControl]="addPartForm.controls.manufacturer"
+        [formControl]="partForm.controls.manufacturer"
       >
     </mat-form-field>
   
     <div class="col-12 d-flex justify-content-center">
-      <button type="submit" class="btn btn-primary" [disabled]="addPartForm.invalid">Submit</button>
+      <button type="submit" class="btn btn-primary" [disabled]="partForm.invalid">{{partID ? 'Save Changes' : 'Add Part'}}</button>
       <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
   
     </div>

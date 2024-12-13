@@ -131,8 +131,8 @@ export class PartEffects {
             map(({ part }) => {
                 this.toastService.show('Part edited successfully!', {
                     delay: 3000
-                }),
-                    this.router.navigate(['one-part', part?._id])
+                })
+                    // this.router.navigate(['one-part', part?._id])
             })
         ),
         { dispatch: false }

@@ -1,0 +1,50 @@
+<div class="d-flex flex-column flex-grow-1">
+    <div class="flex-grow-1 overflow-auto">
+      <table class="table w-100" mat-table [dataSource]="dataSource" matSort>
+        <!-- Part Number Column -->
+        <ng-container matColumnDef="partNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Part Number </th>
+          <td mat-cell *matCellDef="let part">{{part.partNumber}}</td>
+        </ng-container>
+  
+        <!-- Description Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+          <td mat-cell *matCellDef="let part">{{part.description}}</td>
+        </ng-container>
+  
+        <!-- Manufacturer Column -->
+        <ng-container matColumnDef="manufacturer">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Manufacturer </th>
+          <td mat-cell *matCellDef="let part">{{part.manufacturer}}</td>
+        </ng-container>
+  
+        <!-- Cost Column -->
+        <ng-container matColumnDef="cost">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cost </th>
+          <td mat-cell *matCellDef="let part">{{part.cost | currency}}</td>
+        </ng-container>
+  
+        <!-- MSRP Column -->
+        <ng-container matColumnDef="msrp">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> MSRP </th>
+          <td mat-cell *matCellDef="let part">{{part.msrp | currency}}</td>
+        </ng-container>
+  
+        <!-- Edit Column -->
+        <ng-container matColumnDef="editColumn">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let part">
+            <app-deletion-button [docType]="'part'" [document]="part"></app-deletion-button>
+            <app-edit-document-button [docID]="part._id" [docType]="'part'"></app-edit-document-button>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" class="mt-auto"></mat-paginator>
+  </div>
+  
