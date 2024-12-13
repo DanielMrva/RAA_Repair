@@ -66,9 +66,6 @@ const radioSchema = new Schema({
 
 radioSchema.statics.updateLocation = async function (_id, newLocationName) {
     try {
-        // if (!mongoose.Types.ObjectId.isValid(_id)) {
-        //     throw new Error('Invalid radio ID');
-        // }
 
         const radio = await this.findById(_id);
         if (!radio) {
@@ -76,21 +73,30 @@ radioSchema.statics.updateLocation = async function (_id, newLocationName) {
         }
 
         const oldLocationName = radio.locationName;
+        const orgName = radio.orgName;
 
+        // Step 1: Cleanup - Remove the radio from locations where it doesn't belong
+        console.log(`Cleaning up misplaced radio assignments for radio ID: ${_id}`);
+        await Location.updateMany(
+            { radios: _id, $or: [{ locationName: { $ne: oldLocationName } }, { orgName: { $ne: orgName } }] },
+            { $pull: { radios: _id } }
+        );
+
+        // Step 2: Handle location change
         if (oldLocationName !== newLocationName) {
             console.log(`Updating location from '${oldLocationName}' to '${newLocationName}'`);
 
-            // Remove radio from old location
+            // Remove the radio from the old location
             await Location.findOneAndUpdate(
-                { locationName: oldLocationName, orgName: radio.orgName },
+                { locationName: oldLocationName, orgName: orgName },
                 { $pull: { radios: _id } }
             );
 
             // Check if the new location exists
             const newLocation = await Location.findOneAndUpdate(
-                { locationName: newLocationName, orgName: radio.orgName },
+                { locationName: newLocationName, orgName: orgName },
                 { $addToSet: { radios: _id } },
-                { new: true } // Return the modified document
+                { new: true }
             );
 
             if (!newLocation) {
@@ -103,9 +109,9 @@ radioSchema.statics.updateLocation = async function (_id, newLocationName) {
         } else {
             console.log(`Possible self-edit: '${oldLocationName}' to '${newLocationName}'`);
 
-            // Ensure the radio is listed in the current location
+            // Ensure the radio is listed in the correct location
             const currentLocation = await Location.findOneAndUpdate(
-                { locationName: oldLocationName, orgName: radio.orgName },
+                { locationName: oldLocationName, orgName: orgName },
                 { $addToSet: { radios: _id } },
                 { new: true }
             );
@@ -119,6 +125,7 @@ radioSchema.statics.updateLocation = async function (_id, newLocationName) {
         throw new Error(`Failed to update radio location: ${error.message}`);
     }
 };
+
 
 radioSchema.statics.deleteByIdAndCleanupRepairs = async function (_id) {
     try {
