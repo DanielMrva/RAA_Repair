@@ -64,68 +64,71 @@ const radioSchema = new Schema({
     }
 });
 
-radioSchema.statics.updateLocation = async function (_id, newLocationName) {
-    try {
+radioSchema.statics.updateLocationAndOrganization = async function (_id, updatedOrgName, updatedLocationName) {
 
+    try {
         const radio = await this.findById(_id);
+
         if (!radio) {
-            throw new Error('Radio not found');
+            throw new Error(`Radio ${_id} not found`)
         }
 
         const oldLocationName = radio.locationName;
-        const orgName = radio.orgName;
+        const oldOrgName = radio.orgName;
 
-        // Step 1: Cleanup - Remove the radio from locations where it doesn't belong
+        // Step 1: Cleanup of any potential misplaced radio assignments
         console.log(`Cleaning up misplaced radio assignments for radio ID: ${_id}`);
         await Location.updateMany(
-            { radios: _id, $or: [{ locationName: { $ne: oldLocationName } }, { orgName: { $ne: orgName } }] },
+            { radios: _id, $or: [{ locationName: { $ne: oldLocationName } }, { orgName: { $ne: oldOrgName } }] },
             { $pull: { radios: _id } }
         );
 
-        // Step 2: Handle location change
-        if (oldLocationName !== newLocationName) {
-            console.log(`Updating location from '${oldLocationName}' to '${newLocationName}'`);
 
-            // Remove the radio from the old location
-            await Location.findOneAndUpdate(
-                { locationName: oldLocationName, orgName: orgName },
+        // Step 2: Check if changes are neccessary
+        const orgChanged = updatedOrgName && updatedOrgName !== oldOrgName;
+        const locationChanged = updatedLocationName && updatedLocationName !== oldLocationName;
+
+        if (!orgChanged && !locationChanged) {
+            console.log(`No changes to orgName or locationName for ${_id}`);
+            return
+        }
+
+        // Step 3: Add the radio to the new location
+        const targetLocation = await Location.findOneAndUpdate(
+            { locationName: updatedLocationName, orgName: updatedOrgName || oldOrgName },
+            { $addToSet: { radios: _id } },
+            { new: true }
+        );
+
+        if (!targetLocation) {
+            throw new Error(`Target location ${updatedLocationName} for organization ${updatedOrgName} does not exist.`);
+        }
+
+        console.log(`Radio ${_id} added to ${updatedOrgName || oldOrgName} - ${updatedLocationName}`);
+
+        // Step 4: Update the old location if necessary
+        if (orgChanged || locationChanged) {
+            await Location.updateOne(
+                { locationName: oldLocationName, orgName: oldOrgName },
                 { $pull: { radios: _id } }
             );
-
-            // Check if the new location exists
-            const newLocation = await Location.findOneAndUpdate(
-                { locationName: newLocationName, orgName: orgName },
-                { $addToSet: { radios: _id } },
-                { new: true }
-            );
-
-            if (!newLocation) {
-                throw new Error(`Location '${newLocationName}' does not exist.`);
-            }
-
-            // Update the radio's location name
-            radio.locationName = newLocationName;
-            await radio.save();
-        } else {
-            console.log(`Possible self-edit: '${oldLocationName}' to '${newLocationName}'`);
-
-            // Ensure the radio is listed in the correct location
-            const currentLocation = await Location.findOneAndUpdate(
-                { locationName: oldLocationName, orgName: orgName },
-                { $addToSet: { radios: _id } },
-                { new: true }
-            );
-
-            if (!currentLocation) {
-                throw new Error(`Location '${oldLocationName}' does not exist.`);
-            }
+            console.log(`Radio ${_id} removed from ${oldOrgName} - ${oldLocationName}`);
         }
+
+        // Step 5: Update the radio document
+        radio.locationName = updatedLocationName;
+        if (orgChanged) {
+            radio.orgName = updatedOrgName;
+        }
+        await radio.save();
+
+        console.log(`Radio ${_id} updated: locationName -> ${updatedLocationName}, orgName -> ${updatedOrgName || oldOrgName}`);
+
     } catch (error) {
-        console.error(`Failed to update radio location: ${error.message}`);
-        throw new Error(`Failed to update radio location: ${error.message}`);
+        console.error(`Failed to update radio location and organization: ${error.message}`);
+        throw new Error(`Failed to update radio: ${error.message}`);
     }
 };
-
 
 radioSchema.statics.deleteByIdAndCleanupRepairs = async function (_id) {
     try {

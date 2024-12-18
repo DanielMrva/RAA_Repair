@@ -44,8 +44,8 @@ export class AddLocationComponent implements OnInit, OnDestroy {
   locationList!: Location[];
 
   locationForm = new FormGroup({
-    locationName: new FormControl<string>('', Validators.required),
-    orgName: new FormControl<string>('', {validators: [Validators.required]}),
+    locationName: new FormControl<string>('', {validators: [Validators.required, this.locationNameValidator]}),
+    orgName: new FormControl<string>('', Validators.required),
     street: new FormControl<string>(''),
     suite: new FormControl<string>(''),
     city: new FormControl<string>(''),

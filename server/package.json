@@ -10,7 +10,8 @@
     "seed": "SET NODE_ENV=development & node seeding/seed.js",
     "seedParts":"SET NODE_ENV=development & node seeding/seedParts.js",
     "prodSeedParts":"SET NODE_ENV=production & node seeding/seedParts.js",
-    "prodSeed": "SET NODE_ENV=production & node seeding/prodSeed/prodSeed.js"
+    "prodSeed": "SET NODE_ENV=production & node seeding/prodSeed/prodSeed.js",
+    "seedFixes": "SET NODE_ENV=development & node seeding/fixMeData/fixSeed.js"
   },
   "keywords": [],
   "author": "",

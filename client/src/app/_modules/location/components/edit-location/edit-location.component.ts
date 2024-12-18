@@ -56,7 +56,7 @@ export class EditLocationComponent implements OnInit, OnDestroy {
   }
 
   editLocationForm = new FormGroup({
-    locationName: new FormControl<string>('', Validators.required),
+    locationName: new FormControl<string>('', {validators: [Validators.required, this.locationNameValidator]}),
     orgName: new FormControl<string>('', Validators.required),
     street: new FormControl<string>(''),
     suite: new FormControl<string>(''),

@@ -131,6 +131,9 @@ export class LocationEffects {
             ofType(LocationActions.addLocationSuccess),
             tap(({ location }) => {
                 this.toastService.show('Location added successfully!', { delay: 3000 });
+                if(location) {
+                    LocationActions.loadOneLocation({locationId: location?._id})
+                }
                 this.router.navigate(['one-location', location?._id]);
             }),
             switchMap(() => [

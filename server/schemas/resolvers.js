@@ -180,10 +180,10 @@ const resolvers = {
         allParts: async () => {
             return Part.find();
         },
-        part: async (parent, {partId}) => {
+        part: async (parent, { partId }) => {
             return Part.findById(partId);
         },
-        partByNumDesc: async (parent, { partNumber, partDescription}) => {
+        partByNumDesc: async (parent, { partNumber, partDescription }) => {
             const query = {
                 $and: []
             };
@@ -437,6 +437,12 @@ const resolvers = {
                     { $addToSet: { radios: newRadio._id } }
                 );
 
+                // Faulty Radio-location association method.  Revert when done testing
+                // await Location.findOneAndUpdate(
+                //     {locationName: locationName},
+                //     {$addToSet: { radio: newRadio._id}}
+                // )
+
                 return newRadio;
 
             } catch (error) {
@@ -557,7 +563,7 @@ const resolvers = {
 
 
         addPart: async (
-            parent, 
+            parent,
             {
                 partNumber,
                 description,
@@ -568,51 +574,51 @@ const resolvers = {
             }
         ) => {
 
-        
-          // Check for required fields early
-          if (!partNumber || !description) {
-            throw new GraphQLError('partNumber and description are required.', {
-              extensions: { code: 'BAD_USER_INPUT' }
-            });
-          }
-        
-          try {
-            // Check if the part already exists based on partNumber (assuming it's unique)
-            const existingPart = await Part.findOne({ partNumber, description });
-        
-            if (existingPart) {
-              throw new GraphQLError(
-                `Part with partNumber ${partNumber} and ${description} already exists. Please try again.`,
-                {
-                  extensions: {
-                    code: 'PART_EXISTS',
-                    argumentName: 'partNumber, description'
-                  }
-                }
-              );
+
+            // Check for required fields early
+            if (!partNumber || !description) {
+                throw new GraphQLError('partNumber and description are required.', {
+                    extensions: { code: 'BAD_USER_INPUT' }
+                });
             }
-        
-            // Create the new part in the database
-            const newPart = await Part.create({
-              partNumber,
-              description,
-              data,
-              manufacturer,
-              cost,
-              msrp
-            });
-        
-            return newPart;
-          } catch (error) {
-            console.error('Error creating part:', error);
-        
-            // Return a generic error for the client, while logging the actual error for debugging
-            throw new GraphQLError('Failed to submit part.', {
-              extensions: { code: 'SUBMIT_PART_ERROR' }
-            });
-          }
+
+            try {
+                // Check if the part already exists based on partNumber (assuming it's unique)
+                const existingPart = await Part.findOne({ partNumber, description });
+
+                if (existingPart) {
+                    throw new GraphQLError(
+                        `Part with partNumber ${partNumber} and ${description} already exists. Please try again.`,
+                        {
+                            extensions: {
+                                code: 'PART_EXISTS',
+                                argumentName: 'partNumber, description'
+                            }
+                        }
+                    );
+                }
+
+                // Create the new part in the database
+                const newPart = await Part.create({
+                    partNumber,
+                    description,
+                    data,
+                    manufacturer,
+                    cost,
+                    msrp
+                });
+
+                return newPart;
+            } catch (error) {
+                console.error('Error creating part:', error);
+
+                // Return a generic error for the client, while logging the actual error for debugging
+                throw new GraphQLError('Failed to submit part.', {
+                    extensions: { code: 'SUBMIT_PART_ERROR' }
+                });
+            }
         },
-        
+
         // End Add Part
 
         editRepair: async (parent, { _id, updates }) => {
@@ -640,23 +646,27 @@ const resolvers = {
 
         editRadio: async (parent, { _id, updates }) => {
             try {
-                // Handle location update
-                if (updates.locationName) {
-                    await Radio.updateLocation(_id, updates.locationName);
+
+                if (updates.orgName && !updates.locationName) {
+                    throw new GraphQLError('Cannot edit radio: Both orgName and locationName must be provided together.', {
+                        extensions: { code: 'Edit_Radio_Error_Org&!Loc' }
+                    });
                 }
 
-                // Handle make and serial number updates in a single call if both are present
-                if (updates.make && updates.serialNumber) {
-                    await Radio.updateRepairsWithNewRadioInfo(_id, { make: updates.make, serialNumber: updates.serialNumber });
-                } else {
-                    // Handle make update separately if only make is provided
-                    if (updates.make) {
-                        await Radio.updateRepairsWithNewRadioInfo(_id, { make: updates.make });
-                    }
-                    // Handle serial number update separately if only serialNumber is provided
-                    if (updates.serialNumber) {
-                        await Radio.updateRepairsWithNewRadioInfo(_id, { serialNumber: updates.serialNumber });
-                    }
+
+                // Handle location update only
+                if (updates.locationName || updates.orgName) {
+                    console.log(`Updating with Radio.updateLocation`)
+                    await Radio.updateLocationAndOrganization(_id, updates.orgName, updates.locationName);
+                }
+
+
+                // Handle make and serial number updates
+                if (updates.make || updates.serialNumber) {
+                    await Radio.updateRepairsWithNewRadioInfo(_id, {
+                        make: updates.make,
+                        serialNumber: updates.serialNumber
+                    });
                 }
 
                 // Update the radio document itself
@@ -735,7 +745,7 @@ const resolvers = {
 
                     await Organization.updateRadiosOrg(oldOrgName, updates.orgName);
 
-                    await Organization.updateLocationsOrg(oldOrgName, updates.oldName)
+                    await Organization.updateLocationOrg(oldOrgName, updates.orgName)
 
                 }
 

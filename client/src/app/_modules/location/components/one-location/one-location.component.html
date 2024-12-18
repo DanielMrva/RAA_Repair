@@ -12,8 +12,7 @@
 
         <div class="row">
             <h2 class="col-12 text-center">
-                {{location.locationName}}
-                <a [routerLink]="['/edit-location', location._id]" *appAccessLevel="ADMIN_ACCESS">EDIT</a>
+                {{location.orgName}} - {{location.locationName}} <a [routerLink]="['/edit-location', location._id]" *appAccessLevel="ADMIN_ACCESS">EDIT</a>
             </h2>
 
             <div class="col-12 col-lg-4">
