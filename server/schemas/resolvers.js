@@ -831,7 +831,7 @@ const resolvers = {
         // End Delete User
         deleteRadio: async (parent, { _id }) => {
             try {
-                const deletedRadio = await Radio.deleteByIdAndCleanupRepairs(_id); // Using a static method on the model
+                const deletedRadio = await Radio.deleteByIdAndCleanup(_id); // Using a static method on the model
                 return deletedRadio;
             } catch (error) {
                 console.log(`Resolver error: ${error.message}`);
