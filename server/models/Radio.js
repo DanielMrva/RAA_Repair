@@ -130,7 +130,7 @@ radioSchema.statics.updateLocationAndOrganization = async function (_id, updated
     }
 };
 
-radioSchema.statics.deleteByIdAndCleanupRepairs = async function (_id) {
+radioSchema.statics.deleteByIdAndCleanup = async function (_id) {
     try {
         const radioToDelete = await this.findById(_id);
 
@@ -138,19 +138,73 @@ radioSchema.statics.deleteByIdAndCleanupRepairs = async function (_id) {
             throw new Error('Radio not found');
         }
 
-        // If there are any repairs associated with the radio, delete them
-        if (radioToDelete.serviceRecord.length > 0) {
-            await Repair.deleteMany({ _id: { $in: radioToDelete.serviceRecord } });
+        const orgName = radioToDelete.orgName;
+        const locationName = radioToDelete.locationName;
+
+        console.log(`Starting cleanup for radio ${_id}...`);
+
+        // Step 1: Remove the radio from its associated location
+        const homeLocation = await Location.findOneAndUpdate(
+            { locationName: locationName, orgName: orgName },
+            { $pull: { radios: _id } }
+        );
+
+        if (homeLocation) {
+            console.log(`Radio ${_id} removed from location ${locationName} - ${orgName}`);
+        } else {
+            console.warn(`Location ${locationName} - ${orgName} not found. Skipping location cleanup.`);
         }
 
-        // Delete the radio
+        // Step 2: Delete associated repairs
+        let repairsDeleted = 0;
+        if (radioToDelete.serviceRecord.length > 0) {
+            const repairResult = await Repair.deleteMany({ _id: { $in: radioToDelete.serviceRecord } });
+            repairsDeleted = repairResult.deletedCount;
+            console.log(`Deleted ${repairsDeleted} associated repairs for radio ${_id}`);
+        } else {
+            console.log(`No repairs to delete for radio ${_id}`);
+        }
+
+        // Step 3: Delete the radio itself
         const deletedRadio = await this.findByIdAndDelete(_id);
-        return deletedRadio;
+        console.log(`Radio ${_id} successfully deleted.`);
+
+        // Return details about the cleanup process
+        return deletedRadio
     } catch (error) {
         console.error(`Failed to delete radio and cleanup repairs: ${error}`);
         throw new Error(`Failed to delete radio and associated repairs: ${error.message}`);
     }
 };
+
+radioSchema.statics.cleanupDeletedRadioLocations = async function (_id) {
+    try {
+
+        const radio = await this.findById(_id)
+
+        if (!radio) {
+            throw new Error(`Radio ${_id} not found`)
+        }
+
+        const orgName = radio.orgName;
+        const locationName = radio.locationName;
+
+        const homeLocation = await Location.findByIdAndUpdate(
+            {locationName: locationName, orgName: orgName},
+            {radios: {$pull: _id }}
+        );
+
+        if (!homeLocation) {
+            throw new Error(`Location ${locationName} - ${orgName} not found.`)
+        }
+
+
+
+    } catch (error) {
+        console.error(`Failed to update radio's location: ${error.message}`);
+        throw new Error(`Failed to delete radio: ${error.message}`);
+    }
+}
 
 radioSchema.statics.updateRepairsWithNewRadioInfo = async function (_id, updates = {}) {
     try {
