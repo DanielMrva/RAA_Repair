@@ -831,7 +831,7 @@ const resolvers = {
         // End Delete User
         deleteRadio: async (parent, { _id }) => {
             try {
-                const deletedRadio = await Radio.deleteByIdAndCleanup(_id); // Using a static method on the model
+                const deletedRadio = await Radio.deleteByIdAndCleanup(_id);
                 return deletedRadio;
             } catch (error) {
                 console.log(`Resolver error: ${error.message}`);
@@ -859,6 +859,15 @@ const resolvers = {
             }
         },
         // End Delete Organization
+        deletePart: async (parent, { _id }) => {
+            try {
+                const deletedPart = await Part.findByIdAndDelete({ _id });
+                return deletedPart
+            } catch (error) {
+                console.log(`resolver error: ${error.message}`);
+                throw new GraphQLError(`Failed to Delete Part, ${error.message}`);
+            }
+        }
 
     }
 };

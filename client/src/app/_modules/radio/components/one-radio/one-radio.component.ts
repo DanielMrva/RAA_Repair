@@ -1,13 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Radio, statusType } from '@app/graphql/schemas/typeInterfaces';
 import { AppState} from '@app/_store/app.state';
-import { RadioState } from '@app/_store/_radio-store/radio.reducers';
 import { Store } from '@ngrx/store';
 import { loadOneRadio, loadSerialRadio} from '@app/_store/_radio-store/radio.actions';
 import { selectOneRadio, radioLoadingSelector, radioErrorSelector } from '@app/_store/_radio-store/radio.selectors';
 import { Subscription } from 'rxjs';
-import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
 import { ACCESS_LEVEL_ADMIN } from '@app/utils/constants';
 
 @Component({

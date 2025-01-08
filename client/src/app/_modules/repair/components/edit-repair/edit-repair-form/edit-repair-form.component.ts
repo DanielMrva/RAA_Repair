@@ -11,8 +11,7 @@ import { MismatchModalService } from '@app/services/modal/mismatch-modal.service
 import { AddPartModalService } from '@app/services/modal/add-part-modal.service';
 import { first, of, withLatestFrom, Subscription, combineLatest } from 'rxjs';
 import { filterEmptyArrayValues } from '@app/utils/filterEmptyArray';
-import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
-import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER } from '@app/utils/constants';
+import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER, AccessLevel } from '@app/utils/constants';
 import { AccessControlService } from '@app/services/accessControl/access-control.service';
 import { updateArrayControl } from '@app/utils/updateArrayControl';
 
@@ -31,7 +30,6 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
   isLoading$;
   repairError$;
   oneRepair$;
-  userAccessLevel$;
   USER_ACCESS = ACCESS_LEVEL_USER;
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
   TECH_ACCESS = ACCESS_LEVEL_TECH;
@@ -63,11 +61,13 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     'Other (specify)'
   ];
 
-  private editableFields = {
-    [ACCESS_LEVEL_ADMIN]: ['*'],
-    [ACCESS_LEVEL_TECH]: ['dateSentRaaTech', 'repairStatus', 'techInvNum', 'accessories', 'symptoms', 'testFreq', 'incRxSens', 'incFreqErr', 'incMod', 'incPowerOut', 'outRxSens', 'outFreqErr', 'outMod', 'outPowerOut', 'workPerformed', 'partsUsed', 'remarks', 'repHours'],
-    [ACCESS_LEVEL_USER]: ['radioOrg', 'radioLocation', 'reportedBy', 'repairStatus', 'dateRepairAdded', 'dateSentEuRaa', 'dateSentRaaEu', 'accessories', 'symptoms']
+
+  private editableFields: Record<AccessLevel, string[]> = {
+    admin: ['*'],
+    tech: ['dateSentRaaTech', 'repairStatus', 'techInvNum', 'accessories', 'symptoms', 'testFreq', 'incRxSens', 'incFreqErr', 'incMod', 'incPowerOut', 'outRxSens', 'outFreqErr', 'outMod', 'outPowerOut', 'partsUsed', 'remarks', 'repHours', 'workPerformed'],
+    user: ['radioOrg', 'radioLocation', 'reportedBy', 'repairStatus', 'dateRepairAdded', 'dateSentEuRaa', 'dateSentRaaEu', 'accessories', 'symptoms'],
   };
+
 
   showOtherAccessory = false;
   showOtherBattery = false;
@@ -86,15 +86,12 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     this.isLoading$ = this.store.select(repairLoadingSelector);
     this.repairError$ = this.store.select(repairErrorSelector);
     this.oneRepair$ = this.store.select(selectOneRepair);
-    this.userAccessLevel$ = this.store.select(selectAccessLevel);
   }
 
   ngOnInit(): void {
     this.repairForm.get('radioID')?.disable();
 
     console.log('Initial Repair Status:', this.repairForm.controls.repairStatus.value);
-
-
 
     this.subscriptions.add(
       this.activatedRoute.paramMap.subscribe(params => {
@@ -110,13 +107,14 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
                 this.repairID = repair._id;
                 this.radioId = radio._id;
                 this.populateForm(repair, radio);
-                console.log('Initial Repair Status:', this.repairForm.controls.repairStatus.value);
               }
             })
           );
         }
       })
     );
+
+    this.accessControlService.setFormControlsAccessibility(this.repairForm, this.editableFields)
 
 
   }
@@ -246,13 +244,6 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     this.showOtherAccessory = accessoriesGroup.value.otherAccessory !== '';
     this.showOtherBattery = accessoriesGroup.value.otherBattery !== '';
 
-
-    // accessControlService utilized here do to timing of form population/validation and the disabling functionality of the service.
-    this.subscriptions.add(
-      this.userAccessLevel$.subscribe(() => {
-        this.accessControlService.setFormControlsAccessibility(this.repairForm, this.editableFields);
-      })
-    );
   }
 
   onAccessoriesChange(event: any): void {

@@ -1,3 +1,5 @@
+import { AccessLevel } from "@app/utils/constants";
+
 export type Repair = {
     _id: string,
     radioID: string,
@@ -70,7 +72,7 @@ export type User = {
     username: string,
     email: string,
     password: string,
-    accessLevel: string,
+    accessLevel: AccessLevel,
     orgName: string,
     userLocation: string,
 };
@@ -78,7 +80,7 @@ export type User = {
 export type AuthInfo = {
     username: string,
     orgName: string,
-    accessLevel: string,
+    accessLevel: AccessLevel,
     userLocation: string,
 };
 

@@ -6,7 +6,6 @@ import * as OrgActions from '@app/_store/_org-store/org.actions';
 import { AppState } from '@app/_store/app.state';
 import { Subscription } from 'rxjs';
 import { ACCESS_LEVEL_ADMIN } from '@app/utils/constants';
-import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
 
 @Component({
   selector: 'app-one-org',

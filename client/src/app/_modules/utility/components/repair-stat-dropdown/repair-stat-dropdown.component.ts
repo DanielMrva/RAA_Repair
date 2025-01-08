@@ -87,15 +87,6 @@ export class RepairStatDropdownComponent implements OnInit, ControlValueAccessor
     }
   }
 
-  // addInitialStatus(status: string): void {
-  //   if (status && !this.statuses.includes(status)) {
-  //     this.statuses.push(status);
-  //     console.log('Added status:', status);
-  //   } else {
-  //     console.log('No status added or status already exists');
-  //   }
-  // }
-
   addInitialStatus(status: string): void {
     if (status && !this.statuses.includes(status)) {
       this.statuses.push(status);

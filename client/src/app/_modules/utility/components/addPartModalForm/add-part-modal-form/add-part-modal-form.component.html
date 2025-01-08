@@ -19,6 +19,7 @@
         Part number already exists.
       </small>
     </mat-form-field>
+
     <mat-form-field class="form-group col-12">
       <mat-label for="description">
         Part Description:
@@ -47,6 +48,38 @@
         matInput
         [formControl]="partForm.controls.manufacturer"
       >
+    </mat-form-field>
+
+    <mat-form-field class="form-group col-12">
+      <mat-label for="cost">
+        Cost
+      </mat-label>
+      <input 
+      id="cost"
+      type="number"
+      placeholder="Cost"
+      aria-label="Cost"
+      matInput
+      formControlName="cost"
+      [formControl]="partForm.controls.cost"
+      >
+
+    </mat-form-field>
+
+    <mat-form-field class="form-group col-12">
+      <mat-label for="msrp">
+        MSRP
+      </mat-label>
+      <input 
+      id="msrp"
+      type="number"
+      placeholder="MSRP"
+      aria-label="Manufacturer Suggested Retail Price"
+      matInput
+      formControlName="msrp"
+      [formControl]="partForm.controls.msrp"
+      >
+
     </mat-form-field>
   
     <div class="col-12 d-flex justify-content-center">

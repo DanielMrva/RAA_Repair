@@ -7,7 +7,6 @@ import { AppState } from '@app/_store/app.state';
 import { editOrg, loadOneOrg } from '@app/_store/_org-store/org.actions';
 import { selectOneOrg, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
 import { Subscription } from 'rxjs';
-import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
 import { ACCESS_LEVEL_ADMIN } from '@app/utils/constants';
 
 @Component({

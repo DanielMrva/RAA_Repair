@@ -7,6 +7,8 @@ import { loadAllParts } from '@app/_store/_part-store/part.actions';
 import { selectAllParts } from '@app/_store/_part-store/part.selectors';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { AddPartModalService } from '@app/services/modal/add-part-modal.service';
+import { AccessControlService } from '@app/services/accessControl/access-control.service';
+import { AccessLevel } from '@app/utils/constants';
 
 @Component({
   selector: 'app-part-selector-dropdown',
@@ -17,6 +19,12 @@ export class PartSelectorDropdownComponent implements OnInit, OnDestroy {
 
   @Input() initialPartsUsed: string[] = [];
   @Output() partsUsedChange = new EventEmitter<string[]>();
+
+  private editableFields: Record<AccessLevel, string[]> = {
+    admin: ['*'],
+    tech: ['*'],
+    user: [],
+  };
 
   partsDropdownForm = new FormGroup({
     partsArray: new FormArray([new FormControl<string>('', { nonNullable: true })])
@@ -29,7 +37,8 @@ export class PartSelectorDropdownComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private addPartModalService: AddPartModalService
+    private addPartModalService: AddPartModalService,
+    private accessControlService: AccessControlService
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +48,11 @@ export class PartSelectorDropdownComponent implements OnInit, OnDestroy {
     );
 
     this.initPartsArray(this.initialPartsUsed);
+
+    this.accessControlService.setFormControlsAccessibility(
+      this.partsDropdownForm,
+      this.editableFields
+    );
   }
 
   get formControls(): FormControl[] {
@@ -90,7 +104,7 @@ export class PartSelectorDropdownComponent implements OnInit, OnDestroy {
   onOptionSelected(event: any, index: number): void {
     const selectedValue = event.option.value;
     const partsArray = this.partsDropdownForm.get('partsArray') as FormArray;
-  
+
     if (selectedValue === 'other') {
       partsArray.at(index).setValue('Other: '); // Set "Other" as a placeholder
     } else if (selectedValue === 'admin-other') {
@@ -106,7 +120,7 @@ export class PartSelectorDropdownComponent implements OnInit, OnDestroy {
       this.emitPartsUsedChange();
     }
   }
-  
+
 
   onOtherPartInput(event: Event, index: number): void {
     const input = (event.target as HTMLInputElement).value;

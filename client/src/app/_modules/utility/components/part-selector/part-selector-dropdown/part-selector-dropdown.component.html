@@ -26,6 +26,7 @@
           <mat-option value="other">Other</mat-option>
           <mat-option value="admin-other">Admin Other</mat-option>
         </mat-autocomplete>
+
         <mat-icon 
           *ngIf="partsDropdownForm.controls.partsArray.length > 1" 
           matSuffix 
@@ -36,6 +37,7 @@
           remove_circle
         </mat-icon>
         <mat-icon 
+          *appAccessLevel="['tech', 'admin']"
           matSuffix 
           class="add-icon" 
           (click)="addPart($event)" 
