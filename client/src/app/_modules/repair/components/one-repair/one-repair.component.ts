@@ -10,7 +10,7 @@ import { PdfService } from '@app/services/pdf/pdf.service';
 import { locationErrorSelector, locationLoadingSelector, selectOneLocation } from '@app/_store/_location-store/location.selectors';
 import { Observable, Subscription, combineLatest, first } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH } from '@app/utils/constants';
+import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH} from '@app/utils/constants';
 
 
 @Component({

@@ -313,19 +313,20 @@
                         </mat-form-field>
                     </div>
                     <ng-template #noAccess>
-                        <mat-form-field *ngFor="let work of workPerformedArray.controls; let k = index"
-                            class="full-width-input">
-                            <input matInput [formControlName]="k" placeholder="Work Performed">
-                            <mat-icon *ngIf="workPerformedArray.length > 1" matSuffix class="remove-icon text-danger"
-                                (click)="removeWorkPerformed(k)" aria-label="remove work performed">
-                                remove_circle
-                            </mat-icon>
-                            <mat-icon matSuffix class="add-icon" (click)="addWorkPerformed()"
-                                aria-label="add work performed">
-                                add_circle
-                            </mat-icon>
-
-                        </mat-form-field>
+                        <div formArrayName="workPerformed" class="col-12 col-lg-6">
+                            <mat-form-field *ngFor="let work of workPerformedArray.controls; let k = index"
+                                class="full-width-input">
+                                <input matInput [formControlName]="k" placeholder="Work Performed">
+                                <mat-icon *ngIf="workPerformedArray.length > 1" matSuffix class="remove-icon text-danger"
+                                    (click)="removeWorkPerformed(k)" aria-label="remove work performed">
+                                    remove_circle
+                                </mat-icon>
+                                <mat-icon matSuffix class="add-icon" (click)="addWorkPerformed()"
+                                    aria-label="add work performed">
+                                    add_circle
+                                </mat-icon>
+                            </mat-form-field>
+                        </div>
                     </ng-template>
 
                     <div class="col-12 col-lg-6">

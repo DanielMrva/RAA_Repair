@@ -1,8 +1,9 @@
-export const ACCESS_LEVEL_ADMIN = 'admin';
-export const ACCESS_LEVEL_TECH = 'tech';
-export const ACCESS_LEVEL_USER = 'user';
+export type AccessLevel = 'admin' | 'tech' | 'user';
 
-export type AccessLevel = typeof ACCESS_LEVEL_ADMIN | typeof ACCESS_LEVEL_TECH | typeof ACCESS_LEVEL_USER;
+export const ACCESS_LEVEL_ADMIN: AccessLevel = 'admin';
+export const ACCESS_LEVEL_TECH: AccessLevel = 'tech';
+export const ACCESS_LEVEL_USER: AccessLevel = 'user';
+
 
 export const RAA_ADDRESS = {
     locationName: "Radios Across America LLC",

@@ -128,14 +128,13 @@ export class PartEffects {
     editPartSuccess$ = createEffect(() =>
         this.actions$.pipe(
             ofType(PartActions.editPartSuccess),
-            map(({ part }) => {
-                this.toastService.show('Part edited successfully!', {
-                    delay: 3000
-                })
-                    // this.router.navigate(['one-part', part?._id])
-            })
+            tap(({ part}) => {
+                this.toastService.show(`Part: ${part?.partNumber} - ${part?.description} edited successfully!`, { delay: 3000 });
+            }),
+            switchMap(() => [
+                PartActions.loadAllParts(),
+            ])
         ),
-        { dispatch: false }
     );
 
     editPartFailure$ = createEffect(() =>
@@ -169,14 +168,14 @@ export class PartEffects {
     deletePartSuccess$ = createEffect(() =>
         this.actions$.pipe(
             ofType(PartActions.deletePartSuccess),
-            map(({ part }) => {
-                this.toastService.show('Part deleted successfully!', { delay: 3000 });
-                if (part) {
-                    // TODO: Figure out what to do here?  Proably dispatch an action that updates parts?...
-                }
-            })
+            tap(({ part}) => {
+                this.toastService.show(`Part: ${part?.partNumber} - ${part?.description} deleted successfully!`, { delay: 3000 });
+            }),
+            switchMap(() => [
+                PartActions.loadAllParts(),
+            ])
         ),
-        { dispatch: false }
+
     );
 
     deletePartFailure$ = createEffect(() =>

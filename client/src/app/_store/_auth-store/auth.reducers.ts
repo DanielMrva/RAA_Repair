@@ -1,11 +1,12 @@
 import { createReducer, on } from "@ngrx/store";
 import { setAuthInfo, clearAuthInfo } from "./auth.actions";
 import { User, Auth } from "@app/graphql/schemas";
+import { AccessLevel } from "@app/utils/constants";
 
 export interface AuthState {
     username: string | null;
     orgName: string | null;
-    accessLevel: string | null;
+    accessLevel: AccessLevel | null;
     isAuthenticated: boolean;
     userLocation: string | null;
 };

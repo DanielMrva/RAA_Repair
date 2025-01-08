@@ -24,7 +24,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { AddRepairComponent } from './components/add-repair/add-repair.component';
 import { OneRepairComponent } from './components/one-repair/one-repair.component';
 import { EditRepairComponent } from './components/edit-repair/edit-repair.component';
-import { AdminAddRepairComponent } from './components/add-repair/admin-add-repair/admin-add-repair.component';
 
 import { OrgLocationSelectorComponent } from '@app/_components/utilComponents/org-location-selector/org-location-selector.component';
 import { PoTextButtonComponent } from '@app/_components/utilComponents/po-text-button/po-text-button.component';
@@ -46,7 +45,6 @@ import { UtilityModule } from '../utility/utility.module';
     AddRepairComponent,
     OneRepairComponent,
     EditRepairComponent,
-    AdminAddRepairComponent,
     OrgLocationSelectorComponent,
     PoTextButtonComponent,
     InvoiceTextButtonComponent,

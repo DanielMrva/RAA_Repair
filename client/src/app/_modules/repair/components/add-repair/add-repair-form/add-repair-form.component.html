@@ -1,8 +1,8 @@
-<div *ngIf="radioIsLoading$ | async; else loadedData">
+<ng-template #noLoadedData>
     <h2>Loading...</h2>
-</div>
+</ng-template>
 
-<ng-template #loadedData>
+<div *ngIf="(radioIsLoading$ | async) === false && (oneRadio$ | async) as radio; else noLoadedData">
 
     <div *ngIf="radioError$ | async as radioError">{{ radioError }}</div>
 
@@ -57,18 +57,20 @@
 
 
                     <mat-form-field class="form-group col-12 col-lg-4">
-                        <mat-label for="radioLocation">
-                            Location:
-                        </mat-label>
-                        <input type="text" placeholder="Location" aria-label="Location" matInput
-                            [formControl]="repairForm.controls.radioLocation" [matAutocomplete]="locAuto">
+                        <mat-label>Location:</mat-label>
+                        <input
+                          matInput
+                          formControlName="radioLocation"
+                          placeholder="Location"
+                          [matAutocomplete]="locAuto"
+                        >
                         <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
-                            <mat-option *ngFor="let locOption of filteredLocationNames" [value]="locOption">
-                                {{locOption}}
-                            </mat-option>
+                          <mat-option *ngFor="let locOption of filteredLocationNames" [value]="locOption">
+                            {{ locOption }}
+                          </mat-option>
                         </mat-autocomplete>
-                    </mat-form-field>
-
+                      </mat-form-field>
+                      
                     <mat-form-field class="form-group col-12 col-lg-4">
                         <mat-label>Reported By:</mat-label>
                         <input matInput id="reportedBy" formControlName="reportedBy" placeholder="Reported By">
@@ -186,6 +188,7 @@
                     <h4 class="col-12 text-center">Symptoms & Diagnostics</h4>
 
                     <div formArrayName="symptoms" class="col-12 col-lg-6">
+
                         <mat-form-field *ngFor="let sym of symptomsArray.controls; let j = index"
                             class="full-width-input">
                             <input matInput [formControlName]="j" placeholder="Symptom">
@@ -317,10 +320,12 @@
                         </mat-form-field>
                     </div>
                     <ng-template #noAccess>
+                        <div formArrayName="workPerformed" class="col-12 col-lg-6">
                         <mat-form-field *ngFor="let work of workPerformedArray.controls; let k = index"
                             class="full-width-input">
                             <input matInput [formControlName]="k" placeholder="Work Performed">
-                        </mat-form-field> 
+                        </mat-form-field>
+                    </div>
                     </ng-template>
 
 
@@ -345,4 +350,4 @@
             </form>
         </div>
     </div>
-</ng-template>
+</div>

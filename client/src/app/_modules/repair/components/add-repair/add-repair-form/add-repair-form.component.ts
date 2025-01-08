@@ -1,18 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
 import { RepairFormFields, UpdateRepairFields } from '@app/graphql/schemas';
 import { Store } from '@ngrx/store';
 import { addRepair } from '@app/_store/_repair-store/repair.actions';
-import { withLatestFrom, first, of, Subscription } from 'rxjs';
+import { withLatestFrom, first, of, Subscription, filter, combineLatest } from 'rxjs';
 import { loadOneRadio } from '@app/_store/_radio-store/radio.actions';
 import { radioErrorSelector, radioLoadingSelector, selectOneRadio } from '@app/_store/_radio-store/radio.selectors';
 import { MismatchModalService } from '@app/services/modal/mismatch-modal.service';
 import { filterEmptyArrayValues } from '@app/utils/filterEmptyArray';
 import { AccessControlService } from '@app/services/accessControl/access-control.service';
-import { selectAccessLevel } from '@app/_store/_auth-store/auth.selectors';
-import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER } from '@app/utils/constants';
+import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER, AccessLevel } from '@app/utils/constants';
 import { updateArrayControl } from '@app/utils/updateArrayControl';
 
 @Component({
@@ -28,7 +27,6 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
   radioError$
   radioIsLoading$
 
-  userAccessLevel$
 
   USER_ACCESS = ACCESS_LEVEL_USER;
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
@@ -62,10 +60,10 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
     'Other (specify)'
   ];
 
-  private editableFields = {
-    [ACCESS_LEVEL_ADMIN]: ['*'],
-    [ACCESS_LEVEL_TECH]: ['dateSentRaaTech', 'repairStatus', 'techInvNum', 'accessories', 'symptoms', 'testFreq', 'incRxSens', 'incFreqErr', 'incMod', 'incPowerOut', 'outRxSens', 'outFreqErr', 'outMod', 'outPowerOut', 'workPerformed', 'partsUsed', 'remarks', 'repHours'],
-    [ACCESS_LEVEL_USER]: ['reportedBy', 'repairStatus', 'dateRepairAdded', 'dateSentEuRaa', 'accessories', 'symptoms', 'remarks']
+  private editableFields: Record<AccessLevel, string[]> = {
+    admin: ['*'],
+    tech: ['dateSentRaaTech', 'repairStatus', 'techInvNum', 'accessories', 'symptoms', 'testFreq', 'incRxSens', 'incFreqErr', 'incMod', 'incPowerOut', 'outRxSens', 'outFreqErr', 'outMod', 'outPowerOut', 'workPerformed', 'partsUsed', 'remarks', 'repHours'],
+    user: ['reportedBy', 'repairStatus', 'dateRepairAdded', 'dateSentEuRaa', 'accessories', 'symptoms', 'remarks'],
   };
 
   showOtherAccessory = false;
@@ -81,7 +79,6 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
     this.oneRadio$ = this.store.select(selectOneRadio);
     this.radioError$ = this.store.select(radioErrorSelector);
     this.radioIsLoading$ = this.store.select(radioLoadingSelector);
-    this.userAccessLevel$ = this.store.select(selectAccessLevel);
   }
 
 
@@ -177,41 +174,44 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
-
-    this.subscriptions.add(
-      this.userAccessLevel$.subscribe(() => {
-        this.accessControlService.setFormControlsAccessibility(this.repairForm, this.editableFields)
-      })
-    );
-
+    // 1) Subscribe to route params to load radio by ID
     this.subscriptions.add(
       this.activatedRoute.paramMap.subscribe(params => {
         const radioID = params.get('radioID');
         if (radioID) {
-          this.repairForm.patchValue({ radioID: radioID });
           this.store.dispatch(loadOneRadio({ radioID }));
-          this.oneRadio$.subscribe(radio => {
-            if (radio) {
-              this.radioID = radio._id
-              this.repairForm.patchValue({
-                radioID: radio._id,
-                radioSerial: radio.serialNumber,
-                radioMake: radio.make,
-                radioOrg: radio.orgName,
-                radioLocation: radio.locationName
-              });
-              this.initialOrgName = radio.orgName;
-              this.initialLocationName = radio.locationName;
-            }
-          });
         }
       })
     );
-
-  }
-
   
-
+    // 2) Wait for the radio data
+    this.subscriptions.add(
+      this.oneRadio$.pipe(
+        // Optional: filter out null/undefined
+        filter(radio => !!radio),
+        // Optional: first() if you only want the first emission
+        first()
+      ).subscribe(radio => {
+        // Patch form with radio data
+        this.repairForm.patchValue({
+          radioID: radio?._id || '',
+          radioSerial: radio?.serialNumber || '',
+          radioMake: radio?.make || '',
+          radioOrg: radio?.orgName || '',
+          radioLocation: radio?.locationName || ''
+        });
+        this.initialOrgName = radio?.orgName || '';
+        this.initialLocationName = radio?.locationName || '';
+  
+        // Now that we have the form populated, call access control
+        this.accessControlService.setFormControlsAccessibility(
+          this.repairForm,
+          this.editableFields
+        );
+      })
+    );
+  }
+  
   handleOrgNameSelected(orgName: string): void {
     this.repairForm.patchValue({ radioOrg: orgName });
   };
@@ -327,5 +327,4 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
 
 
 }
-
 
