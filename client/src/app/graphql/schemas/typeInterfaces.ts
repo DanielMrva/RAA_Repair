@@ -95,9 +95,14 @@ export type Organization = {
     _id: string,
     orgName: string,
     locations: Location[],
-    // radios: Radio[],
     users: User[],
+    tags: Tag[]
 };
+
+export type Tag = {
+    _id: string,
+    tagName: string
+}
 
 export type Location = {
     _id: string,
@@ -275,7 +280,8 @@ export type UpdateLocationFields = {
 }
 
 export type UpdateOrgFields = {
-    orgName?: string
+    orgName?: string,
+    tags?: string[]
 };
 
 export type UpdatePartFields = {
@@ -285,6 +291,10 @@ export type UpdatePartFields = {
     manufacturer?: string,
     cost?: number,
     msrp?:number
+}
+
+export type UpdateTagFields = {
+    tagName?: string
 }
 
 export type AddPartFields = {

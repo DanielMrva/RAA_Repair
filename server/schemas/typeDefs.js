@@ -86,6 +86,12 @@ const typeDefs = `#graphql
         orgName: String
         locations: [Location]
         users: [User]
+        tags: [Tag]
+    }
+
+    type Tag {
+        _id: ID!
+        tagName: String!
     }
 
     type Radio {
@@ -148,6 +154,11 @@ const typeDefs = `#graphql
         allParts: [Part]
         part(partId: ID!): Part
         partByNumDesc(partNumber: String, partDescription: String): [Part]
+        allTags: [Tag]
+        tag(tagId: ID!): Tag
+        likeTag(tagName: String!): [Tag]
+        orgsByTag( tagIDs: [ID]): [Organization]
+        orgsByLikeTag( tagNames: [String]): [Organization]
     }
 
     input UpdateRepairInput {
@@ -212,7 +223,8 @@ const typeDefs = `#graphql
     }
 
     input UpdateOrgInput {
-        orgName: String
+        orgName: String,
+        tags: [ID]
     }
 
     input UpdateLocationInput {
@@ -245,6 +257,14 @@ const typeDefs = `#graphql
         manufacturer: String
         cost: Float
         msrp: Float
+    }
+
+    input AddTagInput {
+        tagName: String!
+    }
+
+    input UpdateTagInput {
+        tagName: String
     }
 
     type Mutation {
@@ -320,7 +340,8 @@ const typeDefs = `#graphql
         ): Radio
 
         addOrg(
-            orgName: String
+            orgName: String,
+            tags: [ID]
         ): Organization
 
         addLocation(
@@ -345,6 +366,10 @@ const typeDefs = `#graphql
             cost: Float
             msrp: Float
         ): Part
+
+        addTag(
+            tagName: String!
+        ): Tag
         
         editRepair(
             _id: ID!
@@ -376,6 +401,11 @@ const typeDefs = `#graphql
             updates: UpdatePartInput
         ): Part
 
+        editTag(
+            _id: ID!
+            updates: UpdateTagInput
+        ): Tag
+
         deleteRepair(
             _id: ID!
         ): Repair
@@ -399,6 +429,12 @@ const typeDefs = `#graphql
         deletePart(
             _id: ID!
         ): Part
+
+        deleteTag(
+            _id: ID!
+        ): Tag
+
+
     }
 
 `;

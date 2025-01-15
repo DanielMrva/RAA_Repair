@@ -93,8 +93,13 @@ type Organization {
   _id: ID!
   orgName: String
   locations: [Location]
-  # radios: [Radio]
   users: [User]
+  tags: [Tag]
+}
+
+type Tag {
+  _id: ID!
+  tagName: String!
 }
 
 type Part {
@@ -138,7 +143,12 @@ type Query {
   repairByTag(startTag: Int!, engTag: Int): [Repair]
   allParts: [Part]
   part(partId: ID!): Part
-  partByNumDesc(partNumber: String, partDescription: String) [Part]
+  partByNumDesc(partNumber: String, partDescription: String): [Part]
+  allTags: [Tag]
+  tag(tagId: ID!): Tag
+  likeTag(tagName: String!): [Tag]
+  orgsByTag(tagIDs: [ID]): [Organization]
+  orgsByLikeTag(tagNames: [String]): [Organization]
 }
 
 type Mutation {
@@ -206,7 +216,7 @@ type Mutation {
     radioType: String
   ): Radio
 
-  addOrg(orgName: String): Organization
+  addOrg(orgName: String, tags: [ID]): Organization
 
   addLocation(
     locationName: String!
@@ -231,6 +241,8 @@ type Mutation {
     msrp: Float
   ): Part
 
+  addTag(tagName: String!): Tag
+
   editRepair(_id: ID!, updates: UpdateRepairInput): Repair
 
   editRadio(_id: ID!, updates: UpdateRadioInput): Radio
@@ -241,7 +253,9 @@ type Mutation {
 
   editLocation(_id: ID!, updates: UpdateLocationInput): Location
 
-  editPart(_id: ID!, updates: UpdatePartUpdate): Part
+  editPart(_id: ID!, updates: UpdatePartInput): Part
+
+  editTag(_id: ID!, updates: UpdateTagInput): Tag
 
   deleteRepair(_id: ID!): Repair
 
@@ -255,5 +269,5 @@ type Mutation {
 
   deletePart(_id: ID!): Part
 
-
+  deleteTag(_id: ID!): Tag
 }
