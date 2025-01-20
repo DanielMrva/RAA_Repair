@@ -565,3 +565,31 @@ export const DELETE_PART = gql`
         }
     }
 `
+
+export const ADD_TAG = gql`
+    mutation addPart($tagName: String!) {
+        addPart(tagName: $tagName) {
+            _id
+            tagName
+        }
+    }
+`
+
+export const EDIT_TAG = gql`
+    mutation editTag($_id: ID!, updates: UpdateTagInput) {
+        editTag(_id: $_id, updates: $updates) {
+            _id
+            tagName
+        }
+    }
+
+`
+
+export const DELETE_TAG = gql`
+    mutation deleteTag($_id: ID!) {
+        deleteTag(_id: $_id) {
+            _id
+            tagName
+        }
+    }
+`
