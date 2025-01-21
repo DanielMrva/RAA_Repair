@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Organization, UpdateOrgFields } from '@app/graphql/schemas/typeInterfaces';
-import { ORG_NAMES, QUERY_ORGS, QUERY_SINGLEORG, QUERY_LIKE_ORGNAME } from '@app/graphql/schemas/queries';
+import { ORG_NAMES, QUERY_ORGS, QUERY_SINGLEORG, QUERY_LIKE_ORGNAME, QUERY_ORGS_BY_LIKE_TAG, QUERY_ORGS_BY_TAG } from '@app/graphql/schemas/queries';
 import { EDIT_ORG, ADD_ORG, DELETE_ORGANIZATION } from '@app/graphql/schemas/mutations';
 
 
@@ -27,6 +27,24 @@ export class OrganizationService {
       query: QUERY_LIKE_ORGNAME,
       variables: {
         orgName
+      }
+    })
+  }
+
+  queryOrgByLikeTag(tagNames: string[]) {
+    return this.apollo.watchQuery<{orgsByLikeTag: Organization[]}> ({
+      query: QUERY_ORGS_BY_LIKE_TAG,
+      variables: {
+        tagNames
+      }
+    })
+  }
+
+  queryOrgByTag(tagIds: string[]) {
+    return this.apollo.watchQuery<{orgsByTag: Organization[]}> ({
+      query: QUERY_ORGS_BY_TAG,
+      variables: {
+        tagIds
       }
     })
   }
