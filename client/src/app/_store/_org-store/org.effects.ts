@@ -31,10 +31,10 @@ export class OrgEffects {
         )
     );
 
-    loadOneOrg$ = createEffect(() => 
+    loadOneOrg$ = createEffect(() =>
         this.actions$.pipe(
             ofType(OrgActions.loadOneOrg),
-            switchMap(({ orgId }) => 
+            switchMap(({ orgId }) =>
                 from(this.orgService.querySingleOrg(orgId).valueChanges).pipe(
                     map(({ data }) => OrgActions.loadOneOrgSuccess({ organization: data.org })),
                     catchError((error) => of(OrgActions.loadOneOrgFailure({ error })))
@@ -192,6 +192,31 @@ export class OrgEffects {
             })
         ),
         { dispatch: false }
+    );
+
+    loadOrgsByTag$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(OrgActions.loadOrgsByTag),
+            switchMap(({ tagIds }) =>
+                from(this.orgService.queryOrgByTag(tagIds).valueChanges).pipe(
+                    map(({ data }) => OrgActions.loadOrgsByTagSuccess({ organizations: data.orgsByTag })),
+                    catchError((error) => of(OrgActions.loadOrgsByTagFailure({ error })))
+                )
+            )
+        )
+    );
+
+
+    loadOrgsByLikeTag$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(OrgActions.loadOrgsByLikeTag),
+            switchMap(({ tagNames }) =>
+                from(this.orgService.queryOrgByLikeTag(tagNames).valueChanges).pipe(
+                    map(({ data }) => OrgActions.loadOrgsByLikeTagSuccess({ organizations: data.orgsByLikeTag })),
+                    catchError((error) => of(OrgActions.loadOrgsByLikeTagFailure({ error })))
+                )
+            )
+        )
     );
 
 }

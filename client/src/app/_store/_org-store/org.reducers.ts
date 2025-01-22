@@ -61,6 +61,44 @@ export const orgReducer = createReducer(
         error: error
     })),
 
+    on(OrgActions.loadOrgsByTag, state => ({
+        ...state,
+        isLoading: true,
+        error: null
+    })),
+
+    on(OrgActions.loadOrgsByTagSuccess, (state, { organizations }) => ({
+        ...state,
+        organizations: organizations as Organization[],
+        isLoading: false,
+        error: null
+    })),
+
+    on(OrgActions.loadOrgsByTagFailure, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error
+    })),
+
+    on(OrgActions.loadOrgsByLikeTag, state => ({
+        ...state,
+        isLoading: true,
+        error: null
+    })),
+
+    on(OrgActions.loadOrgsByLikeTagSuccess, (state, { organizations }) => ({
+        ...state,
+        organizations: organizations as Organization[],
+        isLoading: false,
+        error: null
+    })),
+
+    on(OrgActions.loadOrgsByLikeTagFailure, (state, { error }) => ({
+        ...state,
+        isLoading: false,
+        error: error
+    })),
+
     on(OrgActions.loadOneOrg, (state) => ({
         ...state,
         isLoading: true,

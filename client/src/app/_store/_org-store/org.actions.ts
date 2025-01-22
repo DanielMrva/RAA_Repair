@@ -105,3 +105,33 @@ export const deleteOrganizationFailure = createAction(
     '[Organization] Delete Organization Failure',
     props<{ error: any }>()
 );
+
+export const loadOrgsByTag = createAction(
+    '[Org Service] Load Orgs By Tags',
+    props<{ tagIds: string[] }>()
+);
+
+export const loadOrgsByTagSuccess = createAction(
+    '[Org Service] Load Orgs By Tag Success',
+    props<{ organizations?: Organization[] }>()
+);
+
+export const loadOrgsByTagFailure = createAction(
+    '[Org Service] Load Org By Tag Failure',
+    props<{ error: string }>()
+);
+
+export const loadOrgsByLikeTag = createAction(
+    '[Org Service] Load Orgs By Like Tags',
+    props<{ tagNames: string[]}>()
+);
+
+export const loadOrgsByLikeTagSuccess = createAction(
+    '[Org Service] Load Orgs By Like Tag Success',
+    props<{ organizations?: Organization[] }>()
+);
+
+export const loadOrgsByLikeTagFailure = createAction(
+    '[Org Service] Load Org By Like Tag Failure',
+    props<{ error: string }>()
+);
