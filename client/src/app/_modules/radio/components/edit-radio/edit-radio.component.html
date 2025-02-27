@@ -48,24 +48,20 @@
           <h4 class="col-12 text-center">Tracking</h4>
 
           <div class="form-group col-12 col-lg-4">
-            <app-org-loc-selector 
-              [orgNameControl]="editRadioForm.controls.orgName"
-              [initialOrgName]="editRadioForm.controls.orgName.value"
-              (orgNameSelected)="handleOrgNameSelected($event)"
-              (filteredLocations)="handleFilteredLocations($event)">
-            </app-org-loc-selector>
+            <app-org-selector 
+              [initialOrgName]="initialOrgName"
+              (orgSelected)="handleOrgNameSelected($event)">
+            </app-org-selector>
           </div>
 
-          <mat-form-field class="form-group col-12 col-lg-4">
-            <mat-label>Location</mat-label>
-            <input matInput placeholder="Location" aria-label="Location" formControlName="locationName"
-              [matAutocomplete]="locAuto">
-            <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
-              <mat-option *ngFor="let locOption of filteredLocationNames" [value]="locOption">
-                {{locOption}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
+          <div class="form-group col-12 col-lg-4">
+            <app-loc-selector
+                [orgName]="selectedOrg"
+                [initialLocName]="initialLocName"
+                (locSelected)="handleLocSelection($event)"
+            >
+            </app-loc-selector>
+        </div>
 
           <mat-form-field class="form-group col-12 col-lg-4">
             <mat-label>Inventory Number</mat-label>

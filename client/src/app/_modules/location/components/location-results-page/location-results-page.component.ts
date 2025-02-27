@@ -1,7 +1,7 @@
 import { Component,  OnInit, OnDestroy} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
-import { locationLoadingSelector, locationErrorSelector, selectAllLocations } from '@app/_store/_location-store/location.selectors';
+import { locationErrorSelector, selectAllLocations, manyLocationsLoadingSelector } from '@app/_store/_location-store/location.selectors';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { loadAllLocations, loadOrgLocations, loadLocationByName } from '@app/_store/_location-store/location.actions';
@@ -18,7 +18,7 @@ export class LocationResultsPageComponent implements OnDestroy, OnInit {
   private subscriptions = new Subscription();
 
   locationError$ = this.store.select(locationErrorSelector);
-  isLoading$ = this.store.select(locationLoadingSelector);
+  isLoading$ = this.store.select(manyLocationsLoadingSelector);
   locations$ = this.store.select(selectAllLocations);
 
   constructor(

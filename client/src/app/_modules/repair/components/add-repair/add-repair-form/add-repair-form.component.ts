@@ -32,10 +32,12 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
   TECH_ACCESS = ACCESS_LEVEL_TECH;
 
-  initialOrgName: string | null = null;
-  initialLocationName: string | null = null;
+  initialOrgName: string = '';
+  initialLocationName: string = '';
 
-  filteredLocationNames: string[] = [];
+  // filteredLocationNames: string[] = [];
+
+  selectedOrg: string = '';
 
   radioID!: string;
 
@@ -212,13 +214,14 @@ export class AddRepairFormComponent implements OnInit, OnDestroy {
     );
   }
   
-  handleOrgNameSelected(orgName: string): void {
-    this.repairForm.patchValue({ radioOrg: orgName });
-  };
-
-  handleFilteredLocations(locations: string[]): void {
-    this.filteredLocationNames = locations;
-  };
+  handleOrgSelection(org: string): void {
+    this.selectedOrg = org;
+    this.repairForm.patchValue({ radioOrg: org });
+  }
+  
+  handleLocSelection(loc: string): void {
+    this.repairForm.patchValue({ radioLocation: loc });
+  }
 
   onAccessoriesChange(event: any): void {
     const selectedValues = event.value;

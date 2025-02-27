@@ -1,0 +1,9 @@
+<mat-form-field appearance="fill" class="full-width-input">
+    <mat-label>Location</mat-label>
+    <input matInput [formControl]="locControl" [matAutocomplete]="locAuto">
+    <mat-autocomplete #locAuto="matAutocomplete">
+        <mat-option *ngFor="let loc of filteredLocations$ | async" [value]="loc">
+            {{ loc }}
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

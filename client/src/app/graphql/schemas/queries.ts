@@ -1,5 +1,5 @@
 import { gql } from 'apollo-angular';
-import { USER_FIELDS_FRAGMENT, ORG_FIELDS_FRAGMENT, LOCATION_FIELDS_FRAGMENT, RADIO_FIELDS_FRAGMENT, SERVICE_RECORD_FRAGMENT, RADIO_DETAILS_FRAGMENT, PART_FIELDS_FRAGMENT } from './fragments';
+import { USER_FIELDS_FRAGMENT, ORG_FIELDS_FRAGMENT, LOCATION_FIELDS_FRAGMENT, RADIO_FIELDS_FRAGMENT, SERVICE_RECORD_FRAGMENT, RADIO_DETAILS_FRAGMENT, PART_FIELDS_FRAGMENT, TAG_FIELDS_FRAGMENT } from './fragments';
 
 export const QUERY_USERS = gql`
     query users {
@@ -34,6 +34,7 @@ export const QUERY_SINGLEORG = gql`
     ${RADIO_FIELDS_FRAGMENT}
     ${SERVICE_RECORD_FRAGMENT}
     ${RADIO_DETAILS_FRAGMENT}
+    ${TAG_FIELDS_FRAGMENT}
     query org($orgId: ID!) {
         org(orgId: $orgId) {
             _id
@@ -43,6 +44,9 @@ export const QUERY_SINGLEORG = gql`
             }
             locations {
                 ... LocationFieldsFragment
+            }
+            tags {
+                ... TagFieldsFragment
             }
         }
     }
@@ -160,6 +164,7 @@ export const QUERY_ORGS = gql`
     ${RADIO_FIELDS_FRAGMENT}
     ${SERVICE_RECORD_FRAGMENT}
     ${RADIO_DETAILS_FRAGMENT}
+    ${TAG_FIELDS_FRAGMENT}
     query allOrgs {
         allOrgs {
             ... OrgFieldsFragment
@@ -174,6 +179,7 @@ export const QUERY_LIKE_ORGNAME = gql`
     ${RADIO_FIELDS_FRAGMENT}
     ${SERVICE_RECORD_FRAGMENT}
     ${RADIO_DETAILS_FRAGMENT}
+    ${TAG_FIELDS_FRAGMENT}
     query likeOrgName($orgName: String!) {
         likeOrg(orgName: $orgName){
             ...OrgFieldsFragment
@@ -269,9 +275,6 @@ export const REPAIR_BY_TAG = gql`
     }
 `
 
-
-
-
 export const QUERY_PARTS = gql`
     ${PART_FIELDS_FRAGMENT}
     query allParts {
@@ -299,4 +302,59 @@ export const QUERY_LIKE_PART_PN_PD = gql`
     }
 `
 
+export const ALL_TAGS = gql`
+    ${TAG_FIELDS_FRAGMENT}
+    query allTags {
+        allTags {
+            ... TagFieldsFragment
+        }
+    }
+`
 
+export const QUERY_SINGLE_TAG = gql`
+    ${TAG_FIELDS_FRAGMENT}
+    query tag($tagId: String!) {
+        tag(tagId: $tagId) {
+            ...TagFieldsFragment
+        } 
+    }    
+`
+
+export const QUERY_LIKE_TAG = gql`
+    ${TAG_FIELDS_FRAGMENT}
+    query likeTag($tagName: String!) {
+        likeTag(tagName: $tagName) {
+            ...TagFieldsFragment
+        }
+    }
+`
+
+export const QUERY_ORGS_BY_TAG = gql`
+    ${ORG_FIELDS_FRAGMENT}
+    ${USER_FIELDS_FRAGMENT}
+    ${LOCATION_FIELDS_FRAGMENT}
+    ${RADIO_FIELDS_FRAGMENT}
+    ${SERVICE_RECORD_FRAGMENT}
+    ${RADIO_DETAILS_FRAGMENT}
+    ${TAG_FIELDS_FRAGMENT}
+    query orgsByTag($tagIDs: [ID]) {
+        orgsByTag(tagIDs: $tagIDs) {
+            ...OrgFieldsFragment
+        }
+    } 
+`
+
+export const QUERY_ORGS_BY_LIKE_TAG = gql`
+        ${ORG_FIELDS_FRAGMENT}
+    ${USER_FIELDS_FRAGMENT}
+    ${LOCATION_FIELDS_FRAGMENT}
+    ${RADIO_FIELDS_FRAGMENT}
+    ${SERVICE_RECORD_FRAGMENT}
+    ${RADIO_DETAILS_FRAGMENT}
+    ${TAG_FIELDS_FRAGMENT}
+    query orgsByLikeTag($tagNames: [String]) {
+        orgsByLikeTag(tagNames: $tagNames) {
+            ...OrgFieldsFragment
+        }
+    } 
+`

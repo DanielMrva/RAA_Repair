@@ -1,0 +1,5 @@
+.icon-inline {
+    font-size: 1em;            /* Match surrounding text’s font size */
+    vertical-align: bottom;    /* Align icon properly with text */
+    margin-right: 0.3em;       /* Spacing before the link text */
+  }

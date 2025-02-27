@@ -1,4 +1,4 @@
-const { User, Organization, Radio, Repair, Location, Part } = require('../models');
+const { User, Organization, Radio, Repair, Location, Part, Tag } = require('../models');
 const { unwrapResolverError, ApolloError } = require('@apollo/server/errors');
 const { signToken } = require('../utils/auth');
 const { sign } = require('jsonwebtoken');
@@ -88,7 +88,7 @@ const resolvers = {
             return Organization.find();
         },
         org: async (parent, { orgId }) => {
-            return Organization.findById({ _id: orgId }).populate(
+            return Organization.findById({ _id: orgId }).populate(   
                 [
                     {
                         path: "users"
@@ -101,12 +101,31 @@ const resolvers = {
                                 path: "serviceRecord"
                             }
                         }
+                    },
+                    {
+                        path: "tags"
                     }
-                ]
-            );
+                ]);
         },
         allOrgs: async () => {
-            return Organization.find().populate(["users", "locations"])
+            return Organization.find().populate(   
+                [
+                    {
+                        path: "users"
+                    },
+                    {
+                        path: "locations",
+                        populate: {
+                            path: "radios",
+                            populate: {
+                                path: "serviceRecord"
+                            }
+                        }
+                    },
+                    {
+                        path: "tags"
+                    }
+                ]);
         },
         allLocations: async () => {
             return Location.find().populate({
@@ -145,16 +164,87 @@ const resolvers = {
         },
         likeOrg: async (parent, { orgName }) => {
             return Organization.find({ orgName: { $regex: new RegExp(orgName, 'i') } })
-                .populate("users")
-                .populate({
+                .populate(   
+                [
+                    {
+                        path: "users"
+                    },
+                    {
+                        path: "locations",
+                        populate: {
+                            path: "radios",
+                            populate: {
+                                path: "serviceRecord"
+                            }
+                        }
+                    },
+                    {
+                        path: "tags"
+                    }
+                ]);
+        },
+        orgsByTag: async (parent, { tagIDs }) => {
+            try{
+                const organizations = await Organization.find({ tags: { $in: tagIDs } })
+                .populate([
+                  { path: "users" },
+                  {
                     path: "locations",
                     populate: {
-                        path: "radios",
-                        populate: {
-                            path: "serviceRecord"
-                        }
+                      path: "radios",
+                      populate: {
+                        path: "serviceRecord",
+                      },
+                    },
+                  },
+                  { path: "tags" },
+                ]);
+              return organizations;
+              
+            } catch(error) {
+                console.error(error);
+                throw new GraphQLError(`Unable to find Org by Tag ${error}`, {
+                    extensions: {
+                        code: 'FIND_ORG_BY_TAG_ERROR'
                     }
-                });
+                });            
+            }
+
+        },
+        orgsByLikeTag: async (parent, { tagNames }) => {
+
+            try {
+                const matchingTags = await Tag.find({ tagName: { $regex: new RegExp(tagNames.join("|"), 'i') }});
+
+                const tagIDs = matchingTags.map((tag) => tag._id)
+
+                const organizations = await Organization.find({ tags: { $in: tagIDs } })
+
+                .populate([
+                  { path: "users" },
+                  {
+                    path: "locations",
+                    populate: {
+                      path: "radios",
+                      populate: {
+                        path: "serviceRecord",
+                      },
+                    },
+                  },
+                  { path: "tags" },
+                ]);
+              return organizations;
+
+            } catch (error) {
+                console.error(error);
+                throw new GraphQLError(`Unable to find Org by Tag Names ${error}`, {
+                    extensions: {
+                        code: 'FIND_ORG_BY_TAG_NAMES_ERROR'
+                    }
+                });     
+            }
+
+
         },
         repairByTag: async (parent, { startTag, endTag }) => {
             if (startTag !== undefined && endTag === undefined) {
@@ -198,7 +288,29 @@ const resolvers = {
 
             return Part.find(query.$and.length > 0 ? query : {});
 
+        },
+        tag: async ( parent, { tagId }) => {
+            return Tag.findById(tagId);
+        },
+        likeTag: async (parent, { tagName }) => {
+
+            try {
+                const tags = Tag.find({ tagName: { $regex: new RegExp(tagName, 'i') } });
+                return tags;
+
+            } catch (error) {
+                console.error(error);
+                throw new GraphQLError(`Unable to find Tags ${error}`, {
+                    extensions: {
+                        code: 'LIKE_TAG_ERROR'
+                    }
+                });      
+            }
+        },
+        allTags: async () => {
+            return Tag.find();
         }
+
     },
     Repair: {
         radioDetails: async (parent, args, { radioLoader }) => {
@@ -457,7 +569,7 @@ const resolvers = {
         },
         // End Add Radio
 
-        addOrg: async (parent, { orgName }) => {
+        addOrg: async (parent, { orgName, tags }) => {
             try {
 
                 const existingOrg = await Organization.findOne(
@@ -475,7 +587,7 @@ const resolvers = {
                     });
                 }
 
-                const org = await Organization.create({ orgName });
+                const org = await Organization.create({ orgName, tags });
 
                 return org;
 
@@ -620,6 +732,47 @@ const resolvers = {
         },
 
         // End Add Part
+        addTag: async (parent, { tagName }) => {
+
+            // Check for required fields
+            if (!tagName) {
+                throw new GraphQLError('tagName is required.', {
+                    extensions: { code: 'BAD_USER_INPUT' }
+                });
+            }
+
+            try {
+
+                const existingTag = await Tag.findOne({tagName: tagName});
+
+                if (existingTag) {
+                    throw new GraphQLError(
+                        `Tag with tagName ${tagName} already exists. Please try again.`,
+                        {
+                            extensions: {
+                                code: 'TAG_EXISTS',
+                                argumentName: 'tagName'
+                            }
+                        }
+                    );
+                }
+
+                const newTag = await Tag.create({
+                    tagName
+                });
+                return newTag
+
+            } catch (error) {
+                console.error('Error creating tag:', error);
+
+                // Return a generic error for the client, while logging the actual error for debugging
+                throw new GraphQLError(`Failed to submit tag. ${error}`, {
+                    extensions: { code: 'SUBMIT_TAG_ERROR' }
+                });
+            
+            }
+
+        },
 
         editRepair: async (parent, { _id, updates }) => {
 
@@ -729,7 +882,7 @@ const resolvers = {
 
                 const oldOrgName = oldOrg.orgName;
 
-                const org = await Organization.findByIdAndUpdate({ _id }, { $set: updates }, { new: true });
+                const org = await Organization.findByIdAndUpdate({ _id }, { $set: updates }, { new: true }).populate('tags');
 
                 if (!org) {
                     throw new GraphQLError('Organization Not Found', {
@@ -791,7 +944,7 @@ const resolvers = {
                 if (!oldPart) {
                     throw new GraphQLError('Old Part Not Found', {
                         extensions: {
-                            code: 'Edit_PART_ERROR_NO_OLD_PART'
+                            code: 'EDIT_PART_ERROR_NO_OLD_PART'
                         }
                     });
                 }
@@ -808,6 +961,28 @@ const resolvers = {
             }
         },
         // End Edit Part
+        editTag: async (parent, { _id, updates}) => {
+            try {
+
+                const oldTag = await Tag.findById({ _id });
+
+                if (!oldTag) {
+                    throw new GraphQLError(`Old Tag not Found`, {
+                        extensions: {
+                            code: 'EDIT_TAG_ERROR_NO_OLD_TAG'
+                        }
+                    })
+                }
+
+                const tag = await Tag.findOneAndUpdate({ _id }, {$set: updates}, { new: true });
+                return tag
+            } catch (error) {
+                console.error(`resolver error: ${error.message}`);
+                throw new GraphQLError(`Failed to Edit Tag, ${error.message}`)
+
+            }
+        },
+        // End Edit Tag
         deleteRepair: async (parent, { _id }) => {
             try {
                 const deletedRepair = await Repair.findByIdAndDelete(_id);
@@ -867,7 +1042,18 @@ const resolvers = {
                 console.log(`resolver error: ${error.message}`);
                 throw new GraphQLError(`Failed to Delete Part, ${error.message}`);
             }
-        }
+        },
+        // End Delete Part
+        deleteTag: async (parent, { _id }) => {
+            try {
+                const deletedTag = await Tag.findByIdAndDelete({ _id });
+                return deletedTag
+            } catch (error) {
+                console.log(`resolver error: ${error.message}`);
+                throw new GraphQLError(`Failed to Delete Part, ${error.message}`);
+            }
+        },
+        // End Delete Tag
 
     }
 };

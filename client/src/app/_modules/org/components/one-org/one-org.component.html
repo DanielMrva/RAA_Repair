@@ -9,10 +9,16 @@
 
     <div *ngIf="oneOrg$ | async as oneOrg" class="container">
 
-        <div class="row">
+        <div class="row mt-3">
             <h2 class="col-12 text-center">{{oneOrg.orgName}}
                 <a [routerLink]="['/edit-org', oneOrg._id]" *appAccessLevel="ADMIN_ACCESS">EDIT</a>
+                <ng-container *ngIf="oneOrg.tags.length > 0">
+                    <small>
+                        <app-org-tags-badge [tags]="oneOrg.tags"></app-org-tags-badge>
+                    </small>
+                </ng-container>
             </h2>
+            
         </div>
 
         <h4 class="col-12 text-center">Users:</h4>

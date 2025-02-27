@@ -28,9 +28,9 @@
     </li>
 
     <li class="nav-item">
-        <div class="dropdown width-content">
+        <div class="dropdown" id="org-dropdown">
             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Organizations</a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu custom-dropdown-width">
                 <li>
                     <a [routerLink]="['/add-org']" class="dropdown-item">Add Organization</a>
                 </li>
@@ -39,6 +39,9 @@
                 </li>
                 <li>
                     <a [routerLink]="['/add-location']" class="dropdown-item">Add Location</a>
+                </li>
+                <li class="dropdown-item">
+                    <app-org-search></app-org-search>
                 </li>
             </ul>
         </div>

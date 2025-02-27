@@ -35,10 +35,6 @@ export class AddPartModalFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
-
-
-    
     // Populate partsList and set edit mode if partID is provided
     this.store.select(selectAllParts)
       .pipe(first())

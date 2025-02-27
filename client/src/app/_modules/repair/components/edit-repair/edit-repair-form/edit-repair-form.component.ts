@@ -1,19 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormArray, FormGroup, FormControl } from '@angular/forms';
-import { Radio, Repair, RepairFormFields } from '@app/graphql/schemas/typeInterfaces';
 import { Store } from '@ngrx/store';
+import { first, of, withLatestFrom, Subscription, combineLatest } from 'rxjs';
+
 import { AppState } from '@app/_store/app.state';
 import { editRepair, loadOneRepair } from '@app/_store/_repair-store/repair.actions';
 import { selectOneRepair, repairErrorSelector, repairLoadingSelector } from '@app/_store/_repair-store/repair.selectors';
 import { radioErrorSelector, radioLoadingSelector, selectOneRadio } from '@app/_store/_radio-store/radio.selectors';
+
 import { MismatchModalService } from '@app/services/modal/mismatch-modal.service';
 import { AddPartModalService } from '@app/services/modal/add-part-modal.service';
-import { first, of, withLatestFrom, Subscription, combineLatest } from 'rxjs';
+import { AccessControlService } from '@app/services/accessControl/access-control.service';
+
+import { updateArrayControl } from '@app/utils/updateArrayControl';
 import { filterEmptyArrayValues } from '@app/utils/filterEmptyArray';
 import { ACCESS_LEVEL_ADMIN, ACCESS_LEVEL_TECH, ACCESS_LEVEL_USER, AccessLevel } from '@app/utils/constants';
-import { AccessControlService } from '@app/services/accessControl/access-control.service';
-import { updateArrayControl } from '@app/utils/updateArrayControl';
+import { Radio, Repair, RepairFormFields } from '@app/graphql/schemas/typeInterfaces';
 
 @Component({
   selector: 'app-edit-repair-form',
@@ -22,45 +25,22 @@ import { updateArrayControl } from '@app/utils/updateArrayControl';
 })
 export class EditRepairFormComponent implements OnDestroy, OnInit {
 
+  /**Lifecycle & Observables */
   private subscriptions = new Subscription();
 
-  oneRadio$;
-  radioError$;
-  radioIsLoading$;
-  isLoading$;
-  repairError$;
-  oneRepair$;
+  oneRadio$ = this.store.select(selectOneRadio);
+  oneRepair$ = this.store.select(selectOneRepair);
+
+  radioError$ = this.store.select(radioErrorSelector);
+  radioIsLoading$ = this.store.select(radioLoadingSelector);
+
+  repairError$ = this.store.select(repairErrorSelector);
+  isLoading$ = this.store.select(repairLoadingSelector);
+
+  /** Constants */
   USER_ACCESS = ACCESS_LEVEL_USER;
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
   TECH_ACCESS = ACCESS_LEVEL_TECH;
-
-  initialOrgName: string | null = null;
-  filteredLocationNames: string[] = [];
-
-  repairID!: string;
-  radioId!: string;
-  repairTag!: number;
-
-  accessoryOptions: string[] = [
-    'Microphone',
-    'Mounting Bracket',
-    'Mounting Bracket Screws',
-    'Power Cable',
-    'External Speaker',
-    'Accessory Cable',
-    'Antenna (Regular Length)',
-    'Antenna (Stubby)',
-    'Battery (Regular Capacity)',
-    'Battery (High Capacity)',
-    'Belt Clip',
-    'Charger',
-    'Speaker/Mic',
-    'Headset',
-    'Dust Cover',
-    'Battery (Other - specify)',
-    'Other (specify)'
-  ];
-
 
   private editableFields: Record<AccessLevel, string[]> = {
     admin: ['*'],
@@ -68,57 +48,7 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     user: ['radioOrg', 'radioLocation', 'reportedBy', 'repairStatus', 'dateRepairAdded', 'dateSentEuRaa', 'dateSentRaaEu', 'accessories', 'symptoms'],
   };
 
-
-  showOtherAccessory = false;
-  showOtherBattery = false;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>,
-    private mismatchModalService: MismatchModalService,
-    private addPartModalService: AddPartModalService,
-    private accessControlService: AccessControlService
-  ) {
-    this.oneRadio$ = this.store.select(selectOneRadio);
-    this.radioError$ = this.store.select(radioErrorSelector);
-    this.radioIsLoading$ = this.store.select(radioLoadingSelector);
-    this.isLoading$ = this.store.select(repairLoadingSelector);
-    this.repairError$ = this.store.select(repairErrorSelector);
-    this.oneRepair$ = this.store.select(selectOneRepair);
-  }
-
-  ngOnInit(): void {
-    this.repairForm.get('radioID')?.disable();
-
-    console.log('Initial Repair Status:', this.repairForm.controls.repairStatus.value);
-
-    this.subscriptions.add(
-      this.activatedRoute.paramMap.subscribe(params => {
-        const repairID = params.get('id');
-        if (repairID) {
-          this.loadRepair(repairID);
-
-          // Use combineLatest to ensure both observables are in sync before populating the form
-          this.subscriptions.add(
-            combineLatest([this.oneRepair$, this.oneRadio$]).subscribe(([repair, radio]) => {
-              if (repair && radio) {
-                this.initialOrgName = repair.radioOrg;
-                this.repairID = repair._id;
-                this.radioId = radio._id;
-                this.populateForm(repair, radio);
-              }
-            })
-          );
-        }
-      })
-    );
-
-    this.accessControlService.setFormControlsAccessibility(this.repairForm, this.editableFields)
-
-
-  }
-
+  /** Form-related Variables */
   repairForm = new FormGroup({
     radioID: new FormControl<string>(''),
     radioMake: new FormControl<string>(''),
@@ -158,6 +88,78 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     remarks: new FormControl<string>(''),
   });
 
+  initialOrgName = '';
+  initialLocationName = '';
+
+  selectedOrg = '';
+
+  repairID!: string;
+  radioId!: string;
+  repairTag!: number;
+
+  showOtherAccessory = false;
+  showOtherBattery = false;
+
+  /** Accessory Options */
+  accessoryOptions: string[] = [
+    'Microphone', 'Mounting Bracket', 'Mounting Bracket Screws', 'Power Cable', 'External Speaker',
+    'Accessory Cable', 'Antenna (Regular Length)', 'Antenna (Stubby)', 'Battery (Regular Capacity)', 'Battery (High Capacity)',
+    'Belt Clip', 'Charger', 'Speaker/Mic', 'Headset', 'Dust Cover', 'Battery (Other - specify)', 'Other (specify)'
+  ];
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>,
+    private mismatchModalService: MismatchModalService,
+    private addPartModalService: AddPartModalService,
+    private accessControlService: AccessControlService
+  ) { }
+
+  /** Lifecycle Hooks */
+
+  ngOnInit(): void {
+    this.repairForm.get('radioID')?.disable();
+
+    this.subscriptions.add(
+      this.activatedRoute.paramMap.subscribe(params => {
+        const repairID = params.get('id');
+        if (repairID) {
+          this.loadRepair(repairID);
+
+          // Use combineLatest to ensure both observables are in sync before populating the form
+          this.subscriptions.add(
+            combineLatest([this.oneRepair$, this.oneRadio$]).subscribe(([repair, radio]) => {
+              if (repair && radio) {
+                this.repairID = repair._id;
+                this.radioId = radio._id;
+                this.populateForm(repair, radio);
+                this.initialOrgName = repair.radioOrg;
+                this.initialLocationName = repair.radioLocation;
+
+                console.log(this.initialLocationName)
+                console.log(this.initialOrgName)
+
+              }
+            })
+          );
+
+        }
+      })
+    );
+
+    this.accessControlService.setFormControlsAccessibility(this.repairForm, this.editableFields)
+
+
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+
+  /**Form Interactions */
+
   get accessoriesGroup(): FormGroup {
     return this.repairForm.get('accessories') as FormGroup;
   }
@@ -179,6 +181,8 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     updateArrayControl(newParts, partsArray)
   };
 
+
+  /** Data Fetching */
 
   loadRepair(id: string): void {
     this.store.dispatch(loadOneRepair({ repairID: id }));
@@ -246,6 +250,8 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
 
   }
 
+  /** User Interactions */
+
   onAccessoriesChange(event: any): void {
     const selectedValues = event.value;
     this.showOtherAccessory = selectedValues.includes('Other (specify)');
@@ -282,18 +288,21 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     this.partsUsedArray.removeAt(index);
   }
 
-  handleOrgNameSelected(orgName: string): void {
-    this.repairForm.patchValue({ radioOrg: orgName });
-  };
+  handleOrgSelection(org: string): void {
+    this.selectedOrg = org;
+    this.repairForm.patchValue({ radioOrg: org });
+  }
 
-  handleFilteredLocations(locations: string[]): void {
-    this.filteredLocationNames = locations;
+  handleLocSelection(loc: string): void {
+    this.repairForm.patchValue({ radioLocation: loc });
   }
 
   updateRepair(): void {
     const submittedRepair: RepairFormFields = this.prepareRepairData();
     this.store.dispatch(editRepair({ id: this.repairID, updates: submittedRepair }));
   }
+
+  /** Form Submission */
 
   prepareRepairData(): RepairFormFields {
     const enabledControls = this.accessControlService.enableAllControls(this.repairForm);
@@ -405,8 +414,4 @@ export class EditRepairFormComponent implements OnDestroy, OnInit {
     );
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
 }
-

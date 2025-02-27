@@ -55,26 +55,18 @@
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-12 col-lg-4">
-                        <app-org-loc-selector [orgNameControl]="repairForm.controls.radioOrg"
-                            [initialOrgName]="repairForm.controls.radioOrg.value"
-                            (orgNameSelected)="handleOrgNameSelected($event)"
-                            (filteredLocations)="handleFilteredLocations($event)">
-                        </app-org-loc-selector>
+                        <app-org-selector 
+                            [initialOrgName]="(oneRepair$ | async)?.radioOrg ?? ''"
+                            (orgSelected)="handleOrgSelection($event)">
+                        </app-org-selector>
                     </div>
 
 
-                    <mat-form-field class="form-group col-12 col-lg-4">
-                        <mat-label for="radioLocation">
-                            Location:
-                        </mat-label>
-                        <input type="text" placeholder="Location" aria-label="Location" matInput
-                            [formControl]="repairForm.controls.radioLocation" [matAutocomplete]="locAuto">
-                        <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
-                            <mat-option *ngFor="let locOption of filteredLocationNames" [value]="locOption">
-                                {{locOption}}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
+                    <div class="form-group col-12 col-lg-4">
+                        <app-loc-selector [initialLocName]="(oneRepair$ | async)?.radioLocation ?? ''"
+                            [orgName]="selectedOrg" (locSelected)="handleLocSelection($event)">
+                        </app-loc-selector>
+                    </div>
 
                     <mat-form-field class="form-group col-12 col-lg-4">
                         <mat-label>Reported By:</mat-label>
@@ -317,8 +309,9 @@
                             <mat-form-field *ngFor="let work of workPerformedArray.controls; let k = index"
                                 class="full-width-input">
                                 <input matInput [formControlName]="k" placeholder="Work Performed">
-                                <mat-icon *ngIf="workPerformedArray.length > 1" matSuffix class="remove-icon text-danger"
-                                    (click)="removeWorkPerformed(k)" aria-label="remove work performed">
+                                <mat-icon *ngIf="workPerformedArray.length > 1" matSuffix
+                                    class="remove-icon text-danger" (click)="removeWorkPerformed(k)"
+                                    aria-label="remove work performed">
                                     remove_circle
                                 </mat-icon>
                                 <mat-icon matSuffix class="add-icon" (click)="addWorkPerformed()"

@@ -8,6 +8,7 @@ import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
 import { ToastService } from "@app/services/toast/toast.service";
 import { Router } from "@angular/router";
+import { Organization } from "@app/graphql/schemas/typeInterfaces";
 
 @Injectable()
 export class OrgEffects {
@@ -31,10 +32,10 @@ export class OrgEffects {
         )
     );
 
-    loadOneOrg$ = createEffect(() => 
+    loadOneOrg$ = createEffect(() =>
         this.actions$.pipe(
             ofType(OrgActions.loadOneOrg),
-            switchMap(({ orgId }) => 
+            switchMap(({ orgId }) =>
                 from(this.orgService.querySingleOrg(orgId).valueChanges).pipe(
                     map(({ data }) => OrgActions.loadOneOrgSuccess({ organization: data.org })),
                     catchError((error) => of(OrgActions.loadOneOrgFailure({ error })))
@@ -98,8 +99,8 @@ export class OrgEffects {
     addOrg$ = createEffect(() =>
         this.actions$.pipe(
             ofType(OrgActions.addOrg),
-            switchMap(({ orgName }) =>
-                this.orgService.addOrg(orgName).pipe(
+            switchMap(({ orgName, tags }) =>
+                this.orgService.addOrg(orgName, tags).pipe(
                     map(({ data }) => OrgActions.addOrgSuccess({ organization: data?.addOrg })),
 
                     catchError((error) => of(OrgActions.addOrgFailure({ error })))
@@ -167,18 +168,29 @@ export class OrgEffects {
 
     deleteOrgSuccess$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(OrgActions.deleteOrganizationSuccess),
-            map(({ organization }) => {
-                this.toastService.show('Org deleted successfully!', { delay: 3000 });
-                if (organization) {
-                    this.store.dispatch(OrgActions.loadLikeOrgs({ orgName: organization?.orgName }))
-
-                }
-                this.router.navigateByUrl(`/org-results/${organization?.orgName}`);
-            })
+          ofType(OrgActions.deleteOrganizationSuccess),
+          tap(({ organization }) => {
+            this.toastService.show('Org deleted successfully!', { delay: 3000 });
+            this.router.navigateByUrl(`/org-results?orgName=${organization?.orgName}`);
+          })
         ),
         { dispatch: false }
-    );
+      );
+
+    // deleteOrgSuccess$ = createEffect(() =>
+    //     this.actions$.pipe(
+    //         ofType(OrgActions.deleteOrganizationSuccess),
+    //         map(({ organization }) => {
+    //             this.toastService.show('Org deleted successfully!', { delay: 3000 });
+    //             if (organization) {
+    //                 this.store.dispatch(OrgActions.loadLikeOrgs({ orgName: organization?.orgName }))
+
+    //             }
+    //             this.router.navigateByUrl(`/org-results/${organization?.orgName}`);
+    //         })
+    //     ),
+    //     { dispatch: false }
+    // );
 
     deleteOrgFailure$ = createEffect(() =>
         this.actions$.pipe(
@@ -194,4 +206,58 @@ export class OrgEffects {
         { dispatch: false }
     );
 
+    loadOrgsByTag$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(OrgActions.loadOrgsByTag),
+            switchMap(({ tagIds }) =>
+                from(this.orgService.queryOrgByTag(tagIds).valueChanges).pipe(
+                    map(({ data }) => OrgActions.loadOrgsByTagSuccess({ organizations: data.orgsByTag })),
+                    catchError((error) => of(OrgActions.loadOrgsByTagFailure({ error })))
+                )
+            )
+        )
+    );
+
+
+    loadOrgsByLikeTag$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(OrgActions.loadOrgsByLikeTag),
+            switchMap(({ tagNames }) =>
+                from(this.orgService.queryOrgByLikeTag(tagNames).valueChanges).pipe(
+                    map(({ data }) => OrgActions.loadOrgsByLikeTagSuccess({ organizations: data.orgsByLikeTag })),
+                    catchError((error) => of(OrgActions.loadOrgsByLikeTagFailure({ error })))
+                )
+            )
+        )
+    );
+
+    loadOrgsWithFilter$ = createEffect(() =>
+        this.actions$.pipe(
+          ofType(OrgActions.loadOrgsWithFilter),
+          switchMap(({ filter }) => {
+            if (filter.orgName) {
+              return this.orgService.queryLikeOrg(filter.orgName).valueChanges.pipe(
+                map(({ data }) => OrgActions.loadLikeOrgsSuccess({ organizations: data.likeOrg })),
+                catchError((error) => of(OrgActions.loadLikeOrgsFailure({ error })))
+              );
+            } else if (filter.tagNames) {
+              return this.orgService.queryOrgByLikeTag(filter.tagNames).valueChanges.pipe(
+                map(({ data }) => OrgActions.loadOrgsByLikeTagSuccess({ organizations: data.orgsByLikeTag })),
+                catchError((error) => of(OrgActions.loadOrgsByLikeTagFailure({ error })))
+              );
+            } else if (filter.tagIds) {
+              return this.orgService.queryOrgByTag(filter.tagIds).valueChanges.pipe(
+                map(({ data }) => OrgActions.loadOrgsByTagSuccess({ organizations: data.orgsByTag })),
+                catchError((error) => of(OrgActions.loadOrgsByTagFailure({ error })))
+              );
+            } else {
+              return this.orgService.allOrgs().valueChanges.pipe(
+                map(({ data }) => OrgActions.loadAllOrgsSuccess({ organizations: data.allOrgs })),
+                catchError((error) => of(OrgActions.loadAllOrgsFailure({ error })))
+              );
+            }
+          })
+        )
+      );
+            
 }

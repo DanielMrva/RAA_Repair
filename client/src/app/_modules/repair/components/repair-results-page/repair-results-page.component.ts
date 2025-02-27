@@ -1,7 +1,7 @@
 import { Component,  OnInit, OnDestroy} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
-import { repairLoadingSelector, repairErrorSelector, selectAllRepairs } from '@app/_store/_repair-store/repair.selectors';
+import { repairErrorSelector, selectAllRepairs, manyRepairsLoadingSelector } from '@app/_store/_repair-store/repair.selectors';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { loadAllRepairs, loadOrgRepairs, loadRepairByTag } from '@app/_store/_repair-store/repair.actions';
@@ -16,7 +16,7 @@ export class RepairResultsPageComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   repairError$ = this.store.select(repairErrorSelector);
-  isLoading$ = this.store.select(repairLoadingSelector);
+  isLoading$ = this.store.select(manyRepairsLoadingSelector);
   repairs$ = this.store.select(selectAllRepairs);
 
   constructor(

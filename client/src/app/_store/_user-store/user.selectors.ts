@@ -16,7 +16,12 @@ export const selectOneUser = createSelector(
 
 export const userLoadingSelector = createSelector(
     selectUsers,
-    (state: UserState) => state.isLoading
+    (state: UserState) => state.isLoadingOneUser
+);
+
+export const manyUsersLoadingSelector = createSelector(
+    selectUsers,
+    (state: UserState) => state.isLoadingUsers
 );
 
 export const userErrorSelector = createSelector(

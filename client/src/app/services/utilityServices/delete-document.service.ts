@@ -7,6 +7,7 @@ import { deleteLocation } from '@app/_store/_location-store/location.actions';
 import { deleteOrganization } from '@app/_store/_org-store/org.actions';
 import { AppState } from '@app/_store/app.state';
 import { deletePart } from '@app/_store/_part-store/part.actions';
+import { deleteTag } from '@app/_store/_tag-store/tag.actions';
 
 
 @Injectable({
@@ -34,7 +35,10 @@ export class DeleteDocumentService {
         this.store.dispatch(deleteOrganization({ id }));
         break;
       case 'part':
-        this.store.dispatch(deletePart({ id }))
+        this.store.dispatch(deletePart({ id }));
+        break;
+      case 'tag':
+        this.store.dispatch(deleteTag({ id }));
         break;
       // Add more cases as needed
       default:

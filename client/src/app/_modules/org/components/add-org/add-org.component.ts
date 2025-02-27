@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormControl, ValidatorFn } from '@angular/forms';
-import { Organization } from '@app/graphql/schemas';
+import { FormGroup, FormControl, ValidatorFn, FormArray } from '@angular/forms';
+import { Organization, Tag } from '@app/graphql/schemas';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { addOrg, loadOrgNames } from '@app/_store/_org-store/org.actions';
-import { selectOrgNames, orgLoadingSelector, orgErrorSelector } from '@app/_store/_org-store/org.selectors';
+import { selectOrgNames, orgErrorSelector, orgNamesLoadingSelector } from '@app/_store/_org-store/org.selectors';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -28,7 +28,7 @@ export class AddOrgComponent implements OnInit, OnDestroy {
     private store: Store<AppState>
   ) {
     this.orgNames$ = this.store.select(selectOrgNames);
-    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
+    this.isLoadingOrgNames$ = this.store.select(orgNamesLoadingSelector);
     this.orgError$ = this.store.select(orgErrorSelector);
   }
 
@@ -36,7 +36,8 @@ export class AddOrgComponent implements OnInit, OnDestroy {
   orgList!: Organization[];
 
   orgForm = new FormGroup({
-    orgName: new FormControl<string>('', { nonNullable: true, validators: this.orgNameValidator().bind(this) })
+    orgName: new FormControl<string>('', { nonNullable: true, validators: this.orgNameValidator().bind(this) }),
+    tags: new FormControl<string[]>([])
   })
 
   isSubmitted = false;
@@ -86,13 +87,21 @@ export class AddOrgComponent implements OnInit, OnDestroy {
     }
   };
 
+  onTagsChange(selectedTags: Tag[]): void {
+    const tagIds = selectedTags.map(tag => tag._id);
+    this.orgForm.patchValue({ tags: tagIds})
+   
+  };
+
+
   onSubmit() {
 
     console.log(this.orgForm.value);
 
     const orgName = this.orgForm.value.orgName ?? '';
+    const tags = Array.isArray(this.orgForm.value.tags) ? this.orgForm.value.tags.map(tag => tag ?? '') : [''];
 
-    this.store.dispatch(addOrg({ orgName: orgName }));
+    this.store.dispatch(addOrg({ orgName: orgName, tags: tags }));
 
   };
 

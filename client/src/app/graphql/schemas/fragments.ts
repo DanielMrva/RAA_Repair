@@ -117,6 +117,9 @@ export const ORG_FIELDS_FRAGMENT = gql`
         users {
             ... UserFieldsFragment
         }
+        tags {
+            ... TagFieldsFragment
+        }
     }
 `
 
@@ -129,5 +132,12 @@ export const PART_FIELDS_FRAGMENT = gql`
         manufacturer
         cost
         msrp
+    }
+`
+
+export const TAG_FIELDS_FRAGMENT = gql`
+    fragment TagFieldsFragment on Tag {
+        _id
+        tagName
     }
 `

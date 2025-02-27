@@ -1,0 +1,29 @@
+<div class="container-fluid py-3">
+    <div class="row">
+        <h4 class="d-flex justify-content-center" [ngClass]="vertical ? verticalClasses : horizontalClasses">
+            {{tagID ? 'Edit Tag':'Add Tag'}}
+        </h4>
+
+        <form [formGroup]="tagForm" (ngSubmit)="submitForm()">
+            <mat-form-field class="form-group" [ngClass]="vertical ? verticalClasses : horizontalClasses">
+                <mat-label for="tagName">
+                    Tag Name:
+                </mat-label>
+                <input type="text" placeholder="Tag Name" aria-label="Tag Name" matInput
+                    [formControl]="tagForm.controls.tagName"
+                    [class.invalid]="isDuplicateTag(tagForm.get('tagName')?.value || '' )" />
+                <small *ngIf="isDuplicateTag(tagForm.get('tagName')?.value || '' )">
+                    Tag Name already exists.
+                </small>
+
+            </mat-form-field>
+
+            <div class=" d-flex justify-content-center" [ngClass]="vertical ? verticalClasses : horizontalClasses">
+                <button type="submit" class="btn btn-primary" [disabled]="tagForm.invalid">{{tagID ? 'Save Changes' :
+                    'Add Tag'}}</button>
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            </div>
+
+        </form>
+    </div>
+</div>

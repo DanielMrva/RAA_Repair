@@ -14,6 +14,10 @@ const orgSchema = new Schema({
     users: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
+    }],
+    tags: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Tag'
     }]
 });
 

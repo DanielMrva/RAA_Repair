@@ -15,7 +15,7 @@
     <!-- Render Repair Details -->
     <div class="container">
       <section id="header-section">
-        <div class="text-center row">
+        <div class="text-center row mt-3">
           <h2 class="col-12">
             Repair {{repair.repairTag}} Details
             <a [routerLink]="['/edit-repair', repair._id]" *appAccessLevel="[ADMIN_ACCESS, TECH_ACCESS]">EDIT</a>

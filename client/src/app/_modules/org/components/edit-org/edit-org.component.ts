@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
-import { UpdateOrgFields, Organization } from '@app/graphql/schemas/typeInterfaces';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { UpdateOrgFields, Organization, Tag } from '@app/graphql/schemas/typeInterfaces';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
 import { editOrg, loadOneOrg } from '@app/_store/_org-store/org.actions';
@@ -23,6 +23,8 @@ export class EditOrgComponent implements OnInit, OnDestroy {
   isLoading$
   error$
 
+  startingTags: Tag[] = [];
+
   ADMIN_ACCESS = ACCESS_LEVEL_ADMIN;
 
   constructor(
@@ -35,8 +37,10 @@ export class EditOrgComponent implements OnInit, OnDestroy {
   };
 
   orgForm = new FormGroup({
-    orgName: new FormControl<string>('', { nonNullable: true })
+    orgName: new FormControl<string>('', { nonNullable: true }),
+    tags: new FormControl<string[]>([])
   });
+  
 
   orgId!: string;
 
@@ -54,9 +58,15 @@ export class EditOrgComponent implements OnInit, OnDestroy {
           this.orgForm.patchValue({
             orgName: org.orgName
           })
+          this.startingTags = org.tags;
         }
       })
     );
+  };
+
+  onTagsChange(selectedTags: Tag[]): void {
+    const tagIds = selectedTags.map(tag => tag._id);
+    this.orgForm.patchValue({ tags: tagIds})
   };
 
   updateOrg(updateOrg: UpdateOrgFields): void {
@@ -71,19 +81,21 @@ export class EditOrgComponent implements OnInit, OnDestroy {
 
 
     this.store.dispatch(editOrg({ id: this.orgId, updates: updateOrg }))
-  }
+  };
 
   onSubmit() {
 
     const orgName = this.orgForm.value.orgName ?? '';
+    const tags = Array.isArray(this.orgForm.value.tags) ? this.orgForm.value.tags.map(tag => tag ?? '') : [''];
 
     const submittedOrg: UpdateOrgFields = {
-      orgName: orgName
+      orgName: orgName,
+      tags: tags
     }
 
     this.updateOrg(submittedOrg);
 
-  }
+  };
 
   ngOnInit(): void {
 

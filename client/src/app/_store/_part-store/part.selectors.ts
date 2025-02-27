@@ -16,7 +16,12 @@ export const selectOnePart = createSelector(
 
 export const partLoadingSelector = createSelector(
     selectParts,
-    (state: PartState) => state.isLoading
+    (state: PartState) => state.isLoadingOnePart
+);
+
+export const manyPartsLoadingSelector = createSelector(
+    selectParts,
+    (state: PartState) => state.isLoadingParts
 );
 
 export const partErrorSelector = createSelector(

@@ -21,7 +21,12 @@ export const repairErrorSelector = createSelector(
 
 export const repairLoadingSelector = createSelector(
     selectRepairs,
-    (state: RepairState) => state.isLoading
+    (state: RepairState) => state.isLoadingOneRepair
+);
+
+export const manyRepairsLoadingSelector = createSelector(
+    selectRepairs,
+    (state: RepairState) => state.isLoadingRepairs
 );
 
 export const selectActiveRepairs = createSelector(selectAllRepairs, repairs =>

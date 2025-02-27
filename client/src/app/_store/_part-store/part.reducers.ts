@@ -5,17 +5,17 @@ import { Part } from "@app/graphql/schemas";
 export interface PartState {
     onePart: Part | null;
     parts: Part[];
-    // partNames: Part[];
     error: string | null;
-    isLoading: boolean;
+    isLoadingOnePart: boolean;
+    isLoadingParts: boolean;
 };
 
 export const initialState: PartState = {
     onePart: null,
     parts: [],
-    // partNames: [],
     error: null,
-    isLoading: false
+    isLoadingOnePart: false,
+    isLoadingParts: false,
 };
 
 export const partReducer = createReducer(
@@ -24,121 +24,102 @@ export const partReducer = createReducer(
     on(PartActions.loadOnePart, (state) => ({
         ...state,
         onePart: null,
-        isLoading: true,
+        isLoadingOnePart: true,
         error: null,
     })),
 
     on(PartActions.loadOnePartSuccess, (state, action ) => ({
         ...state,
         onePart: action.part,
-        isLoading: false,
+        isLoadingOnePart: false,
         error: null,
     })),
 
     on(PartActions.loadOnePartFailure, (state, action) => ({
         ...state,
         onePart: null,
-        isLoading: false,
+        isLoadingOnePart: false,
         error: action.error
     })),
 
     on(PartActions.loadAllParts, (state) => ({
         ...state,
-        isLoading: true,
+        isLoadingParts: true,
         error: null,
     })),
 
     on(PartActions.loadAllPartsSuccess, (state, { parts }) => ({
         ...state,
         parts: parts as Part[],
-        isLoading: false,
+        isLoadingParts: false,
         error: null,
     })),
 
     on(PartActions.loadAllPartsFailure, (state, { error }) => ({
         ...state,
-        isLoading: false,
+        isLoadingParts: false,
         error: error
     })),
 
     on(PartActions.loadPartsByPnPd, (state) => ({
         ...state,
         parts: [],
-        isLoading: true,
+        isLoadingParts: true,
         error: null
     })),
 
     on(PartActions.loadPartsByPnPdSuccess, (state, action ) => ({
         ...state,
         parts: action.partByNumDesc,
-        isLoading: false,
+        isLoadingParts: false,
         error: null,
     })),
 
     on(PartActions.loadPartsByPnPdFailure, (state, action) => ({
         ...state,
         parts: [],
-        isLoading: false,
+        isLoadingParts: false,
         error: action.error
     })),
 
     on(PartActions.addPart, (state) => ({
         ...state,
         onePart: null,
-        isLoading: true,
+        isLoadingOnePart: true,
         error: null,
     })),
 
     on(PartActions.addPartSuccess, (state, { part }) => ({
         ...state,
         onePart: part as Part,
-        isLoading: false,
+        isLoadingOnePart: false,
         error: null,
     })),
 
     on(PartActions.addPartFailure, (state, { error }) => ({
         ...state,
-        isLoading: false,
+        isLoadingOnePart: false,
         error: error
     })),
 
     on(PartActions.editPart, (state) => ({
         ...state,
-        isLoading: true,
+        isLoadingOnePart: true,
         error: null,
     })),
 
     on(PartActions.editPartSuccess, (state, { part }) => ({
         ...state,
         onePart: part as Part,
-        isLoading: false,
+        isLoadingOnePart: false,
         error: null,
     })),
 
     on(PartActions.editPartFailure, (state, { error }) => ({
         ...state,
-        isLoading: false,
+        isLoadingOnePart: false,
         error: error
     })),
-
-    // on(PartActions.loadPartNames, state => ({ 
-    //     ...state, 
-    //     isLoading: true, 
-    //     error: null 
-    // })),
-
-    // on(PartActions.loadPartNamesSuccess, (state, { partNames }) => ({
-    //     ...state,
-    //     partNames: partNames as Part[],
-    //     isLoading: false,
-    //     error: null
-    // })),
-
-    // on(PartActions.loadPartNamesFailure, (state, { error }) => ({
-    //     ...state,
-    //     isLoading: false,
-    //     error: error
-    // })),
 
     on(PartActions.deletePartSuccess, (state, { part }) => ({
         ...state,

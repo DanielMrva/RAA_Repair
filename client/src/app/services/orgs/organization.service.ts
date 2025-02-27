@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Organization, UpdateOrgFields } from '@app/graphql/schemas/typeInterfaces';
-import { ORG_NAMES, QUERY_ORGS, QUERY_SINGLEORG, QUERY_LIKE_ORGNAME } from '@app/graphql/schemas/queries';
+import { ORG_NAMES, QUERY_ORGS, QUERY_SINGLEORG, QUERY_LIKE_ORGNAME, QUERY_ORGS_BY_LIKE_TAG, QUERY_ORGS_BY_TAG } from '@app/graphql/schemas/queries';
 import { EDIT_ORG, ADD_ORG, DELETE_ORGANIZATION } from '@app/graphql/schemas/mutations';
 
 
@@ -31,6 +31,24 @@ export class OrganizationService {
     })
   }
 
+  queryOrgByLikeTag(tagNames: string[]) {
+    return this.apollo.watchQuery<{orgsByLikeTag: Organization[]}> ({
+      query: QUERY_ORGS_BY_LIKE_TAG,
+      variables: {
+        tagNames
+      }
+    })
+  }
+
+  queryOrgByTag(tagIDs: string[]) {
+    return this.apollo.watchQuery<{orgsByTag: Organization[]}> ({
+      query: QUERY_ORGS_BY_TAG,
+      variables: {
+        tagIDs
+      }
+    })
+  }
+
   editOrg(id: string, updates: UpdateOrgFields) {
     return this.apollo.mutate<{editOrg: Organization}> ({
       mutation: EDIT_ORG,
@@ -50,10 +68,10 @@ export class OrganizationService {
     })
   }
   
-  addOrg(orgName: string) {
+  addOrg(orgName: string, tags: string[]) {
     return this.apollo.mutate<{addOrg: Organization}> ({
       mutation: ADD_ORG,
-      variables: { orgName}
+      variables: { orgName, tags}
     })
   }
 
@@ -64,3 +82,5 @@ export class OrganizationService {
     })
   }
 }
+
+// TODO: Standardize ID / Id naming convention across the app back to front end!

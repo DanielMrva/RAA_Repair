@@ -1,10 +1,11 @@
 import { Component,  OnInit, OnDestroy} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
-import { orgLoadingSelector, orgErrorSelector, selectAllOrgs } from '@app/_store/_org-store/org.selectors';
+import { orgErrorSelector, selectAllOrgs, manyOrgsLoadingSelector } from '@app/_store/_org-store/org.selectors';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { loadAllOrgs, loadLikeOrgs } from '@app/_store/_org-store/org.actions';
+import { loadAllOrgs, loadLikeOrgs, loadOrgsByLikeTag, loadOrgsByTag, loadOrgsWithFilter } from '@app/_store/_org-store/org.actions';
+import { OrgFilter } from '@app/graphql/schemas';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class OrgResultsPageComponent implements OnDestroy, OnInit {
   private subscriptions = new Subscription();
 
   orgError$ = this.store.select(orgErrorSelector);
-  isLoading$ = this.store.select(orgLoadingSelector);
+  isLoading$ = this.store.select(manyOrgsLoadingSelector);
   orgs$ = this.store.select(selectAllOrgs);
 
   constructor(
@@ -26,23 +27,17 @@ export class OrgResultsPageComponent implements OnDestroy, OnInit {
   ) { }
 
   ngOnInit(): void {
+
     this.subscriptions.add(
-      this.route.params.subscribe(params => {
-        const orgName = params['orgName'];
-
-        const condition = orgName ? 'orgName' : 'default';
-
-        switch(condition) {
-          case 'orgName':
-            this.store.dispatch(loadLikeOrgs({ orgName }));
-            break;
-  
-          default:
-            this.store.dispatch(loadAllOrgs());
-            break;
+      this.route.queryParams.subscribe(params => {
+        const filter: OrgFilter = {
+          orgName: params['orgName'],
+          tagNames: params['tagNames'] ? params['tagNames'].split(',').map((n: string) => n.trim()): undefined,
+          tagIds: params['tagIds'] ? params['tagIds'].split(',').map((i: string) => i.trim()): undefined,
         }
+        this.store.dispatch(loadOrgsWithFilter({ filter }))
       })
-    )
+    );
       
   }
 

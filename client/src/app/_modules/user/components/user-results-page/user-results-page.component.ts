@@ -1,7 +1,7 @@
 import { Component,  OnInit, OnDestroy} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@app/_store/app.state';
-import { userLoadingSelector, userErrorSelector, selectAllUsers } from '@app/_store/_user-store/user.selectors';
+import { userLoadingSelector, userErrorSelector, selectAllUsers, manyUsersLoadingSelector } from '@app/_store/_user-store/user.selectors';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { loadUsers, loadOrgUsers } from '@app/_store/_user-store/user.actions';
@@ -16,7 +16,7 @@ export class UserResultsPageComponent implements OnDestroy, OnInit {
   private subscriptions = new Subscription();
 
   userError$ = this.store.select(userErrorSelector);
-  isLoading$ = this.store.select(userLoadingSelector);
+  isLoading$ = this.store.select(manyUsersLoadingSelector);
   users$ = this.store.select(selectAllUsers);
 
   constructor(

@@ -4,10 +4,10 @@ import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
 import { addUser } from '@app/_store/_user-store/user.actions';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
-import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
+import { selectOrgNames, orgErrorSelector, orgLoadingSelector, orgNamesLoadingSelector } from '@app/_store/_org-store/org.selectors';
 import { Organization, Location } from '@app/graphql/schemas';
 import { Observable, Subscription, combineLatest, map, startWith } from 'rxjs';
-import { locationErrorSelector, locationLoadingSelector, selectLocationNames } from '@app/_store/_location-store/location.selectors';
+import { locationErrorSelector, locationLoadingSelector, locNamesLoadingSelector, selectLocationNames } from '@app/_store/_location-store/location.selectors';
 import { loadLocationNames } from '@app/_store/_location-store/location.actions';
 
 @Component({
@@ -19,19 +19,22 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  orgNames$
-  isLoadingOrgNames$
-  orgNameError$
+  orgNames$ = this.store.select(selectOrgNames);
+  isLoadingOrgNames$ = this.store.select(orgNamesLoadingSelector);
+  orgNameError$ = this.store.select(orgErrorSelector);
 
-  locationNames$
-  isLoadingLocationNames$
-  locationNameError$
+  locationNames$ = this.store.select(selectLocationNames);
+  isLoadingLocationNames$ = this.store.select(locNamesLoadingSelector);
+  locationNameError$ = this.store.select(locationErrorSelector);
 
-  filteredLocationNames: string[] = [];
+  constructor(
+    private store: Store<AppState>
+  ) { }
 
-
-  locNameOptions: string[] = [];
-  filteredLocNames$!: Observable<string[]>;
+  
+  isSubmitted = false;
+  initialOrgName: string = '';
+  selectedOrg: string = '';
 
   userForm = new FormGroup({
     username: new FormControl<string>('', { nonNullable: true }),
@@ -42,20 +45,15 @@ export class AddUserComponent implements OnInit, OnDestroy {
     userLocation: new FormControl<string>('')
   });
 
-  isSubmitted = false;
+  ngOnInit(): void {
+    this.store.dispatch(loadOrgNames());
+    this.store.dispatch(loadLocationNames());
 
+  };
 
-  constructor(
-    private store: Store<AppState>
-  ) {
-    this.orgNames$ = this.store.select(selectOrgNames);
-    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-    this.orgNameError$ = this.store.select(orgErrorSelector);
-
-    this.locationNames$ = this.store.select(selectLocationNames);
-    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
-    this.locationNameError$ = this.store.select(locationErrorSelector);
-  }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  };
 
 
   fieldValidCheck(field: string) {
@@ -72,18 +70,15 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
 
 
-  ngOnInit(): void {
-    this.store.dispatch(loadOrgNames());
-    this.store.dispatch(loadLocationNames());
 
-  };
 
   handleOrgNameSelected(orgName: string): void {
+    this.selectedOrg = orgName;
     this.userForm.patchValue({orgName: orgName});
   };
 
-  handleFilteredLocations(locations: string[]): void {
-    this.filteredLocationNames = locations;
+  handleLocSelection(loc: string): void {
+    this.userForm.patchValue({userLocation: loc});
   };
 
   displayOrgName(org: Organization): string {
@@ -114,8 +109,5 @@ export class AddUserComponent implements OnInit, OnDestroy {
   };
 
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  };
 
 }
