@@ -23,6 +23,10 @@
                 </mat-error>
             </mat-form-field>
 
+            <div class="form-group col-8 offset-2">
+                <app-tag-selector (tagsChange)="onTagsChange($event)"></app-tag-selector>
+            </div>
+
             <div class="col-8 offset-2 d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary text-center">Submit</button>
             </div>

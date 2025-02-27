@@ -309,19 +309,25 @@ export const EDIT_ORG = gql`
             locations {
                 _id
             }
+            tags {
+                _id
+            }
         }
     }
 `
 
 export const ADD_ORG = gql`
-    mutation addOrg($orgName: String) {
-        addOrg(orgName: $orgName) {
+    mutation addOrg($orgName: String, $tags: [ID]) {
+        addOrg(orgName: $orgName, tags: $tags) {
             _id
             orgName
             users {
                 _id
             }
             locations {
+                _id
+            }
+            tags {
                 _id
             }
         }
@@ -352,7 +358,7 @@ export const ADD_LOCATION = gql`
             zip: $zip   
             country: $country   
             phone: $phone   
-            contactEmail: $contactEmail 
+            contactEmail: $contactEmail
             primaryContact: $primaryContact
         ) {
             _id
@@ -567,8 +573,8 @@ export const DELETE_PART = gql`
 `
 
 export const ADD_TAG = gql`
-    mutation addPart($tagName: String!) {
-        addPart(tagName: $tagName) {
+    mutation addTag($tagName: String!) {
+        addTag(tagName: $tagName) {
             _id
             tagName
         }
@@ -576,8 +582,8 @@ export const ADD_TAG = gql`
 `
 
 export const EDIT_TAG = gql`
-    mutation editTag($_id: ID!, updates: UpdateTagInput) {
-        editTag(_id: $_id, updates: $updates) {
+    mutation editTag($id: ID!, $updates: UpdateTagInput) {
+        editTag(_id: $id, updates: $updates) {
             _id
             tagName
         }
@@ -586,8 +592,8 @@ export const EDIT_TAG = gql`
 `
 
 export const DELETE_TAG = gql`
-    mutation deleteTag($_id: ID!) {
-        deleteTag(_id: $_id) {
+    mutation deleteTag($id: ID!) {
+        deleteTag(_id: $id) {
             _id
             tagName
         }

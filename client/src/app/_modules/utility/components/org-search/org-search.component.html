@@ -1,0 +1,20 @@
+<form [formGroup]="orgForm" (ngSubmit)="navigateByOrgInput()">
+    <div class="input-group mb-3">
+
+        <select formControlName="paramType" class="form-control" placeholder="Serch Type" aria-label="Search Type">
+            <option [value]="OrgParamTypes.OrgName">
+                Organization Name
+            </option>
+            <option [value]="OrgParamTypes.TagNames">
+                Tag Names
+            </option>
+        </select>
+
+        <input type="text" formControlName="searchTerm" class="form-control" [placeholder]="serachPlaceholder"
+            aria-label="searchTerm" />
+
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon">
+            <i class="bi bi-arrow-bar-right"></i>
+        </button>
+    </div>
+</form>

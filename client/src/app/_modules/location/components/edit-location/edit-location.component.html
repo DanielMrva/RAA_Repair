@@ -1,4 +1,4 @@
-<div *ngIf="isLoadingLocationNames$ | async; else loadedData">
+<div *ngIf="isLocationLoading$ | async; else loadedData">
     <h2>Loading...</h2>
 </div>
 
@@ -22,21 +22,23 @@
 
 
                         <div class="form-group col-12 col-lg-6">
-                            <app-org-loc-selector 
-                                [orgNameControl]="editLocationForm.controls.orgName"
-                                [initialOrgName]="editLocationForm.controls.orgName.value"
-                                (orgNameSelected)="handleOrgNameSelected($event)"
-                                (filteredLocations)="handleFilteredLocations($event)"
+                            <app-org-selector
+                                [initialOrgName]="initialOrgName"
+                                (orgSelected)="handleOrgNameSelected($event)"
                                 >
-                            </app-org-loc-selector>
+
+                            </app-org-selector>
                         </div>
 
 
-                        <mat-form-field class="form-group col-12 col-lg-6">
-                            <mat-label>Location Name</mat-label>
-                            <input matInput placeholder="Location Name" formControlName="locationName"
-                                [class.invalid]="fieldValidCheck('locationName')">
-                        </mat-form-field>
+                        <div class="form-group col-12 col-lg-6">
+                            <app-loc-selector
+                                [orgName]="selectedOrg"
+                                [initialLocName]="initialLocName"
+                                (locSelected)="handleLocSelection($event)"
+                            >
+                            </app-loc-selector>
+                        </div>
                         <div class="text-danger col-12"
                             *ngIf="editLocationForm.get('locationName')?.hasError('locationNameExists')">
                             This location name already exists.

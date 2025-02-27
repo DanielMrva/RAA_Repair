@@ -882,7 +882,7 @@ const resolvers = {
 
                 const oldOrgName = oldOrg.orgName;
 
-                const org = await Organization.findByIdAndUpdate({ _id }, { $set: updates }, { new: true });
+                const org = await Organization.findByIdAndUpdate({ _id }, { $set: updates }, { new: true }).populate('tags');
 
                 if (!org) {
                     throw new GraphQLError('Organization Not Found', {

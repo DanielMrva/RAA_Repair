@@ -49,27 +49,20 @@
                     <h4 class="col-12 text-center">Service Location</h4>
 
                     <div class="form-group col-12 col-lg-4">
-                        <app-org-loc-selector [orgNameControl]="repairForm.controls.radioOrg"
-                            [initialOrgName]="initialOrgName" (orgNameSelected)="handleOrgNameSelected($event)"
-                            (filteredLocations)="handleFilteredLocations($event)">
-                        </app-org-loc-selector>
+                        <app-org-selector 
+                            [initialOrgName]="initialOrgName"
+                            (orgSelected)="handleOrgSelection($event)">
+                        </app-org-selector>
                     </div>
-
-
-                    <mat-form-field class="form-group col-12 col-lg-4">
-                        <mat-label>Location:</mat-label>
-                        <input
-                          matInput
-                          formControlName="radioLocation"
-                          placeholder="Location"
-                          [matAutocomplete]="locAuto"
-                        >
-                        <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
-                          <mat-option *ngFor="let locOption of filteredLocationNames" [value]="locOption">
-                            {{ locOption }}
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
+                    
+                    <div class="form-group col-12 col-lg-4">
+                        <app-loc-selector
+                            [initialLocName]="initialLocationName"
+                            [orgName]="selectedOrg"
+                            (locSelected)="handleLocSelection($event)"
+                            >
+                        </app-loc-selector>
+                    </div>
                       
                     <mat-form-field class="form-group col-12 col-lg-4">
                         <mat-label>Reported By:</mat-label>

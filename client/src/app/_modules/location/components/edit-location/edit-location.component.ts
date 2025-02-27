@@ -1,14 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { FormBuilder, FormArray, FormGroup, FormControl, ValidatorFn, AbstractControl, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Location, UpdateLocationFields } from '@app/graphql/schemas/typeInterfaces';
 import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
 import { editLocation, loadOneLocation, loadLocationNames } from '@app/_store/_location-store/location.actions';
-import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
+import { selectOrgNames, orgErrorSelector, orgNamesLoadingSelector } from '@app/_store/_org-store/org.selectors';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
-import { selectLocationNames, locationErrorSelector, locationLoadingSelector, selectOneLocation } from '@app/_store/_location-store/location.selectors';
-import { shareReplay, Subscription } from 'rxjs';
+import { locationErrorSelector, locationLoadingSelector, selectOneLocation } from '@app/_store/_location-store/location.selectors';
+import { Subscription } from 'rxjs';
+import { locationNameAsyncValidator } from '@app/utils/location.validators';
 
 
 
@@ -21,42 +22,26 @@ export class EditLocationComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  orgNames$
-  isLoadingOrgNames$
-  orgNameError$
-
-  oneLocation$
-  locationNames$
-  isLoadingLocationNames$
-  locationError$
-
-    
-  isSubmitted = false;
-
-  filteredLocationNames: string[] = [];
-  locationList!: Location[];
-
-
-  locationId!: string;
-
+  oneLocation$ = this.store.select(selectOneLocation);
+  isLocationLoading$ = this.store.select(locationLoadingSelector);
+  locationError$ = this.store.select(locationErrorSelector);
 
   constructor(
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>
-  ) {
-    this.orgNames$ = this.store.select(selectOrgNames);
-    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-    this.orgNameError$ = this.store.select(orgErrorSelector);
+  ) { }
+  
+  isSubmitted = false;
+  initialOrgName: string = '';
+  initialLocName: string = '';
+  selectedOrg: string = '';
+  locationId!: string;
 
-    this.oneLocation$ = this.store.select(selectOneLocation);
-    this.locationNames$ = this.store.select(selectLocationNames).pipe(shareReplay(1));
-    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector).pipe(shareReplay(1));
-    this.locationError$ = this.store.select(locationErrorSelector);
-  }
+
 
   editLocationForm = new FormGroup({
-    locationName: new FormControl<string>('', {validators: [Validators.required, this.locationNameValidator]}),
+    locationName: new FormControl<string>('', {validators: [Validators.required]}),
     orgName: new FormControl<string>('', Validators.required),
     street: new FormControl<string>(''),
     suite: new FormControl<string>(''),
@@ -77,21 +62,22 @@ export class EditLocationComponent implements OnInit, OnDestroy {
         this.loadLocation(this.locationId)
       })
     );
-    
+
+    this.store.dispatch(loadOrgNames());
+    this.store.dispatch(loadLocationNames());
+
     this.populateForm();
 
     this.subscriptions.add(
-      this.editLocationForm.get('orgName')!.valueChanges.subscribe(() => {
-        this.editLocationForm.get('locationName')!.setValidators([
-          Validators.required,
-          this.locationNameValidator()
-        ]);
-        this.editLocationForm.get('locationName')!.updateValueAndValidity(); // Ensure validators are recalculated
+      this.editLocationForm.get('orgName')!.valueChanges.subscribe(orgName => {
+        this.selectedOrg = orgName || '';
       })
-    );
+    )
 
-    this.store.dispatch(loadOrgNames());
-    this.loadLocationNames();
+  };
+  
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   };
 
   fieldValidCheck(field: string) {
@@ -107,37 +93,13 @@ export class EditLocationComponent implements OnInit, OnDestroy {
   };
 
   handleOrgNameSelected(orgName: string): void {
+    this.selectedOrg = orgName;
     this.editLocationForm.patchValue({orgName: orgName});
   };
 
-  handleFilteredLocations(locations: string[]): void {
-    this.filteredLocationNames = locations;
+  handleLocSelection(loc: string): void {
+    this.editLocationForm.patchValue({ locationName: loc });
   }
-
-  locationNameValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const input = control.value;
-      const currentOrg = this.editLocationForm.get('orgName')?.value;
-      if (this.locationList && this.locationList.some(loc => loc.locationName === input && loc.orgName === currentOrg)) {
-        return { locationNameExists: true };
-      }
-      return null;
-    };
-  };
-
-  loadLocationNames(): void {
-    this.store.dispatch(loadLocationNames());
-
-    this.subscriptions.add(
-      this.locationNames$.subscribe((locL: Location[] | null) => {
-        if (locL) {
-          this.locationList = locL
-        } else {
-          this.locationList = [];
-        }
-      })
-    );
-  };
 
   loadLocation(id: string): void {
     this.store.dispatch(loadOneLocation({ locationId: id }))
@@ -161,10 +123,12 @@ export class EditLocationComponent implements OnInit, OnDestroy {
             contactEmail: location.contactEmail,
             primaryContact: location.primaryContact
           })
+
+          this.initialOrgName = location.orgName;
+          this.initialLocName = location.locationName;
         }
       })
     );
-
 
   };
 
@@ -211,8 +175,5 @@ export class EditLocationComponent implements OnInit, OnDestroy {
 
   };
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  };
 
 }

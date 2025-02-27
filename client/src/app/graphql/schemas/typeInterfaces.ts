@@ -101,7 +101,8 @@ export type Organization = {
 
 export type Tag = {
     _id: string,
-    tagName: string
+    tagName: string,
+    isNew?: boolean
 }
 
 export type Location = {
@@ -160,7 +161,7 @@ export type AdminRadioFields = {
     make: string,
     model: string,
     progChanels: string,
-    notes: string [],
+    notes: string[],
     serialNumber: string,
     serviceRecord: LimitedRecord[],
     warranty: string,
@@ -253,7 +254,7 @@ export type UpdateRadioFields = {
     serialNumber?: string,
     warranty?: Date,
     refurb?: boolean,
-    radioType?: string    
+    radioType?: string
 }
 
 export type UpdateUserFields = {
@@ -290,7 +291,7 @@ export type UpdatePartFields = {
     data?: string,
     manufacturer?: string,
     cost?: number,
-    msrp?:number
+    msrp?: number
 }
 
 export type UpdateTagFields = {
@@ -304,6 +305,10 @@ export type AddPartFields = {
     manufacturer?: string,
     cost?: number,
     msrp?: number
+}
+
+export type AddTagFields = {
+    tagName: string
 }
 
 export type TableSearchParams = {
@@ -321,7 +326,7 @@ export type InvoiceTextAttributes = {
     serialNumber: string,
     repairTag: number,
     workPerformed: string[]
-}
+};
 
 export type PoTextAttributes = {
     make: string,
@@ -331,6 +336,17 @@ export type PoTextAttributes = {
     repairTag: number,
     orgName: string,
     locationName: string
-}
+};
 
+export interface OrgFilter {
+    orgName?: string;
+    tagNames?: string[];
+    tagIds?: string[];
+    // Add more filters as needed (e.g., sort, page, etc.)
+};
+
+export enum OrgParamTypes {
+    OrgName = 'orgName',
+    TagNames = 'tagNames'
+}
 

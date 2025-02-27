@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 
@@ -7,7 +7,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   templateUrl: './org-rad-navigator.component.html',
   styleUrls: ['./org-rad-navigator.component.css']
 })
-export class OrgRadNavigatorComponent implements OnInit {
+export class OrgRadNavigatorComponent {
 
   
   orgForm = new FormGroup({
@@ -23,11 +23,6 @@ export class OrgRadNavigatorComponent implements OnInit {
     this.router.navigate(['/radio-results', orgName]);
     this.orgForm.patchValue({orgName: ''});
   };
-  
 
-  ngOnInit(): void {
-
-      
-  };
 
 }

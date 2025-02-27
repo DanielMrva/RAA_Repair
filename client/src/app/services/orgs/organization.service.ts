@@ -40,11 +40,11 @@ export class OrganizationService {
     })
   }
 
-  queryOrgByTag(tagIds: string[]) {
+  queryOrgByTag(tagIDs: string[]) {
     return this.apollo.watchQuery<{orgsByTag: Organization[]}> ({
       query: QUERY_ORGS_BY_TAG,
       variables: {
-        tagIds
+        tagIDs
       }
     })
   }
@@ -68,10 +68,10 @@ export class OrganizationService {
     })
   }
   
-  addOrg(orgName: string) {
+  addOrg(orgName: string, tags: string[]) {
     return this.apollo.mutate<{addOrg: Organization}> ({
       mutation: ADD_ORG,
-      variables: { orgName}
+      variables: { orgName, tags}
     })
   }
 
@@ -82,3 +82,5 @@ export class OrganizationService {
     })
   }
 }
+
+// TODO: Standardize ID / Id naming convention across the app back to front end!

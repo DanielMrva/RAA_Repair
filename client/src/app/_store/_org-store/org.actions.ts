@@ -1,52 +1,53 @@
 import { createAction, props } from "@ngrx/store";
-import { Organization, UpdateOrgFields } from "@app/graphql/schemas/typeInterfaces";
+import { Organization, OrgFilter, UpdateOrgFields } from "@app/graphql/schemas/typeInterfaces";
 
 export const loadAllOrgs = createAction('[Org Reports Page] Load All Orgs');
 
 export const loadAllOrgsSuccess = createAction(
     '[Org Service] Load All Orgs Success',
-    props<{ organizations: Organization[] }>()    
+    props<{ organizations: Organization[] }>()
 );
 
 export const loadAllOrgsFailure = createAction(
     '[Org Service] Load All Orgs Failure',
-    props<{ error: string}>()
+    props<{ error: string }>()
 );
 
 export const loadLikeOrgs = createAction(
     '[Org Results Page] Load Like Orgs',
-    props<{ orgName: string}>()
+    props<{ orgName: string }>()
 );
 
 export const loadLikeOrgsSuccess = createAction(
     '[Org Service] Load Like Orgs Success',
-    props<{ organizations: Organization[] }>()    
+    props<{ organizations: Organization[] }>()
 );
 
 export const loadLikeOrgsFailure = createAction(
     '[Org Service] Load All Orgs Failure',
-    props<{ error: string}>()
+    props<{ error: string }>()
 );
 
 export const loadOneOrg = createAction(
     '[Org Page] Load One Org',
-    props<{ orgId: string}>()
+    props<{ orgId: string }>()
 );
 
 export const loadOneOrgSuccess = createAction(
     '[Org Service] Load One Org Successs',
-    props<{ organization: Organization}>()
+    props<{ organization: Organization }>()
 );
 
 export const loadOneOrgFailure = createAction(
     '[Org Service] Load One Org Failure',
-    props<{ error: string}>()
+    props<{ error: string }>()
 );
 
 export const editOrg = createAction(
     '[Edit Org Page] Edit Org',
-    props<{ id: string,
-            updates: UpdateOrgFields
+    props<{
+        id: string,
+        updates: UpdateOrgFields
     }>()
 );
 
@@ -57,24 +58,25 @@ export const editOrgSuccess = createAction(
 
 export const editOrgFailure = createAction(
     '[Org Service] Edit Org Failure',
-    props<{ error: string}>()
+    props<{ error: string }>()
 );
 
 export const addOrg = createAction(
     '[Add Org Page] Add Org',
-    props<{ 
-        orgName: string
+    props<{
+        orgName: string,
+        tags: string[]
     }>()
 );
 
 export const addOrgSuccess = createAction(
     '[Org Service] Add Org Success',
-    props<{ organization?: Organization}>()
+    props<{ organization?: Organization }>()
 );
 
 export const addOrgFailure = createAction(
     '[Org Service] Add Org Failure',
-    props<{ error: string}>()
+    props<{ error: string }>()
 );
 
 export const loadOrgNames = createAction(
@@ -123,7 +125,7 @@ export const loadOrgsByTagFailure = createAction(
 
 export const loadOrgsByLikeTag = createAction(
     '[Org Service] Load Orgs By Like Tags',
-    props<{ tagNames: string[]}>()
+    props<{ tagNames: string[] }>()
 );
 
 export const loadOrgsByLikeTagSuccess = createAction(
@@ -135,3 +137,9 @@ export const loadOrgsByLikeTagFailure = createAction(
     '[Org Service] Load Org By Like Tag Failure',
     props<{ error: string }>()
 );
+
+export const loadOrgsWithFilter = createAction(
+    '[Org] Load Orgs With Filter',
+    props<{ filter: OrgFilter }>()
+);
+

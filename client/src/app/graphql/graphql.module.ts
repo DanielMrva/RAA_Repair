@@ -5,6 +5,7 @@ import { onError } from '@apollo/client/link/error';
 import { CommonModule } from '@angular/common';
 import { HttpLink } from 'apollo-angular/http';
 import { environment } from '@environments/environment';
+import { cache } from './inMemoryCachePolicy';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -22,7 +23,7 @@ const uri = `${environment.apiBaseUri}/graphql`;
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   return {
     link: from([errorLink, httpLink.create({uri})]),
-    cache: new InMemoryCache(),
+    cache: cache,
     defaultOptions: {
       watchQuery: {
         fetchPolicy: 'network-only'

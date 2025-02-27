@@ -26,6 +26,8 @@ import { OneRepairComponent } from './components/one-repair/one-repair.component
 import { EditRepairComponent } from './components/edit-repair/edit-repair.component';
 
 import { OrgLocationSelectorComponent } from '@app/_components/utilComponents/org-location-selector/org-location-selector.component';
+import { OrgSelectorComponent } from '../utility/components/org-selector/org-selector.component';
+import { LocSelectorComponent } from '../utility/components/loc-selector/loc-selector.component';
 import { PoTextButtonComponent } from '@app/_components/utilComponents/po-text-button/po-text-button.component';
 import { InvoiceTextButtonComponent } from '@app/_components/utilComponents/invoice-text-button/invoice-text-button.component';
 
@@ -46,6 +48,7 @@ import { UtilityModule } from '../utility/utility.module';
     OneRepairComponent,
     EditRepairComponent,
     OrgLocationSelectorComponent,
+
     PoTextButtonComponent,
     InvoiceTextButtonComponent,
     RepairResultsTableComponent,

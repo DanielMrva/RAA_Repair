@@ -1,0 +1,9 @@
+<mat-form-field appearance="fill" class="full-width-input">
+    <mat-label>Organization</mat-label>
+    <input matInput [formControl]="orgControl" [matAutocomplete]="orgAuto">
+    <mat-autocomplete #orgAuto="matAutocomplete">
+        <mat-option *ngFor="let org of filteredOrgNames$ | async" [value]="org">
+            {{ org }}
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

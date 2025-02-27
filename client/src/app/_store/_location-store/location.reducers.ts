@@ -7,7 +7,9 @@ export interface LocationState {
     locations: Location[];
     locationNames: Location[];
     error: string | null;
-    isLoading: boolean;
+    isLoadingOneLoc: boolean;
+    isLoadingLocations: boolean;
+    isLoadingLocNames: boolean;
 };
 
 export const initialState: LocationState = {
@@ -15,7 +17,9 @@ export const initialState: LocationState = {
     locations: [],
     locationNames: [],
     error: null,
-    isLoading: false
+    isLoadingOneLoc: false,
+    isLoadingLocations: false,
+    isLoadingLocNames: false
 };
 
 export const locationReducer = createReducer(
@@ -24,138 +28,138 @@ export const locationReducer = createReducer(
     on(LocationActions.loadOneLocation, (state) => ({
         ...state,
         oneLocation: null,
-        isLoading: true,
+        isLoadingOneLoc: true,
         error: null,
     })),
 
     on(LocationActions.loadOneLocationSuccess, (state, action ) => ({
         ...state,
         oneLocation: action.location,
-        isLoading: false,
+        isLoadingOneLoc: false,
         error: null,
     })),
 
     on(LocationActions.loadOneLocationFailure, (state, action) => ({
         ...state,
         oneLocation: null,
-        isLoading: false,
+        isLoadingOneLoc: false,
         error: action.error
     })),
 
     on(LocationActions.loadLocationByName, (state) => ({
         ...state,
         oneLocation: null,
-        isLoading: true,
+        isLoadingOneLoc: true,
         error: null,
     })),
 
     on(LocationActions.loadLocationByNameSuccess, (state, { oneLocation } ) => ({
         ...state,
         oneLocation: oneLocation,
-        isLoading: false,
+        isLoadingOneLoc: false,
         error: null,
     })),
 
     on(LocationActions.loadLocationByNameFailure, (state, action) => ({
         ...state,
         oneLocation: null,
-        isLoading: false,
+        isLoadingOneLoc: false,
         error: action.error
     })),
 
     on(LocationActions.loadAllLocations, (state) => ({
         ...state,
-        isLoading: true,
+        isLoadingLocations: true,
         error: null,
     })),
 
     on(LocationActions.loadAllLocationsSuccess, (state, { locations }) => ({
         ...state,
         locations: locations as Location[],
-        isLoading: false,
+        isLoadingLocations: false,
         error: null,
     })),
 
     on(LocationActions.loadAllLocationsFailure, (state, { error }) => ({
         ...state,
-        isLoading: false,
+        isLoadingLocations: false,
         error: error
     })),
 
     on(LocationActions.loadOrgLocations, (state) => ({
         ...state,
-        isLoading: true,
+        isLoadingLocations: true,
         error: null,
     })),
 
     on(LocationActions.loadOrgLocationsSuccess, (state, { locations }) => ({
         ...state,
         locations: locations as Location[],
-        isLoading: false,
+        isLoadingLocations: false,
         error: null,
     })),
 
     on(LocationActions.loadOrgLocationsFailure, (state, { error }) => ({
         ...state,
-        isLoading: false,
+        isLoadingLocations: false,
         error: error
     })),
 
     on(LocationActions.addLocation, (state) => ({
         ...state,
         oneLocation: null,
-        isLoading: true,
+        isLoadingOneLoc: true,
         error: null,
     })),
 
     on(LocationActions.addLocationSuccess, (state, { location }) => ({
         ...state,
         oneLocation: location as Location,
-        isLoading: false,
+        isLoadingOneLoc: false,
         error: null,
     })),
 
     on(LocationActions.addLocationFailure, (state, { error }) => ({
         ...state,
-        isLoading: false,
+        isLoadingOneLoc: false,
         error: error
     })),
 
     on(LocationActions.editLocation, (state) => ({
         ...state,
-        isLoading: true,
+        isLoadingOneLoc: true,
         error: null,
     })),
 
     on(LocationActions.editLocationSuccess, (state, { location }) => ({
         ...state,
         oneLocation: location as Location,
-        isLoading: false,
+        isLoadingOneLoc: false,
         error: null,
     })),
 
     on(LocationActions.editLocationFailure, (state, { error }) => ({
         ...state,
-        isLoading: false,
+        isLoadingOneLoc: false,
         error: error
     })),
 
     on(LocationActions.loadLocationNames, state => ({ 
         ...state, 
-        isLoading: true, 
+        isLoadingLocNames: true, 
         error: null 
     })),
 
     on(LocationActions.loadLocationNamesSuccess, (state, { locationNames }) => ({
         ...state,
         locationNames: locationNames as Location[],
-        isLoading: false,
+        isLoadingLocNames: false,
         error: null
     })),
 
     on(LocationActions.loadLocationNamesFailure, (state, { error }) => ({
         ...state,
-        isLoading: false,
+        isLoadingLocNames: false,
         error: error
     })),
 

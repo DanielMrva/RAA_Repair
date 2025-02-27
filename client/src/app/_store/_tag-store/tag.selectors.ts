@@ -16,7 +16,12 @@ export const selectOneTag = createSelector(
 
 export const tagLoadingSelector = createSelector(
     selectTags,
-    (state: TagState) => state.isLoading
+    (state: TagState) => state.isLoadingOneTag
+);
+
+export const manyTagsLoadingSelector = createSelector(
+    selectTags,
+    (state: TagState) => state.isLoadingTags
 );
 
 export const tagErrorSelector = createSelector(

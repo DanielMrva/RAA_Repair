@@ -6,14 +6,16 @@ export interface TagState {
     oneTag: Tag | null;
     tags: Tag[];
     error: string | null;
-    isLoading: boolean;
+    isLoadingOneTag: boolean;
+    isLoadingTags: boolean;
 };
 
 export const initialState: TagState = {
     oneTag: null,
     tags: [],
     error: null,
-    isLoading: false
+    isLoadingOneTag: false,
+    isLoadingTags: false,
 };
 
 export const tagReducer = createReducer(
@@ -22,79 +24,79 @@ export const tagReducer = createReducer(
     on(TagActions.loadOneTag, (state) => ({
         ...state,
         oneTag: null,
-        isLoading: true,
+        isLoadingOneTag: true,
         error: null,
     })),
 
     on(TagActions.loadOneTagSuccess, (state, action ) => ({
         ...state,
         oneTag: action.tag,
-        isLoading: false,
+        isLoadingOneTag: false,
         error: null,
     })),
 
     on(TagActions.loadOneTagFailure, (state, action) => ({
         ...state,
         oneTag: null,
-        isLoading: false,
+        isLoadingOneTag: false,
         error: action.error
     })),
 
     on(TagActions.loadAllTags, (state) => ({
         ...state,
-        isLoading: true,
+        isLoadingTags: true,
         error: null,
     })),
 
     on(TagActions.loadAllTagsSuccess, (state, { tags }) => ({
         ...state,
         tags: tags as Tag[],
-        isLoading: false,
+        isLoadingTags: false,
         error: null,
     })),
 
     on(TagActions.loadAllTagsFailure, (state, { error }) => ({
         ...state,
-        isLoading: false,
+        isLoadingTags: false,
         error: error
     })),
 
     on(TagActions.addTag, (state) => ({
         ...state,
         oneTag: null,
-        isLoading: true,
+        isLoadingOneTag: true,
         error: null,
     })),
 
     on(TagActions.addTagSuccess, (state, { tag }) => ({
         ...state,
         oneTag: tag as Tag,
-        isLoading: false,
+        isLoadingOneTag: false,
         error: null,
     })),
 
     on(TagActions.addTagFailure, (state, { error }) => ({
         ...state,
-        isLoading: false,
+        isLoadingOneTag: false,
         error: error
     })),
 
     on(TagActions.editTag, (state) => ({
         ...state,
-        isLoading: true,
+        isLoadingOneTag: true,
         error: null,
     })),
 
     on(TagActions.editTagSuccess, (state, { tag }) => ({
         ...state,
         oneTag: tag as Tag,
-        isLoading: false,
+        isLoadingOneTag: false,
         error: null,
     })),
 
     on(TagActions.editTagFailure, (state, { error }) => ({
         ...state,
-        isLoading: false,
+        isLoadingOneTag: false,
         error: error
     })),
 

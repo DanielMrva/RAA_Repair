@@ -8,8 +8,8 @@ import { editRadio, loadOneRadio } from '@app/_store/_radio-store/radio.actions'
 import { selectOneRadio, radioErrorSelector, radioLoadingSelector } from '@app/_store/_radio-store/radio.selectors';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-import { selectLocationNames, locationLoadingSelector, locationErrorSelector } from '@app/_store/_location-store/location.selectors';
-import { selectOrgNames, orgLoadingSelector, orgErrorSelector } from '@app/_store/_org-store/org.selectors';
+import { selectLocationNames, locationErrorSelector, locNamesLoadingSelector } from '@app/_store/_location-store/location.selectors';
+import { selectOrgNames, orgErrorSelector, orgNamesLoadingSelector } from '@app/_store/_org-store/org.selectors';
 import { loadLocationNames } from '@app/_store/_location-store/location.actions';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 
@@ -22,71 +22,32 @@ export class EditRadioComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  initialOrgName: string | null = null;
+
 
   filteredLocationNames: string[] = [];
 
-  isLoading$
-  radioError$
-  oneRadio$
+  isLoading$ = this.store.select(radioLoadingSelector);
+  radioError$ = this.store.select(radioErrorSelector);
+  oneRadio$ = this.store.select(selectOneRadio);
 
-  orgNames$
-  isLoadingOrgNames$
-  orgNameError$
+  orgNames$ = this.store.select(selectOrgNames);
+  isLoadingOrgNames$ = this.store.select(orgNamesLoadingSelector);
+  orgNameError$ = this.store.select(orgErrorSelector);
 
-  locationNames$
-  isLoadingLocationNames$
-  locationNameError$
-
-  orgNameOptions: string[] = [];
-  filteredOrgNames$!: Observable<string[]>;
-
-
-  locNameOptions: string[] = [];
-  filteredLocNames$!: Observable<string[]>;
-
-  radioID!: string;
-
-
+  locationNames$ = this.store.select(selectLocationNames);
+  isLoadingLocationNames$ = this.store.select(locNamesLoadingSelector);
+  locationNameError$ = this.store.select(locationErrorSelector);
+  
   constructor(
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>
-  ) {
-    this.isLoading$ = this.store.select(radioLoadingSelector);
-    this.radioError$ = this.store.select(radioErrorSelector);
-    this.oneRadio$ = this.store.select(selectOneRadio);
+  ) { }
 
-    this.orgNames$ = this.store.select(selectOrgNames);
-    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-    this.orgNameError$ = this.store.select(orgErrorSelector);
-
-    this.locationNames$ = this.store.select(selectLocationNames);
-    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
-    this.locationNameError$ = this.store.select(locationErrorSelector);
-  }
-
-  ngOnInit(): void {
-
-    this.store.dispatch(loadOrgNames());
-    this.store.dispatch(loadLocationNames())
-
-    this.subscriptions.add(
-      this.activatedRoute.params.subscribe((params: Params) => {
-        this.radioID = params['id'];
-        this.loadRadio(this.radioID);
-      })
-    );
-
-
-
-    this.populateForm();
-
-  };
-
-
-
-
+  initialOrgName: string = '';
+  initialLocName: string = '';
+  selectedOrg: string = '';
+  radioID!: string;
 
   editRadioForm = new FormGroup({
     orgName: new FormControl<string>(''),
@@ -106,6 +67,25 @@ export class EditRadioComponent implements OnInit, OnDestroy {
   });
 
 
+  ngOnInit(): void {
+
+    this.subscriptions.add(
+      this.activatedRoute.params.subscribe((params: Params) => {
+        this.radioID = params['id'];
+        this.loadRadio(this.radioID);
+      })
+    );
+
+    this.store.dispatch(loadOrgNames());
+    this.store.dispatch(loadLocationNames())
+
+    this.populateForm();
+
+  };
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  };
 
   get notesArray(): FormArray {
     return this.editRadioForm.get('notes') as FormArray;
@@ -117,12 +97,13 @@ export class EditRadioComponent implements OnInit, OnDestroy {
   };
 
   handleOrgNameSelected(orgName: string): void {
+    this.selectedOrg = orgName;
     this.editRadioForm.patchValue({orgName: orgName});
   };
 
-  handleFilteredLocations(locations: string[]): void {
-    this.filteredLocationNames = locations;
-  };
+  handleLocSelection(loc: string): void {
+    this.editRadioForm.patchValue({locationName: loc})
+  }
 
   populateForm() {
 
@@ -230,10 +211,5 @@ export class EditRadioComponent implements OnInit, OnDestroy {
 
     this.updateRadio(submittedRadio);
   };
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  };
-
 
 }

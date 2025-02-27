@@ -38,8 +38,8 @@ export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destory$.next();
-    this.destory$.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit(): void {
@@ -65,7 +65,7 @@ export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
 
   };
 
-  private destory$ = new Subject<void>()
+  private destroy$ = new Subject<void>()
 
   private setupValueChanges(): void {
     this.orgNameControl.valueChanges.pipe(
@@ -73,14 +73,12 @@ export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
       startWith(this.initialOrgName || ''),
       tap(value => {
         const nonNullable = value ?? '';
-        if (this.orgNameControl.value !== nonNullable) {
-          this.orgNameSelected.emit(nonNullable);
-        }
+        this.orgNameSelected.emit(nonNullable);
         this.filterLocations(nonNullable);
       }),
-      takeUntil(this.destory$)
+      takeUntil(this.destroy$)
     ).subscribe();
-
+  
     this.filteredOrgNames$ = this.orgNameControl.valueChanges.pipe(
       startWith(''),
       switchMap(value =>
@@ -88,20 +86,15 @@ export class OrgLocSelectorComponent implements OnInit, OnChanges, OnDestroy {
       )
     );
   }
+  
 
   private filterLocations(orgName: string): void {
-    if (!this.locationNames$) {
-      return;
-    }
-
-    this.locationNames$.pipe(
+    this.filteredLocNames$ = this.locationNames$.pipe(
       switchMap(locations => this.filterService.filteredLocs('', orgName, locations)),
-      distinctUntilChanged(),
-      tap(filteredLocations => {
-        this.filteredLocations.emit(filteredLocations);
-      })
-    ).subscribe();
-  };
+      distinctUntilChanged()
+    );
+  }
+
 
 
 }

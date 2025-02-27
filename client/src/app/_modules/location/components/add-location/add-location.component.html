@@ -12,19 +12,20 @@
                 <div class="row">
 
                     <div class="form-group col-12 col-lg-6">
-                        <app-org-loc-selector
-                        [orgNameControl]="locationForm.controls.orgName"
-                        [initialOrgName]="locationForm.controls.orgName.value"
-                        (orgNameSelected)="handleOrgNameSelected($event)"
-                        (filteredLocations)="handleFilteredLocations($event)"
-                        ></app-org-loc-selector>
+                        <app-org-selector 
+                            (orgSelected)="handleOrgNameSelected($event)">
+                        </app-org-selector>
                     </div>
 
-                    <mat-form-field class="form-group col-12 col-lg-6">
-                        <mat-label>Location Name</mat-label>
-                        <input matInput placeholder="Location Name" formControlName="locationName" [class.invalid]="fieldValidCheck('locationName')">
-                    </mat-form-field>
-                    <div class="text-danger col-12" *ngIf="locationForm.get('locationName')?.hasError('locationNameExists')">
+                    <div class="form-group col-12 col-lg-6">
+                        <app-loc-selector
+                            [orgName]="selectedOrg"
+                            (locSelected)="handleLocSelection($event)"
+                        >
+                        </app-loc-selector>
+                    </div>
+                    <div class="text-danger col-12"
+                        *ngIf="locationForm.get('locationName')?.hasError('locationNameExists')">
                         This location name already exists.
                     </div>
 

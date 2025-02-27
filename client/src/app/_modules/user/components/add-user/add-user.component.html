@@ -19,24 +19,18 @@
         </mat-form-field>
 
         <div class="form-group col-8 offset-2">
-            <app-org-loc-selector [orgNameControl]="userForm.controls.orgName"
-                (orgNameSelected)="handleOrgNameSelected($event)"
-                (filteredLocations)="handleFilteredLocations($event)">
-            </app-org-loc-selector>
+            <app-org-selector 
+                (orgSelected)="handleOrgNameSelected($event)">
+            </app-org-selector>
         </div>
 
-        <mat-form-field class="form-group col-8 offset-2">
-            <mat-label for="userLocation">
-                Location:
-            </mat-label>
-            <input type="text" placeholder="Location" aria-label="Location" matInput
-                [formControl]="userForm.controls.userLocation" [matAutocomplete]="locAuto">
-            <mat-autocomplete autoActiveFirstOption #locAuto="matAutocomplete">
-                <mat-option *ngFor="let locOption of filteredLocationNames" [value]="locOption">
-                    {{locOption}}
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
+        <div class="form-group col-8 offset-2">
+            <app-loc-selector
+                [orgName]="selectedOrg"
+                (locSelected)="handleLocSelection($event)"
+            >
+            </app-loc-selector>
+        </div>
 
         <mat-form-field class="form-group col-8 offset-2">
             <mat-label>Access Level</mat-label>

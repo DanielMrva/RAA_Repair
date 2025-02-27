@@ -23,3 +23,25 @@
 .mt-auto {
   margin-top: auto;
 }
+
+.icon-and-text {
+  /* Allows the icon and the link to sit on the same baseline smoothly. */
+  display: inline-flex;
+  align-items: baseline;
+}
+
+/* You can adjust the size to match your text’s font-size. */
+.icon-inline {
+  font-size: 1em;            /* Match surrounding text’s font size */
+  vertical-align: bottom;    /* Align icon properly with text */
+  margin-right: 0.3em;       /* Spacing before the link text */
+}
+
+.icon-small {
+  font-size: .5em;
+  vertical-align: bottom;
+  margin-right: 0.3em;
+}
+
+
+

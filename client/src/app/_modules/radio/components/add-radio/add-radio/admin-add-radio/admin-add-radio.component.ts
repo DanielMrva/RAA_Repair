@@ -3,11 +3,11 @@ import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { AppState } from '@app/_store/app.state';
 import { Store } from '@ngrx/store';
 import { addRadio } from '@app/_store/_radio-store/radio.actions';
-import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
-import { selectLocationNames, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
+import { selectOrgNames, orgErrorSelector, orgNamesLoadingSelector } from '@app/_store/_org-store/org.selectors';
+import { selectLocationNames, locationErrorSelector, locNamesLoadingSelector } from '@app/_store/_location-store/location.selectors';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { loadLocationNames } from '@app/_store/_location-store/location.actions';
-import { Observable, Subscription, combineLatest } from 'rxjs';
+import { Subscription} from 'rxjs';
 
 
 @Component({
@@ -19,33 +19,22 @@ export class AdminAddRadioComponent implements OnInit, OnDestroy{
 
   private subscriptions = new Subscription();
 
-  orgNames$
-  isLoadingOrgNames$
-  orgNameError$
-
-  locationNames$
-  isLoadingLocationNames$
-  locationNameError$
-
-  orgNameOptions: string[] = [];
-  initialOrgName: string | null = null;
-
-  filteredLocNames: string[] = [];
+  orgNames$ = this.store.select(selectOrgNames);
+  isLoadingOrgNames$ = this.store.select(orgNamesLoadingSelector);
+  orgNameError$ = this.store.select(orgErrorSelector);
+ 
+  locationNames$ = this.store.select(selectLocationNames);
+  isLoadingLocationNames$ = this.store.select(locNamesLoadingSelector);
+  locationNameError$ = this.store.select(locationErrorSelector);
 
   constructor(
     private store: Store<AppState>
-  ) {
-    this.orgNames$ = this.store.select(selectOrgNames);
-    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-    this.orgNameError$ = this.store.select(orgErrorSelector);
-  
-    this.locationNames$ = this.store.select(selectLocationNames);
-    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
-    this.locationNameError$ = this.store.select(locationErrorSelector);
-   }
+  ) { }
 
-
-
+  orgNameOptions: string[] = [];
+  initialOrgName: string | null = null;
+  selectedOrg: string = '';
+  isSubmitted = false;
 
   adminRadioForm = new FormGroup({
     orgName: new FormControl<string>(''),
@@ -62,20 +51,29 @@ export class AdminAddRadioComponent implements OnInit, OnDestroy{
     refurb: new FormControl<boolean>(false, { nonNullable: true }),
     radioType: new FormControl<string>(''),
     otherType: new FormControl<string>('')
-  })
+  });
 
-  isSubmitted = false;
+  ngOnInit(): void {
+    this.store.dispatch(loadOrgNames());
+    this.store.dispatch(loadLocationNames());
+
+  };
+  
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  };
 
   get notesArray(): FormArray {
     return this.adminRadioForm.get('notes') as FormArray;
-  }
+  };
+
   addNotes() {
     this.notesArray.push(new FormControl<string>('', { nonNullable: true}));
-  }
+  };
 
   removeNotes(index: number) {
     this.notesArray.removeAt(index);
-  }
+  };
 
   fieldValidCheck(field: string) {
     if (
@@ -87,21 +85,15 @@ export class AdminAddRadioComponent implements OnInit, OnDestroy{
       } else {
         return false
       }
-  }
-
-
-  ngOnInit(): void {
-    this.store.dispatch(loadOrgNames())
-    this.store.dispatch(loadLocationNames())
-
-  }
+  };
 
   handleOrgNameSelected(orgName: string): void {
+    this.selectedOrg = orgName;
     this.adminRadioForm.patchValue({orgName: orgName});
   };
 
-  handleFilteredLocations(locations: string[]): void {
-    this.filteredLocNames = locations;
+  handleLocSelection(loc: string): void {
+    this.adminRadioForm.patchValue({locationName: loc});
   };
 
   onSubmit() {
@@ -147,7 +139,5 @@ export class AdminAddRadioComponent implements OnInit, OnDestroy{
       )
   };
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  };
+
 }

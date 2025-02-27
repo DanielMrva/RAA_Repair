@@ -8,8 +8,8 @@ import { editUser, loadOneUser } from '@app/_store/_user-store/user.actions';
 import { loadOrgNames } from '@app/_store/_org-store/org.actions';
 import { loadLocationNames } from '@app/_store/_location-store/location.actions';
 import { selectOneUser, userErrorSelector, userLoadingSelector } from '@app/_store/_user-store/user.selectors';
-import { selectOrgNames, orgErrorSelector, orgLoadingSelector } from '@app/_store/_org-store/org.selectors';
-import { selectLocationNames, locationErrorSelector, locationLoadingSelector } from '@app/_store/_location-store/location.selectors';
+import { selectOrgNames, orgErrorSelector, orgLoadingSelector, orgNamesLoadingSelector } from '@app/_store/_org-store/org.selectors';
+import { selectLocationNames, locationErrorSelector, locationLoadingSelector, locNamesLoadingSelector } from '@app/_store/_location-store/location.selectors';
 import { Observable, Subscription, combineLatest, map, startWith } from 'rxjs';
 
 @Component({
@@ -21,22 +21,16 @@ export class EditUserComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  orgNames$
-  isLoadingOrgNames$
-  orgNameError$
+  oneUser$ = this.store.select(selectOneUser);
+  isLoadingUser$ = this.store.select(userLoadingSelector);
+  userError$ = this.store.select(userErrorSelector);
 
 
-  initialOrgName: string | null = null;
+  initialOrgName: string = '';
+  initialLocName: string = '';
+  selectedOrg: string = '';
 
   filteredLocationNames: string[] = [];
-
-  locationNames$
-  isLoadingLocationNames$
-  locationNameError$
-
-  oneUser$
-  isLoadingUser$
-  userError$
 
   userId!: string;
 
@@ -53,19 +47,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>
-  ) {
-    this.orgNames$ = this.store.select(selectOrgNames);
-    this.isLoadingOrgNames$ = this.store.select(orgLoadingSelector);
-    this.orgNameError$ = this.store.select(orgErrorSelector);
-
-    this.locationNames$ = this.store.select(selectLocationNames);
-    this.isLoadingLocationNames$ = this.store.select(locationLoadingSelector);
-    this.locationNameError$ = this.store.select(locationErrorSelector);
-
-    this.oneUser$ = this.store.select(selectOneUser);
-    this.isLoadingUser$ = this.store.select(userLoadingSelector);
-    this.userError$ = this.store.select(userErrorSelector);
-  }
+  ) { }
 
   ngOnInit(): void {
     this.loadOrgNames();
@@ -80,11 +62,12 @@ export class EditUserComponent implements OnInit, OnDestroy {
   }
 
   handleOrgNameSelected(orgName: string): void {
+    this.selectedOrg = orgName;
     this.userForm.patchValue({orgName: orgName});
   };
 
-  handleFilteredLocations(locations: string[]): void {
-    this.filteredLocationNames = locations;
+  handleLocSelection(loc: string): void {
+    this.userForm.patchValue({userLocation: loc})
   };
 
 

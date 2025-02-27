@@ -304,8 +304,8 @@ export const QUERY_LIKE_PART_PN_PD = gql`
 
 export const ALL_TAGS = gql`
     ${TAG_FIELDS_FRAGMENT}
-    query allTags() {
-        allTags() {
+    query allTags {
+        allTags {
             ... TagFieldsFragment
         }
     }
@@ -315,7 +315,7 @@ export const QUERY_SINGLE_TAG = gql`
     ${TAG_FIELDS_FRAGMENT}
     query tag($tagId: String!) {
         tag(tagId: $tagId) {
-            ... TagFieldsFragment
+            ...TagFieldsFragment
         } 
     }    
 `
@@ -330,14 +330,14 @@ export const QUERY_LIKE_TAG = gql`
 `
 
 export const QUERY_ORGS_BY_TAG = gql`
-        ${ORG_FIELDS_FRAGMENT}
+    ${ORG_FIELDS_FRAGMENT}
     ${USER_FIELDS_FRAGMENT}
     ${LOCATION_FIELDS_FRAGMENT}
     ${RADIO_FIELDS_FRAGMENT}
     ${SERVICE_RECORD_FRAGMENT}
     ${RADIO_DETAILS_FRAGMENT}
     ${TAG_FIELDS_FRAGMENT}
-    query orgsByTag($tagIDs: [String]) {
+    query orgsByTag($tagIDs: [ID]) {
         orgsByTag(tagIDs: $tagIDs) {
             ...OrgFieldsFragment
         }

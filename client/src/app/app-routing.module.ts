@@ -239,16 +239,16 @@ const routes: Routes = [
       role: ['admin']
     },
   },
-  {
-    path: 'org-results/:orgName',
-    component: OrgResultsPageComponent,
-    pathMatch: 'full',
-    runGuardsAndResolvers: 'always',
-    canActivate: [authGuard, roleGuard],
-    data: {
-      role: ['admin']
-    },
-  },
+  // {
+  //   path: 'org-results/:orgName',
+  //   component: OrgResultsPageComponent,
+  //   pathMatch: 'full',
+  //   runGuardsAndResolvers: 'always',
+  //   canActivate: [authGuard, roleGuard],
+  //   data: {
+  //     role: ['admin']
+  //   },
+  // },
   {
     path: 'location-results',
     component: LocationResultsPageComponent,

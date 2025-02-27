@@ -1,0 +1,48 @@
+<ng-container *ngIf="vertical; else horizontal">
+    <div class="container py-3">
+        <div class="row">
+            <h4 [ngClass]="vertical ? 'col-12' : 'col-4'" class="d-flex justify-content-center">
+                {{ tagID ? 'Edit Tag' : 'Add Tag' }}
+            </h4>
+        </div>
+        <form [formGroup]="tagForm" (ngSubmit)="submitForm()">
+            <mat-form-field [ngClass]="vertical ? 'col-12' : 'col-4'" class="form-group">
+                <mat-label>Tag Name</mat-label>
+                <input matInput type="text" placeholder="Tag Name" aria-label="Tag Name"
+                    [formControl]="tagForm.controls.tagName" />
+                <small *ngIf="isDuplicateTag(tagForm.get('tagName')?.value || '')">
+                    Tag Name already exists.
+                </small>
+            </mat-form-field>
+            <div [ngClass]="vertical ? 'col-12' : 'col-4'" class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary" [disabled]="tagForm.invalid">
+                    {{ tagID ? 'Save Changes' : 'Add Tag' }}
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</ng-container>
+
+<ng-template #horizontal>
+    <div class="col-12">
+        <form [formGroup]="tagForm" (ngSubmit)="submitForm()" class="input-group pt-3 w-100">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">
+                    {{ tagID ? 'Edit Tag' : 'Add Tag' }}
+                </span>
+            </div>
+            <input matInput type="text" placeholder="Tag Name" aria-label="Tag Name"
+                [formControl]="tagForm.controls.tagName" class="flex-grow-1" />
+            <small *ngIf="isDuplicateTag(tagForm.get('tagName')?.value || '')" class="ml-2">
+                Tag Name already exists.
+            </small>
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary" [disabled]="tagForm.invalid" id="button-addon">
+                    {{ tagID ? 'Save Changes' : 'Add Tag' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>

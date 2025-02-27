@@ -17,6 +17,9 @@ import { RepairStatDropdownComponent } from './components/repair-stat-dropdown/r
 import { RouterModule } from '@angular/router';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -30,6 +33,18 @@ import { IsAuthenticatedDirective } from '@app/_directives/is-authenticated.dire
 import { AccessLevelDirective } from '@app/_directives/access-level.directive';
 import { AddPartModalFormComponent } from './components/addPartModalForm/add-part-modal-form/add-part-modal-form.component';
 import { EditDocumentButtonComponent } from './components/edit-document-button/edit-document-button.component';
+import { LittleTagComponent } from './components/tags/little-tag/little-tag.component';
+import { TagSelectorComponent } from './components/tags/tag-selector/tag-selector.component';
+import { OrgSelectorComponent } from './components/org-selector/org-selector.component';
+import { LocSelectorComponent } from './components/loc-selector/loc-selector.component';
+import { tagReducer } from '@app/_store/_tag-store/tag.reducers';
+import { TagEffects } from '@app/_store/_tag-store/tag.effects';
+import { OrgTagsBadgeComponent } from './components/tags/org-tags-badge/org-tags-badge.component';
+import { OrgByTagNameNavigatorComponent } from './components/tags/org-by-tag-name-navigator/org-by-tag-name-navigator.component';
+import { OrgSearchComponent } from './components/org-search/org-search.component';
+import { AddTagModalFormComponent } from './components/tags/add-tag-modal-form/add-tag-modal-form.component';
+import { MutateTagFormComponent } from './components/tags/mutate-tag-form/mutate-tag-form.component';
+import { MutateTagModalComponent } from './components/tags/mutate-tag-modal/mutate-tag-modal.component';
 
 
 
@@ -51,7 +66,17 @@ import { EditDocumentButtonComponent } from './components/edit-document-button/e
     IsAuthenticatedDirective,
     AccessLevelDirective,
     AddPartModalFormComponent,
-    EditDocumentButtonComponent
+    EditDocumentButtonComponent,
+    LittleTagComponent,
+    TagSelectorComponent,
+    OrgSelectorComponent,
+    LocSelectorComponent,
+    OrgTagsBadgeComponent,
+    OrgByTagNameNavigatorComponent,
+    OrgSearchComponent,
+    AddTagModalFormComponent,
+    MutateTagFormComponent,
+    MutateTagModalComponent
   ],
   imports: [
     CommonModule,
@@ -63,8 +88,12 @@ import { EditDocumentButtonComponent } from './components/edit-document-button/e
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatChipsModule,
+    MatBadgeModule,
+    MatTooltipModule,
+    StoreModule.forFeature('tag', tagReducer),
     StoreModule.forFeature('part', partReducer),
-    EffectsModule.forFeature([PartEffects])
+    EffectsModule.forFeature([PartEffects, TagEffects])
 
   ],
   exports: [
@@ -84,7 +113,14 @@ import { EditDocumentButtonComponent } from './components/edit-document-button/e
     IsAuthenticatedDirective,
     AccessLevelDirective,
     AddPartModalFormComponent,
-    EditDocumentButtonComponent
+    EditDocumentButtonComponent,
+    OrgSelectorComponent,
+    LocSelectorComponent,
+    LittleTagComponent,
+    TagSelectorComponent,
+    OrgTagsBadgeComponent,
+    OrgSearchComponent,
+    MutateTagFormComponent
   ]
 })
 export class UtilityModule { }

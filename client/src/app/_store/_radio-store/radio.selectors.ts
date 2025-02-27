@@ -21,7 +21,12 @@ export const selectOneRadioOrg = createSelector(
 
 export const radioLoadingSelector = createSelector(
     selectRadios,
-    (state: RadioState) => state.isLoading
+    (state: RadioState) => state.isLoadingOneRadio
+);
+
+export const manyRadiosLoadingSelector = createSelector(
+    selectRadios,
+    (state: RadioState) => state.isLoadingRadios
 );
 
 export const radioErrorSelector = createSelector(
