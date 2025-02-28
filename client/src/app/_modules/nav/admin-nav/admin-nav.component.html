@@ -4,10 +4,10 @@
             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Users</a>
             <ul class="dropdown-menu dropdown-flex-child">
                 <li>
-                    <a [routerLink]="['/user-results']" class="dropdown-item">User Reports</a>
+                    <a [routerLink]="['/user-results']" class="dropdown-item" data-bs-dismiss="offcanvas">User Reports</a>
                 </li>
                 <li>
-                    <a [routerLink]="['/add-user']" class="dropdown-item">Add User</a>
+                    <a [routerLink]="['/add-user']" class="dropdown-item" data-bs-dismiss="offcanvas">Add User</a>
                 </li>
             </ul>
         </div>
@@ -18,7 +18,7 @@
             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Service</a>
             <ul class="dropdown-menu custom-dropdown-width">
                 <li class="dropdown-item">
-                    <a [routerLink]="['/repair-results']" class="dropdown-item">Repair Reports</a>
+                    <a [routerLink]="['/repair-results']" class="dropdown-item" data-bs-dismiss="offcanvas">Repair Reports</a>
                 </li>
                 <li class="dropdown-item">
                     <app-repair-tag-navigator></app-repair-tag-navigator>
@@ -32,13 +32,13 @@
             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Organizations</a>
             <ul class="dropdown-menu custom-dropdown-width">
                 <li>
-                    <a [routerLink]="['/add-org']" class="dropdown-item">Add Organization</a>
+                    <a [routerLink]="['/add-org']" class="dropdown-item" data-bs-dismiss="offcanvas">Add Organization</a>
                 </li>
                 <li>
-                    <a [routerLink]="['/org-results']" class="dropdown-item">Organization Reports</a>
+                    <a [routerLink]="['/org-results']" class="dropdown-item" data-bs-dismiss="offcanvas">Organization Reports</a>
                 </li>
                 <li>
-                    <a [routerLink]="['/add-location']" class="dropdown-item">Add Location</a>
+                    <a [routerLink]="['/add-location']" class="dropdown-item" data-bs-dismiss="offcanvas">Add Location</a>
                 </li>
                 <li class="dropdown-item">
                     <app-org-search></app-org-search>
@@ -52,9 +52,9 @@
             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Radios</a>
             <ul class="dropdown-menu custom-dropdown-width">
                 <li>
-                    <a [routerLink]="['/radio-results']" class="dropdown-item">Radio Reports</a>
+                    <a [routerLink]="['/radio-results']" class="dropdown-item" data-bs-dismiss="offcanvas">Radio Reports</a>
                 </li>
-                <li><a [routerLink]="['/add-radio']" class="dropdown-item">Add Radio</a></li>
+                <li><a [routerLink]="['/add-radio']" class="dropdown-item" data-bs-dismiss="offcanvas">Add Radio</a></li>
                 <li class="dropdown-item">
                     <app-org-rad-navigator></app-org-rad-navigator>
                 </li>
