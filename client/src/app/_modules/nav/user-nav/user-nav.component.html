@@ -6,7 +6,7 @@
             <ul class="dropdown-menu custom-dropdown-width">
                 <ng-container *ngIf="userOrgName$ | async as userOrgName">
                     <li class="dropdown-item">
-                        <a [routerLink]="['/repair-results']" [queryParams]="{orgName: userOrgName}" class="dropdown-item">Repair Reports</a>
+                        <a [routerLink]="['/repair-results']" [queryParams]="{orgName: userOrgName}" class="dropdown-item" data-bs-dismiss="offcanvas">Repair Reports</a>
                     </li>
                       
                 </ng-container>
@@ -25,7 +25,7 @@
                 
                 <ng-container *ngIf="userOrgName$ | async as userOrgName">
                     <li class="dropdown-item">
-                        <a [routerLink]="['/radio-results', {orgName: userOrgName}]" class="dropdown-item">Radio Reports</a>
+                        <a [routerLink]="['/radio-results', {orgName: userOrgName}]" class="dropdown-item" data-bs-dismiss="offcanvas">Radio Reports</a>
                     </li>
                 </ng-container>
             </ul>
